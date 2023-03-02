@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/GTAmerica-ExtendedRegular.otf",
+      "sha1": "68de805a51e079fc9a5878b533e8172caaf0fc5f"
+    },
+    {
+      "path": "assets/fonts/GTAmerica-Medium.otf",
+      "sha1": "e23f298e35fd775c61dbf79088ec00a98ca3d583"
+    },
+    {
+      "path": "assets/fonts/GTAmerica-Regular.otf",
+      "sha1": "25e31df1d3734e61956eb53b461e90f089b4e10e"
+    }
+  ]
+}
