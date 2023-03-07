@@ -1,13 +1,14 @@
-import React, {useEffect} from 'react';
-import {API_URL} from '@env';
+import React from 'react';
 
 import RootNavigator from '@navigation/RootNavigator';
+import {AuthProvider} from '@src/providers/AuthProvider';
 
 const App = () => {
-  useEffect(() => {
-    console.log(API_URL);
-  }, []);
-  return <RootNavigator />;
+  return (
+    <AuthProvider>
+      <RootNavigator />
+    </AuthProvider>
+  );
 };
 
 export default App;
