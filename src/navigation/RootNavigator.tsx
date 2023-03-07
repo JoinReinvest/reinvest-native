@@ -1,20 +1,20 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Button, View} from 'react-native';
+import React from 'react';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import LogOutNavigator from '@navigation/LogOutNavigator/LogOutNavigator';
 import LogInNavigator from '@navigation/LogInNavigator/LogInNavigator';
+import {useAuth} from '@src/providers/AuthProvider';
 
 const RootNavigator = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const {loading, user} = useAuth();
 
   return (
     <NavigationContainer>
-      {isSignedIn ? <LogInNavigator /> : <LogOutNavigator />}
-      <View style={{position: 'absolute', bottom: 24, right: 24}}>
-        <Button
-          title={!isSignedIn ? 'SignIN' : 'SignOUT'}
-          onPress={() => setIsSignedIn(prev => !prev)}
-        />
+      {user ? <LogInNavigator /> : <LogOutNavigator />}
+      <View>
+        {loading && (
+          <ActivityIndicator style={{...StyleSheet.absoluteFillObject}} />
+        )}
       </View>
     </NavigationContainer>
   );
