@@ -1,4 +1,4 @@
-export default {
+export const theme = {
   frostGreen: '#C1EBD9',
   frostGreen60: 'rgba(193, 235, 217, 0.6)',
   frostGreen30: 'rgba(193, 235, 217, 0.3)',
@@ -18,3 +18,5 @@ export default {
   gradientsLight: ['#D6E50', '#FFFFFF'],
   gradientsDark: ['#D6E5E0', '#11270B'],
 };
+
+export type Theme = keyof typeof theme;
