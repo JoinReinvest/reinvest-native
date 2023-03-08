@@ -18,4 +18,5 @@ export type TextVariants =
   | 'paragraphLarge'
   | 'paragraphEmp'
   | 'paragraphSmall'
-  | 'link';
+  | 'link'
+  | 'button';
