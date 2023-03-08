@@ -1,8 +1,8 @@
 import React from 'react';
-import Svg, {SvgProps, Path} from 'react-native-svg';
-import {theme} from '@assets/theme';
+import Svg, {Path, SvgProps} from 'react-native-svg';
+import {palette} from '@assets/theme';
 
-const ArrowDown = ({color = theme.pureBlack, ...rest}: SvgProps) => (
+const ArrowDown = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <Path
       d="m11 14 5 5 5-5"

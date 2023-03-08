@@ -1,8 +1,8 @@
-import {theme} from '@assets/theme';
+import {palette} from '@assets/theme';
 import * as React from 'react';
-import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
+import Svg, {ClipPath, Defs, G, Path, SvgProps} from 'react-native-svg';
 
-const Down = ({color = theme.pureBlack, ...rest}: SvgProps) => (
+const Down = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <G
       clipPath="url(#a)"

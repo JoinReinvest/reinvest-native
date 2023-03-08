@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Svg, {SvgProps, Circle, Path} from 'react-native-svg';
-import {theme} from '@assets/theme';
+import Svg, {Circle, Path, SvgProps} from 'react-native-svg';
+import {palette} from '@assets/theme';
 
-const Disabled = ({color = theme.pureBlack, ...rest}: SvgProps) => (
+const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <Circle
       cx={16.5}

@@ -1,7 +1,10 @@
-export const theme = {
+/*
+ * To get specific opacity for colors use hexToRGB helper
+ * const frostGreen30 = hexToRGB(palette.frostGreen, .3)
+ */
+
+export const palette = {
   frostGreen: '#C1EBD9',
-  frostGreen60: 'rgba(193, 235, 217, 0.6)',
-  frostGreen30: 'rgba(193, 235, 217, 0.3)',
   deepGreen: '#11270B',
   pureBlack: '#000000',
   onboarding: '#1B1B1B',
@@ -15,8 +18,17 @@ export const theme = {
   darkerGray: '#D4D6DA',
   lightGray: '#E9E9E9',
   lightesGray: '#FCFCFC',
-  gradientsLight: ['#D6E50', '#FFFFFF'],
+};
+
+const gradients = {
+  gradientsLight: ['#D6E5E0', '#FFFFFF'],
   gradientsDark: ['#D6E5E0', '#11270B'],
 };
 
-export type Theme = keyof typeof theme;
+type ValueOf<T> = T[keyof T];
+
+export type ThemeValues = ValueOf<typeof palette>;
+
+export type Theme = keyof typeof palette;
+
+export default {palette, gradients};

@@ -20,7 +20,6 @@ module.exports = {
       },
     ],
     ['module:react-native-dotenv'],
-    // Reanimated plugin should be placed last
-    // 'react-native-reanimated/plugin',
+    'react-native-reanimated/plugin',
   ],
 };

@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
+import {palette} from '@assets/theme';
 
 const styles = StyleSheet.create({
   staticWrapper: {
@@ -25,6 +26,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dark: {
+    backgroundColor: palette.onboarding,
   },
 });
 

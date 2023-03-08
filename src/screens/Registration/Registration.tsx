@@ -4,9 +4,10 @@ import {WelcomeScreenProps} from './Registration.types';
 import MainWrapper from '@components/MainWrapper/MainWrapper';
 import StyledText from '@components/typography/StyledText/StyledText';
 import {useAuth} from '@src/providers/AuthProvider';
-import {TextInput, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Auth} from '@aws-amplify/auth';
 import styles from '@screens/SignIn/SignIn.styles';
+import {Input} from "@components/Input/Input";
 
 const Registration = ({}: WelcomeScreenProps) => {
   const [email, setEmail] = useState('');
@@ -30,25 +31,28 @@ const Registration = ({}: WelcomeScreenProps) => {
   };
 
   return (
-    <MainWrapper isLoading={loading}>
-      <TextInput
+    <MainWrapper isLoading={loading} dark >
+      <Input
         style={styles.input}
         value={email}
-        onChangeText={e => setEmail(e)}
+        onChangeText={setEmail}
         placeholder={'email'}
+        dark
       />
-      <TextInput
+      <Input
         style={styles.input}
         value={password}
-        onChangeText={e => setPassword(e)}
+        onChangeText={setPassword}
         placeholder={'password'}
+        dark
       />
       {isCodeStep && (
-        <TextInput
+        <Input
           style={styles.input}
           value={code}
-          onChangeText={e => setCode(e)}
+          onChangeText={setCode}
           placeholder={'code'}
+          dark
         />
       )}
       <TouchableOpacity onPress={isCodeStep ? verify : signUp}>
