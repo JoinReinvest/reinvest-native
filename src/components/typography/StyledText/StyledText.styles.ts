@@ -73,6 +73,11 @@ const styles = StyleSheet.create({
     fontFamily: 'GTAmerica-Regular',
     fontSize: 15,
   },
+  button: {
+    fontFamily: 'GTAmerica-Medium',
+    fontSize: 15,
+    lineHeight: 18 * 1.1,
+  },
 });
 
 export default styles;
