@@ -33,6 +33,7 @@ import Tick from './Tick';
 import CircleAlert from './CircleAlert';
 import NotificationBell from './NotificationBell';
 import Notification from './Notification';
+import Sygnet from './Sygnet';
 
 export const iconsObject = {
   HamburgerOpen,
@@ -70,4 +71,5 @@ export const iconsObject = {
   AddUser,
   Notification,
   NotificationBell,
+  Sygnet,
 };
