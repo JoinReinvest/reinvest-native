@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {ActivityIndicator, Pressable, View} from 'react-native';
 import StyledText from '../typography/StyledText/StyledText';
 import {ButtonProps} from './Button.types';
@@ -13,7 +13,7 @@ const Button = ({
   children,
   disabled,
   ...rest
-}: ButtonProps) => {
+}: PropsWithChildren<ButtonProps>) => {
   const variantButtonStyles = disabled
     ? styles[`${variant}--disabled`]
     : styles[variant];
