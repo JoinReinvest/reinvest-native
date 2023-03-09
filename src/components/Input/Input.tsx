@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Pressable, TextInput, TouchableOpacity, View} from 'react-native';
 import Animated, {
   interpolate,
@@ -8,12 +8,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import type {InputProps} from './input.types';
 import styles from './Input.styles';
-import StyledText from '@components/typography/StyledText/StyledText';
+import {StyledText} from '@components/typography/StyledText/StyledText';
 import {palette} from '@assets/theme';
 import {EyeHide} from '@assets/icons';
 import {defaultHitSlop} from '@constants/common';
 
-const Input = ({
+export const Input = ({
   value,
   onChange,
   inputStyle,
@@ -34,18 +34,18 @@ const Input = ({
   const [showSecuredInput, setShowSecuredInput] = useState(secureTextEntry);
   const sharedValue = useSharedValue(value ? 1 : 0);
 
-  const setFocusedAnimatedStyle = (v: boolean) => {
+  const setFocusedAnimatedStyle = (isFocused: boolean) => {
     'worklet';
 
-    sharedValue.value = v ? 1 : 0;
+    sharedValue.value = isFocused ? 1 : 0;
   };
 
-  const stateHandler = (v: boolean) => {
-    setFocused(v);
+  const stateHandler = (isFocused: boolean) => {
+    setFocused(isFocused);
     if (value.length) {
       return;
     }
-    setFocusedAnimatedStyle(v);
+    setFocusedAnimatedStyle(isFocused);
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -73,6 +73,19 @@ const Input = ({
       },
     ],
   }));
+
+  const rightSegment = useMemo(() => {
+    if (secureTextEntry) {
+      return (
+        <TouchableOpacity
+          onPress={() => setShowSecuredInput(prev => !prev)}
+          hitSlop={defaultHitSlop}>
+          <EyeHide color={dark ? palette.pureWhite : palette.pureBlack} />
+        </TouchableOpacity>
+      );
+    }
+    return rightSection;
+  }, [dark, rightSection, secureTextEntry]);
 
   return (
     <Pressable
@@ -125,15 +138,7 @@ const Input = ({
             {...props}
           />
         </View>
-        {secureTextEntry ? (
-          <TouchableOpacity
-            onPress={() => setShowSecuredInput(prev => !prev)}
-            hitSlop={defaultHitSlop}>
-            <EyeHide color={dark ? palette.pureWhite : palette.pureBlack} />
-          </TouchableOpacity>
-        ) : (
-          rightSection
-        )}
+        {rightSegment}
       </View>
       {error && (
         <StyledText
@@ -147,5 +152,3 @@ const Input = ({
     </Pressable>
   );
 };
-
-export default Input;

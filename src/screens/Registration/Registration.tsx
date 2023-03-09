@@ -1,18 +1,21 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 
 import {WelcomeScreenProps} from './Registration.types';
-import MainWrapper from '@components/MainWrapper/MainWrapper';
-import StyledText from '@components/typography/StyledText/StyledText';
+import {MainWrapper} from '@components/MainWrapper/MainWrapper';
+import {StyledText} from '@components/typography/StyledText/StyledText';
 import {useAuth} from '@src/providers/AuthProvider';
-import {TouchableOpacity} from 'react-native';
+import {TextInput, TouchableOpacity} from 'react-native';
 import {Auth} from '@aws-amplify/auth';
-import styles from '@screens/SignIn/SignIn.styles';
-import {Input} from "@components/Input/Input";
+import {Input} from '@components/Input/Input';
 
-const Registration = ({}: WelcomeScreenProps) => {
+export const Registration = ({}: WelcomeScreenProps) => {
   const [email, setEmail] = useState('');
+  const emailRef = useRef<TextInput>(null);
   const [password, setPassword] = useState('');
+  const passRef = useRef<TextInput>(null);
   const [code, setCode] = useState('');
+  const codeRef = useRef<TextInput>(null);
+
   const {actions, loading} = useAuth();
   const [isCodeStep, setCodeStep] = useState(false);
 
@@ -31,27 +34,27 @@ const Registration = ({}: WelcomeScreenProps) => {
   };
 
   return (
-    <MainWrapper isLoading={loading} dark >
+    <MainWrapper isLoading={loading} dark>
       <Input
-        style={styles.input}
+        inputRef={emailRef}
         value={email}
-        onChangeText={setEmail}
-        placeholder={'email'}
+        onChange={setEmail}
+        placeholder={'Email'}
         dark
       />
       <Input
-        style={styles.input}
+        inputRef={passRef}
         value={password}
-        onChangeText={setPassword}
-        placeholder={'password'}
+        onChange={setPassword}
+        placeholder={'Password'}
         dark
         secureTextEntry
       />
       {isCodeStep && (
         <Input
-          style={styles.input}
+          inputRef={codeRef}
           value={code}
-          onChangeText={setCode}
+          onChange={setCode}
           placeholder={'code'}
           dark
         />
@@ -64,5 +67,3 @@ const Registration = ({}: WelcomeScreenProps) => {
     </MainWrapper>
   );
 };
-
-export default Registration;

@@ -1,10 +1,5 @@
 import {ThemeValues} from '@assets/theme';
 
-export {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-
 export const hexToRgbA = (hex: ThemeValues, opacity = 1) => {
   let c;
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {

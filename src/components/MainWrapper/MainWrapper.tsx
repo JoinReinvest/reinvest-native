@@ -9,7 +9,7 @@ import {
 import styles from './MainWrapper.styles';
 import {MainWrapperProps} from './MainWrapper.types';
 
-const MainWrapper = ({
+export const MainWrapper = ({
   children,
   isLoading,
   isScroll,
@@ -43,5 +43,3 @@ const MainWrapper = ({
     )}
   </SafeAreaView>
 );
-
-export default MainWrapper;

@@ -1,13 +1,14 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@assets/theme';
-import {hexToRgbA} from '@utils/common';
+import {hexToRgbA} from '@utils/hexToRgb';
+import {isIOS} from '@constants/common';
 
 const PADDING_HORIZONTAL = 8;
 
 const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
-    minHeight: 48,
+    height: 48,
     marginBottom: 24,
     flexShrink: 1,
   },
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   placeholder: {
     position: 'absolute',
     left: PADDING_HORIZONTAL,
-    top: -16,
+    top: isIOS ? -16 : -8,
   },
   placeholderText: {
     color: palette.dark3,

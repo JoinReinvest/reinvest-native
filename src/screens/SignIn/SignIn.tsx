@@ -1,15 +1,18 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 
 import {WelcomeScreenProps} from './SignIn.types';
-import MainWrapper from '@components/MainWrapper/MainWrapper';
-import StyledText from '@components/typography/StyledText/StyledText';
+import {MainWrapper} from '@components/MainWrapper/MainWrapper';
+import {StyledText} from '@components/typography/StyledText/StyledText';
 import {TextInput, TouchableOpacity} from 'react-native';
+import {Input} from '@components/Input/Input';
 import {useAuth} from '@src/providers/AuthProvider';
-import styles from '@screens/SignIn/SignIn.styles';
 
-const SignIn = ({}: WelcomeScreenProps) => {
+export const SignIn = ({}: WelcomeScreenProps) => {
   const [email, setEmail] = useState('');
+  const emailRef = useRef<TextInput>(null);
   const [password, setPassword] = useState('');
+  const passRef = useRef<TextInput>(null);
+
   const {actions, loading} = useAuth();
 
   const signIn = useCallback(async () => {
@@ -18,17 +21,17 @@ const SignIn = ({}: WelcomeScreenProps) => {
 
   return (
     <MainWrapper isLoading={loading}>
-      <TextInput
-        style={styles.input}
+      <Input
+        inputRef={emailRef}
         value={email}
-        onChangeText={e => setEmail(e)}
-        placeholder={'email'}
+        onChange={setEmail}
+        placeholder={'Email'}
       />
-      <TextInput
-        style={styles.input}
+      <Input
+        inputRef={passRef}
         value={password}
-        onChangeText={e => setPassword(e)}
-        placeholder={'password'}
+        onChange={setPassword}
+        placeholder={'Password'}
       />
       <TouchableOpacity onPress={signIn}>
         <StyledText variant={'h3'}>SignIn</StyledText>
@@ -36,5 +39,3 @@ const SignIn = ({}: WelcomeScreenProps) => {
     </MainWrapper>
   );
 };
-
-export default SignIn;

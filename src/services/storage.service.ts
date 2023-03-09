@@ -2,8 +2,9 @@
   Because of the problem with persisting session , we should use non deprecated @react-native-community/async-storage instead amplify default
  */
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ICognitoStorage} from 'amazon-cognito-identity-js';
+import {type KeyValuePair} from '@react-native-async-storage/async-storage/lib/typescript/types';
 
 const MEMORY_KEY_PREFIX = '@fcAuth:';
 let dataMemory: Record<string, string | null> = {};
@@ -54,7 +55,7 @@ async function sync() {
         key.startsWith(MEMORY_KEY_PREFIX),
       );
 
-      const stores: [string, string | null][] = await AsyncStorage.multiGet(
+      const stores: readonly KeyValuePair[] = await AsyncStorage.multiGet(
         memoryKeys,
       );
 
