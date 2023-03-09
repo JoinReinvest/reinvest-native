@@ -45,6 +45,7 @@ const Registration = ({}: WelcomeScreenProps) => {
         onChangeText={setPassword}
         placeholder={'password'}
         dark
+        secureTextEntry
       />
       {isCodeStep && (
         <Input

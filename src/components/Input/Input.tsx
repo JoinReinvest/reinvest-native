@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Pressable, TextInput, View} from 'react-native';
+import {Pressable, TextInput, TouchableOpacity, View} from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -10,6 +10,8 @@ import type {InputProps} from './input.types';
 import styles from './Input.styles';
 import StyledText from '@components/typography/StyledText/StyledText';
 import {palette} from '@assets/theme';
+import {EyeHide} from '@assets/icons';
+import {defaultHitSlop} from '@constants/common';
 
 const Input = ({
   value,
@@ -24,10 +26,12 @@ const Input = ({
   placeholder,
   dark,
   rightSection,
+  secureTextEntry,
   ...props
 }: InputProps) => {
   const [placeholderWidth, setPlaceholderWidth] = useState(0);
   const [focused, setFocused] = useState(false);
+  const [showSecuredInput, setShowSecuredInput] = useState(secureTextEntry);
   const sharedValue = useSharedValue(value ? 1 : 0);
 
   const setFocusedAnimatedStyle = (v: boolean) => {
@@ -98,6 +102,8 @@ const Input = ({
             </StyledText>
           </Animated.View>
           <TextInput
+            clearTextOnFocus={false}
+            secureTextEntry={showSecuredInput}
             selectionColor={dark ? palette.pureWhite : palette.pureBlack}
             editable={!disabled}
             allowFontScaling={false}
@@ -119,7 +125,15 @@ const Input = ({
             {...props}
           />
         </View>
-        {rightSection}
+        {secureTextEntry ? (
+          <TouchableOpacity
+            onPress={() => setShowSecuredInput(prev => !prev)}
+            hitSlop={defaultHitSlop}>
+            <EyeHide color={dark ? palette.pureWhite : palette.pureBlack} />
+          </TouchableOpacity>
+        ) : (
+          rightSection
+        )}
       </View>
       {error && (
         <StyledText
