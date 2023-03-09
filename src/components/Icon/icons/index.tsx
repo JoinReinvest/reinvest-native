@@ -35,6 +35,7 @@ import NotificationBell from './NotificationBell';
 import Notification from './Notification';
 import Sygnet from './Sygnet';
 import Logo from './Logo';
+import LogoWithSygnet from './LogoWithSygnet';
 
 export const iconsObject = {
   HamburgerOpen,
@@ -74,4 +75,5 @@ export const iconsObject = {
   NotificationBell,
   Sygnet,
   Logo,
+  LogoWithSygnet,
 };
