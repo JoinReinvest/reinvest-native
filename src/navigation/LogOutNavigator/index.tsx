@@ -3,28 +3,32 @@ import React from 'react';
 
 import Screens from '../screens';
 import {LogOutStackParamList} from '@navigation/LogOutNavigator/LogOutNavigator.types';
-import {Registration} from '@screens/Registration/Registration';
-import {SignIn} from '@screens/SignIn/SignIn';
+import {Registration} from '@screens/Registration';
+import {SignIn} from '@screens/SignIn';
 import {palette} from '@assets/theme';
-import {WelcomeScreen} from '@screens/WelcomeScreen/WelcomeScreen';
+import {WelcomeScreen} from '@screens/WelcomeScreen';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();
+
+const stackOptions = {
+  [Screens.Registration]: {
+    title: 'My home',
+    headerStyle: {
+      backgroundColor: palette.onboarding,
+    },
+    headerTintColor: palette.darkerGray,
+    headerTitleStyle: {
+      fontWeight: '700',
+    },
+  },
+} as const;
 
 export const LogOutNavigator: React.FC = () => {
   return (
     <LogOutStack.Navigator>
       <LogOutStack.Screen name={Screens.Welcome} component={WelcomeScreen} />
       <LogOutStack.Screen
-        options={{
-          title: 'My home',
-          headerStyle: {
-            backgroundColor: palette.onboarding,
-          },
-          headerTintColor: palette.darkerGray,
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
+        options={stackOptions[Screens.Registration]}
         name={Screens.Registration}
         component={Registration}
       />

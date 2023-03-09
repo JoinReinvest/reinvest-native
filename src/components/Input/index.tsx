@@ -1,5 +1,11 @@
 import React, {useMemo, useState} from 'react';
-import {Pressable, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  LayoutChangeEvent,
+  Pressable,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -7,7 +13,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import type {InputProps} from './input.types';
-import styles from './Input.styles';
+import {styles} from './Input.styles';
 import {StyledText} from '@components/typography/StyledText/StyledText';
 import {palette} from '@assets/theme';
 import {EyeHide} from '@assets/icons';
@@ -15,7 +21,6 @@ import {defaultHitSlop} from '@constants/common';
 
 export const Input = ({
   value,
-  onChange,
   inputStyle,
   onSubmit,
   error,
@@ -74,11 +79,27 @@ export const Input = ({
     ],
   }));
 
+  const onPressFocusHandler = () => {
+    inputRef?.current?.focus();
+  };
+
+  const calculateSizeHandler = ({
+    nativeEvent: {
+      layout: {width},
+    },
+  }: LayoutChangeEvent) => {
+    setPlaceholderWidth(width);
+  };
+
+  const toggleShowSecureInput = () => {
+    setShowSecuredInput(prev => !prev);
+  };
+
   const rightSegment = useMemo(() => {
     if (secureTextEntry) {
       return (
         <TouchableOpacity
-          onPress={() => setShowSecuredInput(prev => !prev)}
+          onPress={toggleShowSecureInput}
           hitSlop={defaultHitSlop}>
           <EyeHide color={dark ? palette.pureWhite : palette.pureBlack} />
         </TouchableOpacity>
@@ -88,9 +109,7 @@ export const Input = ({
   }, [dark, rightSection, secureTextEntry]);
 
   return (
-    <Pressable
-      onPress={() => inputRef?.current?.focus()}
-      style={[styles.wrapper]}>
+    <Pressable onPress={onPressFocusHandler} style={[styles.wrapper]}>
       <View
         style={[
           styles.input,
@@ -102,13 +121,7 @@ export const Input = ({
         {leftSection}
         <View style={styles.mainSection}>
           <Animated.View
-            onLayout={({
-              nativeEvent: {
-                layout: {width},
-              },
-            }) => {
-              setPlaceholderWidth(width);
-            }}
+            onLayout={calculateSizeHandler}
             style={[styles.placeholder, animatedStyle]}>
             <StyledText style={[styles.placeholderText]}>
               {placeholder}
@@ -133,7 +146,6 @@ export const Input = ({
             onBlur={() => stateHandler(false)}
             ref={inputRef}
             value={value}
-            onChange={event => onChange(event.nativeEvent.text)}
             onSubmitEditing={onSubmit}
             {...props}
           />

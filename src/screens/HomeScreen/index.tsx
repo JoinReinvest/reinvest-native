@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {WelcomeScreenProps} from './HomeScreen.types';
-import {MainWrapper} from '@components/MainWrapper/MainWrapper';
+import {MainWrapper} from '@components/MainWrapper';
 import {StyledText} from '@components/typography/StyledText/StyledText';
 import {Button} from 'react-native';
 import {useAuth} from '@src/providers/AuthProvider';

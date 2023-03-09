@@ -1,9 +1,8 @@
 import type {TextInput, TextInputProps, ViewStyle} from 'react-native';
 import {type ReactNode, type RefObject} from 'react';
 
-export interface InputProps extends Omit<TextInputProps, 'onChange'> {
+export interface InputProps extends TextInputProps {
   value: string;
-  onChange: (value: string) => void;
   onSubmit?: () => void;
   error?: string;
   inputRef: RefObject<TextInput> | null;

@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
 import Screens from '../screens';
-import {HomeScreen} from '@screens/HomeScreen/HomeScreen';
+import {HomeScreen} from '@screens/HomeScreen';
 import {LogInStackParamList} from '@navigation/LogInNavigator/LogInNavigator.types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();

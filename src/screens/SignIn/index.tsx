@@ -1,10 +1,10 @@
 import React, {useCallback, useRef, useState} from 'react';
 
 import {WelcomeScreenProps} from './SignIn.types';
-import {MainWrapper} from '@components/MainWrapper/MainWrapper';
+import {MainWrapper} from '@components/MainWrapper';
 import {StyledText} from '@components/typography/StyledText/StyledText';
 import {TextInput, TouchableOpacity} from 'react-native';
-import {Input} from '@components/Input/Input';
+import {Input} from '@components/Input';
 import {useAuth} from '@src/providers/AuthProvider';
 
 export const SignIn = ({}: WelcomeScreenProps) => {
@@ -24,13 +24,13 @@ export const SignIn = ({}: WelcomeScreenProps) => {
       <Input
         inputRef={emailRef}
         value={email}
-        onChange={setEmail}
+        onChangeText={setEmail}
         placeholder={'Email'}
       />
       <Input
         inputRef={passRef}
         value={password}
-        onChange={setPassword}
+        onChangeText={setPassword}
         placeholder={'Password'}
       />
       <TouchableOpacity onPress={signIn}>

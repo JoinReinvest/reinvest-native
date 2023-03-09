@@ -48,4 +48,5 @@ This template follows a very simple project structure:
 - Don't use default exports/ imports across components
 - Don't use unnecessary indexes
 - utils should be kept in self containing modules
+- use index for main folder component instead of component name file convention
 - ...more to come

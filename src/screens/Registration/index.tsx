@@ -1,12 +1,12 @@
 import React, {useCallback, useRef, useState} from 'react';
 
 import {WelcomeScreenProps} from './Registration.types';
-import {MainWrapper} from '@components/MainWrapper/MainWrapper';
+import {MainWrapper} from '@components/MainWrapper';
 import {StyledText} from '@components/typography/StyledText/StyledText';
 import {useAuth} from '@src/providers/AuthProvider';
 import {TextInput, TouchableOpacity} from 'react-native';
 import {Auth} from '@aws-amplify/auth';
-import {Input} from '@components/Input/Input';
+import {Input} from '@components/Input';
 
 export const Registration = ({}: WelcomeScreenProps) => {
   const [email, setEmail] = useState('');
@@ -38,14 +38,14 @@ export const Registration = ({}: WelcomeScreenProps) => {
       <Input
         inputRef={emailRef}
         value={email}
-        onChange={setEmail}
+        onChangeText={setEmail}
         placeholder={'Email'}
         dark
       />
       <Input
         inputRef={passRef}
         value={password}
-        onChange={setPassword}
+        onChangeText={setPassword}
         placeholder={'Password'}
         dark
         secureTextEntry
@@ -54,7 +54,7 @@ export const Registration = ({}: WelcomeScreenProps) => {
         <Input
           inputRef={codeRef}
           value={code}
-          onChange={setCode}
+          onChangeText={setCode}
           placeholder={'code'}
           dark
         />

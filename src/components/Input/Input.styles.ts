@@ -5,7 +5,7 @@ import {isIOS} from '@constants/common';
 
 const PADDING_HORIZONTAL = 8;
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
     height: 48,
@@ -81,5 +81,3 @@ const styles = StyleSheet.create({
   nativeInputDisabled: {color: palette.darkerGray},
   rightSegmentDisabled: {opacity: 0.7},
 });
-
-export default styles;

@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
 import {palette} from '@assets/theme';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   staticWrapper: {
     height: '100%',
     width: '100%',
@@ -31,5 +31,3 @@ const styles = StyleSheet.create({
     backgroundColor: palette.onboarding,
   },
 });
-
-export default styles;

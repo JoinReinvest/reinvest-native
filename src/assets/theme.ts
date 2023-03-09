@@ -20,7 +20,7 @@ export const palette = {
   lightesGray: '#FCFCFC',
 };
 
-const gradients = {
+export const gradients = {
   gradientsLight: ['#D6E5E0', '#FFFFFF'],
   gradientsDark: ['#D6E5E0', '#11270B'],
 };
@@ -30,5 +30,3 @@ type ValueOf<T> = T[keyof T];
 export type ThemeValues = ValueOf<typeof palette>;
 
 export type Theme = keyof typeof palette;
-
-export default {palette, gradients};
