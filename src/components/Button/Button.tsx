@@ -20,6 +20,7 @@ const Button = ({
   const variantLabelStyles = disabled
     ? styles[`${variant}-label--disabled`]
     : styles[`${variant}-label`];
+
   return (
     <Pressable
       style={[styles.button, variantButtonStyles]}
@@ -27,7 +28,9 @@ const Button = ({
       {...rest}>
       <View style={styles.labelWrapper}>
         {startIcon}
-        <StyledText variant="button" style={variantLabelStyles}>
+        <StyledText
+          variant={variant === 'combo' ? 'h5' : 'button'}
+          style={variantLabelStyles}>
           {!disabled && isLoading ? (
             <ActivityIndicator
               color={variant === 'primary' ? theme.deepGreen : theme.frostGreen}

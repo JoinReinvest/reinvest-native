@@ -25,18 +25,42 @@ const styles = StyleSheet.create({
   'primary-label--disabled': {
     color: theme.dark3,
   },
+  combo: {
+    backgroundColor: theme.frostGreen,
+  },
+  'combo-label': {
+    color: theme.deepGreen,
+  },
+  'combo--disabled': {
+    backgroundColor: theme.lightGray,
+  },
+  'combo-label--disabled': {
+    color: theme.dark3,
+  },
   secondary: {
+    backgroundColor: theme.pureWhite,
+  },
+  'secondary--disabled': {
+    backgroundColor: theme.lightGray,
+  },
+  'secondary-label': {
+    color: theme.deepGreen,
+  },
+  'secondary-label--disabled': {
+    color: theme.dark3,
+  },
+  outlined: {
     borderWidth: 2,
     borderColor: theme.frostGreen,
   },
-  'secondary--disabled': {
+  'outlined--disabled': {
     borderWidth: 2,
     borderColor: theme.lightGray,
   },
-  'secondary-label': {
+  'outlined-label': {
     color: theme.frostGreen,
   },
-  'secondary-label--disabled': {
+  'outlined-label--disabled': {
     color: theme.darkerGray,
   },
 });
