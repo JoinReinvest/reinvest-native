@@ -16,51 +16,51 @@ const styles = StyleSheet.create({
   primary: {
     backgroundColor: theme.frostGreen,
   },
-  'primary-label': {
+  primaryLabel: {
     color: theme.deepGreen,
   },
-  'primary--disabled': {
+  primaryDisabled: {
     backgroundColor: theme.lightGray,
   },
-  'primary-label--disabled': {
+  primaryLabelDisabled: {
     color: theme.dark3,
   },
   combo: {
     backgroundColor: theme.frostGreen,
   },
-  'combo-label': {
+  comboLabel: {
     color: theme.deepGreen,
   },
-  'combo--disabled': {
+  comboDisabled: {
     backgroundColor: theme.lightGray,
   },
-  'combo-label--disabled': {
+  comboLabelDisabled: {
     color: theme.dark3,
   },
   secondary: {
     backgroundColor: theme.pureWhite,
   },
-  'secondary--disabled': {
+  secondaryDisabled: {
     backgroundColor: theme.lightGray,
   },
-  'secondary-label': {
+  secondaryLabel: {
     color: theme.deepGreen,
   },
-  'secondary-label--disabled': {
+  secondaryLabelDisabled: {
     color: theme.dark3,
   },
   outlined: {
     borderWidth: 2,
     borderColor: theme.frostGreen,
   },
-  'outlined--disabled': {
+  outlinedDisabled: {
     borderWidth: 2,
     borderColor: theme.lightGray,
   },
-  'outlined-label': {
+  outlinedLabel: {
     color: theme.frostGreen,
   },
-  'outlined-label--disabled': {
+  outlinedLabelDisabled: {
     color: theme.darkerGray,
   },
 });

@@ -14,23 +14,23 @@ const Button = ({
   disabled,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
-  const variantButtonStyles = disabled
-    ? styles[`${variant}--disabled`]
-    : styles[variant];
-  const variantLabelStyles = disabled
-    ? styles[`${variant}-label--disabled`]
-    : styles[`${variant}-label`];
-
   return (
     <Pressable
-      style={[styles.button, variantButtonStyles]}
+      style={[
+        styles.button,
+        styles[variant],
+        disabled && styles[`${variant}Disabled`],
+      ]}
       disabled={disabled}
       {...rest}>
       <View style={styles.labelWrapper}>
         {startIcon}
         <StyledText
           variant={variant === 'combo' ? 'h5' : 'button'}
-          style={variantLabelStyles}>
+          style={[
+            styles[`${variant}Label`],
+            disabled && styles[`${variant}LabelDisabled`],
+          ]}>
           {!disabled && isLoading ? (
             <ActivityIndicator
               color={variant === 'primary' ? theme.deepGreen : theme.frostGreen}
