@@ -1,7 +1,5 @@
 import {StyleSheet} from 'react-native';
-// import {wp} from '../../utils/common';
-
-export const MAIN_WRAPPER_PADDING_HORIZONTAL = 16;
+import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
 
 const styles = StyleSheet.create({
   staticWrapper: {
