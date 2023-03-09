@@ -1,15 +1,25 @@
 import React from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {theme} from '@assets/theme';
-import {SizableSvgProps} from './types';
+import {IconSize, SizableSvgProps} from './types';
+
+const computeSygnetSize = (size: IconSize) => {
+  switch (size) {
+    case 'small':
+      return 30;
+    case 'large':
+      return 356;
+    case 'medium':
+      return 72;
+  }
+};
 
 const Sygnet = ({
-  size = 'large',
+  size = 'medium',
   color = theme.pureBlack,
   ...rest
 }: SizableSvgProps) => {
-  const computedSize = size === 'large' ? 72 : 30;
-
+  const computedSize = computeSygnetSize(size);
   return (
     <Svg
       width={computedSize}
