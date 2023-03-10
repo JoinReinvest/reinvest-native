@@ -69,6 +69,10 @@ const styles = StyleSheet.create({
     fontFamily: 'GTAmerica-Extended',
     fontSize: 11,
   },
+  bodyText: {
+    fontFamily: 'GTAmerica-Regular',
+    fontSize: 15,
+  },
 });
 
 export default styles;
