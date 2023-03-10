@@ -1,8 +1,8 @@
 import React from 'react';
 import Svg, {Path, SvgProps} from 'react-native-svg';
-import {theme} from '@assets/theme';
+import {palette} from '@constants/theme';
 
-const Sygnet = ({color = theme.frostGreen, ...rest}: SvgProps) => {
+export const Sygnet = ({color = palette.frostGreen, ...rest}: SvgProps) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 72 72" fill="none" {...rest}>
       <Path
@@ -12,5 +12,3 @@ const Sygnet = ({color = theme.frostGreen, ...rest}: SvgProps) => {
     </Svg>
   );
 };
-
-export default Sygnet;

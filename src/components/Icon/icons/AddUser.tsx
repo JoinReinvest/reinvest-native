@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, {ClipPath, Defs, G, Path, SvgProps} from 'react-native-svg';
 import {palette} from '@constants/theme';
 
-const AddUser = ({color = palette.pureBlack, ...rest}: SvgProps) => (
+export const AddUser = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <G
       clipPath="url(#a)"
@@ -18,5 +18,3 @@ const AddUser = ({color = palette.pureBlack, ...rest}: SvgProps) => (
     </Defs>
   </Svg>
 );
-
-export default AddUser;

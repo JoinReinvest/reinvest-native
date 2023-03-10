@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, {ClipPath, Defs, G, Path, SvgProps} from 'react-native-svg';
 import {palette} from '@constants/theme';
 
-const Trophy = ({color = palette.pureBlack, ...rest}: SvgProps) => (
+export const Trophy = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <G clipPath="url(#a)" stroke={color} strokeWidth={1.5}>
       <Path
@@ -21,5 +21,3 @@ const Trophy = ({color = palette.pureBlack, ...rest}: SvgProps) => (
     </Defs>
   </Svg>
 );
-
-export default Trophy;

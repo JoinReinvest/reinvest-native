@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, {ClipPath, Defs, G, Path, SvgProps} from 'react-native-svg';
 import {palette} from '@constants/theme';
 
-const Tick = ({color = palette.pureBlack, ...rest}: SvgProps) => (
+export const Tick = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <G clipPath="url(#a)">
       <Path
@@ -20,5 +20,3 @@ const Tick = ({color = palette.pureBlack, ...rest}: SvgProps) => (
     </Defs>
   </Svg>
 );
-
-export default Tick;
