@@ -1,11 +1,11 @@
 import React, {PropsWithChildren} from 'react';
 import {ActivityIndicator, Pressable, View} from 'react-native';
-import StyledText from '../typography/StyledText/StyledText';
+import {StyledText} from '../typography/StyledText/StyledText';
 import {ButtonProps} from './Button.types';
-import styles from './Button.styles';
-import {theme} from '@src/assets/theme';
+import {styles} from './Button.styles';
+import {palette} from '@src/constants/theme';
 
-const Button = ({
+export const Button = ({
   startIcon,
   endIcon,
   isLoading = false,
@@ -14,6 +14,18 @@ const Button = ({
   disabled,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
+  const renderButtonLabel = () => {
+    if (!disabled && isLoading) {
+      return (
+        <ActivityIndicator
+          color={variant === 'primary' ? palette.deepGreen : palette.frostGreen}
+        />
+      );
+    }
+
+    return children;
+  };
+
   return (
     <Pressable
       style={[
@@ -31,18 +43,10 @@ const Button = ({
             styles[`${variant}Label`],
             disabled && styles[`${variant}LabelDisabled`],
           ]}>
-          {!disabled && isLoading ? (
-            <ActivityIndicator
-              color={variant === 'primary' ? theme.deepGreen : theme.frostGreen}
-            />
-          ) : (
-            children
-          )}
+          {renderButtonLabel()}
         </StyledText>
         {endIcon}
       </View>
     </Pressable>
   );
 };
-
-export default Button;

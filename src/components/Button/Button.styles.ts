@@ -1,7 +1,7 @@
-import {theme} from '@src/assets/theme';
 import {StyleSheet} from 'react-native';
+import {palette} from '@src/constants/theme';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   button: {
     height: 48,
     width: '100%',
@@ -14,55 +14,53 @@ const styles = StyleSheet.create({
     columnGap: 8,
   },
   primary: {
-    backgroundColor: theme.frostGreen,
+    backgroundColor: palette.frostGreen,
   },
   primaryLabel: {
-    color: theme.deepGreen,
+    color: palette.deepGreen,
   },
   primaryDisabled: {
-    backgroundColor: theme.lightGray,
+    backgroundColor: palette.lightGray,
   },
   primaryLabelDisabled: {
-    color: theme.dark3,
+    color: palette.dark3,
   },
   combo: {
-    backgroundColor: theme.frostGreen,
+    backgroundColor: palette.frostGreen,
   },
   comboLabel: {
-    color: theme.deepGreen,
+    color: palette.deepGreen,
   },
   comboDisabled: {
-    backgroundColor: theme.lightGray,
+    backgroundColor: palette.lightGray,
   },
   comboLabelDisabled: {
-    color: theme.dark3,
+    color: palette.dark3,
   },
   secondary: {
-    backgroundColor: theme.pureWhite,
+    backgroundColor: palette.pureWhite,
   },
   secondaryDisabled: {
-    backgroundColor: theme.lightGray,
+    backgroundColor: palette.lightGray,
   },
   secondaryLabel: {
-    color: theme.deepGreen,
+    color: palette.deepGreen,
   },
   secondaryLabelDisabled: {
-    color: theme.dark3,
+    color: palette.dark3,
   },
   outlined: {
     borderWidth: 2,
-    borderColor: theme.frostGreen,
+    borderColor: palette.frostGreen,
   },
   outlinedDisabled: {
     borderWidth: 2,
-    borderColor: theme.lightGray,
+    borderColor: palette.lightGray,
   },
   outlinedLabel: {
-    color: theme.frostGreen,
+    color: palette.frostGreen,
   },
   outlinedLabelDisabled: {
-    color: theme.darkerGray,
+    color: palette.darkerGray,
   },
 });
-
-export default styles;
