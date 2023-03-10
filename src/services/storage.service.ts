@@ -2,17 +2,18 @@
   Because of the problem with persisting session , we should use non deprecated @react-native-community/async-storage instead amplify default
  */
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ICognitoStorage} from 'amazon-cognito-identity-js';
+import {type KeyValuePair} from '@react-native-async-storage/async-storage/lib/typescript/types';
 
 const MEMORY_KEY_PREFIX = '@fcAuth:';
 let dataMemory: Record<string, string | null> = {};
-const syncPromise: Promise<any> | null = null;
+const syncPromise: Promise<string[]> | null = null;
 
 /**
  * This is used to set a specific item in storage
  */
-function setItem(key: string, value: any) {
+function setItem(key: string, value: string) {
   AsyncStorage.setItem(MEMORY_KEY_PREFIX + key, value);
   dataMemory[key] = value;
   return dataMemory[key];
@@ -47,14 +48,13 @@ function clear() {
 async function sync() {
   if (!syncPromise) {
     try {
-      // syncPromise = new Promise((res, rej) => {
       const keys = await AsyncStorage.getAllKeys();
 
       const memoryKeys = keys.filter((key: string) =>
         key.startsWith(MEMORY_KEY_PREFIX),
       );
 
-      const stores: [string, string | null][] = await AsyncStorage.multiGet(
+      const stores: readonly KeyValuePair[] = await AsyncStorage.multiGet(
         memoryKeys,
       );
 
@@ -73,7 +73,9 @@ async function sync() {
   return syncPromise;
 }
 
-export const AuthStorage: ICognitoStorage & {sync: () => Promise<any>} = {
+export const AuthStorage: ICognitoStorage & {
+  sync: () => Promise<string[] | null>;
+} = {
   setItem,
   getItem,
   removeItem,

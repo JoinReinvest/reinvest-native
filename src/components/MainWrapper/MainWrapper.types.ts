@@ -1,5 +1,5 @@
 import type {ReactNode} from 'react';
-import type {ViewStyle, StyleProp} from 'react-native';
+import type {StyleProp, ViewStyle} from 'react-native';
 
 export interface MainWrapperProps {
   isLoading?: boolean;
@@ -7,4 +7,5 @@ export interface MainWrapperProps {
   gradientColors?: string[];
   noScrollableContent?: (style: ViewStyle) => ReactNode;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  dark?: boolean;
 }

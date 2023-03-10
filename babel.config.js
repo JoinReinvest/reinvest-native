@@ -16,11 +16,11 @@ module.exports = {
           '@screens': './src/screens',
           '@utils': './src/utils',
           '@typings': './src/types',
+          '@icons': './src/assets/icons',
         },
       },
     ],
     ['module:react-native-dotenv'],
-    // Reanimated plugin should be placed last
-    // 'react-native-reanimated/plugin',
+    'react-native-reanimated/plugin',
   ],
 };

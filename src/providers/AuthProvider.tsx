@@ -1,5 +1,4 @@
-import {Auth, CognitoUser, SignUpParams} from '@aws-amplify/auth';
-import {
+import React, {
   createContext,
   ReactNode,
   useContext,
@@ -7,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {Auth, CognitoUser, SignUpParams} from '@aws-amplify/auth';
 import AuthService from '@src/services/amplify.service';
 import {ISignUpResult} from 'amazon-cognito-identity-js';
 

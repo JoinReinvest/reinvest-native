@@ -3,7 +3,7 @@ import {Text} from 'react-native';
 import styles from './StyledText.styles';
 import {StyledTextProps} from './StyledText.types';
 
-const StyledText = ({
+export const StyledText = ({
   children,
   style,
   color = 'black',
@@ -17,5 +17,3 @@ const StyledText = ({
     {children}
   </Text>
 );
-
-export default StyledText;
