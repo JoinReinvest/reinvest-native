@@ -36,6 +36,7 @@ import {Up} from './Up';
 import {Upload} from './Upload';
 import {File} from './File';
 import {Notification} from './Notification';
+import {LoadingSpinner} from './LoadingSpinner';
 
 export {
   HamburgerOpen,
@@ -76,4 +77,5 @@ export {
   Sygnet,
   Logo,
   LogoWithSygnet,
+  LoadingSpinner,
 };
