@@ -8,12 +8,12 @@ import {type KeyValuePair} from '@react-native-async-storage/async-storage/lib/t
 
 const MEMORY_KEY_PREFIX = '@fcAuth:';
 let dataMemory: Record<string, string | null> = {};
-const syncPromise: Promise<any> | null = null;
+const syncPromise: Promise<string[]> | null = null;
 
 /**
  * This is used to set a specific item in storage
  */
-function setItem(key: string, value: any) {
+function setItem(key: string, value: string) {
   AsyncStorage.setItem(MEMORY_KEY_PREFIX + key, value);
   dataMemory[key] = value;
   return dataMemory[key];
@@ -48,7 +48,6 @@ function clear() {
 async function sync() {
   if (!syncPromise) {
     try {
-      // syncPromise = new Promise((res, rej) => {
       const keys = await AsyncStorage.getAllKeys();
 
       const memoryKeys = keys.filter((key: string) =>
@@ -74,7 +73,9 @@ async function sync() {
   return syncPromise;
 }
 
-export const AuthStorage: ICognitoStorage & {sync: () => Promise<any>} = {
+export const AuthStorage: ICognitoStorage & {
+  sync: () => Promise<string[] | null>;
+} = {
   setItem,
   getItem,
   removeItem,

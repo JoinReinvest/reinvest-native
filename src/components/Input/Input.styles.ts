@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {palette} from '@assets/theme';
+import {palette} from '@constants/theme';
 import {hexToRgbA} from '@utils/hexToRgb';
 import {isIOS} from '@constants/common';
 

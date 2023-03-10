@@ -5,7 +5,7 @@ import Screens from '../screens';
 import {LogOutStackParamList} from '@navigation/LogOutNavigator/LogOutNavigator.types';
 import {Registration} from '@screens/Registration';
 import {SignIn} from '@screens/SignIn';
-import {palette} from '@assets/theme';
+import {palette} from '@constants/theme';
 import {WelcomeScreen} from '@screens/WelcomeScreen';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();

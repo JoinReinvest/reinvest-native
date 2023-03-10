@@ -1,11 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {
-  LayoutChangeEvent,
-  Pressable,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {LayoutChangeEvent, Pressable, TextInput, View} from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -15,9 +9,8 @@ import Animated, {
 import type {InputProps} from './input.types';
 import {styles} from './Input.styles';
 import {StyledText} from '@components/typography/StyledText/StyledText';
-import {palette} from '@assets/theme';
-import {EyeHide} from '@assets/icons';
-import {defaultHitSlop} from '@constants/common';
+import {palette} from '@constants/theme';
+import {Icon} from '@components/Icon';
 
 export const Input = ({
   value,
@@ -98,11 +91,11 @@ export const Input = ({
   const rightSegment = useMemo(() => {
     if (secureTextEntry) {
       return (
-        <TouchableOpacity
+        <Icon
+          icon={'eyeHide'}
           onPress={toggleShowSecureInput}
-          hitSlop={defaultHitSlop}>
-          <EyeHide color={dark ? palette.pureWhite : palette.pureBlack} />
-        </TouchableOpacity>
+          color={dark ? palette.pureWhite : palette.pureBlack}
+        />
       );
     }
     return rightSection;
