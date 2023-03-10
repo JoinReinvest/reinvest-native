@@ -19,4 +19,5 @@ export type TextVariants =
   | 'paragraphEmp'
   | 'paragraphSmall'
   | 'link'
-  | 'bodyText';
+  | 'bodyText'
+  | 'button';
