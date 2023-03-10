@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, {Path, Rect, SvgProps} from 'react-native-svg';
 import {palette} from '@constants/theme';
 
-const Checkbox = ({color = palette.pureBlack, ...rest}: SvgProps) => (
+export const Checkbox = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <Rect x={4} y={4} width={24} height={24} rx={12} fill={palette.lightGray} />
     <Path
@@ -14,5 +14,3 @@ const Checkbox = ({color = palette.pureBlack, ...rest}: SvgProps) => (
     />
   </Svg>
 );
-
-export default Checkbox;

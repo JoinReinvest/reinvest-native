@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, {Circle, Path, SvgProps} from 'react-native-svg';
 import {palette} from '@constants/theme';
 
-const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
+export const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
   <Svg width={32} height={32} fill="none" {...rest}>
     <Circle
       cx={16.5}
@@ -15,5 +15,3 @@ const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
     <Path stroke={color} strokeWidth={1.5} d="m21.273 12.081-8.485 8.485" />
   </Svg>
 );
-
-export default Disabled;
