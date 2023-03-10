@@ -20,4 +20,8 @@ export type TextVariants =
   | 'paragraphSmall'
   | 'link'
   | 'bodyText'
-  | 'button';
+  | 'button'
+  | 'avatarInitialsExtraLarge'
+  | 'avatarInitialsLarge'
+  | 'avatarInitialsMedium'
+  | 'avatarInitialsSmall';

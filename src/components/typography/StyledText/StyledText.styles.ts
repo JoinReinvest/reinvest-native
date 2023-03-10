@@ -78,6 +78,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 18 * 1.1,
   },
+  avatarInitialsExtraLarge: {
+    fontFamily: 'GTAmerica-Regular',
+    fontSize: 48,
+    letterSpacing: -0.5,
+  },
+  avatarInitialsLarge: {
+    fontFamily: 'GTAmerica-Regular',
+    fontSize: 32,
+    letterSpacing: -0.5,
+  },
+  avatarInitialsMedium: {
+    fontFamily: 'GTAmerica-Regular',
+    fontSize: 18,
+    letterSpacing: -0.5,
+  },
+  avatarInitialsSmall: {
+    fontFamily: 'GTAmerica-Regular',
+    fontSize: 12,
+    letterSpacing: -0.5,
+  },
 });
 
 export default styles;
