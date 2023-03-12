@@ -6,9 +6,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import type {InputProps} from './input.types';
-import {styles} from './Input.styles';
-import {StyledText} from '@components/typography/StyledText/StyledText';
+import type {InputProps} from './types';
+import {styles} from './styles';
+import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {Icon} from '@components/Icon';
 
@@ -26,6 +26,7 @@ export const Input = ({
   dark,
   rightSection,
   secureTextEntry,
+  onBlur,
   ...props
 }: InputProps) => {
   const [placeholderWidth, setPlaceholderWidth] = useState(0);
@@ -41,10 +42,15 @@ export const Input = ({
 
   const stateHandler = (isFocused: boolean) => {
     setFocused(isFocused);
-    if (value.length) {
+    if (value?.length) {
       return;
     }
     setFocusedAnimatedStyle(isFocused);
+  };
+
+  const onBlurHandler = () => {
+    onBlur?.();
+    stateHandler(false);
   };
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -103,50 +109,55 @@ export const Input = ({
   }, [dark, rightSection, secureTextEntry]);
 
   return (
-    <Pressable onPress={onPressFocusHandler} style={[styles.wrapper]}>
-      <View
-        style={[
-          styles.input,
-          focused && styles.focused,
-          !!error && styles.error,
-          inputStyle,
-          disabled && styles.disabled,
-        ]}>
-        <View />
-        {leftSection}
-        <View style={styles.mainSection}>
-          <Animated.View
-            onLayout={calculateSizeHandler}
-            style={[styles.placeholder, animatedStyle]}>
-            <StyledText style={[styles.placeholderText]}>
-              {placeholder}
-            </StyledText>
-          </Animated.View>
-          <TextInput
-            clearTextOnFocus={false}
-            secureTextEntry={showSecuredInput}
-            selectionColor={dark ? palette.pureWhite : palette.pureBlack}
-            editable={!disabled}
-            allowFontScaling={false}
-            numberOfLines={numberOfLines}
-            style={[
-              styles.nativeInput,
-              dark && styles.dark,
-              nativeInputStyle,
-              disabled && styles.nativeInputDisabled,
-            ]}
-            onFocus={() => {
-              stateHandler(true);
-            }}
-            onBlur={() => stateHandler(false)}
-            ref={inputRef}
-            value={value}
-            onSubmitEditing={onSubmit}
-            {...props}
-          />
+    <>
+      <Pressable onPress={onPressFocusHandler} style={[styles.wrapper]}>
+        <View
+          style={[
+            styles.input,
+            focused && styles.focused,
+            !!error && styles.error,
+            inputStyle,
+            disabled && styles.disabled,
+            dark && styles.dark,
+            dark && focused && styles.focusedDark,
+            dark && !!error && styles.errorDark,
+          ]}>
+          <View />
+          {leftSection}
+          <View style={styles.mainSection}>
+            <Animated.View
+              onLayout={calculateSizeHandler}
+              style={[styles.placeholder, animatedStyle]}>
+              <StyledText style={[styles.placeholderText]}>
+                {placeholder}
+              </StyledText>
+            </Animated.View>
+            <TextInput
+              clearTextOnFocus={false}
+              secureTextEntry={showSecuredInput}
+              selectionColor={dark ? palette.pureWhite : palette.pureBlack}
+              editable={!disabled}
+              allowFontScaling={false}
+              numberOfLines={numberOfLines}
+              style={[
+                styles.nativeInput,
+                dark && styles.darkInput,
+                nativeInputStyle,
+                disabled && styles.nativeInputDisabled,
+              ]}
+              onFocus={() => {
+                stateHandler(true);
+              }}
+              onBlur={onBlurHandler}
+              {...props}
+              ref={inputRef}
+              value={value}
+              onSubmitEditing={onSubmit}
+            />
+          </View>
+          {rightSegment}
         </View>
-        {rightSegment}
-      </View>
+      </Pressable>
       {error && (
         <StyledText
           numberOfLines={1}
@@ -156,6 +167,6 @@ export const Input = ({
           {error}
         </StyledText>
       )}
-    </Pressable>
+    </>
   );
 };

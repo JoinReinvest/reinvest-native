@@ -1,7 +1,7 @@
 import React, {PropsWithChildren} from 'react';
 import {Pressable, PressableProps} from 'react-native';
-import {StyledText} from '@components/typography/StyledText/StyledText';
-import {StyledTextProps} from '../typography/StyledText/StyledText.types';
+import {StyledText} from '@components/typography/StyledText';
+import {StyledTextProps} from '@components/typography/StyledText/types';
 
 export interface PressableTextProps {
   pressableProps: Omit<PressableProps, 'children'>;

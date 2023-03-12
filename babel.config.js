@@ -17,6 +17,7 @@ module.exports = {
           '@utils': './src/utils',
           '@typings': './src/types',
           '@icons': './src/assets/icons',
+          '@providers': './src/providers',
           '@permissions': './src/permissions',
         },
       },

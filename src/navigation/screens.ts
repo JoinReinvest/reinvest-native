@@ -1,8 +1,10 @@
 enum Screens {
   Welcome = 'Welcome',
   Home = 'Home',
-  Registration = 'Registration',
+  SignUp = 'SignUp',
   SignIn = 'SignIn',
+  FirstStepLogOut = 'FirstStepLogOut',
+  BlackForm = 'BlackForm',
 }
 
 export default Screens;

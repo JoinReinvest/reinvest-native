@@ -6,7 +6,12 @@ export const HamburgerClose = ({
   color = palette.pureBlack,
   ...rest
 }: SvgProps) => (
-  <Svg width={32} height={32} fill="none" {...rest}>
+  <Svg
+    width={'100%'}
+    height={'100%'}
+    viewBox={'0 , 0 , 32, 32'}
+    fill="none"
+    {...rest}>
     <Path
       stroke={color}
       strokeWidth={1.5}

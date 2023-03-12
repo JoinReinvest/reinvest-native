@@ -6,8 +6,8 @@ import {
   StatusBar,
   View,
 } from 'react-native';
-import {styles} from './MainWrapper.styles';
-import {MainWrapperProps} from './MainWrapper.types';
+import {styles} from './styles';
+import {MainWrapperProps} from './types';
 
 export const MainWrapper = ({
   children,
@@ -16,30 +16,41 @@ export const MainWrapper = ({
   noScrollableContent,
   contentContainerStyle,
   dark,
-}: PropsWithChildren<MainWrapperProps>) => (
-  <SafeAreaView>
-    <StatusBar hidden={false} barStyle="dark-content" />
-    {isScroll ? (
-      <>
-        <ScrollView
-          contentContainerStyle={[
+  shouldSafeArea = true,
+  style,
+}: PropsWithChildren<MainWrapperProps>) => {
+  const Wrapper = shouldSafeArea ? SafeAreaView : View;
+  return (
+    <Wrapper style={[dark && styles.dark]}>
+      <StatusBar hidden={false} barStyle="dark-content" />
+      {isScroll ? (
+        <>
+          <ScrollView
+            contentContainerStyle={[
+              styles.wrapper,
+              contentContainerStyle,
+              dark && styles.dark,
+            ]}>
+            {children}
+          </ScrollView>
+          {noScrollableContent?.(styles.wrapperPadding)}
+        </>
+      ) : (
+        <View
+          style={[
             styles.wrapper,
-            contentContainerStyle,
+            styles.staticWrapper,
             dark && styles.dark,
+            style,
           ]}>
           {children}
-        </ScrollView>
-        {noScrollableContent?.(styles.wrapperPadding)}
-      </>
-    ) : (
-      <View style={[styles.wrapper, styles.staticWrapper, dark && styles.dark]}>
-        {children}
-      </View>
-    )}
-    {isLoading && (
-      <View style={styles.loadingWrapper}>
-        <ActivityIndicator size="large" />
-      </View>
-    )}
-  </SafeAreaView>
-);
+        </View>
+      )}
+      {isLoading && (
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
+    </Wrapper>
+  );
+};

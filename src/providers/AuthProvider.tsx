@@ -29,6 +29,10 @@ interface AuthContextInterface {
     signUp: (
       params: SignUpParams,
     ) => Promise<ISignUpResult | Error | undefined> | null;
+    confirmSignUp: (
+      email: string,
+      authenticationCode: string,
+    ) => Promise<void> | null;
   };
   loading: boolean;
   user: CognitoUser | null;
@@ -42,12 +46,15 @@ export const AuthContext = createContext<AuthContextInterface>({
     confirmSignIn: async () => null,
     signOut: () => null,
     signUp: () => null,
+    confirmSignUp: () => null,
   },
 });
 
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+//TODO add serialisation and mapping for handling errors - instead invoking main cognito instance we should use dep inv class
 
 export const AuthProvider = ({children}: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
@@ -64,7 +71,8 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
       setUser(currentUser);
       return currentUser;
     } catch (e) {
-      return error as Error;
+      const err = e as Error;
+      return new Error(err?.message || 'Unknown error occurred');
     } finally {
       setLoading(false);
     }
@@ -84,22 +92,22 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     setLoading(true);
     try {
       const userResult: ISignUpResult = await Auth.signUp(signUpParams);
-      //TODO flow for confirmation
       return userResult;
     } catch (err) {
-      //TODO add serialisation
-      console.log('SIGNUP error ', err);
+      throw err;
     } finally {
       setLoading(false);
     }
   };
+
+  const confirmSignUp = async (email: string, authenticationCode: string) =>
+    Auth.confirmSignUp(email, authenticationCode);
 
   const signOut = async () => {
     try {
       await Auth.signOut();
       setUser(null);
     } catch (e: unknown) {
-      //TODO  add serialisation
       setError('SignOut error');
     }
   };
@@ -121,7 +129,6 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
       const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
       return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
     } catch (e) {
-      //TODO  add serialisation
       setError('Problem with token');
     }
   }
@@ -142,6 +149,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
         getCurrentUser,
         getToken,
         signUp,
+        confirmSignUp,
       },
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
