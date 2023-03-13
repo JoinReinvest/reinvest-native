@@ -34,6 +34,7 @@ import {
   Upload,
   File,
   Notification,
+  LoadingSpinner,
 } from './icons';
 
 export const icons = {
@@ -57,6 +58,7 @@ export const icons = {
   link: Link,
   loading: Loading,
   loadingHalf: LoadingHalf,
+  loadingSpinner: LoadingSpinner,
   mailbox: Mailbox,
   moreMenu: MoreMenu,
   refresh: Refresh,
