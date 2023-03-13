@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "baseUrl": "./",
-    "paths" : {
+    "paths": {
       "@src/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
@@ -21,11 +21,9 @@
       "@utils/*": ["src/utils/*"],
       "@typings/*": ["src/types/*"],
       "@icons/*": ["src/assets/icons/*"],
+      "@permissions/*": ["src/permissions/*"]
     },
-    "types": [
-      "jest",
-      "node"
-    ]
+    "types": ["jest", "node"]
   },
   "include": ["src", "__tests__"]
 }
