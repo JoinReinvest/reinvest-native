@@ -15,6 +15,7 @@ export const palette = {
   dark1: '#081224',
   dark2: '#575E6C',
   dark3: '#939AA2',
+  gray: '#DDC59E',
   darkerGray: '#D4D6DA',
   lightGray: '#E9E9E9',
   lightesGray: '#FCFCFC',

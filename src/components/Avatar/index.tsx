@@ -2,9 +2,29 @@ import React from 'react';
 import {Pressable, View} from 'react-native';
 import {Icon} from '../Icon';
 import {StyledText} from '../typography/StyledText/StyledText';
+import {TextVariants} from '../typography/StyledText/StyledText.types';
 import {styles} from './styles';
-import {AvatarProps} from './types';
-import {mapSizeToStyledTextVariantSuffix, computeUserInitials} from './utils';
+import {AvatarProps, AvatarSize} from './types';
+
+const AvatarSizesSuffixes: {[key in AvatarSize]: TextVariants} = {
+  xl: 'avatarInitialsExtraLarge',
+  l: 'avatarInitialsLarge',
+  m: 'avatarInitialsMedium',
+  s: 'avatarInitialsSmall',
+};
+
+export const computeUserInitials = (username: string) => {
+  const namesArr = username.split(' ');
+  const firstName = namesArr[0];
+  let lastName = '';
+
+  if (namesArr.length > 1) {
+    // skip middle name
+    lastName = namesArr.pop()!;
+  }
+
+  return lastName ? `${firstName[0]}${lastName[0]}` : `${firstName[0]}`;
+};
 
 export const Avatar = ({
   username,
@@ -13,8 +33,8 @@ export const Avatar = ({
   isEditable = false,
   onPress,
 }: AvatarProps) => {
-  const textVariant = mapSizeToStyledTextVariantSuffix(size);
-  const userInitials = computeUserInitials(username);
+  const [firstName, lastName] = username.split(' ');
+  const initials = lastName ? `${firstName[0]}${lastName[0]}` : firstName[0];
 
   return (
     <Pressable
@@ -22,9 +42,9 @@ export const Avatar = ({
       onPress={onPress}
       style={[styles.wrapper, styles[size], styles[variant]]}>
       <StyledText
-        style={[styles.initials, styles[variant]]}
-        variant={`avatarInitials${textVariant}`}>
-        {userInitials}
+        style={[styles.initials, styles[variant], styles.avatarInitialsBase]}
+        variant={AvatarSizesSuffixes[size]}>
+        {initials}
       </StyledText>
       {isEditable && (
         <View style={[styles.edit]}>

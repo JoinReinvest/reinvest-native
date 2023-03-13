@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
+import {Fonts} from '@src/types/fonts';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 999,
+    borderRadius: 100,
     backgroundColor: palette.deepGreen,
     justifyContent: 'center',
     alignItems: 'center',
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     backgroundColor: palette.darkerGray,
   },
   trust: {
-    backgroundColor: '#DDC59E',
+    backgroundColor: palette.gray,
   },
   beneficiary: {
     backgroundColor: palette.frostGreen,
@@ -48,6 +49,10 @@ export const styles = StyleSheet.create({
     backgroundColor: palette.frostGreen,
     bottom: 0,
     right: 0,
-    borderRadius: 999,
+    borderRadius: 32,
+  },
+  avatarInitialsBase: {
+    fontFamily: Fonts.GTAmericaExtendedRegular,
+    letterSpacing: -0.5,
   },
 });
