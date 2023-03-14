@@ -15,6 +15,7 @@ import {Icon} from '@components/Icon';
 export const Input = ({
   value,
   inputStyle,
+  nativeInputStyle,
   onSubmit,
   error,
   disabled,
@@ -108,6 +109,7 @@ export const Input = ({
           styles.input,
           focused && styles.focused,
           !!error && styles.error,
+          inputStyle,
           disabled && styles.disabled,
         ]}>
         <View />
@@ -130,7 +132,7 @@ export const Input = ({
             style={[
               styles.nativeInput,
               dark && styles.dark,
-              inputStyle,
+              nativeInputStyle,
               disabled && styles.nativeInputDisabled,
             ]}
             onFocus={() => {
