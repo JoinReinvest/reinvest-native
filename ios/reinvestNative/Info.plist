@@ -36,10 +36,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>GTAmerica-ExtendedRegular.otf</string>
 		<string>GTAmerica-Medium.otf</string>
 		<string>GTAmerica-Regular.otf</string>
 	</array>

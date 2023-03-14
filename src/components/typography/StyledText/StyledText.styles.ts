@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     }),
   },
   h1: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: 'GTAmerica-Regular',
     fontSize: 54,
     lineHeight: 54 * 1.1,
     letterSpacing: -0.5,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   h3: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: 'GTAmerica-Regular',
     fontSize: 30,
     lineHeight: 30 * 1.1,
     letterSpacing: -0.5,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   h5: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: 'GTAmerica-Regular',
     fontSize: 20,
     lineHeight: 20 * 1.1,
     letterSpacing: -0.5,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   link: {
-    fontFamily: 'GTAmerica-Extended',
+    fontFamily: 'GTAmerica-',
     fontSize: 11,
   },
   bodyText: {

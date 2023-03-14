@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     // TODO additional check of fonts , postcript name is updated, RN is missing this font
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: 'GTAmerica-Regular',
     lineHeight: 19,
   },
   dark: {
