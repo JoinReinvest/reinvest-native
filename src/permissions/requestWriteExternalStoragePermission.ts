@@ -6,15 +6,15 @@ export interface PermissionsOptions {
   onError: () => void;
 }
 
-export const requestCameraPermission = async (
+export const requestWriteExternalStoragePermission = async (
   options?: Partial<PermissionsOptions>,
 ) => {
   try {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       {
-        title: 'App Camera Permission',
-        message: 'App needs access to your camera ',
+        title: 'App Library Permission',
+        message: 'App needs access to your library',
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',

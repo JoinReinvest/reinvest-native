@@ -2,7 +2,7 @@ import React, {PropsWithChildren} from 'react';
 import {Pressable} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {BaseImagePickerOptions, ImagePickerProps} from './types';
-import {requestCameraPermission} from '@permissions/requestCameraPermissions';
+import {requestWriteExternalStoragePermission} from '@src/permissions/requestWriteExternalStoragePermission';
 import {isIOS} from '@constants/common';
 
 const baseOptions: BaseImagePickerOptions = {
@@ -21,7 +21,8 @@ export const ImagePicker = ({
   const onButtonPress = async () => {
     if (type === 'capture') {
       if (!isIOS) {
-        await requestCameraPermission();
+        // permission to write storage is needed in Android 28 or below
+        await requestWriteExternalStoragePermission();
       }
       launchCamera(
         {
