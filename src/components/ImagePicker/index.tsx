@@ -31,7 +31,8 @@ export const ImagePicker = ({
         },
         onSelect,
       );
-    } else if (type === 'library') {
+    }
+    if (type === 'library') {
       launchImageLibrary(
         {
           ...baseOptions,

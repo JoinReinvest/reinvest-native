@@ -22,7 +22,8 @@ export const requestWriteExternalStoragePermission = async (
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       options?.onGranted?.();
-    } else {
+    }
+    if (granted === PermissionsAndroid.RESULTS.DENIED) {
       options?.onRejected?.();
     }
   } catch (err) {
