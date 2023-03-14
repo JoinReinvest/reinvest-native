@@ -8,7 +8,7 @@ const PADDING_HORIZONTAL = 8;
 export const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
-    height: 48,
+    minHeight: 48,
     marginBottom: 24,
     flexShrink: 1,
   },
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    height: 48,
+    minHeight: 48,
     borderWidth: 1,
     borderColor: palette.darkerGray,
     /*
