@@ -1,3 +1,4 @@
+import {Fonts} from '@src/types/fonts';
 import {Platform, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -8,75 +9,91 @@ const styles = StyleSheet.create({
     }),
   },
   h1: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 54,
     lineHeight: 54 * 1.1,
     letterSpacing: -0.5,
   },
   h2: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 36,
     lineHeight: 36 * 1.1,
     letterSpacing: -0.5,
   },
   h3: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 30,
     lineHeight: 30 * 1.1,
     letterSpacing: -0.5,
   },
   h4: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 24,
     lineHeight: 24 * 1.1,
     letterSpacing: -0.5,
   },
   h5: {
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 20,
     lineHeight: 20 * 1.1,
     letterSpacing: -0.5,
   },
   h6: {
-    fontFamily: 'GTAmerica-Medium',
+    fontFamily: Fonts.GTAmericaMedium,
     fontSize: 16,
   },
   bonusHeading: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 14,
   },
   label: {
-    fontFamily: 'GTAmerica-Medium',
+    fontFamily: Fonts.GTAmericaMedium,
     fontSize: 14,
   },
   paragraph: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 12,
   },
   paragraphLarge: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 12,
   },
   paragraphEmp: {
-    fontFamily: 'GTAmerica-Medium',
+    fontFamily: Fonts.GTAmericaMedium,
     fontSize: 14,
   },
   paragraphSmall: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 11,
   },
   link: {
-    fontFamily: 'GTAmerica-Extended',
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 11,
   },
   bodyText: {
-    fontFamily: 'GTAmerica-Regular',
+    fontFamily: Fonts.GTAmericaRegular,
     fontSize: 15,
   },
   button: {
-    fontFamily: 'GTAmerica-Medium',
+    fontFamily: Fonts.GTAmericaMedium,
     fontSize: 15,
     lineHeight: 18 * 1.1,
+  },
+  avatarBase: {
+    fontFamily: Fonts.GTAmericaExtendedRegular,
+    letterSpacing: -0.5,
+  },
+  avatarInitialsExtraLarge: {
+    fontSize: 42,
+  },
+  avatarInitialsLarge: {
+    fontSize: 32,
+  },
+  avatarInitialsMedium: {
+    fontSize: 18,
+  },
+  avatarInitialsSmall: {
+    fontSize: 12,
   },
 });
 

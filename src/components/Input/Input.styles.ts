@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {palette} from '@constants/theme';
 import {hexToRgbA} from '@utils/hexToRgb';
 import {isIOS} from '@constants/common';
+import {Fonts} from '@src/types/fonts';
 
 const PADDING_HORIZONTAL = 8;
 
@@ -55,7 +56,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     // TODO additional check of fonts , postcript name is updated, RN is missing this font
-    fontFamily: 'GTAmerica-ExtendedRegular',
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     lineHeight: 19,
   },
   dark: {
