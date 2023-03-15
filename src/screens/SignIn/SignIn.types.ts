@@ -11,7 +11,7 @@ export type SignInStackParamsList = {
   Registration: undefined;
   SignIn: undefined;
   BlackForm: undefined;
-  FirstStepLogOut: undefined;
+  FirstStepLayoutScreen: undefined;
 };
 
 export interface LoginFormFields {

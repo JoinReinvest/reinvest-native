@@ -1,5 +1,5 @@
 export enum Fonts {
-  GTAmericaExtendedRegular = 'GTAmerica-ExtendedRegular',
+  GTAmericaExtendedRegular = 'Extended',
   GTAmericaRegular = 'GTAmerica-Regular',
   GTAmericaMedium = 'GTAmerica-Medium',
 }

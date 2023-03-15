@@ -13,10 +13,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4F98A5F0F1A1427D83E6E0C8 /* GTAmerica-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0BF6233991234D6CBA083A97 /* GTAmerica-Regular.otf */; };
-		6890252693D94470A716A2E9 /* GTAmerica-ExtendedRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 986C6AD620D74405A5031684 /* GTAmerica-ExtendedRegular.otf */; };
 		7699B88040F8A987B510C191 /* libPods-reinvestNative-reinvestNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-reinvestNative-reinvestNativeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BD0D61946149452886DE4382 /* GTAmerica-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = FBF53B73CF3345059B48BF7F /* GTAmerica-Medium.otf */; };
+		7A18DAFC5E0643E6A9D8A8B7 /* Extended.otf in Resources */ = {isa = PBXBuildFile; fileRef = 725C7E8C733048628CCAA47A /* Extended.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,9 +47,9 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-reinvestNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-reinvestNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = reinvestNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-reinvestNative-reinvestNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reinvestNative-reinvestNativeTests.release.xcconfig"; path = "Target Support Files/Pods-reinvestNative-reinvestNativeTests/Pods-reinvestNative-reinvestNativeTests.release.xcconfig"; sourceTree = "<group>"; };
-		986C6AD620D74405A5031684 /* GTAmerica-ExtendedRegular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GTAmerica-ExtendedRegular.otf"; path = "../assets/fonts/GTAmerica-ExtendedRegular.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FBF53B73CF3345059B48BF7F /* GTAmerica-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GTAmerica-Medium.otf"; path = "../assets/fonts/GTAmerica-Medium.otf"; sourceTree = "<group>"; };
+		725C7E8C733048628CCAA47A /* Extended.otf */ = {isa = PBXFileReference; name = "Extended.otf"; path = "../assets/fonts/Extended.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,9 +158,9 @@
 		C354EAF647BC440FA0E43A92 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				986C6AD620D74405A5031684 /* GTAmerica-ExtendedRegular.otf */,
 				FBF53B73CF3345059B48BF7F /* GTAmerica-Medium.otf */,
 				0BF6233991234D6CBA083A97 /* GTAmerica-Regular.otf */,
+				725C7E8C733048628CCAA47A /* Extended.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -261,9 +261,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				6890252693D94470A716A2E9 /* GTAmerica-ExtendedRegular.otf in Resources */,
 				BD0D61946149452886DE4382 /* GTAmerica-Medium.otf in Resources */,
 				4F98A5F0F1A1427D83E6E0C8 /* GTAmerica-Regular.otf in Resources */,
+				7A18DAFC5E0643E6A9D8A8B7 /* Extended.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

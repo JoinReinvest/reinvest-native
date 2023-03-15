@@ -20,6 +20,7 @@ export const palette = {
   darkerGray: '#D4D6DA',
   lightGray: '#E9E9E9',
   lightesGray: '#FCFCFC',
+  transparent: 'transparent',
 };
 
 export const gradients = {

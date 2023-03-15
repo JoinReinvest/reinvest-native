@@ -49,4 +49,7 @@ This template follows a very simple project structure:
 - Don't use unnecessary indexes
 - utils should be kept in self containing modules
 - use index for main folder component instead of component name file convention
+  - index.tsx for main component
+  - types.ts for types
+  - styles.ts for styling 
 - ...more to come

@@ -4,15 +4,30 @@ import {
   RegisterFormFlowProvider,
 } from '@screens/SignUp/flow-steps';
 import Screens from '@navigation/screens';
-import {palette} from '@constants/theme';
-import {Icon} from '@components/Icon';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import {SignUpStackParamsList} from './SignUp.types';
 import {BlackLayout} from './BlackLayout';
 import {FirstStepLayout} from '@components/Layouts/FirstStepLayout';
 import {StepOutsideFlow} from '@screens/SignUp/flow-steps/stepEmail';
+import {DarkScreenHeader} from '@components/CustomHeader';
 
 const SignUpStack = createNativeStackNavigator<SignUpStackParamsList>();
+
+const stackOptions: Record<
+  Extract<Screens, Screens.BlackForm | Screens.FirstStepLayoutScreen>,
+  NativeStackNavigationOptions
+> = {
+  [Screens.BlackForm]: {
+    title: 'logo',
+    header: DarkScreenHeader,
+  },
+  [Screens.FirstStepLayoutScreen]: {
+    headerShown: false,
+  },
+};
 
 export const SignUp = () => {
   return (
@@ -20,11 +35,11 @@ export const SignUp = () => {
       <SignUpStack.Navigator>
         <SignUpStack.Screen
           options={{headerShown: false}}
-          name={Screens.FirstStepLogOut}>
+          name={Screens.FirstStepLayoutScreen}>
           {() => (
             <FirstStepLayout
-              headline={'Sign up'}
-              description={'Enter your email below to get started.'}>
+              headline="Sign up"
+              description="Enter your email below to get started.">
               <StepOutsideFlow initialSteps={formFieldsInitialState} />
             </FirstStepLayout>
           )}
@@ -32,20 +47,7 @@ export const SignUp = () => {
         <SignUpStack.Screen
           name={Screens.BlackForm}
           component={BlackLayout}
-          options={props => ({
-            title: 'Sign Up',
-            headerStyle: {
-              backgroundColor: palette.onboarding,
-            },
-            headerTintColor: palette.darkerGray,
-            headerLeft: () => (
-              <Icon
-                color={palette.pureWhite}
-                icon={'arrowLeft'}
-                onPress={props.navigation.goBack}
-              />
-            ),
-          })}
+          options={stackOptions[Screens.BlackForm]}
         />
       </SignUpStack.Navigator>
     </RegisterFormFlowProvider>

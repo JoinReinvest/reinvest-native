@@ -2,8 +2,8 @@ import {Alert, View} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import React from 'react';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {styles} from '@components/TermsFooter/styles';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const TermsFooter = () => {
   const {bottom} = useSafeAreaInsets();

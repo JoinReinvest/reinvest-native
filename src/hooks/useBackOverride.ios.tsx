@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import {Icon} from '@components/Icon';
-import {palette} from '@constants/theme';
 import {useLogOutNavigation} from '@navigation/hooks';
 import {ContextState} from 'reinvest-app-common/src/form-flow/interfaces';
+import {palette} from '@constants/theme';
+import {Icon} from '@components/Icon';
 
 export const useStepBackOverride = <T,>(
   useCurrentFormContext: () => ContextState<T>,

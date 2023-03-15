@@ -1,9 +1,8 @@
 enum Screens {
-  Welcome = 'Welcome',
   Home = 'Home',
   SignUp = 'SignUp',
   SignIn = 'SignIn',
-  FirstStepLogOut = 'FirstStepLogOut',
+  FirstStepLayoutScreen = 'FirstStepLayoutScreen',
   BlackForm = 'BlackForm',
 }
 
