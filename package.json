@@ -10,7 +10,8 @@
     "test": "jest",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock && yarn"
+    "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock && yarn",
+    "nuke": "bash scripts/react-native-nuke.sh"
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.1.10",

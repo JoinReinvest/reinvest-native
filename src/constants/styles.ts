@@ -1,1 +1,3 @@
-export const MAIN_WRAPPER_PADDING_HORIZONTAL = 24;
+import {yScale} from '@utils/scale';
+
+export const MAIN_WRAPPER_PADDING_HORIZONTAL = yScale(24);
