@@ -37,7 +37,7 @@ import {Upload} from './Upload';
 import {File} from './File';
 import {Notification} from './Notification';
 import {LoadingSpinner} from './LoadingSpinner';
-
+import {CheckboxUnchecked} from './CheckboxUnchecked';
 export {
   HamburgerOpen,
   HamburgerClose,
@@ -78,4 +78,5 @@ export {
   Logo,
   LogoWithSygnet,
   LoadingSpinner,
+  CheckboxUnchecked,
 };

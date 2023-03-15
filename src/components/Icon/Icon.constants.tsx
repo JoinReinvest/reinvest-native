@@ -35,6 +35,7 @@ import {
   File,
   Notification,
   LoadingSpinner,
+  CheckboxUnchecked,
 } from './icons';
 
 export const icons = {
@@ -74,6 +75,7 @@ export const icons = {
   circleAlert: CircleAlert,
   notificationBell: NotificationBell,
   notification: Notification,
+  checkboxUnchecked: CheckboxUnchecked,
 };
 
 export const sizes = {
