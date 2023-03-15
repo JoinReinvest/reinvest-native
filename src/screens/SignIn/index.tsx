@@ -1,41 +1,60 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React from 'react';
 
-import {WelcomeScreenProps} from './SignIn.types';
-import {MainWrapper} from '@components/MainWrapper';
-import {StyledText} from '@components/typography/StyledText/StyledText';
-import {TextInput, TouchableOpacity} from 'react-native';
-import {Input} from '@components/Input';
-import {useAuth} from '@src/providers/AuthProvider';
+import type {SignInScreenProps, SignInStackParamsList} from './SignIn.types';
 
-export const SignIn = ({}: WelcomeScreenProps) => {
-  const [email, setEmail] = useState('');
-  const emailRef = useRef<TextInput>(null);
-  const [password, setPassword] = useState('');
-  const passRef = useRef<TextInput>(null);
+import {initialSteps, LoginFormFlowProvider} from '@screens/SignIn/flow-steps';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Screens from '@navigation/screens';
+import {palette} from '@constants/theme';
+import {FirstStepLayout} from '@components/Layouts/FirstStepLayout';
+import {Icon} from '@components/Icon';
+import {BlackLayout} from './BlackLayout';
+import {StepOutsideFlow} from '@screens/SignIn/flow-steps/stepLogin';
+import type {RouteProp} from '@react-navigation/native';
 
-  const {actions, loading} = useAuth();
+const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 
-  const signIn = useCallback(async () => {
-    await actions.signIn(email, password);
-  }, [actions, email, password]);
+const blackScreenFormOptions = (props: {
+  route: RouteProp<SignInStackParamsList, Screens.BlackForm>;
+  navigation: any;
+}) => ({
+  title: 'Sign In',
+  headerStyle: {
+    backgroundColor: palette.onboarding,
+  },
+  headerTintColor: palette.darkerGray,
+  headerLeft: () => (
+    <Icon
+      color={palette.pureWhite}
+      icon={'arrowLeft'}
+      onPress={props.navigation.goBack}
+    />
+  ),
+});
 
+export const SignIn = ({}: SignInScreenProps) => {
   return (
-    <MainWrapper isLoading={loading}>
-      <Input
-        inputRef={emailRef}
-        value={email}
-        onChangeText={setEmail}
-        placeholder={'Email'}
-      />
-      <Input
-        inputRef={passRef}
-        value={password}
-        onChangeText={setPassword}
-        placeholder={'Password'}
-      />
-      <TouchableOpacity onPress={signIn}>
-        <StyledText variant={'h3'}>SignIn</StyledText>
-      </TouchableOpacity>
-    </MainWrapper>
+    <LoginFormFlowProvider initialStoreFields={initialSteps}>
+      <SignInStack.Navigator>
+        <SignInStack.Screen
+          options={{headerShown: false}}
+          name={Screens.FirstStepLogOut}>
+          {() => (
+            <FirstStepLayout
+              headline={'Sign in'}
+              description={
+                'Building your wealth while rebuilding our communities.'
+              }>
+              <StepOutsideFlow initialSteps={initialSteps} />
+            </FirstStepLayout>
+          )}
+        </SignInStack.Screen>
+        <SignInStack.Screen
+          name={Screens.BlackForm}
+          component={BlackLayout}
+          options={blackScreenFormOptions}
+        />
+      </SignInStack.Navigator>
+    </LoginFormFlowProvider>
   );
 };

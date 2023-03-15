@@ -2,9 +2,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RouteProp} from '@react-navigation/native';
 
 export type LogOutStackParamList = {
-  Welcome: undefined;
-  Registration: undefined;
+  SignUp: undefined;
   SignIn: undefined;
+  BlackForm: undefined;
 };
 
 export type LogOutNavProps<T extends keyof LogOutStackParamList> =

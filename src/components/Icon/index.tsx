@@ -1,8 +1,8 @@
 import {useMemo} from 'react';
 import React, {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {palette} from '@constants/theme';
-import {icons, sizes} from './Icon.constants';
-import {IconProps} from './Icon.types';
+import {icons, sizes} from './constants';
+import {IconProps} from './types';
 import {defaultHitSlop} from '@constants/common';
 
 export const Icon = ({
@@ -27,12 +27,7 @@ export const Icon = ({
         style={styles}
         onPress={onPress}
         hitSlop={defaultHitSlop}>
-        <IconComp
-          {...props}
-          width={sizes[size]}
-          height={sizes[size]}
-          color={color}
-        />
+        <IconComp width={sizes[size]} height={sizes[size]} color={color} />
       </TouchableOpacity>
     );
   }
