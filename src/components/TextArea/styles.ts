@@ -1,13 +1,16 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
+  wrapper: {
+    height: 120,
+  },
   inputWrapper: {
-    minHeight: 120,
+    height: '100%',
     textAlignVertical: 'top',
     paddingHorizontal: 0,
   },
   inputStyle: {
-    paddingTop: 12,
+    height: '100%',
   },
   inputStyleOnIOS: {
     paddingTop: 16,

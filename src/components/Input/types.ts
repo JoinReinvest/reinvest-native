@@ -10,9 +10,10 @@ export interface InputProps extends TextInputProps {
   value: string;
   onSubmit?: () => void;
   error?: string;
-  inputRef: RefObject<TextInput> | null;
+  inputRef?: RefObject<TextInput> | null;
   nativeInputStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<ViewStyle>;
+  wrapperStyle?: StyleProp<ViewStyle>;
   disabled?: boolean;
   dark?: boolean;
   leftSection?: ReactNode;
