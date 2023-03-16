@@ -1,6 +1,5 @@
-import React, {RefObject} from 'react';
+import React from 'react';
 import {Controller as ControllerBase} from 'react-hook-form';
-import {TextInput} from 'react-native';
 import {Input} from '@components/Input';
 import {ControllerProps} from './types';
 
@@ -28,7 +27,7 @@ export const Controller = ({
             onBlur={onBlur}
             onSubmit={onSubmit}
             value={value}
-            inputRef={ref as unknown as RefObject<TextInput>}
+            ref={ref}
             onChangeText={onChange}
             secureTextEntry={/password/gim.test(fieldName)}
             {...inputProps}
