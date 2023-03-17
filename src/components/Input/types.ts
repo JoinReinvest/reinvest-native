@@ -1,12 +1,8 @@
-import type {
-  StyleProp,
-  TextInput,
-  TextInputProps,
-  ViewStyle,
-} from 'react-native';
+import type {StyleProp, TextInput, ViewStyle} from 'react-native';
 import {type ReactNode, type RefObject} from 'react';
+import {MaskInputProps} from 'react-native-mask-input';
 
-export interface InputProps extends TextInputProps {
+export interface InputProps extends MaskInputProps {
   value: string;
   onSubmit?: () => void;
   error?: string;
@@ -18,4 +14,5 @@ export interface InputProps extends TextInputProps {
   leftSection?: ReactNode;
   rightSection?: ReactNode;
   onBlur?: () => void;
+  maskedPlaceholder?: string;
 }

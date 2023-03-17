@@ -1,11 +1,12 @@
 import React, {useMemo, useState} from 'react';
-import {LayoutChangeEvent, Pressable, TextInput, View} from 'react-native';
+import {LayoutChangeEvent, Pressable, View} from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import MaskInput from 'react-native-mask-input';
 import type {InputProps} from './types';
 import {styles} from './styles';
 import {StyledText} from '@components/typography/StyledText';
@@ -23,17 +24,18 @@ export const Input = ({
   numberOfLines = 1,
   leftSection,
   placeholder,
+  maskedPlaceholder,
   dark,
   rightSection,
   secureTextEntry,
   onBlur,
+  mask,
   ...props
 }: InputProps) => {
   const [placeholderWidth, setPlaceholderWidth] = useState(0);
   const [focused, setFocused] = useState(false);
   const [showSecuredInput, setShowSecuredInput] = useState(secureTextEntry);
   const sharedValue = useSharedValue(value ? 1 : 0);
-
   const setFocusedAnimatedStyle = (isFocused: boolean) => {
     'worklet';
 
@@ -132,13 +134,14 @@ export const Input = ({
                 {placeholder}
               </StyledText>
             </Animated.View>
-            <TextInput
+            <MaskInput
               clearTextOnFocus={false}
               secureTextEntry={showSecuredInput}
               selectionColor={dark ? palette.pureWhite : palette.pureBlack}
               editable={!disabled}
               allowFontScaling={false}
               numberOfLines={numberOfLines}
+              mask={mask}
               style={[
                 styles.nativeInput,
                 dark && styles.darkInput,
@@ -150,6 +153,7 @@ export const Input = ({
               }}
               onBlur={onBlurHandler}
               {...props}
+              placeholder={focused ? maskedPlaceholder : undefined}
               ref={inputRef}
               value={value}
               onSubmitEditing={onSubmit}
