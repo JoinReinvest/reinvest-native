@@ -21,8 +21,8 @@
       "@utils/*": ["src/utils/*"],
       "@typings/*": ["src/types/*"],
       "@icons/*": ["src/assets/icons/*"],
-      "@permissions/*": ["src/permissions/*"]
-      "@providers/*": ["src/providers/*"],
+      "@permissions/*": ["src/permissions/*"],
+      "@providers/*": ["src/providers/*"]
     },
     "types": ["jest", "node"]
   },

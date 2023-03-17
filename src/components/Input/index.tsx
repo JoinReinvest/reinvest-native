@@ -14,6 +14,7 @@ import {Icon} from '@components/Icon';
 
 export const Input = ({
   value,
+  wrapperStyle,
   inputStyle,
   nativeInputStyle,
   onSubmit,
@@ -110,7 +111,9 @@ export const Input = ({
 
   return (
     <>
-      <Pressable onPress={onPressFocusHandler} style={[styles.wrapper]}>
+      <Pressable
+        onPress={onPressFocusHandler}
+        style={[styles.wrapper, wrapperStyle]}>
         <View
           style={[
             styles.input,

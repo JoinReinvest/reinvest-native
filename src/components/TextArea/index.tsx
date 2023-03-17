@@ -22,6 +22,7 @@ export const TextArea = ({
         isIOS && styles.inputStyleOnIOS,
         inputStyle,
       ]}
+      wrapperStyle={[styles.wrapper]}
       {...rest}
     />
   );
