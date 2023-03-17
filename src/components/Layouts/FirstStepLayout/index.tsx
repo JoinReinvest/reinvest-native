@@ -17,7 +17,7 @@ export const FirstStepLayout = ({
   children,
 }: PropsWithChildren<FirstStepLayoutProps>) => {
   return (
-    <MainWrapper shouldSafeArea={false} style={{justifyContent: 'flex-start'}}>
+    <MainWrapper style={{justifyContent: 'flex-start'}}>
       <StatusBar barStyle={'light-content'} />
       <Video />
       <View style={styles.signet}>

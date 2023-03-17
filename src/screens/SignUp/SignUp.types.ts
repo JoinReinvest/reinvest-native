@@ -1,6 +1,6 @@
 export type SignUpStackParamsList = {
   BlackForm: undefined;
-  FirstStepLogOut: undefined;
+  FirstStepLayoutScreen: undefined;
 };
 
 export interface RegisterFormFields {

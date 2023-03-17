@@ -10,12 +10,12 @@ import zod, {Schema} from 'zod';
 import {Identifiers} from '../identifiers';
 import {formValidationRules} from '@utils/formValidationRules';
 import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
-import {Button} from '@components/Button';
-import {Controller} from '@components/typography/Controller';
 import {ScrollView, View} from 'react-native';
-import {FormTitle} from '@components/Forms/FormTitle';
 import {styles} from './styles';
+import {Button} from '@components/Button';
+import {FormTitle} from '@components/Forms/FormTitle';
 import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
+import {Controller} from '@components/typography/Controller';
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
 

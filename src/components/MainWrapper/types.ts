@@ -8,6 +8,5 @@ export interface MainWrapperProps {
   noScrollableContent?: (style: ViewStyle) => ReactNode;
   contentContainerStyle?: StyleProp<ViewStyle>;
   dark?: boolean;
-  shouldSafeArea?: boolean;
   style?: StyleProp<ViewStyle>;
 }

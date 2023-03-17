@@ -1,26 +1,24 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  type NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import React from 'react';
 
 import Screens from '../screens';
 import {LogOutStackParamList} from '@navigation/LogOutNavigator/LogOutNavigator.types';
 import {SignUp} from '@screens/SignUp';
 import {SignIn} from '@screens/SignIn';
-import {palette} from '@constants/theme';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();
 
-const stackOptionsCommon = {
-  headerStyle: {
-    backgroundColor: palette.onboarding,
-  },
-  headerTintColor: palette.darkerGray,
-  headerTitleStyle: {
-    fontWeight: '700',
-  },
+const stackOptionsCommon: NativeStackNavigationOptions = {
   headerShown: false,
-} as const;
+};
 
-const stackOptions = {
+const stackOptions: Record<
+  Extract<Screens, Screens.SignUp | Screens.SignIn>,
+  NativeStackNavigationOptions
+> = {
   [Screens.SignUp]: {
     title: 'Sign Up',
     ...stackOptionsCommon,
@@ -29,9 +27,9 @@ const stackOptions = {
     title: 'Sign In',
     ...stackOptionsCommon,
   },
-} as const;
+};
 
-export const LogOutNavigator: React.FC = () => {
+export const LogOutNavigator = () => {
   return (
     <LogOutStack.Navigator>
       <LogOutStack.Screen

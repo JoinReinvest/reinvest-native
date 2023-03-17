@@ -38,7 +38,7 @@ export const SignIn = ({}: SignInScreenProps) => {
       <SignInStack.Navigator>
         <SignInStack.Screen
           options={{headerShown: false}}
-          name={Screens.FirstStepLogOut}>
+          name={Screens.FirstStepLayoutScreen}>
           {() => (
             <FirstStepLayout
               headline={'Sign in'}
