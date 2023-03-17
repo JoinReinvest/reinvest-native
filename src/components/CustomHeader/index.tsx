@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, useMemo} from 'react';
+import React, {PropsWithChildren, useCallback, useMemo} from 'react';
 import {View, ViewProps} from 'react-native';
 import styles from './styles';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
@@ -39,13 +39,17 @@ export const ScreenHeader = ({
     () => ({canGoBack: navigation.canGoBack(), tintColor: ''}),
     [navigation],
   );
+  const renderHeader = useCallback(() => {
+    if (headerLeft) {
+      return headerLeft?.(headerProps);
+    }
+    return <DefaultLeftHeaderColumn />;
+  }, [headerLeft, headerProps]);
 
   return (
     <CustomHeader dark={dark}>
       <View style={[styles.innerWrapper]}>
-        <View style={styles.sideSegment}>
-          {headerLeft ? headerLeft?.(headerProps) : <DefaultLeftHeaderColumn />}
-        </View>
+        <View style={styles.sideSegment}>{renderHeader()}</View>
         {title === 'logo' ? (
           <View style={styles.logo}>
             <Logo color={dark ? palette.pureWhite : undefined} />
