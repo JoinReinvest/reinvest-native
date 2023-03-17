@@ -21,6 +21,7 @@ import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {Button} from '@components/Button';
+import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
@@ -49,7 +50,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
     };
 
     return (
-      <View style={styles.wrapper}>
+      <KeyboardAwareWrapper style={styles.wrapper}>
         <FormTitle
           dark
           headline="Check Your Phone"
@@ -78,7 +79,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         <Button disabled={loading} onPress={handleSubmit(onSubmit)}>
           Continue
         </Button>
-      </View>
+      </KeyboardAwareWrapper>
     );
   },
 };

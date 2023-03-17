@@ -15,7 +15,7 @@ export const FLOW_STEPS = [
 ];
 
 export const formFieldsInitialState = {
-  email: '',
+  email: 'asdga@wp.pl',
   referralCode: '',
   password: '',
   authenticationCode: '',

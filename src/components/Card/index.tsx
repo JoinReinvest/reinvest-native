@@ -1,9 +1,9 @@
 import React, {PropsWithChildren} from 'react';
 import {Pressable} from 'react-native';
-import {theme} from '@src/assets/theme';
-import StyledText from '../typography/StyledText/StyledText';
-import {styles} from './Card.styles';
-import {CardProps} from './Card.types';
+import {palette} from '@src/constants/theme';
+import {StyledText} from '../typography/StyledText';
+import {styles} from './styles';
+import {CardProps} from './types';
 
 export const Card = ({
   id,
@@ -20,13 +20,13 @@ export const Card = ({
       style={[styles.cardWrapper, selected && styles.selected]}
       onPress={handleCardPress}>
       <StyledText
-        color={theme.pureWhite}
+        color={palette.pureWhite}
         variant="bodyText"
         style={[styles.cardTitle, selected && styles.selected]}>
         {title}
       </StyledText>
       <StyledText
-        color={theme.darkerGray}
+        color={palette.darkerGray}
         variant="paragraph"
         style={[styles.cardContent, selected && styles.selected]}>
         {children}

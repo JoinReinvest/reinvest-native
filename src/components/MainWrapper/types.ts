@@ -9,4 +9,5 @@ export interface MainWrapperProps {
   contentContainerStyle?: StyleProp<ViewStyle>;
   dark?: boolean;
   style?: StyleProp<ViewStyle>;
+  isKeyboardAware?: boolean;
 }

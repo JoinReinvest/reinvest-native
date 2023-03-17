@@ -13,9 +13,10 @@ import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
 import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
 import {Controller} from '@components/typography/Controller';
+import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
+import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
+import {FormTitle} from '@components/Forms/FormTitle';
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
 
@@ -52,7 +53,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <View style={styles.wrapper}>
+      <KeyboardAwareWrapper style={[styles.wrapper]}>
         <ScrollView>
           <FormTitle
             dark
@@ -72,7 +73,9 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               maxLength: 6,
             }}
           />
-          <ReferralCodeCheckList referralCode={fields.password || ''} />
+          <View style={{paddingBottom: 36}}>
+            <ReferralCodeCheckList referralCode={fields.password || ''} />
+          </View>
         </ScrollView>
         <View key={'buttons_section'} style={styles.buttonsSection}>
           <Button variant={'outlined'} onPress={onSkip}>
@@ -85,7 +88,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Enter code
           </Button>
         </View>
-      </View>
+      </KeyboardAwareWrapper>
     );
   },
 };

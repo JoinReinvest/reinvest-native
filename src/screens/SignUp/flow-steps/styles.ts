@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  flex: {flex: 1},
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',

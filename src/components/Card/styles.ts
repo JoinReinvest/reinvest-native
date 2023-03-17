@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {theme} from '@src/assets/theme';
+import {palette} from '@src/constants/theme';
 
 export const styles = StyleSheet.create({
   cardWrapper: {
@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 24,
     borderWidth: 1,
-    borderColor: theme.darkerGray,
+    borderColor: palette.darkerGray,
   },
   cardTitle: {
     marginBottom: 4,
@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
     maxWidth: 209,
   },
   selected: {
-    borderColor: theme.frostGreen,
-    backgroundColor: theme.frostGreen,
-    color: theme.pureBlack,
+    borderColor: palette.frostGreen,
+    backgroundColor: palette.frostGreen,
+    color: palette.pureBlack,
   },
 });
