@@ -14,7 +14,7 @@ export const BlackLayout = ({shouldShowFooter = true}: Props) => {
   useStepBackOverride<LoginFormFields>(useLoginFormFlow);
 
   return (
-    <MainWrapper shouldSafeArea dark>
+    <MainWrapper dark>
       <StatusBar barStyle={'light-content'} />
       <CurrentStepView />
       {shouldShowFooter && <TermsFooter />}

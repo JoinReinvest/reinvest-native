@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {WelcomeScreenProps} from './HomeScreen.types';
+import {WelcomeScreenProps} from './types';
 import {MainWrapper} from '@components/MainWrapper';
 import {StyledText} from '@components/typography/StyledText';
 import {Button} from 'react-native';

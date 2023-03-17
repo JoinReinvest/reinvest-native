@@ -17,15 +17,12 @@ import {DarkScreenHeader} from '@components/CustomHeader';
 const SignUpStack = createNativeStackNavigator<SignUpStackParamsList>();
 
 const stackOptions: Record<
-  Extract<Screens, Screens.BlackForm | Screens.FirstStepLayoutScreen>,
+  Extract<Screens, Screens.BlackForm>,
   NativeStackNavigationOptions
 > = {
   [Screens.BlackForm]: {
     title: 'logo',
     header: DarkScreenHeader,
-  },
-  [Screens.FirstStepLayoutScreen]: {
-    headerShown: false,
   },
 };
 

@@ -18,6 +18,7 @@ import {styles} from '@screens/SignUp/flow-steps/styles';
 import {Controller} from '@components/typography/Controller';
 import {PasswordChecklist} from '@components/CheckList/PasswordCheckList';
 import {FormMessage} from '@components/Forms/FormMessage';
+import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;
@@ -35,10 +36,15 @@ export const StepPassword: StepParams<RegisterFormFields> = {
   }: StepComponentProps<RegisterFormFields>) => {
     const {loading, actions} = useAuth();
     const [error, setError] = useState<string | undefined>(undefined);
-    const schema: Schema<Fields> = zod.object({
-      password: formValidationRules.password,
-      passwordConfirmation: formValidationRules.confirm_password,
-    });
+    const schema: Schema<Fields> = zod
+      .object({
+        password: formValidationRules.password,
+        passwordConfirmation: formValidationRules.confirm_password,
+      })
+      .refine(data => data.password === data.passwordConfirmation, {
+        message: 'Passwords must match',
+        path: ['passwordConfirmation'],
+      });
 
     const {handleSubmit, control, watch} = useForm<Fields>({
       defaultValues: storeFields,
@@ -70,7 +76,6 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         if (err instanceof Error) {
           if (err.name === 'UsernameExistsException') {
             await Auth.resendSignUp(storeFields.email);
-
             return moveToNextStep();
           }
           if (err.message.includes('WRONG_REFERRAL_CODE')) {
@@ -82,7 +87,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <View style={styles.wrapper}>
+      <KeyboardAwareWrapper style={styles.wrapper}>
         <ScrollView>
           <FormTitle
             dark
@@ -98,7 +103,6 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             control={control}
             onSubmit={handleSubmit(onSubmit)}
           />
-
           <Controller
             inputProps={{dark: true, placeholder: 'Confirm Password'}}
             fieldName="passwordConfirmation"
@@ -118,7 +122,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             Sign up
           </Button>
         </View>
-      </View>
+      </KeyboardAwareWrapper>
     );
   },
 };

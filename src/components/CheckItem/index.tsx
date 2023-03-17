@@ -14,7 +14,11 @@ export const CheckItem = ({
 }) => {
   return (
     <View style={styles.itemWrapper}>
-      <StyledText color={palette.pureWhite}>{label}</StyledText>
+      <StyledText
+        variant={'paragraphLarge'}
+        color={isChecked ? palette.dark3 : palette.pureWhite}>
+        {label}
+      </StyledText>
       <Icon
         icon={'tick'}
         color={isChecked ? palette.success : palette.pureWhite}

@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   headline: {marginBottom: 8},
   description: {},
   wrapper: {
-    marginTop: 24,
+    marginTop: hp(1),
     marginBottom: hp(8),
   },
 });

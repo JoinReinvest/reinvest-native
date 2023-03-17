@@ -1,8 +1,8 @@
 import React from 'react';
 import {Pressable, View} from 'react-native';
 import {Icon} from '../Icon';
-import {StyledText} from '../typography/StyledText/StyledText';
-import {TextVariants} from '../typography/StyledText/StyledText.types';
+import {StyledText} from '../typography/StyledText';
+import {TextVariants} from '../typography/StyledText/types';
 import {styles} from './styles';
 import {AvatarProps, AvatarSize} from './types';
 

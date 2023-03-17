@@ -2,7 +2,7 @@ import React, {PropsWithChildren} from 'react';
 import {Pressable} from 'react-native';
 import {Icon} from '../Icon';
 import {palette} from '@src/constants/theme';
-import {StyledText} from '../typography/StyledText/StyledText';
+import {StyledText} from '../typography/StyledText';
 import {RadioButtonProps} from './types';
 import {styles} from './styles';
 

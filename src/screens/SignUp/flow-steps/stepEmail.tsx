@@ -24,10 +24,8 @@ interface Props {
 }
 
 export const StepOutsideFlow = ({initialSteps}: Props) => {
-  // @ts-ignore
-  // TODO Provide proper handler from common after updating exposed hooks
   const {updateStoreFields} = useRegisterFormFlow();
-  // TODO after getting common , we need to take this to external hook with proper type inferring
+
   useFocusEffect(
     useCallback(() => {
       updateStoreFields(initialSteps);

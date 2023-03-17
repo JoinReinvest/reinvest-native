@@ -30,6 +30,7 @@ export const Controller = ({
             ref={ref}
             onChangeText={onChange}
             secureTextEntry={/password/gim.test(fieldName)}
+            autoCapitalize={/email/gim.test(fieldName) ? 'none' : undefined}
             {...inputProps}
             error={error?.message}
           />
