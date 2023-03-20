@@ -6,7 +6,6 @@ import {Icon} from '@components/Icon';
 
 const DefaultLeftHeaderColumn = () => {
   const {canGoBack, goBack} = useNavigation();
-
   return (
     <View style={styles.wrapper}>
       {canGoBack() && (

@@ -3,6 +3,7 @@ import {RouteProp} from '@react-navigation/native';
 
 export type LogInStackParamList = {
   Home: undefined;
+  Dashboard: undefined;
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> =
