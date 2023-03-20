@@ -1,19 +1,29 @@
 import {StyleSheet} from 'react-native';
-import {hp, wp} from '@utils/sizeUtils';
 import {palette} from '@constants/theme';
+import {xScale, yScale} from '@src/utils/scale';
+import {Fonts} from '@src/types/fonts';
 
 export const styles = StyleSheet.create({
   signet: {
-    width: wp(20),
-    height: wp(20),
-    marginVertical: hp(10),
+    width: yScale(72),
+    height: yScale(72),
+    marginTop: yScale(80),
   },
   text: {
     color: palette.pureWhite,
-    marginBottom: 16,
+    marginBottom: yScale(16),
+  },
+  description: {
+    fontSize: 15,
+    fontFamily: Fonts.GTAmericaExtendedRegular,
+    width: xScale(252),
+    lineHeight: 18 * 1.1,
+    marginBottom: yScale(24),
   },
   descriptionSegment: {
     width: '100%',
-    paddingBottom: 8,
+    paddingBottom: yScale(8),
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 });

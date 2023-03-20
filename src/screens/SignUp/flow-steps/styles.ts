@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@constants/theme';
+import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    flex: 1,
+    justifyContent: 'center',
   },
   flex: {flex: 1},
   row: {
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
   },
   firstStepLink: {
     textDecorationColor: palette.pureWhite,
-    marginBottom: 12,
+    marginBottom: yScale(12),
   },
-  buttonsSection: {alignSelf: 'flex-end', width: '100%'},
+  buttonsSection: {width: '100%'},
 });
