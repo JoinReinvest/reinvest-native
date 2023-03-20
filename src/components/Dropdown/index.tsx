@@ -1,7 +1,16 @@
 import React, {useRef, useState} from 'react';
-import {TextInput, Pressable, View, Keyboard} from 'react-native';
+import {
+  FlatList,
+  Keyboard,
+  LayoutRectangle,
+  Modal,
+  Pressable,
+  TextInput,
+  View,
+} from 'react-native';
 import Animated, {
   Easing,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -11,20 +20,30 @@ import {styles} from './styles';
 import {Icon} from '@components/Icon';
 import {Input} from '@components/Input';
 import {StyledText} from '@components/typography/StyledText';
+import {palette} from '@constants/theme';
 
-export const Dropdown = ({data, onSelect, ...rest}: DropdownProps) => {
+const LIST_HEIGHT = 191;
+const CHEVRON_ROTATION = 180;
+
+export const Dropdown = ({data, onSelect, style, ...rest}: DropdownProps) => {
   const inputRef = useRef<TextInput>(null);
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [selectedOptionValue, setSelectedOptionValue] = useState<string>('');
 
-  const arrowRotation = useSharedValue(0);
-  const listHeight = useSharedValue(0);
+  const statusSharedValue = useSharedValue(0);
+  const wrapperRef = useRef<View>(null);
+  const [position, setPosition] = useState<LayoutRectangle | undefined>();
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
+    const rotation = interpolate(
+      statusSharedValue.value,
+      [0, 1],
+      [0, CHEVRON_ROTATION],
+    );
     return {
       transform: [
         {
-          rotate: withTiming(`${arrowRotation.value}deg`, {
+          rotate: withTiming(`${rotation}deg`, {
             duration: 100,
             easing: Easing.linear,
           }),
@@ -34,8 +53,13 @@ export const Dropdown = ({data, onSelect, ...rest}: DropdownProps) => {
   });
 
   const expandListAnimationStyles = useAnimatedStyle(() => {
+    const height = interpolate(
+      statusSharedValue.value,
+      [0, 1],
+      [0, LIST_HEIGHT],
+    );
     return {
-      maxHeight: withTiming(listHeight.value, {
+      height: withTiming(height, {
         duration: 150,
         easing: Easing.linear,
       }),
@@ -43,19 +67,31 @@ export const Dropdown = ({data, onSelect, ...rest}: DropdownProps) => {
   });
 
   const closeList = () => {
-    inputRef.current?.blur();
     setIsListExpanded(false);
-    arrowRotation.value = 0;
-    listHeight.value = 0;
+    statusSharedValue.value = 0;
+    //we need to return con
+    setTimeout(() => {
+      inputRef.current?.blur();
+    }, 50);
+  };
+
+  const openList = () => {
+    Keyboard.dismiss(); // hide keyboard if shown before
+
+    inputRef.current?.focus();
+    // Getting proper position for displaying list
+
+    wrapperRef.current?.measureInWindow((x, y, width, height) =>
+      setPosition({x, y, width, height}),
+    );
+
+    setIsListExpanded(true);
+    statusSharedValue.value = 1;
   };
 
   const toggleList = () => {
     if (!isListExpanded) {
-      Keyboard.dismiss(); // hide keyboard if shown before
-      inputRef.current?.focus();
-      setIsListExpanded(true);
-      arrowRotation.value = 180;
-      listHeight.value = 203;
+      openList();
     }
     if (isListExpanded) {
       closeList();
@@ -64,41 +100,64 @@ export const Dropdown = ({data, onSelect, ...rest}: DropdownProps) => {
 
   const handleSelect = (selectedOption: DropdownOption) => {
     setSelectedOptionValue(selectedOption.label);
-    closeList();
     onSelect(selectedOption);
+    closeList();
   };
 
+  const rightSection = (
+    <Animated.View style={[rotationAnimationStyles]}>
+      <Icon icon={'arrowDown'} color={palette.pureWhite} />
+    </Animated.View>
+  );
+
   return (
-    <View style={[styles.wrapper]}>
-      <Pressable onPress={toggleList}>
-        <View pointerEvents="none">
-          <Input
-            value={selectedOptionValue}
-            onBlur={closeList}
-            ref={inputRef}
-            showSoftInputOnFocus={false}
-            caretHidden
-            rightSection={
-              <Animated.View style={[rotationAnimationStyles]}>
-                <Icon icon={'arrowDown'} />
+    <>
+      <View ref={wrapperRef} style={[styles.wrapper, style]}>
+        <Pressable onPress={toggleList}>
+          <View pointerEvents="none">
+            <Input
+              value={selectedOptionValue}
+              ref={inputRef}
+              showSoftInputOnFocus={false}
+              caretHidden={true}
+              rightSection={rightSection}
+              {...rest}
+            />
+          </View>
+        </Pressable>
+      </View>
+      {isListExpanded && (
+        <Modal transparent>
+          <Pressable onPress={closeList} style={[styles.listWrapper]}>
+            {position && (
+              <Animated.View
+                style={[
+                  {
+                    position: 'absolute',
+                    top: position?.y + position.height - 12,
+                    left: position.x,
+                    width: position.width,
+                  },
+                  expandListAnimationStyles,
+                ]}>
+                <FlatList
+                  style={[styles.list]}
+                  nestedScrollEnabled
+                  disableScrollViewPanResponder
+                  data={data}
+                  renderItem={({item}) => (
+                    <Pressable onPress={() => handleSelect(item)}>
+                      <StyledText variant="paragraph" style={[styles.item]}>
+                        {item.label}
+                      </StyledText>
+                    </Pressable>
+                  )}
+                />
               </Animated.View>
-            }
-            {...rest}
-          />
-        </View>
-      </Pressable>
-      <Animated.FlatList
-        nestedScrollEnabled
-        data={data}
-        style={[styles.list, expandListAnimationStyles]}
-        renderItem={({item}) => (
-          <Pressable onPress={() => handleSelect(item)}>
-            <StyledText variant="paragraph" style={[styles.item]}>
-              {item.label}
-            </StyledText>
+            )}
           </Pressable>
-        )}
-      />
-    </View>
+        </Modal>
+      )}
+    </>
   );
 };
