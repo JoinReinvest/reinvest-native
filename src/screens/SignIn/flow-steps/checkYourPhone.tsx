@@ -22,6 +22,7 @@ import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {Button} from '@components/Button';
 import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
+import {CODE_MASK} from '@src/constants/masks';
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
@@ -42,6 +43,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
 
     const onSubmit: SubmitHandler<LoginFormFields> = async fields => {
       try {
+        fields.authenticationCode = fields.authenticationCode.replace('-', '');
         await actions.confirmSignIn(fields.authenticationCode);
       } catch (err) {
         setError((err as Error).message);
@@ -65,7 +67,8 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
             placeholder: 'Authentication Code',
             dark: true,
             keyboardType: 'numeric',
-            maxLength: 6,
+            maxLength: 7, // xxx-xxx
+            mask: CODE_MASK,
           }}
         />
         <View style={styles.row}>

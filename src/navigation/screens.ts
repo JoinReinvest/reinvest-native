@@ -8,6 +8,7 @@ enum Screens {
   REIT = 'REIT',
   Education = 'Education',
   Notifications = 'Notifications',
+  ResetPassword = 'ResetPassword',
 }
 
 export default Screens;

@@ -33,6 +33,12 @@ interface AuthContextInterface {
       email: string,
       authenticationCode: string,
     ) => Promise<void> | null;
+    forgotPassword: (email: string) => Promise<Error | void> | null;
+    forgotPasswordSubmit: (
+      email: string,
+      code: string,
+      newPassword: string,
+    ) => Promise<Error | void> | null;
   };
   loading: boolean;
   user: CognitoUser | null;
@@ -47,6 +53,8 @@ export const AuthContext = createContext<AuthContextInterface>({
     signOut: () => null,
     signUp: () => null,
     confirmSignUp: () => null,
+    forgotPassword: () => null,
+    forgotPasswordSubmit: () => null,
   },
 });
 
@@ -133,6 +141,34 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     }
   }
 
+  const forgotPassword = async (email: string) => {
+    setLoading(true);
+    try {
+      await Auth.forgotPassword(email);
+    } catch (e) {
+      const err = e as Error;
+      throw new Error(err?.message || 'Unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const forgotPasswordSubmit = async (
+    email: string,
+    code: string,
+    newPassword: string,
+  ) => {
+    setLoading(true);
+    try {
+      await Auth.forgotPasswordSubmit(email, code, newPassword);
+    } catch (e) {
+      const err = e as Error;
+      throw new Error(err?.message || 'Unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getCurrentUser();
   }, []);
@@ -150,6 +186,8 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
         getToken,
         signUp,
         confirmSignUp,
+        forgotPassword,
+        forgotPasswordSubmit,
       },
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
