@@ -20,19 +20,24 @@ import {styles} from './styles';
 import {Icon} from '@components/Icon';
 import {Input} from '@components/Input';
 import {StyledText} from '@components/typography/StyledText';
-import {palette} from '@constants/theme';
+import {palette} from '@src/constants/theme';
 
 const LIST_HEIGHT = 191;
 const CHEVRON_ROTATION = 180;
 
-export const Dropdown = ({data, onSelect, style, ...rest}: DropdownProps) => {
+export const Dropdown = ({
+  data,
+  onSelect,
+  style,
+  dark,
+  ...rest
+}: DropdownProps) => {
   const inputRef = useRef<TextInput>(null);
-  const [isListExpanded, setIsListExpanded] = useState(false);
-  const [selectedOptionValue, setSelectedOptionValue] = useState<string>('');
-
-  const statusSharedValue = useSharedValue(0);
   const wrapperRef = useRef<View>(null);
+  const [isListExpanded, setIsListExpanded] = useState(false);
   const [position, setPosition] = useState<LayoutRectangle | undefined>();
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const statusSharedValue = useSharedValue(0);
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
     const rotation = interpolate(
@@ -77,10 +82,9 @@ export const Dropdown = ({data, onSelect, style, ...rest}: DropdownProps) => {
 
   const openList = () => {
     Keyboard.dismiss(); // hide keyboard if shown before
-
     inputRef.current?.focus();
-    // Getting proper position for displaying list
 
+    // Getting proper position for displaying list
     wrapperRef.current?.measureInWindow((x, y, width, height) =>
       setPosition({x, y, width, height}),
     );
@@ -99,14 +103,14 @@ export const Dropdown = ({data, onSelect, style, ...rest}: DropdownProps) => {
   };
 
   const handleSelect = (selectedOption: DropdownOption) => {
-    setSelectedOptionValue(selectedOption.label);
     onSelect(selectedOption);
+    setSelectedValue(selectedOption.label);
     closeList();
   };
 
   const rightSection = (
     <Animated.View style={[rotationAnimationStyles]}>
-      <Icon icon={'arrowDown'} color={palette.pureWhite} />
+      <Icon icon={'arrowDown'} color={dark ? palette.pureWhite : undefined} />
     </Animated.View>
   );
 
@@ -116,7 +120,8 @@ export const Dropdown = ({data, onSelect, style, ...rest}: DropdownProps) => {
         <Pressable onPress={toggleList}>
           <View pointerEvents="none">
             <Input
-              value={selectedOptionValue}
+              dark={dark}
+              value={selectedValue}
               ref={inputRef}
               showSoftInputOnFocus={false}
               caretHidden={true}

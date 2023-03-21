@@ -329,7 +329,7 @@ PODS:
   - React-jsinspector (0.71.3)
   - React-logger (0.71.3):
     - glog
-  - react-native-image-picker (5.3.1):
+  - react-native-image-picker (5.1.0):
     - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
@@ -430,7 +430,7 @@ PODS:
     - React-perflogger (= 0.71.3)
   - RNAWSCognito (6.1.2):
     - React-Core
-  - RNCAsyncStorage (1.17.12):
+  - RNCAsyncStorage (1.17.11):
     - React-Core
   - RNReanimated (3.0.2):
     - DoubleConversion
@@ -679,7 +679,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 515b703d23ffadeac7687bc2d12fb08b90f0aaa1
   React-jsinspector: 9f7c9137605e72ca0343db4cea88006cb94856dd
   React-logger: 957e5dc96d9dbffc6e0f15e0ee4d2b42829ff207
-  react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
+  react-native-image-picker: c33d4e79f0a14a2b66e5065e14946ae63749660b
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
@@ -697,7 +697,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7bf0dafc7b727d93c8cb94eb00a9d3753c446c3e
   ReactCommon: 6f65ea5b7d84deb9e386f670dd11ce499ded7b40
   RNAWSCognito: 06ca81fa480fd7f9ff539d01bc41f9d531ff0a19
-  RNCAsyncStorage: 09fc8595e6d6f6d5abf16b23a56b257d9c6b7c5b
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
