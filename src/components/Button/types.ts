@@ -8,4 +8,5 @@ export interface ButtonProps extends PressableProps {
   isLoading?: boolean;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
+  isPill?: boolean;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type {SignInScreenProps, SignInStackParamsList} from './SignIn.types';
+import type {SignInScreenProps, SignInStackParamsList} from './types';
 
 import {initialSteps, LoginFormFlowProvider} from '@screens/SignIn/flow-steps';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';

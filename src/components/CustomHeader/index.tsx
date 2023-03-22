@@ -46,8 +46,8 @@ export const ScreenHeader = ({
     if (headerLeft) {
       return headerLeft?.(headerProps);
     }
-    return <DefaultLeftHeaderColumn />;
-  }, [headerLeft, headerProps]);
+    return <DefaultLeftHeaderColumn dark={dark} />;
+  }, [dark, headerLeft, headerProps]);
 
   return (
     <CustomHeader dark={dark}>
@@ -55,7 +55,7 @@ export const ScreenHeader = ({
         <View style={styles.sideSegment}>{renderHeaderLeft()}</View>
         {title === 'logo' ? (
           <View style={styles.logo}>
-            <Logo color={dark ? palette.pureWhite : undefined} />
+            <Logo color={dark ? palette.pureWhite : palette.pureBlack} />
           </View>
         ) : (
           <StyledText

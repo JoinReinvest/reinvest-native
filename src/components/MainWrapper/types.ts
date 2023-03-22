@@ -10,4 +10,5 @@ export interface MainWrapperProps {
   dark?: boolean;
   style?: StyleProp<ViewStyle>;
   isKeyboardAware?: boolean;
+  noPadding?: boolean;
 }

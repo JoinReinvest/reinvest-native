@@ -8,7 +8,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
-import {SignUpStackParamsList} from './SignUp.types';
+import {SignUpStackParamsList} from './types';
 import {BlackLayout} from './BlackLayout';
 import {FirstStepLayout} from '@components/Layouts/FirstStepLayout';
 import {StepOutsideFlow} from '@screens/SignUp/flow-steps/stepEmail';

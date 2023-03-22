@@ -13,6 +13,7 @@ export const Button = ({
   variant = 'primary',
   children,
   disabled,
+  isPill,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
@@ -35,7 +36,7 @@ export const Button = ({
       ]}
       disabled={disabled}
       {...rest}>
-      <View style={styles.labelWrapper}>
+      <View style={[styles.labelWrapper, isPill && styles.pillLabel]}>
         {startIcon}
         <StyledText
           variant={variant === 'combo' ? 'h5' : 'button'}
