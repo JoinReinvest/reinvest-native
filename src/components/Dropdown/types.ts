@@ -6,7 +6,7 @@ export interface DropdownOption {
   label: string;
 }
 
-export interface DropdownProps extends Omit<InputProps, 'inputRef' | 'value'> {
+export interface DropdownProps extends Omit<InputProps, 'inputRef'> {
   data: DropdownOption[];
   style?: StyleProp<ViewStyle>;
   onSelect: (selectedOption: DropdownOption) => void;

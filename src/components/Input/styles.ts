@@ -84,6 +84,10 @@ export const styles = StyleSheet.create({
     color: palette.error,
     marginBottom: 12,
   },
+  centerText: {
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+  },
 
   nativeInputDisabled: {color: palette.darkerGray},
   rightSegmentDisabled: {opacity: 0.7},
