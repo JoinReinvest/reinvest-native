@@ -3,14 +3,15 @@ import {palette} from '@constants/theme';
 import {hexToRgbA} from '@utils/hexToRgb';
 import {isIOS} from '@constants/common';
 import {Fonts} from '@src/types/fonts';
+import {xScale, yScale} from '@src/utils/scale';
 
 const PADDING_HORIZONTAL = 8;
 
 export const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
-    height: 48,
-    marginBottom: 12,
+    height: yScale(48),
+    marginBottom: yScale(12),
     flexShrink: 1,
   },
   disabled: {
@@ -36,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     paddingHorizontal: PADDING_HORIZONTAL,
-    height: 48,
+    height: yScale(48),
     borderWidth: 1,
     borderColor: palette.darkerGray,
     backgroundColor: palette.pureWhite,
@@ -46,7 +47,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: xScale(8),
     width: '100%',
   },
   mainSection: {
@@ -73,7 +74,7 @@ export const styles = StyleSheet.create({
   placeholder: {
     position: 'absolute',
     left: PADDING_HORIZONTAL,
-    top: isIOS ? -16 : -8,
+    top: isIOS ? yScale(-16) : yScale(-8),
   },
   placeholderText: {
     color: palette.dark3,
@@ -82,7 +83,7 @@ export const styles = StyleSheet.create({
   errorMessage: {
     maxWidth: '100%',
     color: palette.error,
-    marginBottom: 12,
+    marginBottom: yScale(12),
   },
 
   nativeInputDisabled: {color: palette.darkerGray},

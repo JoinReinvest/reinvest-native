@@ -1,8 +1,9 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@constants/theme';
-import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
-
-const HEADER_HEIGHT = 56;
+import {
+  HEADER_HEIGHT,
+  MAIN_WRAPPER_PADDING_HORIZONTAL,
+} from '@constants/styles';
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -14,22 +14,27 @@ export const TermsFooter = () => {
       <StyledText
         color={palette.pureWhite}
         variant={'paragraphSmall'}
-        style={{textAlign: 'center'}}>
-        By continuing, you agree to the REINVEST{' '}
+        style={[styles.textCenter]}>
+        By continuing, you agree to the REINVEST
+      </StyledText>
+      <View style={[styles.row]}>
         <StyledText
           color={palette.frostGreen}
           onPress={() => Alert.alert('Terms')}
           variant={'link'}>
           Terms of Conditions
-        </StyledText>{' '}
-        and{' '}
+        </StyledText>
+        <StyledText color={palette.pureWhite} variant={'paragraphSmall'}>
+          {' '}
+          and{' '}
+        </StyledText>
         <StyledText
           color={palette.frostGreen}
           variant={'link'}
           onPress={() => Alert.alert('Policy')}>
           Privacy Policy.
         </StyledText>
-      </StyledText>
+      </View>
     </View>
   );
 };
