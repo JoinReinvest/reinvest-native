@@ -4,7 +4,7 @@ import {palette} from '@constants/theme';
 export const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    flex: 1,
+    justifyContent: 'center',
   },
   flex: {flex: 1},
   row: {

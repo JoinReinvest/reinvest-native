@@ -1,6 +1,6 @@
-export interface CardProps {
-  id: string;
+export interface CardProps<T> {
+  id: T;
   title: string;
   selected?: boolean;
-  onCardPress?: (pressedCardId: string | null) => void;
+  onCardPress: (value: T | undefined) => void;
 }
