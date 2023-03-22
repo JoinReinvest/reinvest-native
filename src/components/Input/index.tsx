@@ -13,6 +13,7 @@ import {useForwardRef} from '@hooks/useForwardRef';
 import {palette} from '@constants/theme';
 import {Icon} from '@components/Icon';
 import {StyledText} from '../typography/StyledText';
+
 export const Input = forwardRef<TextInput, InputProps>(
   (
     {
