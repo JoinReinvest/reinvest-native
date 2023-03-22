@@ -1,5 +1,5 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {LogOutStackParamList} from '@navigation/LogOutNavigator/LogOutNavigator.types';
+import {LogOutStackParamList} from '@navigation/LogOutNavigator/types';
 import Screens from '@navigation/screens';
 
 export interface SignInScreenProps {

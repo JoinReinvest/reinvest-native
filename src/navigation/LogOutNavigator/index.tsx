@@ -1,11 +1,11 @@
 import {
   createNativeStackNavigator,
-  type NativeStackNavigationOptions,
+  NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import React from 'react';
 
 import Screens from '../screens';
-import {LogOutStackParamList} from '@navigation/LogOutNavigator/LogOutNavigator.types';
+import {LogOutStackParamList} from '@navigation/LogOutNavigator/types';
 import {SignUp} from '@screens/SignUp';
 import {SignIn} from '@screens/SignIn';
 

@@ -2,15 +2,19 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
 import Screens from '../screens';
-import {HomeScreen} from '@screens/HomeScreen';
-import {LogInStackParamList} from '@navigation/LogInNavigator/LogInNavigator.types';
+import {LogInStackParamList} from '@navigation/LogInNavigator/types';
+import {BottomTabsNavigator} from '@navigation/BottomTabsNavigator';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
 export const LogInNavigator: React.FC = () => {
   return (
     <LogInStack.Navigator>
-      <LogInStack.Screen name={Screens.Home} component={HomeScreen} />
+      <LogInStack.Screen
+        options={{headerShown: false}}
+        name={Screens.Home}
+        component={BottomTabsNavigator}
+      />
     </LogInStack.Navigator>
   );
 };

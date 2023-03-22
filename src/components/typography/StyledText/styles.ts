@@ -96,6 +96,9 @@ const styles = StyleSheet.create({
   avatarInitialsSmall: {
     fontSize: 12,
   },
+  today: {
+    fontSize: 10,
+  },
 });
 
 export default styles;

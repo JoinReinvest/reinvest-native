@@ -34,12 +34,15 @@ export const ScreenHeader = ({
   navigation,
   dark,
   options: {title, headerRight, headerLeft},
-}: NativeStackHeaderProps & {dark?: boolean; title?: string | 'logo'}) => {
+}: NativeStackHeaderProps & {
+  dark?: boolean;
+  title?: string | 'logo';
+}) => {
   const headerProps = useMemo(
     () => ({canGoBack: navigation.canGoBack(), tintColor: ''}),
     [navigation],
   );
-  const renderHeader = useCallback(() => {
+  const renderHeaderLeft = useCallback(() => {
     if (headerLeft) {
       return headerLeft?.(headerProps);
     }
@@ -49,7 +52,7 @@ export const ScreenHeader = ({
   return (
     <CustomHeader dark={dark}>
       <View style={[styles.innerWrapper]}>
-        <View style={styles.sideSegment}>{renderHeader()}</View>
+        <View style={styles.sideSegment}>{renderHeaderLeft()}</View>
         {title === 'logo' ? (
           <View style={styles.logo}>
             <Logo color={dark ? palette.pureWhite : undefined} />

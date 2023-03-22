@@ -24,4 +24,5 @@ export type TextVariants =
   | 'avatarInitialsExtraLarge'
   | 'avatarInitialsLarge'
   | 'avatarInitialsMedium'
-  | 'avatarInitialsSmall';
+  | 'avatarInitialsSmall'
+  | 'today';
