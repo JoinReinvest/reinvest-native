@@ -1,21 +1,25 @@
 import {MainWrapper} from '@components/MainWrapper';
 import Screens from '@navigation/screens';
 import {EducationStackProps} from '@screens/Education/types';
-import {ImageBackground} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {Box} from '@components/Containers/Box/Box';
-import {palette} from '@constants/theme';
-import {blogPosts, educationCards} from '@screens/Education/constants';
-import {EducationCard} from '@screens/Education/components/EducationCard';
 import React from 'react';
-import {styles} from './styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlogCard} from '@screens/Education/components/BlogCard';
+import {Loader} from '@components/Loader';
+import {usePostsQuery} from '@src/api/hooks/getPosts';
+import {educationCards} from '@screens/Education/constants';
+import {EducationCard} from '@screens/Education/components/EducationCard';
+import {ImageBackground} from 'react-native';
+import {palette} from '@constants/theme';
+import {styles} from './styles';
 
 export const EducationMainScreen = ({
   navigation,
 }: EducationStackProps<Screens.EducationMainScreen>) => {
   const {bottom} = useSafeAreaInsets();
+  const {data: posts, isLoading} = usePostsQuery();
+
   return (
     <MainWrapper
       isScroll
@@ -38,9 +42,15 @@ export const EducationMainScreen = ({
         <Box my={'16'}>
           <StyledText variant={'h5'}>Learn the basics</StyledText>
         </Box>
-        {blogPosts.map(blog => (
-          <BlogCard key={blog.title} navigation={navigation} {...blog} />
-        ))}
+        {isLoading && (
+          <Box fw alignItems={'center'}>
+            <Loader />
+          </Box>
+        )}
+        {posts &&
+          posts.map(post => (
+            <BlogCard key={post.title} navigation={navigation} {...post} />
+          ))}
       </Box>
     </MainWrapper>
   );

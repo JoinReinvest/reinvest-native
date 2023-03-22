@@ -1,4 +1,4 @@
-import {BlogCardProps} from './types';
+import {BlogPost} from './types';
 import {StyledText} from '@components/typography/StyledText';
 import {Box} from '@components/Containers/Box/Box';
 import {styles} from './styles';
@@ -15,7 +15,7 @@ export const BlogCard = ({
   image,
   title,
   navigation,
-}: BlogCardProps & EducationNavigationProp<Screens.EducationMainScreen>) => {
+}: BlogPost & EducationNavigationProp<Screens.EducationMainScreen>) => {
   const getImageDimensions = useCallback(() => {
     if (image) {
       const ratio = image.width / image.height;

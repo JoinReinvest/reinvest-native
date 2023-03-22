@@ -1,4 +1,4 @@
-export interface BlogCardProps {
+export interface BlogPost {
   data: string;
   slug: string;
   title: string;
