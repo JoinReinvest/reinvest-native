@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   label: {
-    fontFamily: Fonts.GTAmericaExtendedRegular,
+    fontFamily: Fonts.GTAmericaMedium,
     fontSize: 14,
   },
   paragraph: {
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   paragraphLarge: {
     fontFamily: Fonts.GTAmericaRegular,
-    fontSize: 14,
+    fontSize: 12,
   },
   paragraphEmp: {
     fontFamily: Fonts.GTAmericaMedium,
@@ -68,9 +68,8 @@ const styles = StyleSheet.create({
   },
   link: {
     fontFamily: Fonts.GTAmericaExtendedRegular,
-    fontSize: 12,
+    fontSize: 11,
     textDecorationLine: 'underline',
-    lineHeight: 20,
   },
   bodyText: {
     fontFamily: Fonts.GTAmericaRegular,
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   button: {
     fontFamily: Fonts.GTAmericaMedium,
     fontSize: 15,
-    lineHeight: 18,
+    lineHeight: 18 * 1.1,
   },
   avatarBase: {
     fontFamily: Fonts.GTAmericaExtendedRegular,

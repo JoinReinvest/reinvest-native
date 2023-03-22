@@ -1,13 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {yScale} from '@src/utils/scale';
+import {hp} from '@utils/sizeUtils';
 
 export const styles = StyleSheet.create({
-  headline: {marginBottom: yScale(8)},
-  description: {
-    lineHeight: 21,
-  },
+  headline: {marginBottom: 8},
+  description: {},
   wrapper: {
-    marginTop: yScale(8),
-    marginBottom: yScale(60),
+    marginTop: hp(1),
+    marginBottom: hp(8),
   },
 });

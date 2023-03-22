@@ -1,9 +1,8 @@
-import {yScale} from '@src/utils/scale';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    height: yScale(120),
+    height: 120,
   },
   inputWrapper: {
     height: '100%',
@@ -14,6 +13,6 @@ export const styles = StyleSheet.create({
     height: '100%',
   },
   inputStyleOnIOS: {
-    paddingTop: yScale(16),
+    paddingTop: 16,
   },
 });

@@ -26,7 +26,7 @@ export const FormTitle = ({
       {description && (
         <StyledText
           color={dark ? palette.pureWhite : palette.pureBlack}
-          variant={'bonusHeading'}
+          variant={'paragraphLarge'}
           style={styles.description}>
           {description}
         </StyledText>

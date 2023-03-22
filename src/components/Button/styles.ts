@@ -1,19 +1,18 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
-import {xScale, yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   button: {
-    height: yScale(48),
+    height: 48,
     width: '100%',
     justifyContent: 'center',
-    marginTop: yScale(12),
+    marginTop: 12,
   },
   labelWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    columnGap: xScale(8),
+    columnGap: 8,
   },
   primary: {
     backgroundColor: palette.frostGreen,

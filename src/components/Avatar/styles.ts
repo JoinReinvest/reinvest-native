@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
 import {Fonts} from '@src/types/fonts';
-import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -12,20 +11,20 @@ export const styles = StyleSheet.create({
     position: 'relative',
   },
   xl: {
-    height: yScale(100),
-    width: yScale(100),
+    height: 100,
+    width: 100,
   },
   l: {
-    height: yScale(72),
-    width: yScale(72),
+    height: 72,
+    width: 72,
   },
   m: {
-    height: yScale(44),
-    width: yScale(44),
+    height: 44,
+    width: 44,
   },
   s: {
-    height: yScale(28),
-    width: yScale(28),
+    height: 28,
+    width: 28,
   },
   individual: {
     backgroundColor: palette.deepGreen,
@@ -44,8 +43,8 @@ export const styles = StyleSheet.create({
     color: palette.pureBlack,
   },
   edit: {
-    height: yScale(32),
-    width: yScale(32),
+    height: 32,
+    width: 32,
     position: 'absolute',
     backgroundColor: palette.frostGreen,
     bottom: 0,
