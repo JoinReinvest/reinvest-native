@@ -4,7 +4,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import zod, {Schema} from 'zod';
 import {ChallengeName, useAuth} from '@providers/AuthProvider';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {Alert, View} from 'react-native';
+import {View} from 'react-native';
 import {Controller} from '@components/typography/Controller';
 import {Button} from '@components/Button';
 import {styles} from './styles';
@@ -57,6 +57,9 @@ export const StepOutsideFlow = ({initialSteps}: Props) => {
     }
   };
 
+  const startForgotPasswordFlow = () =>
+    navigation.navigate(Screens.ResetPassword);
+
   return (
     <View style={styles.wrapper}>
       {error && <FormMessage message={error} variant={'error'} />}
@@ -73,7 +76,7 @@ export const StepOutsideFlow = ({initialSteps}: Props) => {
         inputProps={{placeholder: 'Password'}}
       />
       <StyledText
-        onPress={() => Alert.alert('Forgot pass flow')}
+        onPress={startForgotPasswordFlow}
         variant={'link'}
         color={palette.pureWhite}
         style={styles.firstStepLink}>

@@ -5,6 +5,7 @@ export type LogOutStackParamList = {
   SignUp: undefined;
   SignIn: undefined;
   BlackForm: undefined;
+  ResetPassword: undefined;
 };
 
 export type LogOutNavProps<T extends keyof LogOutStackParamList> =
