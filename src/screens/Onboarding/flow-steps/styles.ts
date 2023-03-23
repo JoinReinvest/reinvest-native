@@ -1,23 +1,26 @@
 import {StyleSheet} from 'react-native';
-import {palette} from '@constants/theme';
 import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
-  flex: {flex: 1},
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  firstStepLink: {
-    textDecorationColor: palette.pureWhite,
-    marginVertical: yScale(12),
+  cardsWrapper: {
+    rowGap: yScale(16),
+  },
+  link: {
+    textAlign: 'center',
+    marginTop: yScale(24),
   },
   buttonsSection: {
-    alignSelf: 'flex-end',
     width: '100%',
+  },
+  footer: {
+    alignItems: 'center',
   },
 });

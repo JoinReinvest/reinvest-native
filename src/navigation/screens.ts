@@ -8,6 +8,9 @@ enum Screens {
   REIT = 'REIT',
   Education = 'Education',
   Notifications = 'Notifications',
+  Onboarding = 'Onboarding',
+  AccountSelection = 'AccountSelection',
+  OnboardingIndividual = 'OnboardingIndividual',
   ResetPassword = 'ResetPassword',
 }
 

@@ -5,18 +5,18 @@ import {StyledText} from '../typography/StyledText';
 import {styles} from './styles';
 import {CardProps} from './types';
 
-export const Card = ({
+export const Card = <T extends unknown>({
   id,
   title,
   children,
   selected = false,
   onCardPress,
-}: PropsWithChildren<CardProps>) => {
-  const handleCardPress = () => onCardPress?.(selected ? null : id);
+}: PropsWithChildren<CardProps<T>>) => {
+  const handleCardPress = () => onCardPress?.(selected ? undefined : id);
 
   return (
     <Pressable
-      id={id}
+      id={`${id}`}
       style={[styles.cardWrapper, selected && styles.selected]}
       onPress={handleCardPress}>
       <StyledText
