@@ -1,3 +1,4 @@
+import React from 'react';
 import {StyledText} from '@components/typography/StyledText';
 import {PropsWithChildren, ReactNode} from 'react';
 import {View} from 'react-native';

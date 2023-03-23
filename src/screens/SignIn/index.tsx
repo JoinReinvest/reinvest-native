@@ -8,13 +8,13 @@ import Screens from '@navigation/screens';
 import {palette} from '@constants/theme';
 import {FirstStepLayout} from '@components/Layouts/FirstStepLayout';
 import {Icon} from '@components/Icon';
-import {BlackLayout} from './BlackLayout';
+import {BlackLayout as BlackLayoutSignIn} from './BlackLayout';
 import {StepOutsideFlow} from '@screens/SignIn/flow-steps/stepLogin';
 import type {RouteProp} from '@react-navigation/native';
 
 const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 
-const blackScreenFormOptions = (props: {
+const blackScreenSignInFormOptions = (props: {
   route: RouteProp<SignInStackParamsList, Screens.BlackForm>;
   navigation: any;
 }) => ({
@@ -51,8 +51,8 @@ export const SignIn = ({}: SignInScreenProps) => {
         </SignInStack.Screen>
         <SignInStack.Screen
           name={Screens.BlackForm}
-          component={BlackLayout}
-          options={blackScreenFormOptions}
+          component={BlackLayoutSignIn}
+          options={blackScreenSignInFormOptions}
         />
       </SignInStack.Navigator>
     </LoginFormFlowProvider>

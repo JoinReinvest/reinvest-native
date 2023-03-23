@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@constants/theme';
+import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -21,5 +22,5 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: palette.pureWhite,
   },
-  title: {marginTop: 16, textAlign: 'center'},
+  title: {marginTop: yScale(16), textAlign: 'center'},
 });

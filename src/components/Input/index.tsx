@@ -131,14 +131,17 @@ export const Input = forwardRef<TextInput, InputProps>(
             ]}>
             <View />
             {leftSection}
-            <View style={styles.mainSection}>
-              <Animated.View
-                onLayout={calculateSizeHandler}
-                style={[styles.placeholder, animatedStyle]}>
-                <StyledText style={[styles.placeholderText]}>
-                  {placeholder}
-                </StyledText>
-              </Animated.View>
+            <View
+              style={[styles.mainSection, !placeholder && styles.centerText]}>
+              {placeholder && (
+                <Animated.View
+                  onLayout={calculateSizeHandler}
+                  style={[styles.placeholder, animatedStyle]}>
+                  <StyledText style={[styles.placeholderText]}>
+                    {placeholder}
+                  </StyledText>
+                </Animated.View>
+              )}
               <MaskInput
                 clearTextOnFocus={false}
                 secureTextEntry={showSecuredInput}
@@ -149,6 +152,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                 style={[
                   styles.nativeInput,
                   dark && styles.darkInput,
+                  !placeholder && styles.centerText,
                   nativeInputStyle,
                   disabled && styles.nativeInputDisabled,
                 ]}

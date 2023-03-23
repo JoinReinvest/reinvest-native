@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
 import {isIOS} from '@src/constants/common';
+import {xScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   radio: {
     flexDirection: 'row',
-    columnGap: 20,
+    columnGap: xScale(20),
   },
   label: {
     top: isIOS ? 4 : 0,

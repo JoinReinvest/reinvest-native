@@ -3,6 +3,7 @@ import {palette} from '@constants/theme';
 import {hexToRgbA} from '@utils/hexToRgb';
 import {isIOS} from '@constants/common';
 import {Fonts} from '@src/types/fonts';
+import {yScale} from '@src/utils/scale';
 
 const PADDING_HORIZONTAL = 8;
 
@@ -10,7 +11,7 @@ export const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
     height: 48,
-    marginBottom: 12,
+    marginBottom: yScale(12),
     flexShrink: 1,
   },
   disabled: {
@@ -83,6 +84,10 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     color: palette.error,
     marginBottom: 12,
+  },
+  centerText: {
+    alignSelf: 'center',
+    textAlignVertical: 'center',
   },
 
   nativeInputDisabled: {color: palette.darkerGray},

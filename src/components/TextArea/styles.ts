@@ -1,3 +1,4 @@
+import {yScale} from '@src/utils/scale';
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -13,6 +14,6 @@ export const styles = StyleSheet.create({
     height: '100%',
   },
   inputStyleOnIOS: {
-    paddingTop: 16,
+    paddingTop: yScale(16),
   },
 });

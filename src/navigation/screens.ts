@@ -11,6 +11,7 @@ enum Screens {
   Onboarding = 'Onboarding',
   AccountSelection = 'AccountSelection',
   OnboardingIndividual = 'OnboardingIndividual',
+  ResetPassword = 'ResetPassword',
 }
 
 export default Screens;

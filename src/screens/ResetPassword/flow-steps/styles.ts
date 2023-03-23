@@ -1,23 +1,19 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@constants/theme';
-import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     width: '100%',
-    justifyContent: 'center',
   },
-  flex: {flex: 1},
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
+  error: {textAlign: 'center', marginBottom: 24},
   firstStepLink: {
     textDecorationColor: palette.pureWhite,
-    marginVertical: yScale(12),
+    marginBottom: 12,
   },
-  buttonsSection: {
-    alignSelf: 'flex-end',
-    width: '100%',
-  },
+  buttonsSection: {alignSelf: 'flex-end', width: '100%'},
 });

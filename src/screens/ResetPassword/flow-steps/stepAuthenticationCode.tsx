@@ -8,28 +8,27 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {formValidationRules} from '@utils/formValidationRules';
 import React, {useState} from 'react';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
-import {Identifiers} from '@screens/SignUp/identifiers';
-import {Auth} from '@aws-amplify/auth';
 import {Controller} from '@components/typography/Controller';
 import {Button} from '@components/Button';
 import {FormTitle} from '@components/Forms/FormTitle';
-import {styles} from '@screens/SignUp/flow-steps/styles';
+import {styles} from './styles';
 import {Alert, ScrollView, View} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
+import {useAuth} from '@src/providers/AuthProvider';
+import {ResetPasswordFormFields} from '../types';
 import {CODE_MASK} from '@src/constants/masks';
+import {Identifiers} from '../identifires';
 
-type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
+type Fields = Pick<ResetPasswordFormFields, 'authenticationCode'>;
 
-export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
+export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
   identifier: Identifiers.AUTHENTICATION_CODE,
 
   doesMeetConditionFields: fields => {
-    const requiredFields = [fields.email, fields.password];
-
+    const requiredFields = [fields.email];
     return allRequiredFieldsExists(requiredFields);
   },
 
@@ -37,18 +36,19 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
     storeFields,
     updateStoreFields,
     moveToNextStep,
-  }: StepComponentProps<RegisterFormFields>) => {
+  }: StepComponentProps<ResetPasswordFormFields>) => {
     const schema: Schema<Fields> = zod.object({
       authenticationCode: formValidationRules.authenticationCode,
     });
     const [error, setError] = useState<string | undefined>();
     const [infoMessage, setInfoMessage] = useState<string | undefined>();
-
+    const {loading, actions} = useAuth();
     const {handleSubmit, control, formState} = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const shouldButtonBeDisabled =
+      !formState.isValid || formState.isSubmitting || loading;
 
     const subtitleMessage = `Enter the email authentication code sent to your email ${storeFields.email}.`;
 
@@ -60,10 +60,12 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
 
     const resendCodeOnClick = async () => {
       try {
-        await Auth.resendSignUp(storeFields.email);
+        await actions.forgotPassword(storeFields.email);
         setInfoMessage('Code has been sent');
-      } catch (err) {
-        setError((err as Error).message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        }
       }
     };
 
@@ -86,8 +88,8 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             inputProps={{
               dark: true,
               placeholder: 'Authentication Code',
+              keyboardType: 'numeric',
               maxLength: 7,
-              keyboardType: 'number-pad',
               mask: CODE_MASK,
             }}
           />
@@ -110,7 +112,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}>
-            Sign Up
+            Continue
           </Button>
         </View>
       </KeyboardAwareWrapper>

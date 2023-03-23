@@ -18,9 +18,9 @@ export const IS_REAL_SMALL_DEVICE = realHeight < 600;
 export const guidelineBaseWidth = 375;
 export const guidelineBaseHeight = 812;
 
-const xScale = (size?: number): number | undefined =>
-  size ? (width / guidelineBaseWidth) * size : undefined;
-const yScale = (size?: number): number | undefined =>
-  size ? (realHeight / guidelineBaseHeight) * size : undefined;
+const xScale = (size?: number): number =>
+  size ? (width / guidelineBaseWidth) * size : 0;
+const yScale = (size?: number): number =>
+  size ? (realHeight / guidelineBaseHeight) * size : 0;
 
 export {xScale, yScale, width, height};
