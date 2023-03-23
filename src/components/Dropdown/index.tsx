@@ -36,7 +36,7 @@ export const Dropdown = ({
   const wrapperRef = useRef<View>(null);
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [position, setPosition] = useState<LayoutRectangle | undefined>();
-  const [selectedValue, setSelectedValue] = useState<string>('');
+
   const statusSharedValue = useSharedValue(0);
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
@@ -104,7 +104,6 @@ export const Dropdown = ({
 
   const handleSelect = (selectedOption: DropdownOption) => {
     onSelect(selectedOption);
-    setSelectedValue(selectedOption.label);
     closeList();
   };
 
@@ -121,7 +120,6 @@ export const Dropdown = ({
           <View pointerEvents="none">
             <Input
               dark={dark}
-              value={selectedValue}
               ref={inputRef}
               showSoftInputOnFocus={false}
               caretHidden={true}
