@@ -17,8 +17,10 @@ import {Controller} from '@components/typography/Controller';
 import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
 import {FormTitle} from '@components/Forms/FormTitle';
+import {CODE_MASK} from '@src/constants/masks';
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
+
 export const StepReferralCode: StepParams<RegisterFormFields> = {
   identifier: Identifiers.REFERRAL_CODE,
   doesMeetConditionFields: fields => !!fields.email,
@@ -43,6 +45,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
     };
 
     const onSubmit: SubmitHandler<Fields> = values => {
+      values.referralCode = values.referralCode?.replace('-', '');
       updateStoreFields(values);
       moveToNextStep();
     };
@@ -69,7 +72,8 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               placeholder: 'Referral code',
               dark: true,
               keyboardType: 'numeric',
-              maxLength: 6,
+              maxLength: 7,
+              mask: CODE_MASK, // xxx-xxx
             }}
           />
           <ReferralCodeCheckList referralCode={fields.password || ''} />
