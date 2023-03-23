@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
   },
   bonusHeading: {
     fontFamily: Fonts.GTAmericaRegular,
-    fontSize: 14,
+    fontSize: 15,
+    lineHeight: 18 * 1.1,
   },
   label: {
-    fontFamily: Fonts.GTAmericaMedium,
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 14,
   },
   paragraph: {
