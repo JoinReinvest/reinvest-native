@@ -1,10 +1,13 @@
 import {MainWrapper} from '@components/MainWrapper';
 import {Video} from '@components/Video';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {styles} from '@screens/SignIn/SignIn.styles';
 import {Sygnet} from '@components/Icon/icons';
 import {StyledText} from '@components/typography/StyledText';
 import React, {PropsWithChildren} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import {hexToRgbA} from '@src/utils/hexToRgb';
+import {palette} from '@src/constants/theme';
 
 interface FirstStepLayoutProps {
   headline: string;
@@ -20,6 +23,10 @@ export const FirstStepLayout = ({
     <MainWrapper style={{justifyContent: 'flex-start'}}>
       <StatusBar barStyle={'light-content'} />
       <Video />
+      <LinearGradient
+        style={StyleSheet.absoluteFillObject}
+        colors={['transparent', hexToRgbA(palette.pureBlack, 0.6)]}
+      />
       <View style={styles.signet}>
         <Sygnet />
       </View>

@@ -76,9 +76,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               mask: CODE_MASK, // xxx-xxx
             }}
           />
-          <View style={{paddingBottom: 36}}>
-            <ReferralCodeCheckList referralCode={fields.password || ''} />
-          </View>
+          <ReferralCodeCheckList referralCode={fields.password || ''} />
         </ScrollView>
         <View key={'buttons_section'} style={styles.buttonsSection}>
           <Button variant={'outlined'} onPress={onSkip}>

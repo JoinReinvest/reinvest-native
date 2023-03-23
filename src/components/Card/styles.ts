@@ -1,20 +1,21 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
+import {xScale, yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   cardWrapper: {
     width: '100%',
     alignItems: 'center',
-    paddingVertical: 24,
+    paddingVertical: yScale(24),
     borderWidth: 1,
     borderColor: palette.darkerGray,
   },
   cardTitle: {
-    marginBottom: 4,
+    marginBottom: yScale(4),
   },
   cardContent: {
     textAlign: 'center',
-    maxWidth: 209,
+    maxWidth: xScale(209),
   },
   selected: {
     borderColor: palette.frostGreen,

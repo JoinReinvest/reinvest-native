@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 import {palette} from '@src/constants/theme';
+import {xScale, yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 12,
+    marginBottom: yScale(12),
   },
   listWrapper: {
     position: 'absolute',
@@ -12,12 +13,12 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   list: {
-    marginTop: -12,
+    marginTop: yScale(-12),
     backgroundColor: palette.frostGreen,
   },
   item: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: yScale(12),
+    paddingHorizontal: xScale(16),
     textAlign: 'left',
   },
 });
