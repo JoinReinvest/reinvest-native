@@ -9,8 +9,6 @@ enum Screens {
   Education = 'Education',
   Notifications = 'Notifications',
   Onboarding = 'Onboarding',
-  AccountSelection = 'AccountSelection',
-  OnboardingIndividual = 'OnboardingIndividual',
   ResetPassword = 'ResetPassword',
 }
 
