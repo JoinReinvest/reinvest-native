@@ -16,5 +16,8 @@ export const styles = StyleSheet.create({
     textDecorationColor: palette.pureWhite,
     marginVertical: yScale(12),
   },
-  buttonsSection: {alignSelf: 'flex-end', width: '100%'},
+  buttonsSection: {
+    alignSelf: 'flex-end',
+    width: '100%',
+  },
 });

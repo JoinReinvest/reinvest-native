@@ -10,26 +10,31 @@ export const TermsFooter = () => {
   return (
     <View
       key={'terms and conditions'}
-      style={[styles.wrapper, {paddingBottom: bottom || 12}]}>
+      style={[styles.wrapper, {paddingBottom: bottom || yScale(12)}]}>
       <StyledText
         color={palette.pureWhite}
         variant={'paragraphSmall'}
         style={{textAlign: 'center'}}>
         By continuing, you agree to the REINVEST{' '}
+      </StyledText>
+      <View style={{flexDirection: 'row'}}>
         <StyledText
           color={palette.frostGreen}
           onPress={() => Alert.alert('Terms')}
           variant={'link'}>
           Terms of Conditions
-        </StyledText>{' '}
-        and{' '}
+        </StyledText>
+        <StyledText color={palette.frostGreen} variant="paragraphSmall">
+          {' '}
+          and{' '}
+        </StyledText>
         <StyledText
           color={palette.frostGreen}
           variant={'link'}
           onPress={() => Alert.alert('Policy')}>
           Privacy Policy.
         </StyledText>
-      </StyledText>
+      </View>
     </View>
   );
 };

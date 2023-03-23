@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   paragraphLarge: {
     fontFamily: Fonts.GTAmericaRegular,
-    fontSize: 12,
+    fontSize: 14,
   },
   paragraphEmp: {
     fontFamily: Fonts.GTAmericaMedium,

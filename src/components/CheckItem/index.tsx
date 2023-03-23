@@ -16,13 +16,10 @@ export const CheckItem = ({
     <View style={styles.itemWrapper}>
       <StyledText
         variant={'paragraphLarge'}
-        color={isChecked ? palette.dark3 : palette.pureWhite}>
+        color={isChecked ? palette.pureWhite : palette.dark3}>
         {label}
       </StyledText>
-      <Icon
-        icon={'tick'}
-        color={isChecked ? palette.success : palette.pureWhite}
-      />
+      <Icon icon={'tick'} color={isChecked ? palette.success : palette.dark3} />
     </View>
   );
 };
