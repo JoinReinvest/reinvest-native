@@ -14,10 +14,10 @@ import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
 import {Button} from '@components/Button';
 import {Controller} from '@components/typography/Controller';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
 import {FormTitle} from '@components/Forms/FormTitle';
 import {CODE_MASK} from '@src/constants/masks';
+import {useKeyboardAware} from "@hooks/useKeyboardAware";
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
 
@@ -39,6 +39,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       resolver: zodResolver(schema),
       mode: 'all',
     });
+    useKeyboardAware();
 
     const fields = {
       password: watch('referralCode'),
@@ -55,8 +56,15 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={[styles.wrapper]}>
-        <ScrollView>
+      <>
+        <ScrollView style={{width: '100%'}}>
+          <FormTitle
+            dark
+            headline={'Do you have a referral code? (optional)'}
+            description={
+              'You and your referrer will receive $20 in dividend following your first investment!'
+            }
+          />
           <FormTitle
             dark
             headline={'Do you have a referral code? (optional)'}
@@ -74,6 +82,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               keyboardType: 'numeric',
               maxLength: 7,
               mask: CODE_MASK, // xxx-xxx
+              returnKeyType: 'done',
             }}
           />
           <ReferralCodeCheckList referralCode={fields.password || ''} />
@@ -89,7 +98,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Enter code
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

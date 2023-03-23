@@ -1,21 +1,19 @@
 import {StepPassword} from '@screens/SignUp/flow-steps/stepPassword';
-import {StepReferralCodeApplied} from '@screens/SignUp/flow-steps/referralCodeApplied';
-import {StepReferralCode} from '@screens/SignUp/flow-steps/referralCode';
 import {StepAuthenticationCode} from '@screens/SignUp/flow-steps/authenticationCode';
 import {StepRegistrationValidation} from '@screens/SignUp/flow-steps/registrationValidation';
 import {createFormFlow} from 'reinvest-app-common/src/services/form-flow/index';
 import {RegisterFormFields} from '@screens/SignUp/types';
 
 export const FLOW_STEPS = [
-  StepReferralCode,
-  StepReferralCodeApplied,
+  // StepReferralCode,
+  // StepReferralCodeApplied,
   StepPassword,
   StepAuthenticationCode,
   StepRegistrationValidation,
 ];
 
 export const formFieldsInitialState = {
-  email: '',
+  email: 'sdfa@wp.pl',
   referralCode: '',
   password: '',
   authenticationCode: '',

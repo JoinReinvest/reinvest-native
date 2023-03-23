@@ -21,8 +21,8 @@ import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {Button} from '@components/Button';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {CODE_MASK} from '@src/constants/masks';
+import { useKeyboardAware } from "@hooks/useKeyboardAware";
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
@@ -41,6 +41,8 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
       resolver: zodResolver(schema),
     });
 
+    useKeyboardAware()
+
     const onSubmit: SubmitHandler<LoginFormFields> = async fields => {
       try {
         fields.authenticationCode = fields.authenticationCode.replace('-', '');
@@ -52,7 +54,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
+      <View>
         <FormTitle
           dark
           headline="Check Your Phone"
@@ -82,7 +84,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         <Button disabled={loading} onPress={handleSubmit(onSubmit)}>
           Continue
         </Button>
-      </KeyboardAwareWrapper>
+      </View>
     );
   },
 };
