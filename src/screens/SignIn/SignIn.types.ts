@@ -12,6 +12,7 @@ export type SignInStackParamsList = {
   SignIn: undefined;
   BlackForm: undefined;
   FirstStepLayoutScreen: undefined;
+  ResetPassword: undefined;
 };
 
 export interface LoginFormFields {
