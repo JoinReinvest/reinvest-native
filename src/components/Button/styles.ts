@@ -15,6 +15,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: xScale(8),
   },
+  pillLabel: {
+    columnGap: 0,
+  },
   primary: {
     backgroundColor: palette.frostGreen,
   },
@@ -65,4 +68,5 @@ export const styles = StyleSheet.create({
   outlinedLabelDisabled: {
     color: palette.darkerGray,
   },
+  pill: {},
 });

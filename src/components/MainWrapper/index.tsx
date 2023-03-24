@@ -10,6 +10,7 @@ export const MainWrapper = ({
   contentContainerStyle,
   dark,
   style,
+  noPadding,
 }: PropsWithChildren<MainWrapperProps>) => {
   return (
     <View style={[!dark ? styles.light : styles.dark]}>
@@ -22,6 +23,7 @@ export const MainWrapper = ({
           <ScrollView
             contentContainerStyle={[
               styles.wrapper,
+              noPadding && styles.noPadding,
               contentContainerStyle,
               dark && styles.dark,
             ]}>
@@ -34,6 +36,7 @@ export const MainWrapper = ({
           style={[
             styles.wrapper,
             styles.staticWrapper,
+            noPadding && styles.noPadding,
             dark && styles.dark,
             style,
           ]}>

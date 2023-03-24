@@ -1,7 +1,7 @@
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {allRequiredFieldsExists} from '@utils/formValidator';
 import zod, {Schema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';

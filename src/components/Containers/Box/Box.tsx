@@ -1,13 +1,15 @@
-import React, {memo, PropsWithChildren, useMemo} from 'react';
+import React, {PropsWithChildren, useMemo} from 'react';
 import {Pressable, View, ViewStyle} from 'react-native';
 import {palette} from '@constants/theme';
-import {
-  type BoxProps,
-  sizes,
-  type SizesEnum,
-  type SpacingProps,
+import type {
+  BoxProps,
+  SizesEnum,
+  SpacingProps,
 } from '@components/Containers/Box/types';
+import {sizes} from '@components/Containers/Box/types';
+
 import {xScale, yScale} from '@utils/scale';
+import {hexToRgbA} from '@utils/hexToRgb';
 
 const getSize = (size: SizesEnum | undefined) => size && sizes[size];
 
@@ -30,72 +32,73 @@ function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
   };
 }
 
-export const Box = memo(
-  ({
-    children,
-    alignItems,
-    justifyContent,
-    color,
-    width,
-    height,
-    flex,
-    radius,
-    style,
-    flexShrink,
-    flexBasis,
-    flexDirection,
-    flexGrow,
-    alignSelf,
-    onPress,
-    fw,
-    ...props
-  }: PropsWithChildren<BoxProps>) => {
-    const spacings = useMemo(
-      () => generateSpacings(props),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [
-        props.m,
-        props.mb,
-        props.ml,
-        props.mr,
-        props.mt,
-        props.mx,
-        props.my,
-        props.pb,
-        props.pl,
-        props.pr,
-        props.pt,
-        props.px,
-        props.py,
-        props.p,
-      ],
-    );
+export const Box = ({
+  children,
+  alignItems,
+  justifyContent,
+  color,
+  width,
+  height,
+  flex,
+  radius,
+  style,
+  flexShrink,
+  flexBasis,
+  flexDirection,
+  flexGrow,
+  alignSelf,
+  onPress,
+  fw,
+  colorOpacity = 1,
+  ...props
+}: PropsWithChildren<BoxProps>) => {
+  const spacings = useMemo(
+    () => generateSpacings(props),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      props.m,
+      props.mb,
+      props.ml,
+      props.mr,
+      props.mt,
+      props.mx,
+      props.my,
+      props.pb,
+      props.pl,
+      props.pr,
+      props.pt,
+      props.px,
+      props.py,
+      props.p,
+    ],
+  );
 
-    const Container = onPress ? Pressable : View;
+  const Container = onPress ? Pressable : View;
 
-    return (
-      <Container
-        onPress={onPress}
-        style={[
-          spacings,
-          {
-            borderRadius: radius,
-            alignItems,
-            justifyContent,
-            backgroundColor: color ? palette[color] : undefined,
-            width: fw ? '100%' : width,
-            height,
-            flex,
-            flexBasis,
-            flexDirection,
-            flexGrow,
-            flexShrink,
-            alignSelf,
-          },
-          style,
-        ]}>
-        {children}
-      </Container>
-    );
-  },
-);
+  return (
+    <Container
+      onPress={onPress}
+      style={[
+        spacings,
+        {
+          borderRadius: radius,
+          alignItems,
+          justifyContent,
+          backgroundColor: color
+            ? hexToRgbA(palette[color], colorOpacity)
+            : undefined,
+          width: fw ? '100%' : width,
+          height,
+          flex,
+          flexBasis,
+          flexDirection,
+          flexGrow,
+          flexShrink,
+          alignSelf,
+        },
+        style,
+      ]}>
+      {children}
+    </Container>
+  );
+};

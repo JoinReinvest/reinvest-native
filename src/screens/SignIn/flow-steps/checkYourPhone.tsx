@@ -7,7 +7,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 
 import {Identifiers} from '../identifiers';
@@ -16,7 +16,7 @@ import {styles} from '@screens/SignIn/flow-steps/styles';
 import {View} from 'react-native';
 import {Controller} from '@components/typography/Controller';
 import {FormTitle} from '@components/Forms/FormTitle';
-import {LoginFormFields} from '@screens/SignIn/SignIn.types';
+import {LoginFormFields} from '@screens/SignIn/types';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';

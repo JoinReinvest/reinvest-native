@@ -1,5 +1,5 @@
 import zod from 'zod';
-import {formValidationRules as commonFormValidationRules} from 'reinvest-app-common/src/formValidationRules';
+import {formValidationRules as commonFormValidationRules} from 'reinvest-app-common/src/form-schemas';
 
 const requiredError = 'This field is required';
 const maskedCodeRegex = /^([0-9]){3}-([0-9]){3}$/;
