@@ -14,8 +14,6 @@ enum Screens {
   WebViewContent = 'WebViewContent',
   DEV = 'DEV',
   Onboarding = 'Onboarding',
-  AccountSelection = 'AccountSelection',
-  OnboardingIndividual = 'OnboardingIndividual',
   ResetPassword = 'ResetPassword',
 }
 
