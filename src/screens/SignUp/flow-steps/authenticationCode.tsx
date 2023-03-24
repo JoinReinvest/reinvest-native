@@ -19,7 +19,6 @@ import {Alert, ScrollView, View} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {CODE_MASK} from '@src/constants/masks';
 
 type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
@@ -68,8 +67,8 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Check Your Email'}
@@ -89,6 +88,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
               maxLength: 7,
               keyboardType: 'number-pad',
               mask: CODE_MASK,
+              returnKeyType: 'done',
             }}
           />
           <View style={styles.row}>
@@ -113,7 +113,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             Sign Up
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

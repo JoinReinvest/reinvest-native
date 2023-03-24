@@ -3,7 +3,6 @@ import {yScale} from '@src/utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
     justifyContent: 'flex-start',
   },
   row: {
@@ -22,5 +21,8 @@ export const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+  },
+  fw: {
+    width: '100%',
   },
 });

@@ -15,7 +15,6 @@ import {styles} from './styles';
 import {Controller} from '@components/typography/Controller';
 import {PasswordChecklist} from '@components/CheckList/PasswordCheckList';
 import {FormMessage} from '@components/Forms/FormMessage';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {ResetPasswordFormFields} from '../types';
 import {Identifiers} from '../identifires';
 
@@ -74,8 +73,8 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Reset Password'}
@@ -109,7 +108,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             Change Password
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

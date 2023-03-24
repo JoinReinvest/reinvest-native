@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {FormTitle} from '@src/components/Forms/FormTitle';
-import {KeyboardAwareWrapper} from '@src/components/KeyboardAvareWrapper';
 import {styles} from './styles';
 import {ACCOUNT_TYPES, AccountTypeValue} from '@src/constants/account-types';
 import {Card} from '@src/components/Card';
@@ -33,8 +32,8 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline="Which type of account would you like to open?"
@@ -64,7 +63,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             Continue
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };
