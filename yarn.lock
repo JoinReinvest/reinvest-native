@@ -2891,25 +2891,12 @@
   resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-4.27.0.tgz#7492f38e3017dbcfde2cbb112928e2e87ee2128d"
   integrity sha512-xjRakKhDVdtDwFKNCZnW1c1F7DuRx6ZSyRnKkD5hGPiZQENm63eS20ixaK6GleYtLKWO40FqbjTAcasvmrW2UQ==
 
-"@tanstack/query-core@4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.26.1.tgz#7a441086c4d3d79e1d156c0a355bd3567213626e"
-  integrity sha512-Zrx2pVQUP4ndnsu6+K/m8zerXSVY8QM+YSbxA1/jbBY21GeCd5oKfYl92oXPK0hPEUtoNuunIdiq0ZMqLos+Zg==
-
 "@tanstack/query-core@4.27.0":
   version "4.27.0"
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.27.0.tgz#96bcef499008ea080b66611d029655e3ffdf8bea"
   integrity sha512-sm+QncWaPmM73IPwFlmWSKPqjdTXZeFf/7aEmWh00z7yl2FjqophPt0dE1EHW9P1giMC5rMviv7OUbSDmWzXXA==
 
-"@tanstack/react-query@4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.26.1.tgz#d254f6b7b297b5ae4204c84e6622506e5ec77d09"
-  integrity sha512-i3dnz4TOARGIXrXQ5P7S25Zfi4noii/bxhcwPurh2nrf5EUCcAt/95TB2HSmMweUBx206yIMWUMEQ7ptd6zwDg==
-  dependencies:
-    "@tanstack/query-core" "4.26.1"
-    use-sync-external-store "^1.2.0"
-
-"@tanstack/react-query@^4.28.0":
+"@tanstack/react-query@4.28.0", "@tanstack/react-query@^4.28.0":
   version "4.28.0"
   resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.28.0.tgz#01cb9969b15cbcbd5dcfcd4b264dc18ef0a35f86"
   integrity sha512-8cGBV5300RHlvYdS4ea+G1JcZIt5CIuprXYFnsWggkmGoC0b5JaqG0fIX3qwDL9PTNkKvG76NGThIWbpXivMrQ==
@@ -5974,7 +5961,7 @@ graphql-request@5.0.0:
     extract-files "^9.0.0"
     form-data "^3.0.0"
 
-graphql-request@^5.0.0, graphql-request@^5.2.0:
+graphql-request@^5.0.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-5.2.0.tgz#a05fb54a517d91bb2d7aefa17ade4523dc5ebdca"
   integrity sha512-pLhKIvnMyBERL0dtFI3medKqWOz/RhHdcgbZ+hMMIb32mEPa5MJSzS4AuXxfI4sRAu6JVVk5tvXuGfCWl9JYWQ==
@@ -9165,9 +9152,9 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-"reinvest-app-common@git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#main":
+"reinvest-app-common@git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#graphVer":
   version "0.0.2"
-  resolved "git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#f249e031d2dbfc405be167b372b40827a9887993"
+  resolved "git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#8f2541091838d157de3c5756574ffdd84745fda3"
   dependencies:
     "@graphql-codegen/cli" "^3.2.2"
     "@hookooekoo/configs-tsconfig" "^0.0.14"
@@ -9177,7 +9164,7 @@ regjsparser@^0.9.1:
     "@types/node" "18.15.5"
     "@types/react" "^18.0.28"
     dayjs "^1.11.7"
-    graphql-request "^5.2.0"
+    graphql-request "5.0.0"
     lefthook "^1.3.7"
     react "^18.2.0"
     tsup "^6.7.0"

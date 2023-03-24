@@ -22,7 +22,8 @@
       "@typings/*": ["src/types/*"],
       "@icons/*": ["src/assets/icons/*"],
       "@permissions/*": ["src/permissions/*"],
-      "@providers/*": ["src/providers/*"]
+      "@providers/*": ["src/providers/*"],
+      "@api/*": ["src/api/*"]
     },
     "types": ["jest", "node"]
   },
