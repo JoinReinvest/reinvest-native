@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     marginTop: yScale(4),
   },
   bar: {
-    height: yScale(4),
+    height: 4,
   },
   absolute: {
     position: 'absolute',
