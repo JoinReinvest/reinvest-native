@@ -1,4 +1,5 @@
 import {StepPhoneAuthentication} from './stepPhoneAuthentication';
+import {StepDateOfBirth} from './stepDateOfBirth';
 import {OnboardingFormFields} from '../types';
 import {createFormFlow} from 'reinvest-app-common/src/services/form-flow/index';
 import {StepFullName} from './stepFullName';
@@ -12,6 +13,7 @@ export const FLOW_STEPS = [
   StepAccountType,
   StepFullName,
   StepPhoneNumber,
+  StepDateOfBirth,
   StepPhoneAuthentication,
   StepResidencyStatus,
   StepResidencyGreenCard,
@@ -28,6 +30,7 @@ export const onboardingFormFieldsInitialState: OnboardingFormFields = {
   residency: undefined,
   birthCountry: '',
   citizenshipCountry: '',
+  dateOfBirth: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] =

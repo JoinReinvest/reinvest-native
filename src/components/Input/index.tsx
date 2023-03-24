@@ -156,6 +156,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   nativeInputStyle,
                   disabled && styles.nativeInputDisabled,
                 ]}
+                placeholderTextColor={dark ? palette.dark3 : undefined}
                 onFocus={() => {
                   stateHandler(true);
                 }}

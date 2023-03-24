@@ -16,6 +16,8 @@ import {
 import {useDialog} from '@providers/DialogProvider';
 import {FormModalDisclaimer} from '@components/Modals/ModalContent/FormModalDisclaimer';
 import {onBoardingDisclaimers} from '@constants/strings';
+import {useOnboardingFormFlow} from '.';
+import {ProgressBar} from '@src/components/ProgressBar';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,
@@ -25,6 +27,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     updateStoreFields,
     moveToNextStep,
   }: StepComponentProps<OnboardingFormFields>) => {
+    const {progressPercentage} = useOnboardingFormFlow();
     const [selectedAccountType, setSelectedAccountType] = useState<
       AccountTypeValue | undefined
     >(storeFields.accountType);
@@ -45,6 +48,9 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
