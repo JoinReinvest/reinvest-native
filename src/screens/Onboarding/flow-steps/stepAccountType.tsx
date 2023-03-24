@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {FormTitle} from '@src/components/Forms/FormTitle';
 import {KeyboardAwareWrapper} from '@src/components/KeyboardAvareWrapper';
 import {styles} from './styles';
-import {AccountTypeValue, ACCOUNT_TYPES} from '@src/constants/account-types';
+import {ACCOUNT_TYPES, AccountTypeValue} from '@src/constants/account-types';
 import {Card} from '@src/components/Card';
 import {Alert, ScrollView, View} from 'react-native';
 import {StyledText} from '@src/components/typography/StyledText';
@@ -13,7 +13,7 @@ import {Identifiers} from '../identifiers';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow';
+} from 'reinvest-app-common/src/services/form-flow';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,

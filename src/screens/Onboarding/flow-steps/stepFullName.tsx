@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';

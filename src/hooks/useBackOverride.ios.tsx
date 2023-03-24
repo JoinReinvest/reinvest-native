@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useLogOutNavigation} from '@navigation/hooks';
-import {ContextState} from 'reinvest-app-common/src/form-flow/interfaces';
+import {ContextState} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {palette} from '@constants/theme';
 import {Icon} from '@components/Icon';
 

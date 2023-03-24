@@ -3,7 +3,7 @@ import {BackHandler} from 'react-native';
 import React, {useCallback, useEffect} from 'react';
 import {Icon} from '@components/Icon';
 import {palette} from '@constants/theme';
-import {ContextState} from 'reinvest-app-common/src/form-flow/interfaces';
+import {ContextState} from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 export const useStepBackOverride = <T,>(
   useCurrentFormContext: () => ContextState<T>,

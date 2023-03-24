@@ -1,14 +1,14 @@
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {allRequiredFieldsExists} from '@utils/formValidator';
 import zod, {Schema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {formValidationRules} from '@utils/formValidationRules';
 import React, {useState} from 'react';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {Identifiers} from '@screens/SignUp/identifiers';
 import {Auth} from '@aws-amplify/auth';
 import {Controller} from '@components/typography/Controller';

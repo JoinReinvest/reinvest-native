@@ -31,7 +31,7 @@ export const WebViewContentScreen = ({
     <>
       <WebView
         ref={ref}
-        scalesPageToFit={!isIOS ? false : true}
+        scalesPageToFit={isIOS}
         javaScriptEnabled
         onLoadEnd={() => setIsLoading(false)}
         source={{uri: `${REINVEST_SITE_URL}${uri}`}}

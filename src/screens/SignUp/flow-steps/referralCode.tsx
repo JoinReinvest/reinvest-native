@@ -4,12 +4,12 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 
 import {Identifiers} from '../identifiers';
 import {formValidationRules} from '@utils/formValidationRules';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
 import {Button} from '@components/Button';

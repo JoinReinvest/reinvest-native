@@ -2,10 +2,10 @@ import React from 'react';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import {Identifiers} from '../identifiers';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {Button} from '@components/Button';
 import {View} from 'react-native';
 import {StatusCircle} from '@components/StatusCircle';
