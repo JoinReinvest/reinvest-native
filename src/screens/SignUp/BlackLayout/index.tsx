@@ -2,7 +2,7 @@ import React from 'react';
 import {useStepBackOverride} from '@hooks/useBackOverride';
 import {MainWrapper} from '@components/MainWrapper';
 import {useRegisterFormFlow} from '@screens/SignUp/flow-steps';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {TermsFooter} from '@components/TermsFooter';
 import {useKeyboardAware} from '@hooks/useKeyboardAware';
 

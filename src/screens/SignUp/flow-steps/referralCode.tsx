@@ -17,7 +17,6 @@ import {Controller} from '@components/typography/Controller';
 import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
 import {FormTitle} from '@components/Forms/FormTitle';
 import {CODE_MASK} from '@src/constants/masks';
-import {useKeyboardAware} from "@hooks/useKeyboardAware";
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
 
@@ -39,7 +38,6 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       resolver: zodResolver(schema),
       mode: 'all',
     });
-    useKeyboardAware();
 
     const fields = {
       password: watch('referralCode'),
@@ -57,14 +55,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <ScrollView style={{width: '100%'}}>
-          <FormTitle
-            dark
-            headline={'Do you have a referral code? (optional)'}
-            description={
-              'You and your referrer will receive $20 in dividend following your first investment!'
-            }
-          />
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Do you have a referral code? (optional)'}

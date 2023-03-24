@@ -11,7 +11,7 @@ import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {useLogOutNavigation} from '@navigation/hooks';
 import Screens from '@navigation/screens';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {useFocusEffect} from '@react-navigation/native';
 import {useRegisterFormFlow} from '@screens/SignUp/flow-steps';
 
@@ -48,7 +48,7 @@ export const StepOutsideFlow = ({initialSteps}: Props) => {
   };
 
   return (
-    <View style={[styles.wrapper]}>
+    <View style={[styles.fw, styles.wrapper]}>
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}

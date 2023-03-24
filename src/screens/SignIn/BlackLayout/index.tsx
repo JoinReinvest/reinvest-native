@@ -4,7 +4,7 @@ import {MainWrapper} from '@components/MainWrapper';
 import {TermsFooter} from '@components/TermsFooter';
 import {StatusBar} from 'react-native';
 import {useLoginFormFlow} from '@screens/SignIn/flow-steps';
-import {LoginFormFields} from '@screens/SignIn/SignIn.types';
+import {LoginFormFields} from '@screens/SignIn/types';
 import {useKeyboardAware} from '@hooks/useKeyboardAware';
 
 interface Props {

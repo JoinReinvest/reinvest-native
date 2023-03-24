@@ -88,7 +88,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <ScrollView style={styles.wrapper}>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Sign up to REINVEST'}

@@ -22,7 +22,6 @@ import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {Button} from '@components/Button';
 import {CODE_MASK} from '@src/constants/masks';
-import { useKeyboardAware } from "@hooks/useKeyboardAware";
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
@@ -40,8 +39,6 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
-
-    useKeyboardAware()
 
     const onSubmit: SubmitHandler<LoginFormFields> = async fields => {
       try {

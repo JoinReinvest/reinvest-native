@@ -4,6 +4,7 @@ import {palette} from '@constants/theme';
 import React from 'react';
 import {styles} from '@components/TermsFooter/styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {yScale} from '@utils/scale';
 
 export const TermsFooter = () => {
   const {bottom} = useSafeAreaInsets();

@@ -60,7 +60,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     }, []);
 
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, styles.fw]}>
         {isLoading ? (
           <View style={styles.flex}>
             <FormTitle dark headline={'Verifying Account Information'} />

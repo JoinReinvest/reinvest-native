@@ -68,7 +68,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <ScrollView>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Check Your Email'}
@@ -88,7 +88,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
               maxLength: 7,
               keyboardType: 'number-pad',
               mask: CODE_MASK,
-              returnKeyType: 'done'
+              returnKeyType: 'done',
             }}
           />
           <View style={styles.row}>
