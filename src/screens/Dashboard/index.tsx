@@ -7,9 +7,11 @@ import {useLogInNavigation} from '@src/navigation/hooks';
 import Screens from '@src/navigation/screens';
 import {apiClient} from '@api/apiClient';
 import {useGetUserProfile} from 'reinvest-app-common/src/services/queries/getProfile';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const Dashboard = ({}: DashboardScreenProps) => {
   const {data, isLoading} = useGetUserProfile(apiClient);
+  const {top} = useSafeAreaInsets();
 
   useEffect(() => {
     console.log({data, isLoading});
@@ -18,7 +20,7 @@ export const Dashboard = ({}: DashboardScreenProps) => {
   const navigation = useLogInNavigation();
 
   return (
-    <MainWrapper>
+    <MainWrapper style={{paddingTop: top}}>
       <StyledText variant={'h6'}>DashBoard</StyledText>
       <StyledText
         variant="link"

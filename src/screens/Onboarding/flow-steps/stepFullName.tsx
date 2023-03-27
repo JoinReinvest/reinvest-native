@@ -79,7 +79,7 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
           />
         </ScrollView>
 
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View key={'buttons_section'} style={[styles.buttonsSection]}>
           <Button
             disabled={shouldButtonBeDisabled}
             isLoading={false}
