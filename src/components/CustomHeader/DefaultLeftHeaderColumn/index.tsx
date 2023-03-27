@@ -1,16 +1,21 @@
-import {useNavigation} from '@react-navigation/native';
+import { Icon } from '@components/Icon';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
+
 import styles from './styles';
-import {Icon} from '@components/Icon';
 
 const DefaultLeftHeaderColumn = () => {
-  const {canGoBack, goBack} = useNavigation();
+  const { canGoBack, goBack } = useNavigation();
+
   return (
     <View style={styles.wrapper}>
       {canGoBack() && (
         <TouchableOpacity onPress={() => goBack()}>
-          <Icon icon="arrowLeft" color="white" />
+          <Icon
+            icon="arrowLeft"
+            color="white"
+          />
         </TouchableOpacity>
       )}
     </View>

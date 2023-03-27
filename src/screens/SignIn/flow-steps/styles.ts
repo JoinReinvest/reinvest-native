@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {palette} from '@constants/theme';
+import { palette } from '@constants/theme';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  error: {textAlign: 'center', marginBottom: 24},
+  error: { textAlign: 'center', marginBottom: 24 },
   firstStepLink: {
     textDecorationColor: palette.pureWhite,
     marginBottom: 12,

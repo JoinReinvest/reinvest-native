@@ -1,15 +1,13 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {BackHandler} from 'react-native';
-import React, {useCallback, useEffect} from 'react';
-import {Icon} from '@components/Icon';
-import {palette} from '@constants/theme';
-import {ContextState} from 'reinvest-app-common/src/form-flow/interfaces';
+import { Icon } from '@components/Icon';
+import { palette } from '@constants/theme';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect } from 'react';
+import { BackHandler } from 'react-native';
+import { ContextState } from 'reinvest-app-common/src/form-flow/interfaces';
 
-export const useStepBackOverride = <T,>(
-  useCurrentFormContext: () => ContextState<T>,
-) => {
+export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextState<T>) => {
   const {
-    meta: {previousStepIdentifier, isFirstStep},
+    meta: { previousStepIdentifier, isFirstStep },
     moveToPreviousValidStep,
   } = useCurrentFormContext();
   const navigation = useNavigation();
@@ -18,16 +16,14 @@ export const useStepBackOverride = <T,>(
       const onBackPress = () => {
         if (previousStepIdentifier) {
           moveToPreviousValidStep();
+
           return true;
         } else {
           return false;
         }
       };
 
-      const subscription = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
       return () => subscription.remove();
     }, [moveToPreviousValidStep, previousStepIdentifier]),
@@ -43,6 +39,7 @@ export const useStepBackOverride = <T,>(
           />
         ),
       });
+
       return;
     } else {
       navigation.setOptions({

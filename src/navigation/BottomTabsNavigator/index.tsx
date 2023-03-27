@@ -1,59 +1,51 @@
-import {
-  BottomTabNavigationOptions,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import { DashboardIcon } from '@components/Icon/icons/TabNavigtionIcons/DashboardIcon';
+import { EducationIcon } from '@components/Icon/icons/TabNavigtionIcons/EducationIcon';
+import { NotificationIcon } from '@components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
+import { ReitIcon } from '@components/Icon/icons/TabNavigtionIcons/ReitIcon';
+import { StyledText } from '@components/typography/StyledText';
+import { palette } from '@constants/theme';
+import { BottomTabsParamsBase } from '@navigation/BottomTabsNavigator/types';
 import Screens from '@navigation/screens';
-import {DashboardIcon} from '@components/Icon/icons/TabNavigtionIcons/DashboardIcon';
-import {ReitIcon} from '@components/Icon/icons/TabNavigtionIcons/ReitIcon';
-import {EducationIcon} from '@components/Icon/icons/TabNavigtionIcons/EducationIcon';
-import {BottomTabsParamsBase} from '@navigation/BottomTabsNavigator/types';
-import {Dashboard} from '@screens/Dashboard';
-import {ReitScreen} from '@screens/REIT';
-import {Education} from '@screens/Education';
-import {Notifications} from '@screens/Notifications';
-import {NotificationIcon} from '@components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
-import {palette} from '@constants/theme';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StyledText} from '@components/typography/StyledText';
+import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Dashboard } from '@screens/Dashboard';
+import { Education } from '@screens/Education';
+import { Notifications } from '@screens/Notifications';
+import { ReitScreen } from '@screens/REIT';
+import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
 
-const stackOptions: Record<
-  Extract<
-    Screens,
-    Screens.Dashboard | Screens.REIT | Screens.Education | Screens.Notifications
-  >,
-  BottomTabNavigationOptions
-> = {
+const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | Screens.Education | Screens.Notifications>, BottomTabNavigationOptions> = {
   [Screens.Dashboard]: {
     title: 'Dashboard',
-    tabBarIcon: ({focused}) => <DashboardIcon focused={focused} />,
+    tabBarIcon: ({ focused }) => <DashboardIcon focused={focused} />,
   },
   [Screens.REIT]: {
     title: 'Community REIT',
-    tabBarIcon: ({focused}) => <ReitIcon focused={focused} />,
+    tabBarIcon: ({ focused }) => <ReitIcon focused={focused} />,
   },
   [Screens.Education]: {
     title: 'Education',
-    tabBarIcon: ({focused}) => <EducationIcon focused={focused} />,
+    tabBarIcon: ({ focused }) => <EducationIcon focused={focused} />,
   },
   [Screens.Notifications]: {
     title: 'Notifications',
-    tabBarIcon: ({focused}) => <NotificationIcon focused={focused} />,
+    tabBarIcon: ({ focused }) => <NotificationIcon focused={focused} />,
   },
 };
 
 const getLabel = (focused: boolean, children: string) => (
   <StyledText
     variant={'today'}
-    color={focused ? palette.pureBlack : palette.dark3}>
+    color={focused ? palette.pureBlack : palette.dark3}
+  >
     {children}
   </StyledText>
 );
 
 export const BottomTabsNavigator: React.FC = () => {
-  const {bottom} = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -65,9 +57,10 @@ export const BottomTabsNavigator: React.FC = () => {
         },
         tabBarActiveTintColor: palette.pureBlack,
         tabBarInactiveTintColor: palette.dark3,
-        tabBarLabelStyle: {marginTop: -12},
-        tabBarLabel: ({focused, children}) => getLabel(focused, children),
-      }}>
+        tabBarLabelStyle: { marginTop: -12 },
+        tabBarLabel: ({ focused, children }) => getLabel(focused, children),
+      }}
+    >
       <Tab.Screen
         name="Dashboard"
         component={Dashboard}

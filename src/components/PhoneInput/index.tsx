@@ -1,18 +1,13 @@
+import { Dropdown } from '@components/Dropdown';
+import { Input } from '@components/Input';
+import { PHONE_MASK } from '@src/constants/masks';
 import React from 'react';
-import {View} from 'react-native';
-import {PHONE_MASK} from '@src/constants/masks';
-import {Dropdown} from '@components/Dropdown';
-import {Input} from '@components/Input';
-import {styles} from './styles';
-import {PhoneInputProps} from './types';
+import { View } from 'react-native';
 
-export const PhoneInput = ({
-  data,
-  onSelect,
-  dark,
-  dropdownValue,
-  ...rest
-}: PhoneInputProps) => {
+import { styles } from './styles';
+import { PhoneInputProps } from './types';
+
+export const PhoneInput = ({ data, onSelect, dark, dropdownValue, ...rest }: PhoneInputProps) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.dropdownWrapper}>

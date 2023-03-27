@@ -1,17 +1,15 @@
-import React from 'react';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
-import {Button} from '@components/Button';
-import {View} from 'react-native';
-import {StatusCircle} from '@components/StatusCircle';
-import {allRequiredFieldsExists} from '@utils/formValidator';
-import {ResetPasswordFormFields} from '../types';
+import { Button } from '@components/Button';
+import { StatusCircle } from '@components/StatusCircle';
+import { useLogOutNavigation } from '@src/navigation/hooks';
 import Screens from '@src/navigation/screens';
-import {useLogOutNavigation} from '@src/navigation/hooks';
-import {styles} from './styles';
-import {Identifiers} from '../identifires';
+import { allRequiredFieldsExists } from '@utils/formValidator';
+import React from 'react';
+import { View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+
+import { Identifiers } from '../identifires';
+import { ResetPasswordFormFields } from '../types';
+import { styles } from './styles';
 
 export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,
@@ -19,6 +17,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
 
   doesMeetConditionFields: fields => {
     const requiredFields = [fields.email, fields.authenticationCode];
+
     return allRequiredFieldsExists(requiredFields);
   },
 
@@ -28,6 +27,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
     const goBackToLoginForm = () => {
       navigation.navigate(Screens.SignIn);
     };
+
     return (
       <View style={styles.wrapper}>
         <StatusCircle title="Your Password Has Been Reset" />

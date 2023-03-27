@@ -1,14 +1,13 @@
-import {ReactNode} from 'react';
-import {StyleProp, ViewStyle} from 'react-native';
-import {RadioButtonProps} from '@components/RadioButton/types';
+import { RadioButtonProps } from '@components/RadioButton/types';
+import { ReactNode } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export interface RadioButtonOption extends Pick<RadioButtonProps, 'id'> {
   label: ReactNode;
 }
 
-export interface RadioButtonGroupProps
-  extends Pick<RadioButtonProps, 'labelStyles' | 'radioStyles'> {
-  options: RadioButtonOption[];
+export interface RadioButtonGroupProps extends Pick<RadioButtonProps, 'labelStyles' | 'radioStyles'> {
   onSelect: (selectedId: string) => void;
+  options: RadioButtonOption[];
   style?: StyleProp<ViewStyle>;
 }

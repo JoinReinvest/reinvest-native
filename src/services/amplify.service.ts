@@ -1,11 +1,7 @@
-import {
-  AWS_COGNITO_CLIENT_ID,
-  AWS_COGNITO_USER_POOL_ID,
-  AWS_REGION,
-} from '@env';
+import { Auth, CognitoUser } from '@aws-amplify/auth';
 import Amplify from '@aws-amplify/core';
-import {Auth, CognitoUser} from '@aws-amplify/auth';
-import {AuthStorage} from '@src/services/storage.service';
+import { AWS_COGNITO_CLIENT_ID, AWS_COGNITO_USER_POOL_ID, AWS_REGION } from '@env';
+import { AuthStorage } from '@src/services/storage.service';
 
 const awsConfig = {
   aws_cognito_region: AWS_REGION,
@@ -24,8 +20,9 @@ const awsInit = () => {
 async function getToken() {
   try {
     const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
+
     return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
   } catch (error) {}
 }
 
-export default {awsInit, getToken};
+export default { awsInit, getToken };

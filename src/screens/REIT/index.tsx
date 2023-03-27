@@ -1,8 +1,8 @@
+import { MainWrapper } from '@components/MainWrapper';
+import { StyledText } from '@components/typography/StyledText';
 import React from 'react';
 
-import {REITScreenProps} from './types';
-import {MainWrapper} from '@components/MainWrapper';
-import {StyledText} from '@components/typography/StyledText';
+import { REITScreenProps } from './types';
 
 export const ReitScreen = ({}: REITScreenProps) => {
   return (

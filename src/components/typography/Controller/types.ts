@@ -1,10 +1,10 @@
-import {type ControllerProps as ControllerPropsBase} from 'react-hook-form';
-import {InputProps} from '@components/Input/types';
+import { InputProps } from '@components/Input/types';
+import { type ControllerProps as ControllerPropsBase } from 'react-hook-form';
 
 export interface ControllerProps extends Partial<ControllerPropsBase> {
-  fieldName: string;
   control: any;
+  fieldName: string;
   onSubmit: () => Promise<void> | void;
-  type?: 'input' | 'textarea';
   inputProps?: Partial<InputProps>;
+  type?: 'input' | 'textarea';
 }

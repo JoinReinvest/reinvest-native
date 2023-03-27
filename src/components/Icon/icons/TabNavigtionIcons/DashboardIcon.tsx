@@ -1,12 +1,14 @@
+import { palette } from '@constants/theme';
 import React from 'react';
-import Svg, {Path, SvgProps} from 'react-native-svg';
-import {palette} from '@constants/theme';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
-export const DashboardIcon = ({
-  focused = false,
-  ...props
-}: SvgProps & {focused: boolean}) => (
-  <Svg width={22} height={20} fill="none" {...props}>
+export const DashboardIcon = ({ focused = false, ...props }: SvgProps & { focused: boolean }) => (
+  <Svg
+    width={22}
+    height={20}
+    fill="none"
+    {...props}
+  >
     <Path
       d="M4.653 18.914a10 10 0 1 1 12.444 0H4.653Z"
       fill={focused ? palette.pureBlack : palette.pureWhite}

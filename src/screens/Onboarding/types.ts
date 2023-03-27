@@ -1,7 +1,7 @@
-import {AccountTypeValue} from '@constants/account-types';
+import { AccountTypeValue } from '@constants/account-types';
 export interface OnboardingFormFields {
   accountType?: AccountTypeValue;
   firstName?: string;
-  middleName?: string;
   lastName?: string;
+  middleName?: string;
 }

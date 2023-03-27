@@ -3,8 +3,8 @@
  */
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ICognitoStorage} from 'amazon-cognito-identity-js';
-import {type KeyValuePair} from '@react-native-async-storage/async-storage/lib/typescript/types';
+import { type KeyValuePair } from '@react-native-async-storage/async-storage/lib/typescript/types';
+import { ICognitoStorage } from 'amazon-cognito-identity-js';
 
 const MEMORY_KEY_PREFIX = '@fcAuth:';
 let dataMemory: Record<string, string | null> = {};
@@ -16,6 +16,7 @@ const syncPromise: Promise<string[]> | null = null;
 function setItem(key: string, value: string) {
   AsyncStorage.setItem(MEMORY_KEY_PREFIX + key, value);
   dataMemory[key] = value;
+
   return dataMemory[key];
 }
 
@@ -31,6 +32,7 @@ function getItem(key: string) {
  */
 function removeItem(key: string) {
   AsyncStorage.removeItem(MEMORY_KEY_PREFIX + key);
+
   return delete dataMemory[key];
 }
 
@@ -39,6 +41,7 @@ function removeItem(key: string) {
  */
 function clear() {
   dataMemory = {};
+
   return dataMemory;
 }
 
@@ -50,13 +53,9 @@ async function sync() {
     try {
       const keys = await AsyncStorage.getAllKeys();
 
-      const memoryKeys = keys.filter((key: string) =>
-        key.startsWith(MEMORY_KEY_PREFIX),
-      );
+      const memoryKeys = keys.filter((key: string) => key.startsWith(MEMORY_KEY_PREFIX));
 
-      const stores: readonly KeyValuePair[] = await AsyncStorage.multiGet(
-        memoryKeys,
-      );
+      const stores: readonly KeyValuePair[] = await AsyncStorage.multiGet(memoryKeys);
 
       stores.map((store: [string, string | null]) => {
         const key = store[0];

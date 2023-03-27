@@ -1,9 +1,10 @@
-import React, {PropsWithChildren} from 'react';
-import {Pressable} from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {BaseImagePickerOptions, ImagePickerProps} from './types';
-import {requestWriteExternalStoragePermission} from '@src/permissions/requestWriteExternalStoragePermission';
-import {isIOS} from '@constants/common';
+import { isIOS } from '@constants/common';
+import { requestWriteExternalStoragePermission } from '@src/permissions/requestWriteExternalStoragePermission';
+import React, { PropsWithChildren } from 'react';
+import { Pressable } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+import { BaseImagePickerOptions, ImagePickerProps } from './types';
 
 const baseOptions: BaseImagePickerOptions = {
   mediaType: 'photo',
@@ -11,19 +12,14 @@ const baseOptions: BaseImagePickerOptions = {
   includeExtra: true,
 };
 
-export const ImagePicker = ({
-  type,
-  onSelect,
-  children,
-  selectionImageLimit = 1,
-  ...rest
-}: PropsWithChildren<ImagePickerProps>) => {
+export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1, ...rest }: PropsWithChildren<ImagePickerProps>) => {
   const onButtonPress = async () => {
     if (type === 'capture') {
       if (!isIOS) {
         // permission to write storage is needed in Android 28 or below
         await requestWriteExternalStoragePermission();
       }
+
       launchCamera(
         {
           ...baseOptions,
@@ -32,6 +28,7 @@ export const ImagePicker = ({
         onSelect,
       );
     }
+
     if (type === 'library') {
       launchImageLibrary(
         {
@@ -44,7 +41,10 @@ export const ImagePicker = ({
   };
 
   return (
-    <Pressable onPress={onButtonPress} {...rest}>
+    <Pressable
+      onPress={onButtonPress}
+      {...rest}
+    >
       {children}
     </Pressable>
   );

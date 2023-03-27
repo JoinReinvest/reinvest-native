@@ -1,8 +1,8 @@
+import { MainWrapper } from '@components/MainWrapper';
+import { StyledText } from '@components/typography/StyledText';
 import React from 'react';
 
-import {NotificationsScreenProps} from './types';
-import {MainWrapper} from '@components/MainWrapper';
-import {StyledText} from '@components/typography/StyledText';
+import { NotificationsScreenProps } from './types';
 
 export const Notifications = ({}: NotificationsScreenProps) => {
   return (

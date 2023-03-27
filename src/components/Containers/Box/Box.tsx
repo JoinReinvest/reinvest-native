@@ -1,13 +1,8 @@
-import React, {memo, PropsWithChildren, useMemo} from 'react';
-import {Pressable, View, ViewStyle} from 'react-native';
-import {palette} from '@constants/theme';
-import {
-  type BoxProps,
-  sizes,
-  type SizesEnum,
-  type SpacingProps,
-} from '@components/Containers/Box/types';
-import {xScale, yScale} from '@utils/scale';
+import { type BoxProps, sizes, type SizesEnum, type SpacingProps } from '@components/Containers/Box/types';
+import { palette } from '@constants/theme';
+import { xScale, yScale } from '@utils/scale';
+import React, { memo, PropsWithChildren, useMemo } from 'react';
+import { Pressable, View, ViewStyle } from 'react-native';
 
 const getSize = (size: SizesEnum | undefined) => size && sizes[size];
 
@@ -53,22 +48,7 @@ export const Box = memo(
     const spacings = useMemo(
       () => generateSpacings(props),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [
-        props.m,
-        props.mb,
-        props.ml,
-        props.mr,
-        props.mt,
-        props.mx,
-        props.my,
-        props.pb,
-        props.pl,
-        props.pr,
-        props.pt,
-        props.px,
-        props.py,
-        props.p,
-      ],
+      [props.m, props.mb, props.ml, props.mr, props.mt, props.mx, props.my, props.pb, props.pl, props.pr, props.pt, props.px, props.py, props.p],
     );
 
     const Container = onPress ? Pressable : View;
@@ -93,7 +73,8 @@ export const Box = memo(
             alignSelf,
           },
           style,
-        ]}>
+        ]}
+      >
         {children}
       </Container>
     );

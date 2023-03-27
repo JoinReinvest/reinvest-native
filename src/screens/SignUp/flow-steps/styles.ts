@@ -1,13 +1,13 @@
-import {StyleSheet} from 'react-native';
-import {palette} from '@constants/theme';
-import {yScale} from '@src/utils/scale';
+import { palette } from '@constants/theme';
+import { yScale } from '@src/utils/scale';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
     width: '100%',
     justifyContent: 'center',
   },
-  flex: {flex: 1},
+  flex: { flex: 1 },
   row: {
     justifyContent: 'space-between',
     flexDirection: 'row',

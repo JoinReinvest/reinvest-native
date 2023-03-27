@@ -1,12 +1,14 @@
+import { palette } from '@constants/theme';
 import React from 'react';
-import Svg, {Path, SvgProps} from 'react-native-svg';
-import {palette} from '@constants/theme';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
-export const EducationIcon = ({
-  focused = false,
-  ...props
-}: SvgProps & {focused: boolean}) => (
-  <Svg width={23} height={19} fill="none" {...props}>
+export const EducationIcon = ({ focused = false, ...props }: SvgProps & { focused: boolean }) => (
+  <Svg
+    width={23}
+    height={19}
+    fill="none"
+    {...props}
+  >
     {!focused ? (
       <>
         <Path

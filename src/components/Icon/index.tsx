@@ -1,9 +1,10 @@
-import {useMemo} from 'react';
-import React, {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {palette} from '@constants/theme';
-import {icons, sizes} from './constants';
-import {IconProps} from './types';
-import {defaultHitSlop} from '@constants/common';
+import { defaultHitSlop } from '@constants/common';
+import { palette } from '@constants/theme';
+import { useMemo } from 'react';
+import React, { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { icons, sizes } from './constants';
+import { IconProps } from './types';
 
 export const Icon = ({
   icon,
@@ -15,26 +16,30 @@ export const Icon = ({
   ...props
 }: IconProps) => {
   const IconComp = icons[icon];
-  const styles = useMemo(
-    () =>
-      StyleSheet.flatten([{width: sizes[size], height: sizes[size]}, style]),
-    [size, style],
-  );
+  const styles = useMemo(() => StyleSheet.flatten([{ width: sizes[size], height: sizes[size] }, style]), [size, style]);
 
   if (onPress) {
     return (
       <TouchableOpacity
         style={styles}
         onPress={onPress}
-        hitSlop={defaultHitSlop}>
-        <IconComp width={sizes[size]} height={sizes[size]} color={color} />
+        hitSlop={defaultHitSlop}
+      >
+        <IconComp
+          width={sizes[size]}
+          height={sizes[size]}
+          color={color}
+        />
       </TouchableOpacity>
     );
   }
 
   return (
     <View style={styles}>
-      <IconComp {...props} color={color} />
+      <IconComp
+        {...props}
+        color={color}
+      />
     </View>
   );
 };

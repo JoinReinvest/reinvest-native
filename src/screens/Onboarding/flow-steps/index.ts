@@ -1,7 +1,8 @@
-import {OnboardingFormFields} from '../types';
-import {createFormFlow} from 'reinvest-app-common/src/form-flow/index';
-import {StepFullName} from './stepFullName';
-import {StepAccountType} from './stepAccountType';
+import { createFormFlow } from 'reinvest-app-common/src/form-flow/index';
+
+import { OnboardingFormFields } from '../types';
+import { StepAccountType } from './stepAccountType';
+import { StepFullName } from './stepFullName';
 
 export const FLOW_STEPS = [StepAccountType, StepFullName];
 
@@ -12,9 +13,8 @@ export const onboardingFormFieldsInitialState: OnboardingFormFields = {
   lastName: undefined,
 };
 
-const [useOnboardingFormFlow, OnboardingFormFlowProvider] =
-  createFormFlow<OnboardingFormFields>({
-    steps: FLOW_STEPS,
-  });
+const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
+  steps: FLOW_STEPS,
+});
 
-export {OnboardingFormFlowProvider, useOnboardingFormFlow};
+export { OnboardingFormFlowProvider, useOnboardingFormFlow };

@@ -1,26 +1,22 @@
-import {MainWrapper} from '@components/MainWrapper';
-import {Video} from '@components/Video';
-import {StatusBar, StyleSheet, View} from 'react-native';
-import {styles} from '@screens/SignIn/SignIn.styles';
-import {Sygnet} from '@components/Icon/icons';
-import {StyledText} from '@components/typography/StyledText';
-import React, {PropsWithChildren} from 'react';
+import { Sygnet } from '@components/Icon/icons';
+import { MainWrapper } from '@components/MainWrapper';
+import { StyledText } from '@components/typography/StyledText';
+import { Video } from '@components/Video';
+import { styles } from '@screens/SignIn/SignIn.styles';
+import { palette } from '@src/constants/theme';
+import { hexToRgbA } from '@src/utils/hexToRgb';
+import React, { PropsWithChildren } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {hexToRgbA} from '@src/utils/hexToRgb';
-import {palette} from '@src/constants/theme';
 
 interface FirstStepLayoutProps {
-  headline: string;
   description: string;
+  headline: string;
 }
 
-export const FirstStepLayout = ({
-  headline,
-  description,
-  children,
-}: PropsWithChildren<FirstStepLayoutProps>) => {
+export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
   return (
-    <MainWrapper style={{justifyContent: 'flex-start'}}>
+    <MainWrapper style={{ justifyContent: 'flex-start' }}>
       <StatusBar barStyle={'light-content'} />
       <Video />
       <LinearGradient
@@ -31,10 +27,16 @@ export const FirstStepLayout = ({
         <Sygnet />
       </View>
       <View style={styles.descriptionSegment}>
-        <StyledText style={[styles.text]} variant={'h1'}>
+        <StyledText
+          style={[styles.text]}
+          variant={'h1'}
+        >
           {headline}
         </StyledText>
-        <StyledText style={styles.text} variant={'bonusHeading'}>
+        <StyledText
+          style={styles.text}
+          variant={'bonusHeading'}
+        >
           {description}
         </StyledText>
       </View>

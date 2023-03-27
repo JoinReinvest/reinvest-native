@@ -1,6 +1,7 @@
-import {StyledText} from '@components/typography/StyledText';
-import {styles} from './styles';
+import { StyledText } from '@components/typography/StyledText';
 import React from 'react';
+
+import { styles } from './styles';
 
 enum MessageVariant {
   error = 'error',
@@ -14,9 +15,12 @@ interface Props {
   variant: MessageVariants;
 }
 
-export const FormMessage = ({variant, message}: Props) => {
+export const FormMessage = ({ variant, message }: Props) => {
   return (
-    <StyledText style={[styles.message, styles[variant]]} variant={'h6'}>
+    <StyledText
+      style={[styles.message, styles[variant]]}
+      variant={'h6'}
+    >
       {message}
     </StyledText>
   );

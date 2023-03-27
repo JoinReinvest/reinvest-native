@@ -1,5 +1,5 @@
-import {ViewStyle} from 'react-native';
-import {Theme} from '@constants/theme';
+import { Theme } from '@constants/theme';
+import { ViewStyle } from 'react-native';
 
 const sizes = {
   '2': 2,
@@ -17,47 +17,47 @@ const sizes = {
 
 export type SizesEnum = keyof typeof sizes;
 
-export {sizes};
+export { sizes };
 
 export type PaddingProps = {
   p?: SizesEnum;
-  pt?: SizesEnum;
   pb?: SizesEnum;
   pl?: SizesEnum;
   pr?: SizesEnum;
+  pt?: SizesEnum;
   px?: SizesEnum;
   py?: SizesEnum;
 };
 export type MarginProps = {
   m?: SizesEnum;
-  mt?: SizesEnum;
   mb?: SizesEnum;
   ml?: SizesEnum;
   mr?: SizesEnum;
+  mt?: SizesEnum;
   mx?: SizesEnum;
   my?: SizesEnum;
 };
 
 export type FlexPosition = {
-  flex?: number;
   alignItems?: ViewStyle['alignItems'];
   alignSelf?: ViewStyle['alignSelf'];
-  justifyContent?: ViewStyle['justifyContent'];
-  flexDirection?: ViewStyle['flexDirection'];
+  flex?: number;
   flexBasis?: ViewStyle['flexBasis'];
-  flexShrink?: ViewStyle['flexShrink'];
+  flexDirection?: ViewStyle['flexDirection'];
   flexGrow?: ViewStyle['flexGrow'];
+  flexShrink?: ViewStyle['flexShrink'];
+  justifyContent?: ViewStyle['justifyContent'];
 };
 
-export type Sizes = {width?: ViewStyle['width']; height?: ViewStyle['height']};
+export type Sizes = { height?: ViewStyle['height']; width?: ViewStyle['width'] };
 export type SpacingProps = MarginProps & PaddingProps;
 
 export type BoxProps = {
-  style?: ViewStyle;
   color?: Theme;
-  radius?: number;
-  onPress?: () => void;
   fw?: boolean;
+  onPress?: () => void;
+  radius?: number;
+  style?: ViewStyle;
 } & SpacingProps &
   FlexPosition &
   Sizes;

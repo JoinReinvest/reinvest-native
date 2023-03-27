@@ -1,12 +1,14 @@
+import { palette } from '@constants/theme';
 import React from 'react';
-import Svg, {Path, SvgProps} from 'react-native-svg';
-import {palette} from '@constants/theme';
+import Svg, { Path, SvgProps } from 'react-native-svg';
 
-export const HamburgerOpen = ({
-  color = palette.pureBlack,
-  ...rest
-}: SvgProps) => (
-  <Svg width={32} height={32} fill="none" {...rest}>
+export const HamburgerOpen = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
+  <Svg
+    width={32}
+    height={32}
+    fill="none"
+    {...rest}
+  >
     <Path
       stroke={color}
       strokeWidth={1.5}

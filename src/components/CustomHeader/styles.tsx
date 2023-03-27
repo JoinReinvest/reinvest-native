@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {palette} from '@constants/theme';
-import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '@constants/styles';
+import { palette } from '@constants/theme';
+import { StyleSheet } from 'react-native';
 
 const HEADER_HEIGHT = 56;
 
