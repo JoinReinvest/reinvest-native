@@ -9,4 +9,5 @@ export const privacyPolicy = 'lorem ipsum ';
 
 export const onBoardingDisclaimers = {
   notSureWhichBestForYou: 'Lorem ipsum',
+  requiredWhy: 'Lorem ipsum',
 };

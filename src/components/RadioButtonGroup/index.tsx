@@ -1,33 +1,35 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {RadioButtonGroupProps} from './types';
-import {RadioButton} from '@components/RadioButton';
 import {styles} from './styles';
+import {RadioButton} from '@components/RadioButton';
 
 export const RadioButtonGroup = ({
   options,
   style,
   onSelect,
+  selectedValue,
   ...rest
 }: RadioButtonGroupProps) => {
   const [selectedRadioButtonId, setSelectedRadioButtonId] = useState<
     string | null
-  >(null);
+  >(selectedValue || null);
 
   const handleSelect = (selectedId: string) => {
     setSelectedRadioButtonId(selectedId);
     onSelect(selectedId);
   };
+
   return (
     <View style={[styles.wrapper, style]}>
-      {options.map(({id, label}) => (
+      {options.map(({title, value}) => (
         <RadioButton
-          key={id}
-          id={id}
+          key={value}
+          value={value}
           onPress={handleSelect}
-          checked={selectedRadioButtonId === id}
+          checked={selectedRadioButtonId === value}
           {...rest}>
-          {label}
+          {title}
         </RadioButton>
       ))}
     </View>
