@@ -25,4 +25,14 @@ export const styles = StyleSheet.create({
   fw: {
     width: '100%',
   },
+  phoneRow: {
+    flexDirection: 'row',
+  },
+  callingCodeDropdown: {
+    flexBasis: '30%',
+  },
+  phoneInputWrapper: {
+    flexBasis: '70%',
+    marginLeft: -1,
+  },
 });
