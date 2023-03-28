@@ -20,7 +20,7 @@ export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1,
         await requestWriteExternalStoragePermission();
       }
 
-      launchCamera(
+      await launchCamera(
         {
           ...baseOptions,
           saveToPhotos: true,
@@ -30,7 +30,7 @@ export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1,
     }
 
     if (type === 'library') {
-      launchImageLibrary(
+      await launchImageLibrary(
         {
           ...baseOptions,
           selectionLimit: selectionImageLimit,

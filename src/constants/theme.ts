@@ -5,7 +5,6 @@
 
 export const palette = {
   frostGreen: '#C1EBD9',
-  // frostGreen: '#6495ed',
   deepGreen: '#11270B',
   pureBlack: '#000000',
   onboarding: '#1B1B1B',
@@ -21,11 +20,6 @@ export const palette = {
   lightGray: '#E9E9E9',
   lightesGray: '#FCFCFC',
   transparent: 'transparent',
-};
-
-export const gradients = {
-  gradientsLight: ['#D6E5E0', '#FFFFFF'],
-  gradientsDark: ['#D6E5E0', '#11270B'],
 };
 
 type ValueOf<T> = T[keyof T];

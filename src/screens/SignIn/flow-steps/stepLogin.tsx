@@ -43,7 +43,9 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
     setError('');
-    updateStoreFields(fields);
+
+    await updateStoreFields(fields);
+
     const { email, password } = fields;
 
     const result = await actions.signIn(email, password);

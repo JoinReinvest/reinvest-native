@@ -50,13 +50,15 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async ({ phoneNumberAuthenticationCode }) => {
       try {
-        if (!phoneNumberAuthenticationCode) return;
+        if (!phoneNumberAuthenticationCode) {
+          return;
+        }
 
         setLoading(true);
-        phoneNumberAuthenticationCode = phoneNumberAuthenticationCode.replace('-', '');
+
         // TODO: Add validation of the code
         await updateStoreFields({
-          phoneNumberAuthenticationCode,
+          phoneNumberAuthenticationCode: phoneNumberAuthenticationCode.replace('-', ''),
           _hasAuthenticatedPhoneNumber: true,
         });
         setLoading(false);

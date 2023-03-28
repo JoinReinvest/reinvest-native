@@ -14,7 +14,7 @@ export const MainWrapper = ({
   noPadding,
 }: PropsWithChildren<MainWrapperProps>) => {
   return (
-    <View style={[!dark ? styles.light : styles.dark]}>
+    <View style={[dark ? styles.dark : styles.light]}>
       <StatusBar
         hidden={false}
         barStyle={dark ? 'light-content' : 'dark-content'}

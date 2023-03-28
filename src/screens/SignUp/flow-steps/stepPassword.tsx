@@ -52,7 +52,9 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
-      updateStoreFields(values);
+
+      await updateStoreFields(values);
+
       try {
         await actions.signUp({
           username: storeFields.email,

@@ -3,13 +3,6 @@ interface CountryWithCallingCode {
   readonly country: string;
 }
 
-const sortCountriesByCallingCode = (currentCountry: CountryWithCallingCode, nextCountry: CountryWithCallingCode) => {
-  const currentCountryCallingCode = parseInt(currentCountry.callingCode, 10);
-  const nextCountryCallingCode = parseInt(nextCountry.callingCode, 10);
-
-  return currentCountryCallingCode - nextCountryCallingCode;
-};
-
 const filterCountriesWithUniqueCallingCodes = (country: CountryWithCallingCode, index: number, countries: typeof COUNTRIES_WITH_CALLING_CODES) => {
   const indexInCountries = countries.findIndex(({ callingCode }) => callingCode === country.callingCode);
 
@@ -1009,4 +1002,3 @@ export const CALLING_CODES: [CallingCode, ...CallingCode[]] = [
 export const UNIQUE_COUNTRIES_CALLING_CODES = COUNTRIES_WITH_CALLING_CODES.filter((country, index) =>
   filterCountriesWithUniqueCallingCodes(country, index, COUNTRIES_WITH_CALLING_CODES),
 );
-export const SORTED_COUNTRIES_CALLING_CODES = UNIQUE_COUNTRIES_CALLING_CODES.sort(sortCountriesByCallingCode);

@@ -41,7 +41,6 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         await actions.confirmSignIn(fields.authenticationCode);
       } catch (err) {
         setError((err as Error).message);
-      } finally {
       }
     };
 
