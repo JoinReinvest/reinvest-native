@@ -9,6 +9,7 @@ import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepFullName } from './stepFullName';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
+import { StepCompliance } from '@screens/Onboarding/flow-steps/stepCompliance';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -19,9 +20,10 @@ export const FLOW_STEPS = [
   StepResidencyStatus,
   StepResidencyGreenCard,
   StepResidencyVisa,
+  StepCompliance,
 ];
 
-export const onboardingFormFieldsInitialState: OnboardingFormFields = {
+export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   accountType: undefined,
   firstName: undefined,
   middleName: undefined,
