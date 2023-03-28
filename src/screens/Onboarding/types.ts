@@ -15,4 +15,5 @@ export interface OnboardingFormFields {
   birthCountry?: string;
   citizenshipCountry?: string;
   visaType?: VisaType;
+  dateOfBirth?: Date;
 }

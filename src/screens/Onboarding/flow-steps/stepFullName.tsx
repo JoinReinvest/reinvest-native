@@ -15,6 +15,8 @@ import {formValidationRules} from '@src/utils/formValidationRules';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {Controller} from '@src/components/typography/Controller';
+import {ProgressBar} from '@src/components/ProgressBar';
+import {useOnboardingFormFlow} from '.';
 
 type Fields = Pick<
   OnboardingFormFields,
@@ -35,6 +37,7 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
     moveToNextStep,
     updateStoreFields,
   }: StepComponentProps<OnboardingFormFields>) => {
+    const {progressPercentage} = useOnboardingFormFlow();
     const {handleSubmit, control, formState} = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
@@ -54,6 +57,9 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
@@ -78,7 +84,6 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
             inputProps={{placeholder: 'Last Name', dark: true}}
           />
         </ScrollView>
-
         <View key={'buttons_section'} style={[styles.buttonsSection]}>
           <Button
             disabled={shouldButtonBeDisabled}
