@@ -1,6 +1,6 @@
 import {StepEmail} from './stepEmail';
 import {ResetPasswordFormFields} from '../types';
-import {createFormFlow} from 'reinvest-app-common/src/form-flow/index';
+import {createFormFlow} from 'reinvest-app-common/src/services/form-flow/index';
 import {StepAuthenticationCode} from './stepAuthenticationCode';
 import {StepNewPassword} from './stepNewPassword';
 import {StepChangePasswordConfirm} from './stepChangePasswordConfirm';

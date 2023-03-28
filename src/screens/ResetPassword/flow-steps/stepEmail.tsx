@@ -7,14 +7,13 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 
 import {styles} from './styles';
 import {Controller} from '@components/typography/Controller';
 import {FormTitle} from '@components/Forms/FormTitle';
 import {Button} from '@components/Button';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {ResetPasswordFormFields} from '../types';
 import {useAuth} from '@src/providers/AuthProvider';
 import {FormMessage} from '@src/components/Forms/FormMessage';
@@ -56,9 +55,9 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
+      <>
         {error && <FormMessage message={error} variant={'error'} />}
-        <ScrollView>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline="Reset Password"
@@ -82,7 +81,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
             Continue
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

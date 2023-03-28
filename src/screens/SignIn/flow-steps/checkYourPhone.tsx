@@ -7,7 +7,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 
 import {Identifiers} from '../identifiers';
@@ -16,12 +16,11 @@ import {styles} from '@screens/SignIn/flow-steps/styles';
 import {View} from 'react-native';
 import {Controller} from '@components/typography/Controller';
 import {FormTitle} from '@components/Forms/FormTitle';
-import {LoginFormFields} from '@screens/SignIn/SignIn.types';
+import {LoginFormFields} from '@screens/SignIn/types';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {Button} from '@components/Button';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {CODE_MASK} from '@src/constants/masks';
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
@@ -52,7 +51,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
+      <View>
         <FormTitle
           dark
           headline="Check Your Phone"
@@ -82,7 +81,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         <Button disabled={loading} onPress={handleSubmit(onSubmit)}>
           Continue
         </Button>
-      </KeyboardAwareWrapper>
+      </View>
     );
   },
 };

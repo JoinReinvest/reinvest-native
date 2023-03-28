@@ -1,14 +1,14 @@
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {allRequiredFieldsExists} from '@utils/formValidator';
 import zod, {Schema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {formValidationRules} from '@utils/formValidationRules';
 import React, {useState} from 'react';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {Identifiers} from '@screens/SignUp/identifiers';
 import {Auth} from '@aws-amplify/auth';
 import {Controller} from '@components/typography/Controller';
@@ -19,7 +19,6 @@ import {Alert, ScrollView, View} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {CODE_MASK} from '@src/constants/masks';
 
 type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
@@ -68,8 +67,8 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Check Your Email'}
@@ -89,6 +88,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
               maxLength: 7,
               keyboardType: 'number-pad',
               mask: CODE_MASK,
+              returnKeyType: 'done',
             }}
           />
           <View style={styles.row}>
@@ -113,7 +113,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             Sign Up
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

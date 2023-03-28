@@ -1,27 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {DashboardScreenProps} from './types';
 import {MainWrapper} from '@components/MainWrapper';
 import {StyledText} from '@components/typography/StyledText';
-import {Button} from 'react-native';
-import {useAuth} from '@src/providers/AuthProvider';
 import {useLogInNavigation} from '@src/navigation/hooks';
 import Screens from '@src/navigation/screens';
+import {apiClient} from '@api/apiClient';
+import {useGetUserProfile} from 'reinvest-app-common/src/services/queries/getProfile';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const Dashboard = ({}: DashboardScreenProps) => {
-  const {actions, user} = useAuth();
+  const {data, isLoading} = useGetUserProfile(apiClient);
+  const {top} = useSafeAreaInsets();
+
+  useEffect(() => {
+    console.log({data, isLoading});
+  }, [data, isLoading]);
+
   const navigation = useLogInNavigation();
 
   return (
-    <MainWrapper>
-      <StyledText variant={'h6'}>Logged as</StyledText>
-      <StyledText variant={'paragraphSmall'}>{user?.getUsername()}</StyledText>
+    <MainWrapper style={{paddingTop: top}}>
+      <StyledText variant={'h6'}>DashBoard</StyledText>
       <StyledText
         variant="link"
         onPress={() => navigation.navigate(Screens.Onboarding)}>
         Start Onboarding
       </StyledText>
-      <Button title={'signout'} onPress={() => actions.signOut()} />
     </MainWrapper>
   );
 };

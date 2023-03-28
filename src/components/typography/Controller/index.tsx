@@ -2,15 +2,18 @@ import React from 'react';
 import {Controller as ControllerBase} from 'react-hook-form';
 import {Input} from '@components/Input';
 import {ControllerProps} from './types';
+import {Dropdown} from '@src/components/Dropdown';
 
 export const Controller = ({
+  select = false,
   control,
   fieldName,
   onSubmit,
   inputProps,
+  dropdownProps,
   ...props
 }: ControllerProps) => {
-  const Comp = Input;
+  const Comp = select ? Dropdown : Input;
   return (
     <ControllerBase
       name={fieldName}
@@ -31,7 +34,13 @@ export const Controller = ({
             onChangeText={onChange}
             secureTextEntry={/password/gim.test(fieldName)}
             autoCapitalize={/email/gim.test(fieldName) ? 'none' : undefined}
-            {...inputProps}
+            {...(select
+              ? {
+                  ...dropdownProps,
+                  onSelect: selected =>
+                    onChange({target: {value: selected.value}}),
+                }
+              : inputProps)}
             error={error?.message}
           />
         );

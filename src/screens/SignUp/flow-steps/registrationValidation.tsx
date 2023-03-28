@@ -1,11 +1,11 @@
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {allRequiredFieldsExists} from '@utils/formValidator';
 import {useAuth} from '@providers/AuthProvider';
 import React, {useEffect, useState} from 'react';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {Identifiers} from '@screens/SignUp/identifiers';
 import {StatusCircle} from '@components/StatusCircle';
 import {Button} from '@components/Button';
@@ -60,7 +60,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     }, []);
 
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, styles.fw]}>
         {isLoading ? (
           <View style={styles.flex}>
             <FormTitle dark headline={'Verifying Account Information'} />

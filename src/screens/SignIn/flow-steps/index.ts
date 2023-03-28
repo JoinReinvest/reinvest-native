@@ -1,6 +1,6 @@
 import {StepCheckYourPhone} from '@screens/SignIn/flow-steps/checkYourPhone';
-import {LoginFormFields} from '@screens/SignIn/SignIn.types';
-import {createFormFlow} from 'reinvest-app-common/src/form-flow/index';
+import {LoginFormFields} from '@screens/SignIn/types';
+import {createFormFlow} from 'reinvest-app-common/src/services/form-flow/index';
 
 export const FLOW_STEPS = [StepCheckYourPhone];
 

@@ -4,18 +4,24 @@ import {MainWrapper} from '@components/MainWrapper';
 import {TermsFooter} from '@components/TermsFooter';
 import {useOnboardingFormFlow} from '../flow-steps';
 import {OnboardingFormFields} from '../types';
+import {useKeyboardAware} from '@hooks/useKeyboardAware';
+import {DialogProvider} from '@providers/DialogProvider';
 
 interface Props {
   shouldShowFooter?: boolean;
 }
 export const BlackLayout = ({shouldShowFooter = true}: Props) => {
   const {CurrentStepView} = useOnboardingFormFlow();
+
   useStepBackOverride<OnboardingFormFields>(useOnboardingFormFlow);
+  useKeyboardAware();
 
   return (
-    <MainWrapper dark>
-      <CurrentStepView />
-      {shouldShowFooter && <TermsFooter />}
-    </MainWrapper>
+    <DialogProvider dark>
+      <MainWrapper dark>
+        <CurrentStepView />
+        {shouldShowFooter && <TermsFooter />}
+      </MainWrapper>
+    </DialogProvider>
   );
 };

@@ -5,5 +5,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     width: '100%',
+    alignItems: 'center',
   },
 });

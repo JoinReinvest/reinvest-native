@@ -1,7 +1,7 @@
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {allRequiredFieldsExists} from '@utils/formValidator';
 import zod, {Schema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -16,7 +16,6 @@ import {Alert, ScrollView, View} from 'react-native';
 import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {FormMessage} from '@components/Forms/FormMessage';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {useAuth} from '@src/providers/AuthProvider';
 import {ResetPasswordFormFields} from '../types';
 import {CODE_MASK} from '@src/constants/masks';
@@ -47,6 +46,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
+
     const shouldButtonBeDisabled =
       !formState.isValid || formState.isSubmitting || loading;
 
@@ -70,8 +70,8 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Check Your Email'}
@@ -115,7 +115,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
             Continue
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

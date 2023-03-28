@@ -4,17 +4,16 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 
 import {Identifiers} from '../identifiers';
 import {formValidationRules} from '@utils/formValidationRules';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
 import {Button} from '@components/Button';
 import {Controller} from '@components/typography/Controller';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
 import {FormTitle} from '@components/Forms/FormTitle';
 import {CODE_MASK} from '@src/constants/masks';
@@ -55,8 +54,8 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={[styles.wrapper]}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Do you have a referral code? (optional)'}
@@ -74,6 +73,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               keyboardType: 'numeric',
               maxLength: 7,
               mask: CODE_MASK, // xxx-xxx
+              returnKeyType: 'done',
             }}
           />
           <ReferralCodeCheckList referralCode={fields.password || ''} />
@@ -89,7 +89,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Enter code
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

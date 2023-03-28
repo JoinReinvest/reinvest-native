@@ -12,7 +12,7 @@ import {StyledText} from '@components/typography/StyledText';
 import {palette} from '@constants/theme';
 import {useLogOutNavigation} from '@navigation/hooks';
 import Screens from '@navigation/screens';
-import {LoginFormFields} from '@screens/SignIn/SignIn.types';
+import {LoginFormFields} from '@screens/SignIn/types';
 import {CognitoUser} from '@aws-amplify/auth';
 import {FormMessage} from '@components/Forms/FormMessage';
 import {useLoginFormFlow} from '@screens/SignIn/flow-steps/index';

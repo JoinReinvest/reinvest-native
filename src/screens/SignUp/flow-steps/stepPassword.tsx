@@ -4,21 +4,20 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, {Schema} from 'zod';
 import {Identifiers} from '../identifiers';
 import {Button} from '@components/Button';
 import {FormTitle} from '@components/Forms/FormTitle';
 import {ScrollView, View} from 'react-native';
 import {useAuth} from '@providers/AuthProvider';
-import {RegisterFormFields} from '@screens/SignUp/SignUp.types';
+import {RegisterFormFields} from '@screens/SignUp/types';
 import {formValidationRules} from '@utils/formValidationRules';
 import {Auth} from '@aws-amplify/auth';
 import {styles} from '@screens/SignUp/flow-steps/styles';
 import {Controller} from '@components/typography/Controller';
 import {PasswordChecklist} from '@components/CheckList/PasswordCheckList';
 import {FormMessage} from '@components/Forms/FormMessage';
-import {KeyboardAwareWrapper} from '@components/KeyboardAvareWrapper';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;
@@ -35,6 +34,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
     moveToNextStep,
   }: StepComponentProps<RegisterFormFields>) => {
     const {loading, actions} = useAuth();
+
     const [error, setError] = useState<string | undefined>(undefined);
     const schema: Schema<Fields> = zod
       .object({
@@ -46,7 +46,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const {handleSubmit, control, watch} = useForm<Fields>({
+    const {handleSubmit, control, watch, setFocus} = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -87,8 +87,8 @@ export const StepPassword: StepParams<RegisterFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Sign up to REINVEST'}
@@ -98,13 +98,21 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           />
           {error && <FormMessage message={error} variant={'error'} />}
           <Controller
-            inputProps={{dark: true, placeholder: 'Password '}}
+            inputProps={{
+              dark: true,
+              placeholder: 'Password',
+              returnKeyType: 'next',
+            }}
             fieldName="password"
             control={control}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={() => setFocus('passwordConfirmation')}
           />
           <Controller
-            inputProps={{dark: true, placeholder: 'Confirm Password'}}
+            inputProps={{
+              dark: true,
+              placeholder: 'Confirm Password',
+              returnKeyType: 'done',
+            }}
             fieldName="passwordConfirmation"
             control={control}
             onSubmit={handleSubmit(onSubmit)}
@@ -122,7 +130,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             Sign up
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

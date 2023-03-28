@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow/interfaces';
+} from 'reinvest-app-common/src/services/form-flow/interfaces';
 import {Button} from '@components/Button';
 import {View} from 'react-native';
 import {StatusCircle} from '@components/StatusCircle';
@@ -29,7 +29,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
       navigation.navigate(Screens.SignIn);
     };
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, styles.fw]}>
         <StatusCircle title="Your Password Has Been Reset" />
         <Button onPress={goBackToLoginForm}>Continue</Button>
       </View>

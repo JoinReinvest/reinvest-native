@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {FormTitle} from '@src/components/Forms/FormTitle';
-import {KeyboardAwareWrapper} from '@src/components/KeyboardAvareWrapper';
 import {styles} from './styles';
-import {AccountTypeValue, ACCOUNT_TYPES} from '@src/constants/account-types';
+import {ACCOUNT_TYPES, AccountTypeValue} from '@src/constants/account-types';
 import {Card} from '@src/components/Card';
-import {Alert, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {StyledText} from '@src/components/typography/StyledText';
 import {palette} from '@src/constants/theme';
 import {Button} from '@src/components/Button';
@@ -13,7 +12,10 @@ import {Identifiers} from '../identifiers';
 import {
   StepComponentProps,
   StepParams,
-} from 'reinvest-app-common/src/form-flow';
+} from 'reinvest-app-common/src/services/form-flow';
+import {useDialog} from '@providers/DialogProvider';
+import {FormModalDisclaimer} from '@components/Modals/ModalContent/FormModalDisclaimer';
+import {onBoardingDisclaimers} from '@constants/strings';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,
@@ -26,15 +28,24 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const [selectedAccountType, setSelectedAccountType] = useState<
       AccountTypeValue | undefined
     >(storeFields.accountType);
+    const {openDialog} = useDialog();
 
     const handleContinue = () => {
       updateStoreFields({accountType: selectedAccountType});
       moveToNextStep();
     };
 
+    const openDisclaimer = () =>
+      openDialog(
+        <FormModalDisclaimer
+          headline={'Account types'}
+          content={onBoardingDisclaimers.notSureWhichBestForYou}
+        />,
+      );
+
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline="Which type of account would you like to open?"
@@ -55,7 +66,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             style={styles.link}
             color={palette.frostGreen}
             variant="link"
-            onPress={() => Alert.alert('Not sure which is best for you?')}>
+            onPress={openDisclaimer}>
             Not sure which is best for you?
           </StyledText>
         </ScrollView>
@@ -64,7 +75,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             Continue
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };
