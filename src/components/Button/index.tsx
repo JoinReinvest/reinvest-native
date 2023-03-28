@@ -12,6 +12,7 @@ export const Button = ({ startIcon, endIcon, isLoading = false, variant = 'prima
     if (!disabled && isLoading) {
       return <Loader color={variant === 'primary' ? palette.deepGreen : palette.frostGreen} />;
     }
+
     return children;
   };
 

@@ -22,7 +22,7 @@ async function getToken() {
     const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
 
     return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
-  } catch (error) {}
+  } catch (error) {} // eslint-disble-line no-empty
 }
 
 export default { awsInit, getToken };
