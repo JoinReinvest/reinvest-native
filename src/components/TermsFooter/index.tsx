@@ -41,14 +41,14 @@ export const TermsFooter = () => {
         style={{textAlign: 'center'}}>
         By continuing, you agree to the REINVEST{' '}
       </StyledText>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
         <StyledText
           color={palette.frostGreen}
           onPress={showTerms}
           variant={'link'}>
           Terms of Conditions
         </StyledText>
-        <StyledText color={palette.frostGreen} variant="paragraphSmall">
+        <StyledText color={palette.pureWhite} variant="paragraphSmall">
           {' '}
           and{' '}
         </StyledText>

@@ -1,5 +1,7 @@
 import {AccountTypeValue} from '@constants/account-types';
 
+export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
+
 export interface OnboardingFormFields {
   _hasAuthenticatedPhoneNumber?: boolean;
 
@@ -9,4 +11,9 @@ export interface OnboardingFormFields {
   lastName?: string;
   phoneNumber?: string;
   phoneNumberAuthenticationCode?: string;
+  residency: 'us' | 'green-card' | 'visa' | undefined;
+  birthCountry?: string;
+  citizenshipCountry?: string;
+  visaType?: VisaType;
+  dateOfBirth?: Date;
 }

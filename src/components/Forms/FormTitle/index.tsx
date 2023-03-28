@@ -1,20 +1,23 @@
-import React from 'react';
+import React, {PropsWithChildren, ReactNode} from 'react';
 import {StyledText} from '@components/typography/StyledText';
-import {PropsWithChildren, ReactNode} from 'react';
 import {View} from 'react-native';
 import {styles} from './styles';
 import {palette} from '@constants/theme';
+import {Row} from '@components/Containers/Box/Row';
+import {Icon} from '@components/Icon';
 
 interface Props {
   headline: string | ReactNode;
   description?: string | ReactNode;
   dark?: boolean;
+  informationMessage?: string;
 }
 
 export const FormTitle = ({
   headline,
   description,
   dark,
+  informationMessage,
 }: PropsWithChildren<Props>) => {
   return (
     <View style={styles.wrapper}>
@@ -31,6 +34,14 @@ export const FormTitle = ({
           style={styles.description}>
           {description}
         </StyledText>
+      )}
+      {informationMessage && (
+        <Row mt={'8'} alignItems={'center'}>
+          <Icon icon={'circleAlert'} color={palette.frostGreen} />
+          <StyledText variant={'paragraphSmall'} color={palette.frostGreen}>
+            {informationMessage}
+          </StyledText>
+        </Row>
       )}
     </View>
   );

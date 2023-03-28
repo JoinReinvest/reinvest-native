@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   link: {
     fontFamily: Fonts.GTAmericaExtendedRegular,
-    fontSize: 11,
+    fontSize: 12,
     textDecorationLine: 'underline',
   },
   bodyText: {
