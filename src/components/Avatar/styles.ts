@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 100,
+  },
   xl: {
     height: 100,
     width: 100,
@@ -26,17 +30,17 @@ export const styles = StyleSheet.create({
     height: 28,
     width: 28,
   },
-  individual: {
+  INDIVIDUAL: {
     backgroundColor: palette.deepGreen,
     color: palette.pureWhite,
   },
-  corporate: {
+  CORPORATE: {
     backgroundColor: palette.darkerGray,
   },
-  trust: {
+  TRUST: {
     backgroundColor: palette.gray,
   },
-  beneficiary: {
+  BENEFICIARY: {
     backgroundColor: palette.frostGreen,
   },
   initials: {

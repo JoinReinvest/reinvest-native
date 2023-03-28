@@ -48,7 +48,6 @@ export const EducationStack = () => {
                 navigation.navigate(Screens.Settings);
               }}
               username={'Test'}
-              variant={'individual'}
             />
           ),
         })}
