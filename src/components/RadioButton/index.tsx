@@ -7,7 +7,7 @@ import {RadioButtonProps} from './types';
 import {styles} from './styles';
 
 export const RadioButton = ({
-  id,
+  value,
   checked,
   onPress,
   radioStyles,
@@ -15,11 +15,11 @@ export const RadioButton = ({
   children,
 }: PropsWithChildren<RadioButtonProps>) => {
   const icon = checked ? 'checkbox' : 'checkboxUnchecked';
-  const handlePress = () => onPress(id);
+  const handlePress = () => onPress(value);
 
   return (
     <Pressable
-      id={id}
+      id={value}
       style={[styles.radio, radioStyles]}
       onPress={handlePress}>
       <Icon icon={icon} color={palette.frostGreen} />

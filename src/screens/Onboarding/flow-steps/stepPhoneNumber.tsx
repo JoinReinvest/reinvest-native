@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View, Alert} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {
   StepComponentProps,
   StepParams,
@@ -25,6 +25,9 @@ import {SelectOptions} from 'reinvest-app-common/src/types/select-option';
 import {Controller} from '@src/components/typography/Controller';
 import {PHONE_MASK} from '@src/constants/masks';
 import {formValidationRules} from '@src/utils/formValidationRules';
+import {useDialog} from '@providers/DialogProvider';
+import {FormModalDisclaimer} from '@components/Modals/ModalContent/FormModalDisclaimer';
+import {onBoardingDisclaimers} from '@constants/strings';
 
 interface Fields {
   countryCode: string;
@@ -69,6 +72,8 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const [selectedCountryCallingCode, setSelectedCountryCallingCode] =
       useState(countryCode ? countryCode : OPTIONS[0].value);
 
+    const {openDialog} = useDialog();
+
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
@@ -82,6 +87,15 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     useEffect(() => {
       setValue('countryCode', selectedCountryCallingCode);
     }, [selectedCountryCallingCode, setValue]);
+
+    const showDisclaimer = () => {
+      openDialog(
+        <FormModalDisclaimer
+          headline={'We need your phone number'}
+          content={onBoardingDisclaimers.requiredWhy}
+        />,
+      );
+    };
 
     return (
       <>
@@ -130,7 +144,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
             <StyledText
               color={palette.frostGreen}
               variant="link"
-              onPress={() => Alert.alert('Required. Why?')}>
+              onPress={showDisclaimer}>
               Required. Why?
             </StyledText>
           </Box>
