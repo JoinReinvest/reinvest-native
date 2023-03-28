@@ -4,11 +4,11 @@ import { StatusCircle } from '@components/StatusCircle';
 import { useAuth } from '@providers/AuthProvider';
 import { styles } from '@screens/SignUp/flow-steps/styles';
 import { Identifiers } from '@screens/SignUp/identifiers';
-import { RegisterFormFields } from '@screens/SignUp/SignUp.types';
+import { RegisterFormFields } from '@screens/SignUp/types';
 import { allRequiredFieldsExists } from '@utils/formValidator';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,
@@ -50,7 +50,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     }, []);
 
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, styles.fw]}>
         {isLoading ? (
           <View style={styles.flex}>
             <FormTitle

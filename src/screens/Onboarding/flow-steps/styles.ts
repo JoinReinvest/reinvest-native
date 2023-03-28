@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
     justifyContent: 'flex-start',
   },
   row: {
@@ -22,5 +21,18 @@ export const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'center',
+  },
+  fw: {
+    width: '100%',
+  },
+  phoneRow: {
+    flexDirection: 'row',
+  },
+  callingCodeDropdown: {
+    flexBasis: '30%',
+  },
+  phoneInputWrapper: {
+    flexBasis: '70%',
+    marginLeft: -1,
   },
 });

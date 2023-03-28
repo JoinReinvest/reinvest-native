@@ -1,11 +1,12 @@
 import { Icon } from '@components/Icon';
+import { palette } from '@constants/theme';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
 
-const DefaultLeftHeaderColumn = () => {
+const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {
   const { canGoBack, goBack } = useNavigation();
 
   return (
@@ -14,7 +15,7 @@ const DefaultLeftHeaderColumn = () => {
         <TouchableOpacity onPress={() => goBack()}>
           <Icon
             icon="arrowLeft"
-            color="white"
+            color={dark ? palette.pureWhite : palette.pureBlack}
           />
         </TouchableOpacity>
       )}

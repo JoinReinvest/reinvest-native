@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { Button } from '@components/Button';
 import { Controller } from '@components/typography/Controller';
 import { StyledText } from '@components/typography/StyledText';
@@ -9,9 +7,9 @@ import { useLogOutNavigation } from '@navigation/hooks';
 import Screens from '@navigation/screens';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRegisterFormFlow } from '@screens/SignUp/flow-steps';
-import { RegisterFormFields } from '@screens/SignUp/SignUp.types';
+import { RegisterFormFields } from '@screens/SignUp/types';
 import { formValidationRules } from '@utils/formValidationRules';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import zod, { Schema } from 'zod';
@@ -37,7 +35,6 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
     email: formValidationRules.email,
   });
 
-  const [error, setError] = useState<string>('');
   const { handleSubmit, control, formState } = useForm<RegisterFormFields>({
     mode: 'onSubmit',
     defaultValues: initialSteps,
@@ -47,13 +44,12 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
   const navigation = useLogOutNavigation();
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
-    setError('');
     updateStoreFields(fields);
     navigation.navigate(Screens.BlackForm);
   };
 
   return (
-    <View style={[styles.wrapper]}>
+    <View style={[styles.fw, styles.wrapper]}>
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}

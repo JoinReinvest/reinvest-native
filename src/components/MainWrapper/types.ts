@@ -8,6 +8,7 @@ export interface MainWrapperProps {
   isKeyboardAware?: boolean;
   isLoading?: boolean;
   isScroll?: boolean;
+  noPadding?: boolean;
   noScrollableContent?: (style: ViewStyle) => ReactNode;
   style?: StyleProp<ViewStyle>;
 }

@@ -7,7 +7,7 @@ import { StepOutsideFlow } from '@screens/SignUp/flow-steps/stepEmail';
 import React from 'react';
 
 import { BlackLayout } from './BlackLayout';
-import { SignUpStackParamsList } from './SignUp.types';
+import { SignUpStackParamsList } from './types';
 
 const SignUpStack = createNativeStackNavigator<SignUpStackParamsList>();
 

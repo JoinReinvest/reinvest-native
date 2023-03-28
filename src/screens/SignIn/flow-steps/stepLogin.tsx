@@ -9,7 +9,7 @@ import { useLogOutNavigation } from '@navigation/hooks';
 import Screens from '@navigation/screens';
 import { ChallengeName, useAuth } from '@providers/AuthProvider';
 import { useLoginFormFlow } from '@screens/SignIn/flow-steps/index';
-import { LoginFormFields } from '@screens/SignIn/SignIn.types';
+import { LoginFormFields } from '@screens/SignIn/types';
 import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

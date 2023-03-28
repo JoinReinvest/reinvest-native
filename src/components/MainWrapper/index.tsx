@@ -4,7 +4,15 @@ import { ScrollView, StatusBar, View } from 'react-native';
 import { styles } from './styles';
 import { MainWrapperProps } from './types';
 
-export const MainWrapper = ({ children, isScroll, noScrollableContent, contentContainerStyle, dark, style }: PropsWithChildren<MainWrapperProps>) => {
+export const MainWrapper = ({
+  children,
+  isScroll,
+  noScrollableContent,
+  contentContainerStyle,
+  dark,
+  style,
+  noPadding,
+}: PropsWithChildren<MainWrapperProps>) => {
   return (
     <View style={[!dark ? styles.light : styles.dark]}>
       <StatusBar
@@ -13,11 +21,14 @@ export const MainWrapper = ({ children, isScroll, noScrollableContent, contentCo
       />
       {isScroll ? (
         <>
-          <ScrollView contentContainerStyle={[styles.wrapper, contentContainerStyle, dark && styles.dark]}>{children}</ScrollView>
+          <ScrollView
+contentContainerStyle={[styles.wrapper, noPadding && styles.noPadding, contentContainerStyle, dark && styles.dark]}>
+            {children}
+          </ScrollView>
           {noScrollableContent?.(styles.wrapperPadding)}
         </>
       ) : (
-        <View style={[styles.wrapper, styles.staticWrapper, dark && styles.dark, style]}>{children}</View>
+        <View style={[styles.wrapper, styles.staticWrapper, noPadding && styles.noPadding, dark && styles.dark, style]}>{children}</View>
       )}
     </View>
   );

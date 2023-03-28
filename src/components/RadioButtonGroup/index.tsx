@@ -5,8 +5,8 @@ import { View } from 'react-native';
 import { styles } from './styles';
 import { RadioButtonGroupProps } from './types';
 
-export const RadioButtonGroup = ({ options, style, onSelect, ...rest }: RadioButtonGroupProps) => {
-  const [selectedRadioButtonId, setSelectedRadioButtonId] = useState<string | null>(null);
+export const RadioButtonGroup = ({ options, style, onSelect, selectedValue, ...rest }: RadioButtonGroupProps) => {
+  const [selectedRadioButtonId, setSelectedRadioButtonId] = useState<string | null>(selectedValue || null);
 
   const handleSelect = (selectedId: string) => {
     setSelectedRadioButtonId(selectedId);
@@ -15,15 +15,15 @@ export const RadioButtonGroup = ({ options, style, onSelect, ...rest }: RadioBut
 
   return (
     <View style={[styles.wrapper, style]}>
-      {options.map(({ id, label }) => (
+      {options.map(({ title, value }) => (
         <RadioButton
-          key={id}
-          id={id}
+          key={value}
+          value={value}
           onPress={handleSelect}
-          checked={selectedRadioButtonId === id}
+          checked={selectedRadioButtonId === value}
           {...rest}
         >
-          {label}
+          {title}
         </RadioButton>
       ))}
     </View>

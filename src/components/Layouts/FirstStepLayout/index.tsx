@@ -2,7 +2,7 @@ import { Sygnet } from '@components/Icon/icons';
 import { MainWrapper } from '@components/MainWrapper';
 import { StyledText } from '@components/typography/StyledText';
 import { Video } from '@components/Video';
-import { styles } from '@screens/SignIn/SignIn.styles';
+import { styles } from '@screens/SignIn/styles';
 import { palette } from '@src/constants/theme';
 import { hexToRgbA } from '@src/utils/hexToRgb';
 import React, { PropsWithChildren } from 'react';

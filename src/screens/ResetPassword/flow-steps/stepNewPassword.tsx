@@ -2,7 +2,6 @@ import { Button } from '@components/Button';
 import { PasswordChecklist } from '@components/CheckList/PasswordCheckList';
 import { FormMessage } from '@components/Forms/FormMessage';
 import { FormTitle } from '@components/Forms/FormTitle';
-import { KeyboardAwareWrapper } from '@components/KeyboardAvareWrapper';
 import { Controller } from '@components/typography/Controller';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@providers/AuthProvider';
@@ -10,7 +9,7 @@ import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
 import { Identifiers } from '../identifires';
@@ -64,8 +63,8 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Reset Password'}
@@ -106,7 +105,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             Change Password
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

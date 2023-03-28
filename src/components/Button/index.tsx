@@ -7,7 +7,7 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { ButtonProps } from './types';
 
-export const Button = ({ startIcon, endIcon, isLoading = false, variant = 'primary', children, disabled, ...rest }: PropsWithChildren<ButtonProps>) => {
+export const Button = ({ startIcon, endIcon, isLoading = false, variant = 'primary', children, disabled, isPill, ...rest }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
     if (!disabled && isLoading) {
       return <Loader color={variant === 'primary' ? palette.deepGreen : palette.frostGreen} />;
@@ -21,7 +21,7 @@ export const Button = ({ startIcon, endIcon, isLoading = false, variant = 'prima
       disabled={disabled}
       {...rest}
     >
-      <View style={styles.labelWrapper}>
+      <View style={[styles.labelWrapper, isPill && styles.pillLabel]}>
         {startIcon}
         <StyledText
           variant={variant === 'combo' ? 'h5' : 'button'}

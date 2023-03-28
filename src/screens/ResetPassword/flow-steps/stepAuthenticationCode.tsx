@@ -1,7 +1,6 @@
 import { Button } from '@components/Button';
 import { FormMessage } from '@components/Forms/FormMessage';
 import { FormTitle } from '@components/Forms/FormTitle';
-import { KeyboardAwareWrapper } from '@components/KeyboardAvareWrapper';
 import { Controller } from '@components/typography/Controller';
 import { StyledText } from '@components/typography/StyledText';
 import { palette } from '@constants/theme';
@@ -13,7 +12,7 @@ import { allRequiredFieldsExists } from '@utils/formValidator';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
 import { Identifiers } from '../identifires';
@@ -42,6 +41,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
+
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
 
     const subtitleMessage = `Enter the email authentication code sent to your email ${storeFields.email}.`;
@@ -64,8 +64,8 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
-        <ScrollView>
+      <>
+        <ScrollView style={styles.fw}>
           <FormTitle
             dark
             headline={'Check Your Email'}
@@ -123,7 +123,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
             Continue
           </Button>
         </View>
-      </KeyboardAwareWrapper>
+      </>
     );
   },
 };

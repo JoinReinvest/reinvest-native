@@ -9,7 +9,7 @@ import { StepOutsideFlow } from '@screens/SignIn/flow-steps/stepLogin';
 import React from 'react';
 
 import { BlackLayout as BlackLayoutSignIn } from './BlackLayout';
-import type { SignInScreenProps, SignInStackParamsList } from './SignIn.types';
+import type { SignInScreenProps, SignInStackParamsList } from './types';
 
 const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 

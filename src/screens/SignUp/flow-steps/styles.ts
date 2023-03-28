@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
-    width: '100%',
     justifyContent: 'center',
   },
   flex: { flex: 1 },
@@ -18,6 +17,9 @@ export const styles = StyleSheet.create({
   },
   buttonsSection: {
     alignSelf: 'flex-end',
+    width: '100%',
+  },
+  fw: {
     width: '100%',
   },
 });

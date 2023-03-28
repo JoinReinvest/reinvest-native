@@ -1,4 +1,5 @@
 import { LogOutStackParamList } from '@navigation/LogOutNavigator/types';
+import { DialogProvider } from '@providers/DialogProvider';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { ResetPassword } from '@screens/ResetPassword';
 import { SignIn } from '@screens/SignIn';
@@ -30,22 +31,24 @@ const stackOptions: Record<Extract<Screens, Screens.SignUp | Screens.SignIn | Sc
 
 export const LogOutNavigator = () => {
   return (
-    <LogOutStack.Navigator>
-      <LogOutStack.Screen
-        options={stackOptions[Screens.SignUp]}
-        name={Screens.SignUp}
-        component={SignUp}
-      />
-      <LogOutStack.Screen
-        name={Screens.SignIn}
-        options={stackOptions[Screens.SignIn]}
-        component={SignIn}
-      />
-      <LogOutStack.Screen
-        name={Screens.ResetPassword}
-        options={stackOptions[Screens.ResetPassword]}
-        component={ResetPassword}
-      />
-    </LogOutStack.Navigator>
+    <DialogProvider dark>
+      <LogOutStack.Navigator>
+        <LogOutStack.Screen
+          options={stackOptions[Screens.SignUp]}
+          name={Screens.SignUp}
+          component={SignUp}
+        />
+        <LogOutStack.Screen
+          name={Screens.SignIn}
+          options={stackOptions[Screens.SignIn]}
+          component={SignIn}
+        />
+        <LogOutStack.Screen
+          name={Screens.ResetPassword}
+          options={stackOptions[Screens.ResetPassword]}
+          component={ResetPassword}
+        />
+      </LogOutStack.Navigator>
+    </DialogProvider>
   );
 };

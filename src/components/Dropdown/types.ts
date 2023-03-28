@@ -1,13 +1,10 @@
 import { InputProps } from '@components/Input/types';
 import { StyleProp, ViewStyle } from 'react-native';
-
-export interface DropdownOption {
-  key: string | number;
-  label: string;
-}
+import { SelectOption, SelectOptions } from 'reinvest-app-common/src/types/select-option';
 
 export interface DropdownProps extends Omit<InputProps, 'inputRef'> {
-  data: DropdownOption[];
-  onSelect: (selectedOption: DropdownOption) => void;
+  data?: SelectOptions;
+  onSelect?: (selectedOption: SelectOption) => void;
+  prefix?: string;
   style?: StyleProp<ViewStyle>;
 }

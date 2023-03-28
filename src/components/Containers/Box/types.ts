@@ -1,5 +1,5 @@
 import { Theme } from '@constants/theme';
-import { ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 const sizes = {
   '2': 2,
@@ -54,10 +54,11 @@ export type SpacingProps = MarginProps & PaddingProps;
 
 export type BoxProps = {
   color?: Theme;
+  colorOpacity?: number;
   fw?: boolean;
   onPress?: () => void;
   radius?: number;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 } & SpacingProps &
   FlexPosition &
   Sizes;

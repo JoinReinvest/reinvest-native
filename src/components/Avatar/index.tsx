@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
@@ -32,8 +32,7 @@ export const Avatar = ({ username, size = 'm', variant = 'individual', isEditabl
   const initials = lastName ? `${firstName[0]}${lastName[0]}` : firstName[0];
 
   return (
-    <Pressable
-      disabled={!isEditable}
+    <TouchableOpacity
       onPress={onPress}
       style={[styles.wrapper, styles[size], styles[variant]]}
     >
@@ -48,6 +47,6 @@ export const Avatar = ({ username, size = 'm', variant = 'individual', isEditabl
           <Icon icon="edit" />
         </View>
       )}
-    </Pressable>
+    </TouchableOpacity>
   );
 };

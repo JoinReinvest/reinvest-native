@@ -38,7 +38,8 @@
       ],
       "@providers/*": [
         "src/providers/*"
-      ]
+      ],
+      "@api/*": ["src/api/*"]
     }
   },
   "include": [

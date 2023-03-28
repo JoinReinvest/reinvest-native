@@ -2,22 +2,23 @@ import { Icon } from '@components/Icon';
 import { Input } from '@components/Input';
 import { StyledText } from '@components/typography/StyledText';
 import { palette } from '@src/constants/theme';
-import React, { useRef, useState } from 'react';
+import { useForwardRef } from '@src/hooks/useForwardRef';
+import React, { forwardRef, useRef, useState } from 'react';
 import { FlatList, Keyboard, LayoutRectangle, Modal, Pressable, TextInput, View } from 'react-native';
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { SelectOption } from 'reinvest-app-common/src/types/select-option';
 
 import { styles } from './styles';
-import { DropdownOption, DropdownProps } from './types';
+import { DropdownProps } from './types';
 
 const LIST_HEIGHT = 191;
 const CHEVRON_ROTATION = 180;
 
-export const Dropdown = ({ data, onSelect, style, dark, ...rest }: DropdownProps) => {
-  const inputRef = useRef<TextInput>(null);
+export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, onSelect, style, dark, value, ...rest }, ref) => {
+  const inputRef = useForwardRef(ref);
   const wrapperRef = useRef<View>(null);
   const [isListExpanded, setIsListExpanded] = useState(false);
   const [position, setPosition] = useState<LayoutRectangle | undefined>();
-
   const statusSharedValue = useSharedValue(0);
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
@@ -76,8 +77,8 @@ export const Dropdown = ({ data, onSelect, style, dark, ...rest }: DropdownProps
     }
   };
 
-  const handleSelect = (selectedOption: DropdownOption) => {
-    onSelect(selectedOption);
+  const handleSelect = (selectedOption: SelectOption) => {
+    onSelect?.(selectedOption);
     closeList();
   };
 
@@ -104,6 +105,7 @@ export const Dropdown = ({ data, onSelect, style, dark, ...rest }: DropdownProps
               showSoftInputOnFocus={false}
               caretHidden={true}
               rightSection={rightSection}
+              value={prefix ? `${prefix}${value}` : value}
               {...rest}
             />
           </View>
@@ -131,6 +133,7 @@ export const Dropdown = ({ data, onSelect, style, dark, ...rest }: DropdownProps
                   style={[styles.list]}
                   nestedScrollEnabled
                   disableScrollViewPanResponder
+                  keyExtractor={item => item.value}
                   data={data}
                   renderItem={({ item }) => (
                     <Pressable onPress={() => handleSelect(item)}>
@@ -150,4 +153,4 @@ export const Dropdown = ({ data, onSelect, style, dark, ...rest }: DropdownProps
       )}
     </>
   );
-};
+});

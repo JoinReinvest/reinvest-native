@@ -83,6 +83,7 @@ export const styles = StyleSheet.create({
   errorMessage: {
     maxWidth: '100%',
     color: palette.error,
+    marginTop: -4, // 8px top margin in total
     marginBottom: 12,
   },
   centerText: {

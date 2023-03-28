@@ -7,13 +7,13 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { RadioButtonProps } from './types';
 
-export const RadioButton = ({ id, checked, onPress, radioStyles, labelStyles, children }: PropsWithChildren<RadioButtonProps>) => {
+export const RadioButton = ({ value, checked, onPress, radioStyles, labelStyles, children }: PropsWithChildren<RadioButtonProps>) => {
   const icon = checked ? 'checkbox' : 'checkboxUnchecked';
-  const handlePress = () => onPress(id);
+  const handlePress = () => onPress(value);
 
   return (
     <Pressable
-      id={id}
+      id={value}
       style={[styles.radio, radioStyles]}
       onPress={handlePress}
     >

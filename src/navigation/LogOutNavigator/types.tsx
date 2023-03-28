@@ -1,11 +1,12 @@
+import Screens from '@navigation/screens';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type LogOutStackParamList = {
-  BlackForm: undefined;
-  ResetPassword: undefined;
-  SignIn: undefined;
-  SignUp: undefined;
+  [Screens.SignUp]: undefined;
+  [Screens.SignIn]: undefined;
+  [Screens.BlackForm]: undefined;
+  [Screens.ResetPassword]: undefined;
 };
 
 export type LogOutNavProps<T extends keyof LogOutStackParamList> = NativeStackNavigationProp<LogOutStackParamList, T>;

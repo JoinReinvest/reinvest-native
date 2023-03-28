@@ -1,11 +1,13 @@
+import Screens from '@navigation/screens';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { EducationStackParamsList } from '@screens/Education/types';
 
 export type BottomTabsParamsBase = {
-  Dashboard: undefined;
-  Education: undefined;
-  Notifications: undefined;
-  REIT: undefined;
+  [Screens.Dashboard]: undefined;
+  [Screens.REIT]: undefined;
+  [Screens.EducationStack]: EducationStackParamsList;
+  [Screens.Notifications]: undefined;
 };
 
 export type BottomTabsNavigationProps<T extends keyof BottomTabsParamsBase> = BottomTabNavigationProp<BottomTabsParamsBase, T>;

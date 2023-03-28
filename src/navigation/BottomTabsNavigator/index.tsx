@@ -8,7 +8,7 @@ import { BottomTabsParamsBase } from '@navigation/BottomTabsNavigator/types';
 import Screens from '@navigation/screens';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Dashboard } from '@screens/Dashboard';
-import { Education } from '@screens/Education';
+import { EducationStack } from '@screens/Education';
 import { Notifications } from '@screens/Notifications';
 import { ReitScreen } from '@screens/REIT';
 import React from 'react';
@@ -16,7 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
 
-const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | Screens.Education | Screens.Notifications>, BottomTabNavigationOptions> = {
+const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | Screens.EducationStack | Screens.Notifications>, BottomTabNavigationOptions> = {
   [Screens.Dashboard]: {
     title: 'Dashboard',
     tabBarIcon: ({ focused }) => <DashboardIcon focused={focused} />,
@@ -25,7 +25,7 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
     title: 'Community REIT',
     tabBarIcon: ({ focused }) => <ReitIcon focused={focused} />,
   },
-  [Screens.Education]: {
+  [Screens.EducationStack]: {
     title: 'Education',
     tabBarIcon: ({ focused }) => <EducationIcon focused={focused} />,
   },
@@ -49,6 +49,8 @@ export const BottomTabsNavigator: React.FC = () => {
 
   return (
     <Tab.Navigator
+      initialRouteName={Screens.EducationStack}
+      backBehavior={'history'}
       screenOptions={{
         tabBarStyle: {
           height: 56 + bottom,
@@ -59,31 +61,32 @@ export const BottomTabsNavigator: React.FC = () => {
         tabBarInactiveTintColor: palette.dark3,
         tabBarLabelStyle: { marginTop: -12 },
         tabBarLabel: ({ focused, children }) => getLabel(focused, children),
+        headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Dashboard"
+        name={Screens.Dashboard}
         component={Dashboard}
         options={() => ({
           ...stackOptions[Screens.Dashboard],
         })}
       />
       <Tab.Screen
-        name="REIT"
+        name={Screens.REIT}
         component={ReitScreen}
         options={() => ({
           ...stackOptions[Screens.REIT],
         })}
       />
       <Tab.Screen
-        name="Education"
-        component={Education}
+        name={Screens.EducationStack}
+        component={EducationStack}
         options={() => ({
-          ...stackOptions[Screens.Education],
+          ...stackOptions[Screens.EducationStack],
         })}
       />
       <Tab.Screen
-        name="Notifications"
+        name={Screens.Notifications}
         component={Notifications}
         options={() => ({
           ...stackOptions[Screens.Notifications],

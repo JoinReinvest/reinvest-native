@@ -19,6 +19,7 @@ module.exports = {
           '@icons': './src/assets/icons',
           '@providers': './src/providers',
           '@permissions': './src/permissions',
+          '@api': './src/api',
         },
       },
     ],

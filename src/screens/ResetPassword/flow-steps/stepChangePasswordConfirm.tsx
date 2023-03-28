@@ -5,7 +5,7 @@ import Screens from '@src/navigation/screens';
 import { allRequiredFieldsExists } from '@utils/formValidator';
 import React from 'react';
 import { View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Identifiers } from '../identifires';
 import { ResetPasswordFormFields } from '../types';
@@ -29,7 +29,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <View style={styles.wrapper}>
+      <View style={[styles.wrapper, styles.fw]}>
         <StatusCircle title="Your Password Has Been Reset" />
         <Button onPress={goBackToLoginForm}>Continue</Button>
       </View>

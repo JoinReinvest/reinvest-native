@@ -22,4 +22,8 @@ export const styles = StyleSheet.create({
   dark: {
     backgroundColor: palette.onboarding,
   },
+  noPadding: {
+    paddingHorizontal: 0,
+  },
+  flex: { flex: 1 },
 });

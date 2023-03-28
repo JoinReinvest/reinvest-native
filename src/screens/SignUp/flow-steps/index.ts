@@ -1,10 +1,11 @@
-import { StepAuthenticationCode } from '@screens/SignUp/flow-steps/authenticationCode';
-import { StepReferralCode } from '@screens/SignUp/flow-steps/referralCode';
-import { StepReferralCodeApplied } from '@screens/SignUp/flow-steps/referralCodeApplied';
-import { StepRegistrationValidation } from '@screens/SignUp/flow-steps/registrationValidation';
-import { StepPassword } from '@screens/SignUp/flow-steps/stepPassword';
-import { RegisterFormFields } from '@screens/SignUp/SignUp.types';
-import { createFormFlow } from 'reinvest-app-common/src/form-flow/index';
+import { RegisterFormFields } from '@screens/SignUp/types';
+import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
+
+import { StepAuthenticationCode } from './authenticationCode';
+import { StepReferralCode } from './referralCode';
+import { StepReferralCodeApplied } from './referralCodeApplied';
+import { StepRegistrationValidation } from './registrationValidation';
+import { StepPassword } from './stepPassword';
 
 export const FLOW_STEPS = [StepReferralCode, StepReferralCodeApplied, StepPassword, StepAuthenticationCode, StepRegistrationValidation];
 

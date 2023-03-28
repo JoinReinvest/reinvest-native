@@ -1,20 +1,19 @@
 import { Button } from '@components/Button';
 import { FormMessage } from '@components/Forms/FormMessage';
 import { FormTitle } from '@components/Forms/FormTitle';
-import { KeyboardAwareWrapper } from '@components/KeyboardAvareWrapper';
 import { Controller } from '@components/typography/Controller';
 import { StyledText } from '@components/typography/StyledText';
 import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { styles } from '@screens/SignIn/flow-steps/styles';
-import { LoginFormFields } from '@screens/SignIn/SignIn.types';
+import { LoginFormFields } from '@screens/SignIn/types';
 import { CODE_MASK } from '@src/constants/masks';
 import { useAuth } from '@src/providers/AuthProvider';
 import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/form-flow/interfaces';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
 import { Identifiers } from '../identifiers';
@@ -47,7 +46,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
     };
 
     return (
-      <KeyboardAwareWrapper style={styles.wrapper}>
+      <View>
         <FormTitle
           dark
           headline="Check Your Phone"
@@ -91,7 +90,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         >
           Continue
         </Button>
-      </KeyboardAwareWrapper>
+      </View>
     );
   },
 };
