@@ -4,8 +4,10 @@ export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 
 export interface OnboardingFormFields {
   residency: 'us' | 'green-card' | 'visa' | undefined;
-
   _hasAuthenticatedPhoneNumber?: boolean;
+  _isSocialSecurityNumberAlreadyAssigned?: boolean;
+
+  _isSocialSecurityNumberBanned?: boolean;
   accountType?: (typeof ACCOUNT_TYPES_VALUES)[number];
   birthCountry?: string;
   citizenshipCountry?: string;
@@ -19,11 +21,13 @@ export interface OnboardingFormFields {
   };
   dateOfBirth?: Date;
   finraInstitution?: string;
+
   firstName?: string;
   lastName?: string;
   middleName?: string;
   phoneNumber?: string;
   phoneNumberAuthenticationCode?: string;
   profilePicture?: string | undefined;
+  ssn?: string;
   visaType?: VisaType;
 }
