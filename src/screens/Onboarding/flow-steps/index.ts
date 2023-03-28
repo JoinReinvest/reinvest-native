@@ -10,6 +10,7 @@ import { StepFullName } from './stepFullName';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
 import { StepCompliance } from '@screens/Onboarding/flow-steps/stepCompliance';
+import { StepFinraInstitution } from '@screens/Onboarding/flow-steps/stepFinra';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -21,6 +22,7 @@ export const FLOW_STEPS = [
   StepResidencyGreenCard,
   StepResidencyVisa,
   StepCompliance,
+  StepFinraInstitution,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
@@ -34,6 +36,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   birthCountry: '',
   citizenshipCountry: '',
   dateOfBirth: undefined,
+  finraInstitution: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({

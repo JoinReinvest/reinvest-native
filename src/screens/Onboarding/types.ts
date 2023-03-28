@@ -24,4 +24,5 @@ export interface OnboardingFormFields {
     // Are you or any of your immediate family a senior political figure?
     isSeniorPoliticalFigure?: boolean;
   };
+  finraInstitution?: string;
 }
