@@ -5,6 +5,7 @@ import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
 import { StepDateOfBirth } from './stepDateOfBirth';
+import { StepEmploymentDetails } from './stepEmploymentDetails';
 import { StepEmploymentStatus } from './stepEmploymentStatus';
 import { StepExperience } from './stepExperience';
 import { StepFullName } from './stepFullName';
@@ -19,7 +20,8 @@ import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
   StepAccountType,
-  StepExperience,
+  StepEmploymentStatus,
+  StepEmploymentDetails,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -54,6 +56,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   netIncome: undefined,
   netWorth: undefined,
   employmentStatus: undefined,
+  employmentDetails: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({

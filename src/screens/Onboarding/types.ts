@@ -1,7 +1,10 @@
 import { AccountTypeValue } from '@constants/account-types';
+<<<<<<< HEAD
 import { Experience } from 'reinvest-app-common/src/types/graphql';
+=======
+import { Industry } from 'reinvest-app-common/src/constants/industries';
+>>>>>>> 7e1c01a (RIA-586: onboarding Implement employment details screen)
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
-
 export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 
 export interface OnboardingFormFields {
@@ -22,6 +25,7 @@ export interface OnboardingFormFields {
     isSeniorPoliticalFigure?: boolean;
   };
   dateOfBirth?: Date;
+  employmentDetails?: EmploymentDetails;
   employmentStatus?: EmploymentStatus;
 
   experience?: Experience;
@@ -36,4 +40,10 @@ export interface OnboardingFormFields {
   profilePicture?: string | undefined;
   ssn?: string;
   visaType?: VisaType;
+}
+
+interface EmploymentDetails {
+  employerName: string;
+  industry: Industry;
+  occupation: string;
 }

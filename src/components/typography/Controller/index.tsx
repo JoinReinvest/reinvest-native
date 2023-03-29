@@ -28,7 +28,7 @@ export const Controller = ({ select = false, control, fieldName, onSubmit, input
             {...(select
               ? {
                   ...dropdownProps,
-                  onSelect: selected => onChange({ target: { value: selected.value } }),
+                  onSelect: selected => onChange({ target: { value: selected.label } }),
                 }
               : inputProps)}
             error={error?.message}
