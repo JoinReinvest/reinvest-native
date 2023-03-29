@@ -1,4 +1,5 @@
-import { ACCOUNT_TYPES_VALUES } from 'reinvest-app-common/src/constants/account-types';
+import { AccountTypeValue } from '@constants/account-types';
+import { Experience } from 'reinvest-app-common/src/types/graphql';
 
 export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 
@@ -8,7 +9,7 @@ export interface OnboardingFormFields {
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
 
   _isSocialSecurityNumberBanned?: boolean;
-  accountType?: (typeof ACCOUNT_TYPES_VALUES)[number];
+  accountType?: AccountTypeValue;
   birthCountry?: string;
   citizenshipCountry?: string;
   compliances?: {
@@ -20,8 +21,9 @@ export interface OnboardingFormFields {
     isSeniorPoliticalFigure?: boolean;
   };
   dateOfBirth?: Date;
-  finraInstitution?: string;
+  experience?: Experience;
 
+  finraInstitution?: string;
   firstName?: string;
   lastName?: string;
   middleName?: string;
