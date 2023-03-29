@@ -1,25 +1,23 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@src/components/Button';
+import { FormTitle } from '@src/components/Forms/FormTitle';
+import { ProgressBar } from '@src/components/ProgressBar';
+import { Controller } from '@src/components/typography/Controller';
+import { AccountType } from '@src/constants/account-types';
+import { INDUSTRIES_LABELS } from '@src/constants/industries';
 import React from 'react';
-import {FormTitle} from '@src/components/Forms/FormTitle';
-import {styles} from './styles';
-import {ScrollView, View} from 'react-native';
-import {Button} from '@src/components/Button';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow';
-import {useOnboardingFormFlow} from '.';
-import {ProgressBar} from '@src/components/ProgressBar';
-import {EmploymentStatus} from 'reinvest-app-common/src/types/graphql';
-import {Controller} from '@src/components/typography/Controller';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {formValidationRules} from 'reinvest-app-common/src/form-schemas';
-import {INDUESTRIES_AS_OPTIONS} from 'reinvest-app-common/src/constants/industries';
-import {z} from 'zod';
-import {INDUSTRIES_LABELS} from '@src/constants/industries';
-import {AccountType} from '@src/constants/account-types';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { INDUESTRIES_AS_OPTIONS } from 'reinvest-app-common/src/constants/industries';
+import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
+import { z } from 'zod';
+
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
+import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'employmentDetails'>;
 
@@ -35,20 +33,14 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EMPLOYMENT_DETAILS,
 
   doesMeetConditionFields(fields) {
-    const {accountType, employmentStatus} = fields;
-    return (
-      accountType === AccountType.Individual &&
-      employmentStatus === EmploymentStatus.Employed
-    );
+    const { accountType, employmentStatus } = fields;
+
+    return accountType === AccountType.Individual && employmentStatus === EmploymentStatus.Employed;
   },
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {progressPercentage} = useOnboardingFormFlow();
-    const {handleSubmit, control, formState} = useForm<Fields>({
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
+    const { handleSubmit, control, formState } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: storeFields,
@@ -56,17 +48,15 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async ({employmentDetails}) => {
+    const onSubmit: SubmitHandler<Fields> = async ({ employmentDetails }) => {
       if (!employmentDetails) {
         return;
       }
 
-      const industryValue = INDUESTRIES_AS_OPTIONS.find(
-        industry => industry.label === employmentDetails.industry,
-      )!.value;
+      const industryValue = INDUESTRIES_AS_OPTIONS.find(industry => industry.label === employmentDetails.industry)?.value ?? '';
 
       await updateStoreFields({
-        employmentDetails: {...employmentDetails, industry: industryValue},
+        employmentDetails: { ...employmentDetails, industry: industryValue },
       });
       moveToNextStep();
     };
@@ -77,18 +67,21 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           <ProgressBar value={progressPercentage} />
         </View>
         <ScrollView style={styles.fw}>
-          <FormTitle dark headline="Where are you employed?" />
+          <FormTitle
+            dark
+            headline="Where are you employed?"
+          />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName={'employmentDetails.employerName'}
-            inputProps={{placeholder: 'Name of Employer', dark: true}}
+            inputProps={{ placeholder: 'Name of Employer', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName={'employmentDetails.occupation'}
-            inputProps={{placeholder: 'Title', dark: true}}
+            inputProps={{ placeholder: 'Title', dark: true }}
           />
           <Controller
             select
@@ -102,13 +95,20 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
             }}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
-          <Button variant="outlined" onPress={moveToNextStep}>
+          <Button
+            variant="outlined"
+            onPress={moveToNextStep}
+          >
             Skip
           </Button>
         </View>

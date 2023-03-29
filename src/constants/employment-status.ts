@@ -1,4 +1,4 @@
-import {EmploymentStatus} from 'reinvest-app-common/src/types/graphql';
+import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 
 export const EMPLOYMENT_STATUSES = [
   {
@@ -19,5 +19,4 @@ export const EMPLOYMENT_STATUSES = [
   },
 ];
 
-export type EmploymentStatusesValues =
-  typeof EMPLOYMENT_STATUSES[number]['value'];
+export type EmploymentStatusesValues = (typeof EMPLOYMENT_STATUSES)[number]['value'];

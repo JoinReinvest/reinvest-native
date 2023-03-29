@@ -31,6 +31,11 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
       moveToNextStep();
     };
 
+    const handleSkip = async () => {
+      await updateStoreFields({ employmentStatus: undefined });
+      moveToNextStep();
+    };
+
     return (
       <>
         <View style={[styles.fw]}>
@@ -64,9 +69,10 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
           >
             Continue
           </Button>
+
           <Button
             variant="outlined"
-            onPress={moveToNextStep}
+            onPress={handleSkip}
           >
             Skip
           </Button>

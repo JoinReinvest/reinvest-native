@@ -1,9 +1,6 @@
 import { AccountTypeValue } from '@constants/account-types';
-<<<<<<< HEAD
-import { Experience } from 'reinvest-app-common/src/types/graphql';
-=======
 import { Industry } from 'reinvest-app-common/src/constants/industries';
->>>>>>> 7e1c01a (RIA-586: onboarding Implement employment details screen)
+import { Experience } from 'reinvest-app-common/src/types/graphql';
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 

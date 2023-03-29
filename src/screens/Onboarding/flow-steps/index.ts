@@ -20,8 +20,6 @@ import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
   StepAccountType,
-  StepEmploymentStatus,
-  StepEmploymentDetails,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -31,11 +29,12 @@ export const FLOW_STEPS = [
   StepResidencyVisa,
   StepCompliance,
   StepFinraInstitution,
-  StepProfilePicture,
   StepSSN,
   StepExperience,
   StepEmploymentStatus,
+  StepEmploymentDetails,
   StepNetWorthAndNetIncome,
+  StepProfilePicture,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
