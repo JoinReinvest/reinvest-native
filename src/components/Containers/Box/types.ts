@@ -1,5 +1,6 @@
-import { Theme } from '@constants/theme';
 import { StyleProp, ViewStyle } from 'react-native';
+
+import { Theme } from '../../../constants/theme';
 
 const sizes = {
   '2': 2,

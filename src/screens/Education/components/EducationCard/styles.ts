@@ -1,5 +1,6 @@
-import { palette } from '@constants/theme';
 import { StyleSheet } from 'react-native';
+
+import { palette } from '../../../../constants/theme';
 
 export const styles = StyleSheet.create({
   button: {

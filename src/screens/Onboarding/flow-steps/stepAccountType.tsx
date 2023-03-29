@@ -1,20 +1,20 @@
-import { FormModalDisclaimer } from '@components/Modals/ModalContent/FormModalDisclaimer';
-import { onBoardingDisclaimers } from '@constants/strings';
-import { useDialog } from '@providers/DialogProvider';
-import { Button } from '@src/components/Button';
-import { Card } from '@src/components/Card';
-import { FormTitle } from '@src/components/Forms/FormTitle';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { StyledText } from '@src/components/typography/StyledText';
-import { ACCOUNT_TYPES, AccountTypeValue } from '@src/constants/account-types';
-import { palette } from '@src/constants/theme';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 
+import { Button } from '../../../components/Button';
+import { Card } from '../../../components/Card';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { StyledText } from '../../../components/typography/StyledText';
+import { ACCOUNT_TYPES, AccountType } from '../../../constants/account-types';
+import { onBoardingDisclaimers } from '../../../constants/strings';
+import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from '.';
+import { useOnboardingFormFlow } from './index';
 import { styles } from './styles';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
@@ -22,11 +22,11 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedAccountType, setSelectedAccountType] = useState<AccountTypeValue | undefined>(storeFields.accountType);
+    const [selectedAccountType, setSelectedAccountType] = useState<AccountType | undefined>(storeFields.accountType);
     const { openDialog } = useDialog();
 
-    const handleContinue = () => {
-      updateStoreFields({ accountType: selectedAccountType });
+    const handleContinue = async () => {
+      await updateStoreFields({ accountType: selectedAccountType });
       moveToNextStep();
     };
 

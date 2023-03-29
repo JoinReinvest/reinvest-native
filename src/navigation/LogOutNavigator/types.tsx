@@ -1,4 +1,4 @@
-import Screens from '@navigation/screens';
+import Screens from '../screens';
 
 export type LogOutStackParamList = {
   [Screens.SignUp]: undefined;

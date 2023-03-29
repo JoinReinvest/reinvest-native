@@ -1,6 +1,7 @@
-import { palette } from '@constants/theme';
 import React from 'react';
 import Svg, { Path, SvgProps } from 'react-native-svg';
+
+import { palette } from '../../../constants/theme';
 
 export const HamburgerClose = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg

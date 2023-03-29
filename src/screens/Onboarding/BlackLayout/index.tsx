@@ -1,10 +1,10 @@
-import { MainWrapper } from '@components/MainWrapper';
-import { TermsFooter } from '@components/TermsFooter';
-import { useStepBackOverride } from '@hooks/useBackOverride';
-import { useKeyboardAware } from '@hooks/useKeyboardAware';
-import { DialogProvider } from '@providers/DialogProvider';
 import React from 'react';
 
+import { MainWrapper } from '../../../components/MainWrapper';
+import { TermsFooter } from '../../../components/TermsFooter';
+import { useStepBackOverride } from '../../../hooks/useBackOverride';
+import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
+import { DialogProvider } from '../../../providers/DialogProvider';
 import { useOnboardingFormFlow } from '../flow-steps';
 import { OnboardingFormFields } from '../types';
 

@@ -1,19 +1,19 @@
-import { Button } from '@components/Button';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLogOutNavigation } from '@navigation/hooks';
-import Screens from '@navigation/screens';
 import { useFocusEffect } from '@react-navigation/native';
-import { useRegisterFormFlow } from '@screens/SignUp/flow-steps';
-import { RegisterFormFields } from '@screens/SignUp/types';
-import { formValidationRules } from '@utils/formValidationRules';
 import React, { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import zod, { Schema } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { useLogOutNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
+import { formValidationRules } from '../../../utils/formValidationRules';
+import { RegisterFormFields } from '../types';
+import { useRegisterFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'email'>;
@@ -44,7 +44,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
   const navigation = useLogOutNavigation();
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
-    updateStoreFields(fields);
+    await updateStoreFields(fields);
     navigation.navigate(Screens.BlackForm);
   };
 

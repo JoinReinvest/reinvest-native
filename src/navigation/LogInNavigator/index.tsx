@@ -1,13 +1,13 @@
-import { BottomTabsNavigator } from '@navigation/BottomTabsNavigator';
-import { LogInStackParamList } from '@navigation/LogInNavigator/types';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { DEVScreen } from '@screens/DEV';
-import { Settings } from '@screens/Settings';
-import { DarkScreenHeader } from '@src/components/CustomHeader';
-import { Onboarding } from '@src/screens/Onboarding';
 import React from 'react';
 
+import { DarkScreenHeader } from '../../components/CustomHeader';
+import { DEVScreen } from '../../screens/DEV';
+import { Onboarding } from '../../screens/Onboarding';
+import { Settings } from '../../screens/Settings';
+import { BottomTabsNavigator } from '../BottomTabsNavigator';
 import Screens from '../screens';
+import { LogInStackParamList } from './types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 

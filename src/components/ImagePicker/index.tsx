@@ -1,9 +1,9 @@
-import { isIOS } from '@constants/common';
-import { requestWriteExternalStoragePermission } from '@src/permissions/requestWriteExternalStoragePermission';
 import React, { PropsWithChildren } from 'react';
 import { Pressable } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
+import { isIOS } from '../../constants/common';
+import { requestWriteExternalStoragePermission } from '../../permissions/requestWriteExternalStoragePermission';
 import { BaseImagePickerOptions, ImagePickerProps } from './types';
 
 const baseOptions: BaseImagePickerOptions = {

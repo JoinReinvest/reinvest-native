@@ -1,18 +1,18 @@
-import { Box } from '@components/Containers/Box/Box';
-import { Loader } from '@components/Loader';
-import { MainWrapper } from '@components/MainWrapper';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
-import Screens from '@navigation/screens';
-import { BlogCard } from '@screens/Education/components/BlogCard';
-import { EducationCard } from '@screens/Education/components/EducationCard';
-import { educationCards } from '@screens/Education/constants';
-import { EducationStackProps } from '@screens/Education/types';
-import { usePostsQuery } from '@src/api/hooks/getPosts';
 import React from 'react';
 import { ImageBackground } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { usePostsQuery } from '../../../api/hooks/getPosts';
+import { Box } from '../../../components/Containers/Box/Box';
+import { Loader } from '../../../components/Loader';
+import { MainWrapper } from '../../../components/MainWrapper';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import Screens from '../../../navigation/screens';
+import { BlogCard } from '../components/BlogCard';
+import { EducationCard } from '../components/EducationCard';
+import { educationCards } from '../constants';
+import { EducationStackProps } from '../types';
 import { styles } from './styles';
 
 export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.EducationMainScreen>) => {

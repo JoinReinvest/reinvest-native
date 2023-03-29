@@ -1,18 +1,19 @@
-import { DashboardIcon } from '@components/Icon/icons/TabNavigtionIcons/DashboardIcon';
-import { EducationIcon } from '@components/Icon/icons/TabNavigtionIcons/EducationIcon';
-import { NotificationIcon } from '@components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
-import { ReitIcon } from '@components/Icon/icons/TabNavigtionIcons/ReitIcon';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
-import { BottomTabsParamsBase } from '@navigation/BottomTabsNavigator/types';
-import Screens from '@navigation/screens';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Dashboard } from '@screens/Dashboard';
-import { EducationStack } from '@screens/Education';
-import { Notifications } from '@screens/Notifications';
-import { ReitScreen } from '@screens/REIT';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/DashboardIcon';
+import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
+import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
+import { ReitIcon } from '../../components/Icon/icons/TabNavigtionIcons/ReitIcon';
+import { StyledText } from '../../components/typography/StyledText';
+import { palette } from '../../constants/theme';
+import { Dashboard } from '../../screens/Dashboard';
+import { EducationStack } from '../../screens/Education';
+import { Notifications } from '../../screens/Notifications';
+import { ReitScreen } from '../../screens/REIT';
+import Screens from '../screens';
+import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
 

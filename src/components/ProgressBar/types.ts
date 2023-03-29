@@ -1,5 +1,6 @@
-import { ThemeValues } from '@src/constants/theme';
 import { StyleProp, ViewStyle } from 'react-native';
+
+import { ThemeValues } from '../../constants/theme';
 
 export interface ProgressBarProps {
   value: number;

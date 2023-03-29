@@ -1,9 +1,10 @@
-import { isIOS } from '@constants/common';
-import { palette } from '@constants/theme';
-import { Fonts } from '@src/types/fonts';
-import { yScale } from '@src/utils/scale';
-import { hexToRgbA } from '@utils/hexToRgb';
 import { StyleSheet } from 'react-native';
+
+import { isIOS } from '../../constants/common';
+import { palette } from '../../constants/theme';
+import { Fonts } from '../../types/fonts';
+import { hexToRgbA } from '../../utils/hexToRgb';
+import { yScale } from '../../utils/scale';
 
 const PADDING_HORIZONTAL = 8;
 

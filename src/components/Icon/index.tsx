@@ -1,8 +1,8 @@
-import { defaultHitSlop } from '@constants/common';
-import { palette } from '@constants/theme';
 import { useMemo } from 'react';
 import React, { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { defaultHitSlop } from '../../constants/common';
+import { palette } from '../../constants/theme';
 import { icons, sizes } from './constants';
 import { IconProps } from './types';
 

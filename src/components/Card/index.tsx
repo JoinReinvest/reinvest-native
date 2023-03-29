@@ -1,7 +1,7 @@
-import { palette } from '@src/constants/theme';
 import React, { PropsWithChildren } from 'react';
 import { Pressable } from 'react-native';
 
+import { palette } from '../../constants/theme';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CardProps } from './types';

@@ -1,10 +1,10 @@
-import { Row } from '@components/Containers/Box/Row';
-import { Icon } from '@components/Icon';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import React, { PropsWithChildren, ReactNode } from 'react';
 import { View } from 'react-native';
 
+import { palette } from '../../../constants/theme';
+import { Row } from '../../Containers/Box/Row';
+import { Icon } from '../../Icon';
+import { StyledText } from '../../typography/StyledText';
 import { styles } from './styles';
 
 interface Props {

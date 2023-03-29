@@ -1,7 +1,4 @@
-import { StepResidencyGreenCard } from '@screens/Onboarding/flow-steps/stepResidencyGreenCard';
-import { StepResidencyStatus } from '@screens/Onboarding/flow-steps/stepResidencyStatus';
-import { StepResidencyVisa } from '@screens/Onboarding/flow-steps/stepResidencyVisa';
-import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
+import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/';
 
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
@@ -9,6 +6,9 @@ import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepFullName } from './stepFullName';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
+import { StepResidencyGreenCard } from './stepResidencyGreenCard';
+import { StepResidencyStatus } from './stepResidencyStatus';
+import { StepResidencyVisa } from './stepResidencyVisa';
 
 export const FLOW_STEPS = [
   StepAccountType,

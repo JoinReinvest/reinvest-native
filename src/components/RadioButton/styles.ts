@@ -1,7 +1,8 @@
-import { isIOS } from '@src/constants/common';
-import { palette } from '@src/constants/theme';
-import { xScale } from '@src/utils/scale';
 import { StyleSheet } from 'react-native';
+
+import { isIOS } from '../../constants/common';
+import { palette } from '../../constants/theme';
+import { xScale } from '../../utils/scale';
 
 export const styles = StyleSheet.create({
   radio: {

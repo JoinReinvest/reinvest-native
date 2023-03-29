@@ -1,20 +1,20 @@
-import { Button } from '@components/Button';
-import { FormMessage } from '@components/Forms/FormMessage';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CODE_MASK } from '@src/constants/masks';
-import { useAuth } from '@src/providers/AuthProvider';
-import { formValidationRules } from '@utils/formValidationRules';
-import { allRequiredFieldsExists } from '@utils/formValidator';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { CODE_MASK } from '../../../constants/masks';
+import { palette } from '../../../constants/theme';
+import { useAuth } from '../../../providers/AuthProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
+import { allRequiredFieldsExists } from '../../../utils/formValidator';
 import { Identifiers } from '../identifires';
 import { ResetPasswordFormFields } from '../types';
 import { styles } from './styles';
@@ -46,9 +46,10 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
 
     const subtitleMessage = `Enter the email authentication code sent to your email ${storeFields.email}.`;
 
-    const onSubmit: SubmitHandler<Fields> = fields => {
+    const onSubmit: SubmitHandler<Fields> = async fields => {
       fields.authenticationCode = fields.authenticationCode.replace('-', '');
-      updateStoreFields(fields);
+
+      await updateStoreFields(fields);
       moveToNextStep();
     };
 

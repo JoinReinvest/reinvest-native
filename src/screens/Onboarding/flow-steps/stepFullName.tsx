@@ -1,18 +1,18 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { formValidationRules } from '@src/utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from '.';
+import { useOnboardingFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'firstName' | 'middleName' | 'lastName'>;

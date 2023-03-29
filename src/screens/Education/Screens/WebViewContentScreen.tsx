@@ -1,12 +1,12 @@
-import { Loader } from '@components/Loader';
-import { isIOS } from '@constants/common';
 import { REINVEST_SITE_URL } from '@env';
-import Screens from '@navigation/screens';
-import { EducationStackProps } from '@screens/Education/types';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { Loader } from '../../../components/Loader';
+import { isIOS } from '../../../constants/common';
+import Screens from '../../../navigation/screens';
+import { EducationStackProps } from '../types';
 import { styles } from './styles';
 
 /*

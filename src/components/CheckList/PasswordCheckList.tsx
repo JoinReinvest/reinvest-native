@@ -1,4 +1,4 @@
-import { CheckItem } from '@components/CheckItem';
+import { CheckItem } from 'components/CheckItem';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 

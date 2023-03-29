@@ -1,13 +1,13 @@
-import { Icon } from '@components/Icon';
-import { palette } from '@constants/theme';
-import Screens from '@navigation/screens';
 import type { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { initialSteps, ResetPasswordFormFlowProvider } from '@screens/ResetPassword/flow-steps';
-import type { SignInScreenProps, SignInStackParamsList } from '@screens/SignIn/SignIn.types';
 import React from 'react';
 
+import { Icon } from '../../components/Icon';
+import { palette } from '../../constants/theme';
+import Screens from '../../navigation/screens';
+import { SignInScreenProps, SignInStackParamsList } from '../SignIn/types';
 import { BlackLayout } from './BlackLayout';
+import { initialSteps, ResetPasswordFormFlowProvider } from './flow-steps';
 
 const ResetPasswordStack = createNativeStackNavigator<SignInStackParamsList>();
 

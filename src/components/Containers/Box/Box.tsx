@@ -1,10 +1,10 @@
-import type { BoxProps, SizesEnum, SpacingProps } from '@components/Containers/Box/types';
-import { sizes } from '@components/Containers/Box/types';
-import { palette } from '@constants/theme';
-import { hexToRgbA } from '@utils/hexToRgb';
-import { xScale, yScale } from '@utils/scale';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { Pressable, View, ViewStyle } from 'react-native';
+
+import { palette } from '../../../constants/theme';
+import { hexToRgbA } from '../../../utils/hexToRgb';
+import { xScale, yScale } from '../../../utils/scale';
+import { BoxProps, sizes, SizesEnum, SpacingProps } from './types';
 
 const getSize = (size: SizesEnum | undefined) => size && sizes[size];
 

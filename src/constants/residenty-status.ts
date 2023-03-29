@@ -1,4 +1,4 @@
-import { RadioButtonOption as RadioGroupOptionItem } from '@components/RadioButtonGroup/types';
+import { RadioButtonOption } from '../components/RadioButtonGroup/types';
 
 export const RESIDENCY_STATUS = [
   {
@@ -22,7 +22,7 @@ export const RESIDENCY_STATUS_VALUES: [ResidencyStatusValue, ...ResidencyStatusV
   ...RESIDENCY_STATUS.slice(1).map(({ value }) => value),
 ];
 
-export const RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS: RadioGroupOptionItem[] = RESIDENCY_STATUS.map(({ label, value }) => ({
+export const RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS: RadioButtonOption[] = RESIDENCY_STATUS.map(({ label, value }) => ({
   title: label,
   value,
 }));

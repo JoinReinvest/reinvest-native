@@ -1,14 +1,15 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { StatusCircle } from '@components/StatusCircle';
-import { useAuth } from '@providers/AuthProvider';
-import { styles } from '@screens/SignUp/flow-steps/styles';
-import { Identifiers } from '@screens/SignUp/identifiers';
-import { RegisterFormFields } from '@screens/SignUp/types';
-import { allRequiredFieldsExists } from '@utils/formValidator';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { StatusCircle } from '../../../components/StatusCircle';
+import { useAuth } from '../../../providers/AuthProvider';
+import { allRequiredFieldsExists } from '../../../utils/formValidator';
+import { Identifiers } from '../identifiers';
+import { RegisterFormFields } from '../types';
+import { styles } from './styles';
 
 export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,

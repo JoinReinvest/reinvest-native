@@ -1,9 +1,9 @@
-import { Icon } from '@components/Icon';
-import { palette } from '@constants/theme';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
+import { palette } from '../../../constants/theme';
+import { Icon } from '../../Icon';
 import styles from './styles';
 
 const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {

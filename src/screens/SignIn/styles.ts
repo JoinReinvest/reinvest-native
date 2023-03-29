@@ -1,7 +1,8 @@
-import { palette } from '@constants/theme';
-import { Fonts } from '@src/types/fonts';
-import { xScale, yScale } from '@src/utils/scale';
 import { StyleSheet } from 'react-native';
+
+import { palette } from '../../constants/theme';
+import { Fonts } from '../../types/fonts';
+import { xScale, yScale } from '../../utils/scale';
 
 export const styles = StyleSheet.create({
   signet: {

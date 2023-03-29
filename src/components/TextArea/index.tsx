@@ -1,7 +1,7 @@
-import { Input } from '@components/Input';
-import { isIOS } from '@src/constants/common';
 import React from 'react';
 
+import { isIOS } from '../../constants/common';
+import { Input } from '../Input';
 import { styles } from './styles';
 import { TextAreaProps } from './types';
 

@@ -1,7 +1,8 @@
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import Amplify from '@aws-amplify/core';
 import { AWS_COGNITO_CLIENT_ID, AWS_COGNITO_USER_POOL_ID, AWS_REGION } from '@env';
-import { AuthStorage } from '@src/services/storage.service';
+
+import { AuthStorage } from './storage.service';
 
 const awsConfig = {
   aws_cognito_region: AWS_REGION,

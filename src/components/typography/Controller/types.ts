@@ -1,6 +1,7 @@
-import { InputProps } from '@components/Input/types';
-import { DropdownProps } from '@src/components/Dropdown/types';
 import { ControllerProps as ControllerPropsBase } from 'react-hook-form';
+
+import { DropdownProps } from '../../Dropdown/types';
+import { InputProps } from '../../Input/types';
 
 export interface ControllerProps extends Partial<ControllerPropsBase> {
   control: any;
