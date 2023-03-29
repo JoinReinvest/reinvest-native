@@ -32,6 +32,6 @@ export const EducationIcon = ({ focused = false, ...props }: SvgProps & { focuse
     fill="none"
     {...props}
   >
-    {focused ? focusedIcon : unfocusedIcon
+    {focused ? focusedIcon : unfocusedIcon}
   </Svg>
 );
