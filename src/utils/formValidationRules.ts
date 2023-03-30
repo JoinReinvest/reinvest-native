@@ -5,7 +5,7 @@ import zod from 'zod';
 
 const requiredError = 'This field is required';
 const maskedCodeRegex = /^([0-9]){3}-([0-9]){3}$/;
-const referralCodeRegex = /^([A-Z0-9]){3}-([A-Z0-9]){3}$/;
+const referralCodeRegex = /^([a-zA-Z0-9]){3}-([a-zA-Z0-9]){3}$/;
 const phoneWithoutCallingCodeRegex = /^([0-9]){3}-([0-9]){3}-([0-9]){3}$/;
 
 export const formValidationRules = {

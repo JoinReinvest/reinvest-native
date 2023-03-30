@@ -95,7 +95,7 @@ android {
 
     namespace "com.reinvestnative"
     defaultConfig {
-        applicationId "com.reinvestnative"
+        applicationId "com.reinvestcommunity.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

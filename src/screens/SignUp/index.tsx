@@ -3,6 +3,7 @@ import React from 'react';
 
 import { DarkScreenHeader } from '../../components/CustomHeader';
 import { FirstStepLayout } from '../../components/Layouts/FirstStepLayout';
+import { LogoutProps } from '../../navigation/LogOutNavigator/types';
 import Screens from '../../navigation/screens';
 import { BlackLayout } from './BlackLayout';
 import { formFieldsInitialState, RegisterFormFlowProvider } from './flow-steps';
@@ -18,9 +19,15 @@ const stackOptions: Record<Extract<Screens, Screens.BlackForm>, NativeStackNavig
   },
 };
 
-export const SignUp = () => {
+export const SignUp = ({ route: { params } }: LogoutProps<Screens.SignUp>) => {
+  const initialState = {
+    ...formFieldsInitialState,
+    //TODO remove concatenation while removing masks for this input
+    referralCode: params?.referralCode ? `${params?.referralCode.substring(0, 3)}-${params?.referralCode.substring(3)}` : '',
+  };
+
   return (
-    <RegisterFormFlowProvider initialStoreFields={formFieldsInitialState}>
+    <RegisterFormFlowProvider initialStoreFields={initialState}>
       <SignUpStack.Navigator>
         <SignUpStack.Screen
           options={{ headerShown: false }}
@@ -31,7 +38,7 @@ export const SignUp = () => {
               headline="Sign up"
               description="Enter your email below to get started."
             >
-              <StepOutsideFlow initialSteps={formFieldsInitialState} />
+              <StepOutsideFlow initialSteps={initialState} />
             </FirstStepLayout>
           )}
         </SignUpStack.Screen>
