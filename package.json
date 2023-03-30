@@ -48,7 +48,7 @@
     "@babel/core": "7.21.3",
     "@babel/preset-env": "7.20.2",
     "@babel/runtime": "^7.21.0",
-    "@hookooekoo/configs-tsconfig": "0.0.15",
+    "@hookooekoo/configs-tsconfig": "0.0.16",
     "@hookooekoo/eslint-config": "0.2.1",
     "@tanstack/eslint-plugin-query": "4.27.0",
     "@types/react": "18.0.30",

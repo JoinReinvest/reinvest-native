@@ -2141,11 +2141,6 @@
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.0.0.tgz#bb9346f1550a472a980af5b08e549366c788ff76"
   integrity sha512-SQPefakODpyq25b/phHXDKCdRrEfPcCXV7B4nAa139wE1DxufYbbNAjeo0T04ZXBokRxZ+wD8iA1kkVMa3QwjQ==
 
-"@hookooekoo/configs-tsconfig@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@hookooekoo/configs-tsconfig/-/configs-tsconfig-0.0.15.tgz#ee7cc7d9ffeba89342507b853c0fb8481c58499a"
-  integrity sha512-uJjKg6HFPppojy+n3//vnRPX7UJeUBdfKtycdqK5ljWqoA6cOWIA6y+belNod0EptCAXeFoWd7DLsSKtu27P0g==
-
 "@hookooekoo/configs-tsconfig@0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@hookooekoo/configs-tsconfig/-/configs-tsconfig-0.0.16.tgz#fef2f5175243b67931368177dc509535abfd7413"
