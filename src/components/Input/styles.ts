@@ -1,16 +1,15 @@
 import { isIOS } from '@constants/common';
+import { INPUT_HEIGHT, INPUT_PADDING_HORIZONTAL } from '@constants/styles';
 import { palette } from '@constants/theme';
 import { Fonts } from '@src/types/fonts';
 import { yScale } from '@src/utils/scale';
 import { hexToRgbA } from '@utils/hexToRgb';
 import { StyleSheet } from 'react-native';
 
-const PADDING_HORIZONTAL = 8;
-
 export const styles = StyleSheet.create({
   wrapper: {
     maxWidth: '100%',
-    height: 48,
+    height: INPUT_HEIGHT,
     marginBottom: yScale(12),
     flexShrink: 1,
   },
@@ -36,8 +35,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   input: {
-    paddingHorizontal: PADDING_HORIZONTAL,
-    height: 48,
+    paddingHorizontal: INPUT_PADDING_HORIZONTAL,
+    height: INPUT_HEIGHT,
     borderWidth: 1,
     borderColor: palette.darkerGray,
     backgroundColor: palette.pureWhite,
@@ -64,7 +63,6 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'bottom',
     fontSize: 15,
     fontWeight: '400',
-    // TODO additional check of fonts , postcript name is updated, RN is missing this font
     fontFamily: Fonts.GTAmericaExtendedRegular,
     lineHeight: 19,
   },
@@ -73,7 +71,7 @@ export const styles = StyleSheet.create({
   },
   placeholder: {
     position: 'absolute',
-    left: PADDING_HORIZONTAL,
+    left: INPUT_PADDING_HORIZONTAL,
     top: isIOS ? -16 : -8,
   },
   placeholderText: {

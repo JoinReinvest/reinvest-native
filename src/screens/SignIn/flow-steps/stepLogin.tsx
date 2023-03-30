@@ -62,6 +62,10 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
 
   const startForgotPasswordFlow = () => navigation.navigate(Screens.ResetPassword);
 
+  const navigateToSignUp = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.wrapper}>
       {error && (
@@ -89,6 +93,14 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         style={styles.firstStepLink}
       >
         Forgot Password ?
+      </StyledText>
+      <StyledText
+        onPress={navigateToSignUp}
+        variant={'link'}
+        color={palette.pureWhite}
+        style={styles.firstStepLink}
+      >
+        {`Don't have an account`}
       </StyledText>
       <Button
         disabled={!formState.dirtyFields}
