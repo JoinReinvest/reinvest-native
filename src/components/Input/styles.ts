@@ -1,9 +1,9 @@
-import {StyleSheet} from 'react-native';
-import {palette} from '@constants/theme';
-import {hexToRgbA} from '@utils/hexToRgb';
-import {isIOS} from '@constants/common';
-import {Fonts} from '@src/types/fonts';
-import {yScale} from '@src/utils/scale';
+import { isIOS } from '@constants/common';
+import { palette } from '@constants/theme';
+import { Fonts } from '@src/types/fonts';
+import { yScale } from '@src/utils/scale';
+import { hexToRgbA } from '@utils/hexToRgb';
+import { StyleSheet } from 'react-native';
 
 const PADDING_HORIZONTAL = 8;
 
@@ -91,6 +91,6 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
 
-  nativeInputDisabled: {color: palette.darkerGray},
-  rightSegmentDisabled: {opacity: 0.7},
+  nativeInputDisabled: { color: palette.darkerGray },
+  rightSegmentDisabled: { opacity: 0.7 },
 });

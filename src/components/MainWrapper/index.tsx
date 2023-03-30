@@ -1,7 +1,8 @@
-import React, {PropsWithChildren} from 'react';
-import {ScrollView, StatusBar, View} from 'react-native';
-import {styles} from './styles';
-import {MainWrapperProps} from './types';
+import React, { PropsWithChildren } from 'react';
+import { ScrollView, StatusBar, View } from 'react-native';
+
+import { styles } from './styles';
+import { MainWrapperProps } from './types';
 
 export const MainWrapper = ({
   children,
@@ -20,28 +21,13 @@ export const MainWrapper = ({
       />
       {isScroll ? (
         <>
-          <ScrollView
-            contentContainerStyle={[
-              styles.wrapper,
-              noPadding && styles.noPadding,
-              contentContainerStyle,
-              dark && styles.dark,
-            ]}>
+          <ScrollView contentContainerStyle={[styles.wrapper, noPadding && styles.noPadding, contentContainerStyle, dark && styles.dark]}>
             {children}
           </ScrollView>
           {noScrollableContent?.(styles.wrapperPadding)}
         </>
       ) : (
-        <View
-          style={[
-            styles.wrapper,
-            styles.staticWrapper,
-            noPadding && styles.noPadding,
-            dark && styles.dark,
-            style,
-          ]}>
-          {children}
-        </View>
+        <View style={[styles.wrapper, styles.staticWrapper, noPadding && styles.noPadding, dark && styles.dark, style]}>{children}</View>
       )}
     </View>
   );

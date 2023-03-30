@@ -1,18 +1,11 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
-import {Modal} from 'react-native';
-import {MainModalWrapper} from '@components/Modals/ModalWrappers/MainModalWrapper';
+import { MainModalWrapper } from '@components/Modals/ModalWrappers/MainModalWrapper';
+import React, { createContext, PropsWithChildren, ReactNode, useContext, useMemo, useState } from 'react';
+import { Modal } from 'react-native';
 
 interface DialogContextInterface {
-  openDialog: (content: ReactNode) => void;
   closeDialog: () => void;
   isDialogOpen: boolean;
+  openDialog: (content: ReactNode) => void;
 }
 
 export const DialogContext = createContext<DialogContextInterface>({
@@ -33,11 +26,7 @@ export interface DialogProviderProps {
   type?: 'main';
 }
 
-export const DialogProvider = ({
-  children,
-  type = 'main',
-  ...props
-}: PropsWithChildren<DialogProviderProps>) => {
+export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithChildren<DialogProviderProps>) => {
   const [dialogContent, setDialogContent] = useState<ReactNode>(null);
   const closeDialog = () => setDialogContent(false);
   const ctx = useMemo(() => {
@@ -48,14 +37,23 @@ export const DialogProvider = ({
     };
   }, [dialogContent]);
 
-  const Wrapper = modals[type];
+  const Wrapper = modals[`${type}`];
 
   return (
-    <DialogContext.Provider value={ctx} {...props}>
+    <DialogContext.Provider
+      value={ctx}
+      {...props}
+    >
       {children}
       {!!dialogContent && (
-        <Modal animationType={'slide'} visible={!!dialogContent}>
-          <Wrapper dialogContent={dialogContent} {...props} />
+        <Modal
+          animationType={'slide'}
+          visible={!!dialogContent}
+        >
+          <Wrapper
+            dialogContent={dialogContent}
+            {...props}
+          />
         </Modal>
       )}
     </DialogContext.Provider>
@@ -64,8 +62,10 @@ export const DialogProvider = ({
 
 export const useDialog = () => {
   const context = useContext(DialogContext);
+
   if (context === undefined) {
     throw new Error('useDialog must be used within a DialogProvider');
   }
+
   return context;
 };

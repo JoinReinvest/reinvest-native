@@ -1,25 +1,17 @@
-import React from 'react';
-import {
-  formFieldsInitialState,
-  RegisterFormFlowProvider,
-} from '@screens/SignUp/flow-steps';
+import { DarkScreenHeader } from '@components/CustomHeader';
+import { FirstStepLayout } from '@components/Layouts/FirstStepLayout';
 import Screens from '@navigation/screens';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import {SignUpStackParamsList} from './types';
-import {BlackLayout} from './BlackLayout';
-import {FirstStepLayout} from '@components/Layouts/FirstStepLayout';
-import {StepOutsideFlow} from '@screens/SignUp/flow-steps/stepEmail';
-import {DarkScreenHeader} from '@components/CustomHeader';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { formFieldsInitialState, RegisterFormFlowProvider } from '@screens/SignUp/flow-steps';
+import { StepOutsideFlow } from '@screens/SignUp/flow-steps/stepEmail';
+import React from 'react';
+
+import { BlackLayout } from './BlackLayout';
+import { SignUpStackParamsList } from './types';
 
 const SignUpStack = createNativeStackNavigator<SignUpStackParamsList>();
 
-const stackOptions: Record<
-  Extract<Screens, Screens.BlackForm>,
-  NativeStackNavigationOptions
-> = {
+const stackOptions: Record<Extract<Screens, Screens.BlackForm>, NativeStackNavigationOptions> = {
   [Screens.BlackForm]: {
     title: 'logo',
     header: DarkScreenHeader,
@@ -31,12 +23,14 @@ export const SignUp = () => {
     <RegisterFormFlowProvider initialStoreFields={formFieldsInitialState}>
       <SignUpStack.Navigator>
         <SignUpStack.Screen
-          options={{headerShown: false}}
-          name={Screens.FirstStepLayoutScreen}>
+          options={{ headerShown: false }}
+          name={Screens.FirstStepLayoutScreen}
+        >
           {() => (
             <FirstStepLayout
               headline="Sign up"
-              description="Enter your email below to get started.">
+              description="Enter your email below to get started."
+            >
               <StepOutsideFlow initialSteps={formFieldsInitialState} />
             </FirstStepLayout>
           )}

@@ -1,19 +1,20 @@
-import {formValidationRules} from '@utils/formValidationRules';
-import React, {useCallback} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import zod, {Schema} from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {View} from 'react-native';
-import {Controller} from '@components/typography/Controller';
-import {Button} from '@components/Button';
-import {styles} from './styles';
-import {StyledText} from '@components/typography/StyledText';
-import {palette} from '@constants/theme';
-import {useLogOutNavigation} from '@navigation/hooks';
+import { Button } from '@components/Button';
+import { Controller } from '@components/typography/Controller';
+import { StyledText } from '@components/typography/StyledText';
+import { palette } from '@constants/theme';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useLogOutNavigation } from '@navigation/hooks';
 import Screens from '@navigation/screens';
-import {RegisterFormFields} from '@screens/SignUp/types';
-import {useFocusEffect} from '@react-navigation/native';
-import {useRegisterFormFlow} from '@screens/SignUp/flow-steps';
+import { useFocusEffect } from '@react-navigation/native';
+import { useRegisterFormFlow } from '@screens/SignUp/flow-steps';
+import { RegisterFormFields } from '@screens/SignUp/types';
+import { formValidationRules } from '@utils/formValidationRules';
+import React, { useCallback } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { View } from 'react-native';
+import zod, { Schema } from 'zod';
+
+import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'email'>;
 
@@ -21,8 +22,8 @@ interface Props {
   initialSteps: Record<string, string>;
 }
 
-export const StepOutsideFlow = ({initialSteps}: Props) => {
-  const {updateStoreFields} = useRegisterFormFlow();
+export const StepOutsideFlow = ({ initialSteps }: Props) => {
+  const { updateStoreFields } = useRegisterFormFlow();
 
   useFocusEffect(
     useCallback(() => {
@@ -34,7 +35,7 @@ export const StepOutsideFlow = ({initialSteps}: Props) => {
     email: formValidationRules.email,
   });
 
-  const {handleSubmit, control, formState} = useForm<RegisterFormFields>({
+  const { handleSubmit, control, formState } = useForm<RegisterFormFields>({
     mode: 'onSubmit',
     defaultValues: initialSteps,
     resolver: zodResolver(schema),
@@ -53,18 +54,20 @@ export const StepOutsideFlow = ({initialSteps}: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         control={control}
         fieldName={'email'}
-        inputProps={{placeholder: 'Email Address'}}
+        inputProps={{ placeholder: 'Email Address' }}
       />
       <StyledText
         onPress={() => navigation.navigate(Screens.SignIn)}
         variant={'link'}
         color={palette.pureWhite}
-        style={styles.firstStepLink}>
+        style={styles.firstStepLink}
+      >
         Already have an account ?
       </StyledText>
       <Button
         disabled={!formState.dirtyFields}
-        onPress={handleSubmit(onSubmit)}>
+        onPress={handleSubmit(onSubmit)}
+      >
         Sign Up
       </Button>
     </View>

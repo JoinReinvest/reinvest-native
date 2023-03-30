@@ -1,27 +1,21 @@
+import { Button } from '@components/Button';
+import { Dropdown } from '@components/Dropdown';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { COUNTRIES_AS_OPTIONS, countriesMap } from '@constants/countries';
+import { VISAS_AS_OPTIONS } from '@constants/visas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formValidationRules } from '@utils/formValidationRules';
 import React from 'react';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { z } from 'zod';
 
-import {ScrollView, View} from 'react-native';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields, VisaType} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {formValidationRules} from '@utils/formValidationRules';
-import {Dropdown} from '@components/Dropdown';
-import {COUNTRIES_AS_OPTIONS, countriesMap} from '@constants/countries';
-import {VISAS_AS_OPTIONS} from '@constants/visas';
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields, VisaType } from '../types';
+import { styles } from './styles';
 
-type Fields = Pick<
-  OnboardingFormFields,
-  'birthCountry' | 'citizenshipCountry' | 'visaType'
->;
+type Fields = Pick<OnboardingFormFields, 'birthCountry' | 'citizenshipCountry' | 'visaType'>;
 
 const schema = z.object({
   birthCountry: formValidationRules.birthCountry,
@@ -32,12 +26,8 @@ const schema = z.object({
 export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_VISA,
   doesMeetConditionFields: fields => fields.residency === 'visa',
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {formState, handleSubmit, watch, setValue} = useForm<Fields>({
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { formState, handleSubmit, watch, setValue } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: storeFields,
@@ -64,27 +54,17 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
           />
           <Dropdown
             dark
-            value={
-              citizenshipCountry &&
-              countriesMap[citizenshipCountry as keyof typeof countriesMap]
-            }
+            value={citizenshipCountry && countriesMap[citizenshipCountry as keyof typeof countriesMap]}
             placeholder={'Citizenship Country'}
             data={COUNTRIES_AS_OPTIONS}
-            onSelect={option =>
-              setValue('citizenshipCountry', option.value.toString())
-            }
+            onSelect={option => setValue('citizenshipCountry', option.value.toString())}
           />
           <Dropdown
-            value={
-              birthCountry &&
-              countriesMap[birthCountry as keyof typeof countriesMap]
-            }
+            value={birthCountry && countriesMap[birthCountry as keyof typeof countriesMap]}
             placeholder={'Birth Country'}
             dark
             data={COUNTRIES_AS_OPTIONS}
-            onSelect={option =>
-              setValue('birthCountry', option.value.toString())
-            }
+            onSelect={option => setValue('birthCountry', option.value.toString())}
           />
           <Dropdown
             dark
@@ -94,10 +74,14 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
             onSelect={option => setValue('visaType', option.value as VisaType)}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={!shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>

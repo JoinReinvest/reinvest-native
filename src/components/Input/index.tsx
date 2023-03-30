@@ -1,18 +1,14 @@
-import React, {forwardRef, useMemo, useState} from 'react';
-import {LayoutChangeEvent, Pressable, TextInput, View} from 'react-native';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { Icon } from '@components/Icon';
+import { palette } from '@constants/theme';
+import { useForwardRef } from '@hooks/useForwardRef';
+import React, { forwardRef, useMemo, useState } from 'react';
+import { LayoutChangeEvent, Pressable, TextInput, View } from 'react-native';
 import MaskInput from 'react-native-mask-input';
-import type {InputProps} from './types';
-import {styles} from './styles';
-import {useForwardRef} from '@hooks/useForwardRef';
-import {palette} from '@constants/theme';
-import {Icon} from '@components/Icon';
-import {StyledText} from '../typography/StyledText';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
+import { StyledText } from '../typography/StyledText';
+import { styles } from './styles';
+import type { InputProps } from './types';
 
 export const Input = forwardRef<TextInput, InputProps>(
   (
@@ -49,9 +45,11 @@ export const Input = forwardRef<TextInput, InputProps>(
 
     const stateHandler = (isFocused: boolean) => {
       setFocused(isFocused);
+
       if (value?.length) {
         return;
       }
+
       setFocusedAnimatedStyle(isFocused);
     };
 
@@ -63,20 +61,10 @@ export const Input = forwardRef<TextInput, InputProps>(
     const animatedStyle = useAnimatedStyle(() => ({
       transform: [
         {
-          translateY: withTiming(
-            interpolate(sharedValue.value, [0, 1], [10, 0]),
-            {duration: 200},
-          ),
+          translateY: withTiming(interpolate(sharedValue.value, [0, 1], [10, 0]), { duration: 200 }),
         },
         {
-          translateX: withTiming(
-            interpolate(
-              sharedValue.value,
-              [0, 1],
-              [0, (-placeholderWidth / 2) * 0.2],
-            ),
-            {duration: 200},
-          ),
+          translateX: withTiming(interpolate(sharedValue.value, [0, 1], [0, (-placeholderWidth / 2) * 0.2]), { duration: 200 }),
         },
         {
           scale: withTiming(interpolate(sharedValue.value, [0, 1], [1, 0.8]), {
@@ -92,7 +80,7 @@ export const Input = forwardRef<TextInput, InputProps>(
 
     const calculateSizeHandler = ({
       nativeEvent: {
-        layout: {width},
+        layout: { width },
       },
     }: LayoutChangeEvent) => {
       setPlaceholderWidth(width);
@@ -112,12 +100,16 @@ export const Input = forwardRef<TextInput, InputProps>(
           />
         );
       }
+
       return rightSection;
     }, [dark, rightSection, secureTextEntry]);
 
     return (
       <>
-        <Pressable onPress={onPressFocusHandler} style={[styles.wrapper]}>
+        <Pressable
+          onPress={onPressFocusHandler}
+          style={[styles.wrapper]}
+        >
           <View
             style={[
               styles.input,
@@ -128,18 +120,17 @@ export const Input = forwardRef<TextInput, InputProps>(
               dark && styles.dark,
               dark && focused && styles.focusedDark,
               dark && !!error && styles.errorDark,
-            ]}>
+            ]}
+          >
             <View />
             {leftSection}
-            <View
-              style={[styles.mainSection, !placeholder && styles.centerText]}>
+            <View style={[styles.mainSection, !placeholder && styles.centerText]}>
               {placeholder && (
                 <Animated.View
                   onLayout={calculateSizeHandler}
-                  style={[styles.placeholder, animatedStyle]}>
-                  <StyledText style={[styles.placeholderText]}>
-                    {placeholder}
-                  </StyledText>
+                  style={[styles.placeholder, animatedStyle]}
+                >
+                  <StyledText style={[styles.placeholderText]}>{placeholder}</StyledText>
                 </Animated.View>
               )}
               <MaskInput
@@ -176,7 +167,8 @@ export const Input = forwardRef<TextInput, InputProps>(
             numberOfLines={1}
             ellipsizeMode={'tail'}
             variant={'paragraphSmall'}
-            style={styles.errorMessage}>
+            style={styles.errorMessage}
+          >
             {error}
           </StyledText>
         )}

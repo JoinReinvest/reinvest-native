@@ -1,6 +1,6 @@
-import {Auth, CognitoUser} from '@aws-amplify/auth';
-import {API_URL} from '@env';
-import {GraphQLClient} from 'graphql-request';
+import { Auth, CognitoUser } from '@aws-amplify/auth';
+import { API_URL } from '@env';
+import { GraphQLClient } from 'graphql-request';
 
 export const apiClient = async (): Promise<GraphQLClient | undefined> => {
   try {
@@ -8,19 +8,18 @@ export const apiClient = async (): Promise<GraphQLClient | undefined> => {
 
     return new GraphQLClient(`${API_URL}`, {
       requestMiddleware: async request => {
-        const token = currentUser
-          .getSignInUserSession()
-          ?.getAccessToken()
-          .getJwtToken();
+        const token = currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
 
         return {
           ...request,
-          headers: {...request.headers, Authorization: `Bearer ${token}`},
+          headers: { ...request.headers, Authorization: `Bearer ${token}` },
         };
       },
     });
-  } catch (err) {
-    console.error(err);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw err;
+    }
 
     return undefined;
   }

@@ -1,14 +1,7 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {Auth, CognitoUser, SignUpParams} from '@aws-amplify/auth';
+import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
 import AuthService from '@src/services/amplify.service';
-import {ISignUpResult} from 'amazon-cognito-identity-js';
+import { ISignUpResult } from 'amazon-cognito-identity-js';
+import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
 export enum ChallengeName {
   SMS_MFA = 'SMS_MFA',
@@ -18,27 +11,13 @@ AuthService.awsInit();
 
 interface AuthContextInterface {
   actions: {
-    confirmSignIn: (
-      authenticationCode: string,
-    ) => Promise<CognitoUser | Error | null>;
-    signOut: () => Promise<Error | void> | null;
-    signIn: (
-      email: string,
-      password: string,
-    ) => Promise<Error | CognitoUser | null>;
-    signUp: (
-      params: SignUpParams,
-    ) => Promise<ISignUpResult | Error | undefined> | null;
-    confirmSignUp: (
-      email: string,
-      authenticationCode: string,
-    ) => Promise<void> | null;
+    confirmSignIn: (authenticationCode: string) => Promise<CognitoUser | Error | null>;
+    confirmSignUp: (email: string, authenticationCode: string) => Promise<void> | null;
     forgotPassword: (email: string) => Promise<Error | void> | null;
-    forgotPasswordSubmit: (
-      email: string,
-      code: string,
-      newPassword: string,
-    ) => Promise<Error | void> | null;
+    forgotPasswordSubmit: (email: string, code: string, newPassword: string) => Promise<Error | void> | null;
+    signIn: (email: string, password: string) => Promise<Error | CognitoUser | null>;
+    signOut: () => Promise<Error | void> | null;
+    signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | null> | null;
   };
   loading: boolean;
   user: CognitoUser | null;
@@ -64,22 +43,21 @@ interface AuthProviderProps {
 
 //TODO add serialisation and mapping for handling errors - instead invoking main cognito instance we should use dep inv class
 
-export const AuthProvider = ({children}: AuthProviderProps) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<CognitoUser | null>(null);
   const [error, setError] = useState<Error | string | undefined>();
 
-  const signIn = async (
-    email: string,
-    password: string,
-  ): Promise<CognitoUser | Error> => {
+  const signIn = async (email: string, password: string): Promise<CognitoUser | Error> => {
     setLoading(true);
     try {
       const currentUser: CognitoUser = await Auth.signIn(email, password);
       setUser(currentUser);
+
       return currentUser;
     } catch (e) {
       const err = e as Error;
+
       return new Error(err?.message || 'Unknown error occurred');
     } finally {
       setLoading(false);
@@ -87,29 +65,29 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
   };
 
   const confirmSignIn = async (authenticationCode: string) => {
-    const confirmedUser: CognitoUser = await Auth.confirmSignIn(
-      user,
-      authenticationCode,
-      ChallengeName.SMS_MFA,
-    );
+    const confirmedUser: CognitoUser = await Auth.confirmSignIn(user, authenticationCode, ChallengeName.SMS_MFA);
     setUser(confirmedUser);
+
     return confirmedUser;
   };
 
   const signUp = async (signUpParams: SignUpParams) => {
     setLoading(true);
+    let userResult: ISignUpResult | null = null;
     try {
-      const userResult: ISignUpResult = await Auth.signUp(signUpParams);
-      return userResult;
-    } catch (err) {
-      throw err;
+      userResult = await Auth.signUp(signUpParams);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
+
+    return userResult;
   };
 
-  const confirmSignUp = async (email: string, authenticationCode: string) =>
-    Auth.confirmSignUp(email, authenticationCode);
+  const confirmSignUp = async (email: string, authenticationCode: string) => Auth.confirmSignUp(email, authenticationCode);
 
   const signOut = async () => {
     try {
@@ -133,12 +111,14 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
   };
 
   async function getToken() {
+    let currentUser: CognitoUser | null = null;
     try {
-      const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
-      return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
+      currentUser = await Auth.currentAuthenticatedUser();
     } catch (e) {
       setError('Problem with token');
     }
+
+    return currentUser?.getSignInUserSession()?.getAccessToken().getJwtToken();
   }
 
   const forgotPassword = async (email: string) => {
@@ -153,11 +133,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     }
   };
 
-  const forgotPasswordSubmit = async (
-    email: string,
-    code: string,
-    newPassword: string,
-  ) => {
+  const forgotPasswordSubmit = async (email: string, code: string, newPassword: string) => {
     setLoading(true);
     try {
       await Auth.forgotPasswordSubmit(email, code, newPassword);

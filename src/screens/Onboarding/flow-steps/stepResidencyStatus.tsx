@@ -1,24 +1,17 @@
+import { Button } from '@components/Button';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { RadioButtonGroup } from '@components/RadioButtonGroup';
+import { RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS, RESIDENCY_STATUS_VALUES, ResidencyStatusValue } from '@constants/residenty-status';
+import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { z } from 'zod';
 
-import {ScrollView, View} from 'react-native';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {
-  RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS,
-  RESIDENCY_STATUS_VALUES,
-  ResidencyStatusValue,
-} from '@constants/residenty-status';
-import {RadioButtonGroup} from '@components/RadioButtonGroup';
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'residency'>;
 
@@ -29,14 +22,9 @@ const schema = z.object({
 export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_STATUS,
 
-  Component: ({
-    storeFields,
-    moveToNextStep,
-    updateStoreFields,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    console.log(storeFields.residency);
-    const defaultValues: Fields = {residency: storeFields.residency};
-    const {handleSubmit, setValue, watch} = useForm<Fields>({
+  Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
+    const defaultValues: Fields = { residency: storeFields.residency };
+    const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues,
@@ -66,10 +54,14 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
             options={RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={!shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>

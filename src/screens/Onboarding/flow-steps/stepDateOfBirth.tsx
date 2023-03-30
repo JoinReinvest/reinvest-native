@@ -1,25 +1,23 @@
+import { Button } from '@components/Button';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box } from '@src/components/Containers/Box/Box';
+import { ProgressBar } from '@src/components/ProgressBar';
+import { Controller } from '@src/components/typography/Controller';
+import { StyledText } from '@src/components/typography/StyledText';
+import { palette } from '@src/constants/theme';
+import { dateOlderThanEighteenYearsSchema } from '@src/utils/formValidationRules';
 import React from 'react';
-import {ScrollView, View, Alert} from 'react-native';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Controller} from '@src/components/typography/Controller';
-import {Masks} from 'react-native-mask-input';
-import {dateOlderThanEighteenYearsSchema} from '@src/utils/formValidationRules';
-import {useOnboardingFormFlow} from '.';
-import {ProgressBar} from '@src/components/ProgressBar';
-import {StyledText} from '@src/components/typography/StyledText';
-import {palette} from '@src/constants/theme';
-import {Box} from '@src/components/Containers/Box/Box';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, ScrollView, View } from 'react-native';
+import { Masks } from 'react-native-mask-input';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { z } from 'zod';
+
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
+import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'dateOfBirth'>;
 
@@ -30,13 +28,9 @@ const schema = z.object({
 export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.DATE_OF_BIRTH,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {progressPercentage} = useOnboardingFormFlow();
-    const {formState, control, handleSubmit} = useForm<Fields>({
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
+    const { formState, control, handleSubmit } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: storeFields,
@@ -44,8 +38,8 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async ({dateOfBirth}) => {
-      await updateStoreFields({dateOfBirth});
+    const onSubmit: SubmitHandler<Fields> = async ({ dateOfBirth }) => {
+      await updateStoreFields({ dateOfBirth });
       moveToNextStep();
     };
 
@@ -55,7 +49,10 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
           <ProgressBar value={progressPercentage} />
         </View>
         <ScrollView>
-          <FormTitle dark headline={'Enter your date of birth'} />
+          <FormTitle
+            dark
+            headline={'Enter your date of birth'}
+          />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -68,19 +65,27 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
               maskedPlaceholder: 'MM/DD/YYYY',
             }}
           />
-          <Box style={styles.row} mt="4">
+          <Box
+            style={styles.row}
+            mt="4"
+          >
             <StyledText
               color={palette.frostGreen}
               variant="link"
-              onPress={() => Alert.alert('Required. Why?')}>
+              onPress={() => Alert.alert('Required. Why?')}
+            >
               Required. Why?
             </StyledText>
           </Box>
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>

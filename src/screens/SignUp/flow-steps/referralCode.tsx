@@ -1,22 +1,19 @@
-import {zodResolver} from '@hookform/resolvers/zod';
+import { Button } from '@components/Button';
+import { ReferralCodeCheckList } from '@components/CheckList/ReferralCodeCheckList';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { Controller } from '@components/typography/Controller';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterFormFields } from '@screens/SignUp/types';
+import { CODE_MASK } from '@src/constants/masks';
+import { formValidationRules } from '@utils/formValidationRules';
 import React from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import zod, {Schema} from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import zod, { Schema } from 'zod';
 
-import {Identifiers} from '../identifiers';
-import {formValidationRules} from '@utils/formValidationRules';
-import {RegisterFormFields} from '@screens/SignUp/types';
-import {ScrollView, View} from 'react-native';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {Controller} from '@components/typography/Controller';
-import {ReferralCodeCheckList} from '@components/CheckList/ReferralCodeCheckList';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {CODE_MASK} from '@src/constants/masks';
+import { Identifiers } from '../identifiers';
+import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'referralCode'>;
 
@@ -24,16 +21,12 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
   identifier: Identifiers.REFERRAL_CODE,
   doesMeetConditionFields: fields => !!fields.email,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<RegisterFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<RegisterFormFields>) => {
     const schema: Schema<Fields> = zod.object({
       referralCode: formValidationRules.referralCode,
     });
 
-    const {handleSubmit, control, getValues, watch} = useForm<Fields>({
+    const { handleSubmit, control, getValues, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
       mode: 'all',
@@ -59,9 +52,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
           <FormTitle
             dark
             headline={'Do you have a referral code? (optional)'}
-            description={
-              'You and your referrer will receive $20 in dividend following your first investment!'
-            }
+            description={'You and your referrer will receive $20 in dividend following your first investment!'}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
@@ -78,14 +69,21 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
           />
           <ReferralCodeCheckList referralCode={fields.password || ''} />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
-          <Button variant={'outlined'} onPress={onSkip}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
+          <Button
+            variant={'outlined'}
+            onPress={onSkip}
+          >
             Skip
           </Button>
           <Button
             disabled={!getValues?.().referralCode?.length}
             isLoading={false}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Enter code
           </Button>
         </View>

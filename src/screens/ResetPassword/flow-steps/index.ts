@@ -1,16 +1,12 @@
-import {StepEmail} from './stepEmail';
-import {ResetPasswordFormFields} from '../types';
-import {createFormFlow} from 'reinvest-app-common/src/services/form-flow/index';
-import {StepAuthenticationCode} from './stepAuthenticationCode';
-import {StepNewPassword} from './stepNewPassword';
-import {StepChangePasswordConfirm} from './stepChangePasswordConfirm';
+import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
 
-export const FLOW_STEPS = [
-  StepEmail,
-  StepAuthenticationCode,
-  StepNewPassword,
-  StepChangePasswordConfirm,
-];
+import { ResetPasswordFormFields } from '../types';
+import { StepAuthenticationCode } from './stepAuthenticationCode';
+import { StepChangePasswordConfirm } from './stepChangePasswordConfirm';
+import { StepEmail } from './stepEmail';
+import { StepNewPassword } from './stepNewPassword';
+
+export const FLOW_STEPS = [StepEmail, StepAuthenticationCode, StepNewPassword, StepChangePasswordConfirm];
 
 export const initialSteps = {
   email: '',
@@ -18,9 +14,8 @@ export const initialSteps = {
   authenticationCode: '',
 };
 
-const [useResetPasswordFormFlow, ResetPasswordFormFlowProvider] =
-  createFormFlow<ResetPasswordFormFields>({
-    steps: FLOW_STEPS,
-  });
+const [useResetPasswordFormFlow, ResetPasswordFormFlowProvider] = createFormFlow<ResetPasswordFormFields>({
+  steps: FLOW_STEPS,
+});
 
-export {ResetPasswordFormFlowProvider, useResetPasswordFormFlow};
+export { ResetPasswordFormFlowProvider, useResetPasswordFormFlow };
