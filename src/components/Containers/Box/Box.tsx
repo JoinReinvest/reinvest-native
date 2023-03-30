@@ -1,17 +1,12 @@
-import React, {PropsWithChildren, useMemo} from 'react';
-import {Pressable, View, ViewStyle} from 'react-native';
-import {palette} from '@constants/theme';
-import type {
-  BoxProps,
-  SizesEnum,
-  SpacingProps,
-} from '@components/Containers/Box/types';
-import {sizes} from '@components/Containers/Box/types';
+import type { BoxProps, SizesEnum, SpacingProps } from '@components/Containers/Box/types';
+import { sizes } from '@components/Containers/Box/types';
+import { palette } from '@constants/theme';
+import { hexToRgbA } from '@utils/hexToRgb';
+import { xScale, yScale } from '@utils/scale';
+import React, { PropsWithChildren, useMemo } from 'react';
+import { Pressable, View, ViewStyle } from 'react-native';
 
-import {xScale, yScale} from '@utils/scale';
-import {hexToRgbA} from '@utils/hexToRgb';
-
-const getSize = (size: SizesEnum | undefined) => size && sizes[size];
+const getSize = (size: SizesEnum | undefined) => size && sizes[`${size}`];
 
 function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
   return {
@@ -55,22 +50,7 @@ export const Box = ({
   const spacings = useMemo(
     () => generateSpacings(props),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      props.m,
-      props.mb,
-      props.ml,
-      props.mr,
-      props.mt,
-      props.mx,
-      props.my,
-      props.pb,
-      props.pl,
-      props.pr,
-      props.pt,
-      props.px,
-      props.py,
-      props.p,
-    ],
+    [props.m, props.mb, props.ml, props.mr, props.mt, props.mx, props.my, props.pb, props.pl, props.pr, props.pt, props.px, props.py, props.p],
   );
 
   const Container = onPress ? Pressable : View;
@@ -84,9 +64,7 @@ export const Box = ({
           borderRadius: radius,
           alignItems,
           justifyContent,
-          backgroundColor: color
-            ? hexToRgbA(palette[color], colorOpacity)
-            : undefined,
+          backgroundColor: color ? hexToRgbA(palette[`${color}`], colorOpacity) : undefined,
           width: fw ? '100%' : width,
           height,
           flex,
@@ -97,7 +75,8 @@ export const Box = ({
           alignSelf,
         },
         style,
-      ]}>
+      ]}
+    >
       {children}
     </Container>
   );

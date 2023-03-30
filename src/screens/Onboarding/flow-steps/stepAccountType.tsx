@@ -1,40 +1,32 @@
-import React, {useState} from 'react';
-import {FormTitle} from '@src/components/Forms/FormTitle';
-import {styles} from './styles';
-import {ACCOUNT_TYPES, AccountTypeValue} from '@src/constants/account-types';
-import {Card} from '@src/components/Card';
-import {ScrollView, View} from 'react-native';
-import {StyledText} from '@src/components/typography/StyledText';
-import {palette} from '@src/constants/theme';
-import {Button} from '@src/components/Button';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow';
-import {useDialog} from '@providers/DialogProvider';
-import {FormModalDisclaimer} from '@components/Modals/ModalContent/FormModalDisclaimer';
-import {onBoardingDisclaimers} from '@constants/strings';
-import {useOnboardingFormFlow} from '.';
-import {ProgressBar} from '@src/components/ProgressBar';
+import { FormModalDisclaimer } from '@components/Modals/ModalContent/FormModalDisclaimer';
+import { onBoardingDisclaimers } from '@constants/strings';
+import { useDialog } from '@providers/DialogProvider';
+import { Button } from '@src/components/Button';
+import { Card } from '@src/components/Card';
+import { FormTitle } from '@src/components/Forms/FormTitle';
+import { ProgressBar } from '@src/components/ProgressBar';
+import { StyledText } from '@src/components/typography/StyledText';
+import { ACCOUNT_TYPES, AccountTypeValue } from '@src/constants/account-types';
+import { palette } from '@src/constants/theme';
+import React, { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
+import { styles } from './styles';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {progressPercentage} = useOnboardingFormFlow();
-    const [selectedAccountType, setSelectedAccountType] = useState<
-      AccountTypeValue | undefined
-    >(storeFields.accountType);
-    const {openDialog} = useDialog();
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
+    const [selectedAccountType, setSelectedAccountType] = useState<AccountTypeValue | undefined>(storeFields.accountType);
+    const { openDialog } = useDialog();
 
     const handleContinue = () => {
-      updateStoreFields({accountType: selectedAccountType});
+      updateStoreFields({ accountType: selectedAccountType });
       moveToNextStep();
     };
 
@@ -63,7 +55,8 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 key={account.value}
                 id={account.value}
                 title={account.label}
-                onCardPress={setSelectedAccountType}>
+                onCardPress={setSelectedAccountType}
+              >
                 {account.description}
               </Card>
             ))}
@@ -72,12 +65,19 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             style={styles.link}
             color={palette.frostGreen}
             variant="link"
-            onPress={openDisclaimer}>
+            onPress={openDisclaimer}
+          >
             Not sure which is best for you?
           </StyledText>
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
-          <Button onPress={handleContinue} disabled={!selectedAccountType}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
+          <Button
+            onPress={handleContinue}
+            disabled={!selectedAccountType}
+          >
             Continue
           </Button>
         </View>

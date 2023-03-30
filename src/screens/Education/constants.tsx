@@ -1,6 +1,6 @@
-import {EducationCardProps} from '@screens/Education/components/EducationCard/types';
-import {ChartIcon} from '@components/Icon/icons/EducationIcons/ChartIcon';
-import {HomeIcon} from '@components/Icon/icons/EducationIcons/HomeIcon';
+import { ChartIcon } from '@components/Icon/icons/EducationIcons/ChartIcon';
+import { HomeIcon } from '@components/Icon/icons/EducationIcons/HomeIcon';
+import { EducationCardProps } from '@screens/Education/components/EducationCard/types';
 
 export const URL = {
   forgot_password: '/forgot-password',

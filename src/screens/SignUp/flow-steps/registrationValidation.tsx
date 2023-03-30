@@ -1,34 +1,27 @@
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import {allRequiredFieldsExists} from '@utils/formValidator';
-import {useAuth} from '@providers/AuthProvider';
-import React, {useEffect, useState} from 'react';
-import {RegisterFormFields} from '@screens/SignUp/types';
-import {Identifiers} from '@screens/SignUp/identifiers';
-import {StatusCircle} from '@components/StatusCircle';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {ActivityIndicator, View} from 'react-native';
-import {styles} from '@screens/SignUp/flow-steps/styles';
+import { Button } from '@components/Button';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { StatusCircle } from '@components/StatusCircle';
+import { useAuth } from '@providers/AuthProvider';
+import { styles } from '@screens/SignUp/flow-steps/styles';
+import { Identifiers } from '@screens/SignUp/identifiers';
+import { RegisterFormFields } from '@screens/SignUp/types';
+import { allRequiredFieldsExists } from '@utils/formValidator';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,
   isAValidationView: true,
 
   doesMeetConditionFields: fields => {
-    const requiredFields = [
-      fields.email,
-      fields.password,
-      fields.authenticationCode,
-    ];
+    const requiredFields = [fields.email, fields.password, fields.authenticationCode];
 
     return allRequiredFieldsExists(requiredFields);
   },
 
-  Component: ({storeFields}: StepComponentProps<RegisterFormFields>) => {
-    const {actions} = useAuth();
+  Component: ({ storeFields }: StepComponentProps<RegisterFormFields>) => {
+    const { actions } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | undefined>();
 
@@ -46,10 +39,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     useEffect(() => {
       (async () => {
         try {
-          await actions.confirmSignUp(
-            storeFields.email,
-            storeFields.authenticationCode,
-          );
+          await actions.confirmSignUp(storeFields.email, storeFields.authenticationCode);
         } catch (err) {
           setError((err as Error).message);
         } finally {
@@ -63,23 +53,26 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
       <View style={[styles.wrapper, styles.fw]}>
         {isLoading ? (
           <View style={styles.flex}>
-            <FormTitle dark headline={'Verifying Account Information'} />
-            <ActivityIndicator size={'large'} style={styles.flex} />
+            <FormTitle
+              dark
+              headline={'Verifying Account Information'}
+            />
+            <ActivityIndicator
+              size={'large'}
+              style={styles.flex}
+            />
           </View>
         ) : (
           <>
             <StatusCircle
-              title={
-                error
-                  ? error
-                  : 'Your login credentials were successfully created'
-              }
+              title={error ? error : 'Your login credentials were successfully created'}
               variant={error ? 'error' : undefined}
             />
             <Button
               isLoading={isLoading}
               onPress={onPress}
-              disabled={isLoading || !!error}>
+              disabled={isLoading || !!error}
+            >
               Continue
             </Button>
           </>

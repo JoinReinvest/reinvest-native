@@ -1,30 +1,22 @@
-import React, {useEffect} from 'react';
-
-import {DashboardScreenProps} from './types';
-import {MainWrapper} from '@components/MainWrapper';
-import {StyledText} from '@components/typography/StyledText';
-import {useLogInNavigation} from '@src/navigation/hooks';
+import { MainWrapper } from '@components/MainWrapper';
+import { StyledText } from '@components/typography/StyledText';
+import { useLogInNavigation } from '@src/navigation/hooks';
 import Screens from '@src/navigation/screens';
-import {apiClient} from '@api/apiClient';
-import {useGetUserProfile} from 'reinvest-app-common/src/services/queries/getProfile';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const Dashboard = ({}: DashboardScreenProps) => {
-  const {data, isLoading} = useGetUserProfile(apiClient);
-  const {top} = useSafeAreaInsets();
-
-  useEffect(() => {
-    console.log({data, isLoading});
-  }, [data, isLoading]);
+export const Dashboard = () => {
+  const { top } = useSafeAreaInsets();
 
   const navigation = useLogInNavigation();
 
   return (
-    <MainWrapper style={{paddingTop: top}}>
+    <MainWrapper style={{ paddingTop: top }}>
       <StyledText variant={'h6'}>DashBoard</StyledText>
       <StyledText
         variant="link"
-        onPress={() => navigation.navigate(Screens.Onboarding)}>
+        onPress={() => navigation.navigate(Screens.Onboarding)}
+      >
         Start Onboarding
       </StyledText>
     </MainWrapper>

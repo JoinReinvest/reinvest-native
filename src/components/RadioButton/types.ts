@@ -1,9 +1,9 @@
-import {StyleProp, ViewStyle} from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 export interface RadioButtonProps {
-  value: string;
   checked: boolean;
   onPress: (selectedId: string) => void;
-  radioStyles?: StyleProp<ViewStyle>;
+  value: string;
   labelStyles?: StyleProp<ViewStyle>;
+  radioStyles?: StyleProp<ViewStyle>;
 }

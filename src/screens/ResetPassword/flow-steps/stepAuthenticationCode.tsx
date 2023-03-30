@@ -1,25 +1,23 @@
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import {allRequiredFieldsExists} from '@utils/formValidator';
-import zod, {Schema} from 'zod';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {formValidationRules} from '@utils/formValidationRules';
-import React, {useState} from 'react';
-import {Controller} from '@components/typography/Controller';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {styles} from './styles';
-import {Alert, ScrollView, View} from 'react-native';
-import {StyledText} from '@components/typography/StyledText';
-import {palette} from '@constants/theme';
-import {FormMessage} from '@components/Forms/FormMessage';
-import {useAuth} from '@src/providers/AuthProvider';
-import {ResetPasswordFormFields} from '../types';
-import {CODE_MASK} from '@src/constants/masks';
-import {Identifiers} from '../identifires';
+import { Button } from '@components/Button';
+import { FormMessage } from '@components/Forms/FormMessage';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { Controller } from '@components/typography/Controller';
+import { StyledText } from '@components/typography/StyledText';
+import { palette } from '@constants/theme';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CODE_MASK } from '@src/constants/masks';
+import { useAuth } from '@src/providers/AuthProvider';
+import { formValidationRules } from '@utils/formValidationRules';
+import { allRequiredFieldsExists } from '@utils/formValidator';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import zod, { Schema } from 'zod';
+
+import { Identifiers } from '../identifires';
+import { ResetPasswordFormFields } from '../types';
+import { styles } from './styles';
 
 type Fields = Pick<ResetPasswordFormFields, 'authenticationCode'>;
 
@@ -28,27 +26,23 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
 
   doesMeetConditionFields: fields => {
     const requiredFields = [fields.email];
+
     return allRequiredFieldsExists(requiredFields);
   },
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<ResetPasswordFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<ResetPasswordFormFields>) => {
     const schema: Schema<Fields> = zod.object({
       authenticationCode: formValidationRules.authenticationCode,
     });
     const [error, setError] = useState<string | undefined>();
     const [infoMessage, setInfoMessage] = useState<string | undefined>();
-    const {loading, actions} = useAuth();
-    const {handleSubmit, control, formState} = useForm<Fields>({
+    const { loading, actions } = useAuth();
+    const { handleSubmit, control, formState } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
 
-    const shouldButtonBeDisabled =
-      !formState.isValid || formState.isSubmitting || loading;
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
 
     const subtitleMessage = `Enter the email authentication code sent to your email ${storeFields.email}.`;
 
@@ -77,9 +71,17 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
             headline={'Check Your Email'}
             description={subtitleMessage}
           />
-          {error && <FormMessage variant={'error'} message={error} />}
+          {error && (
+            <FormMessage
+              variant={'error'}
+              message={error}
+            />
+          )}
           {infoMessage && (
-            <FormMessage variant={'info'} message={infoMessage} />
+            <FormMessage
+              variant={'info'}
+              message={infoMessage}
+            />
           )}
           <Controller
             fieldName="authenticationCode"
@@ -97,21 +99,27 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
             <StyledText
               onPress={resendCodeOnClick}
               variant={'link'}
-              color={palette.frostGreen}>
+              color={palette.frostGreen}
+            >
               Resend Code
             </StyledText>
             <StyledText
               onPress={() => Alert.alert('Get Help')}
               variant={'link'}
-              color={palette.frostGreen}>
+              color={palette.frostGreen}
+            >
               Get Help
             </StyledText>
           </View>
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>

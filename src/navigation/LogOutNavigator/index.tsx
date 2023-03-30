@@ -1,15 +1,12 @@
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
+import { LogOutStackParamList } from '@navigation/LogOutNavigator/types';
+import { DialogProvider } from '@providers/DialogProvider';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { ResetPassword } from '@screens/ResetPassword';
+import { SignIn } from '@screens/SignIn';
+import { SignUp } from '@screens/SignUp';
 import React from 'react';
 
 import Screens from '../screens';
-import {LogOutStackParamList} from '@navigation/LogOutNavigator/types';
-import {SignUp} from '@screens/SignUp';
-import {SignIn} from '@screens/SignIn';
-import {ResetPassword} from '@screens/ResetPassword';
-import {DialogProvider} from '@providers/DialogProvider';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();
 
@@ -17,10 +14,7 @@ const stackOptionsCommon: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
-const stackOptions: Record<
-  Extract<Screens, Screens.SignUp | Screens.SignIn | Screens.ResetPassword>,
-  NativeStackNavigationOptions
-> = {
+const stackOptions: Record<Extract<Screens, Screens.SignUp | Screens.SignIn | Screens.ResetPassword>, NativeStackNavigationOptions> = {
   [Screens.SignUp]: {
     title: 'Sign Up',
     ...stackOptionsCommon,

@@ -1,23 +1,21 @@
-import {zodResolver} from '@hookform/resolvers/zod';
-import React, {useState} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import zod, {Schema} from 'zod';
-import {Identifiers} from '../identifiers';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {ScrollView, View} from 'react-native';
-import {useAuth} from '@providers/AuthProvider';
-import {RegisterFormFields} from '@screens/SignUp/types';
-import {formValidationRules} from '@utils/formValidationRules';
-import {Auth} from '@aws-amplify/auth';
-import {styles} from '@screens/SignUp/flow-steps/styles';
-import {Controller} from '@components/typography/Controller';
-import {PasswordChecklist} from '@components/CheckList/PasswordCheckList';
-import {FormMessage} from '@components/Forms/FormMessage';
+import { Auth } from '@aws-amplify/auth';
+import { Button } from '@components/Button';
+import { PasswordChecklist } from '@components/CheckList/PasswordCheckList';
+import { FormMessage } from '@components/Forms/FormMessage';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { Controller } from '@components/typography/Controller';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@providers/AuthProvider';
+import { styles } from '@screens/SignUp/flow-steps/styles';
+import { RegisterFormFields } from '@screens/SignUp/types';
+import { formValidationRules } from '@utils/formValidationRules';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import zod, { Schema } from 'zod';
+
+import { Identifiers } from '../identifiers';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;
@@ -28,12 +26,8 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
   doesMeetConditionFields: fields => !!fields.email,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<RegisterFormFields>) => {
-    const {loading, actions} = useAuth();
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<RegisterFormFields>) => {
+    const { loading, actions } = useAuth();
 
     const [error, setError] = useState<string | undefined>(undefined);
     const schema: Schema<Fields> = zod
@@ -46,7 +40,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const {handleSubmit, control, watch, setFocus} = useForm<Fields>({
+    const { handleSubmit, control, watch, setFocus } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -72,15 +66,18 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         });
 
         return moveToNextStep();
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (err instanceof Error) {
           if (err.name === 'UsernameExistsException') {
             await Auth.resendSignUp(storeFields.email);
+
             return moveToNextStep();
           }
+
           if (err.message.includes('WRONG_REFERRAL_CODE')) {
             err.message = 'Invalid referral code';
           }
+
           setError(err.message);
         }
       }
@@ -92,11 +89,14 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           <FormTitle
             dark
             headline={'Sign up to REINVEST'}
-            description={
-              'Create a unique password for your account to continue.'
-            }
+            description={'Create a unique password for your account to continue.'}
           />
-          {error && <FormMessage message={error} variant={'error'} />}
+          {error && (
+            <FormMessage
+              message={error}
+              variant={'error'}
+            />
+          )}
           <Controller
             inputProps={{
               dark: true,
@@ -122,11 +122,15 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             passwordConfirmation={fields.passwordConfirmation}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={loading}
             isLoading={loading}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Sign up
           </Button>
         </View>

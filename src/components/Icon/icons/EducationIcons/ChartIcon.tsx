@@ -1,19 +1,22 @@
 import * as React from 'react';
-import Svg, {
-  ClipPath,
-  Defs,
-  G,
-  LinearGradient,
-  Path,
-  Stop,
-  SvgProps,
-} from 'react-native-svg';
+import Svg, { ClipPath, Defs, G, LinearGradient, Path, Stop, SvgProps } from 'react-native-svg';
 
 export const ChartIcon = (props: SvgProps) => (
-  <Svg width={118} height={120} fill="none" {...props}>
+  <Svg
+    width={118}
+    height={120}
+    fill="none"
+    {...props}
+  >
     <G clipPath="url(#a)">
-      <Path d="M89.138 25.09H28.227v75.966h60.911V25.09Z" fill="#11270B" />
-      <Path d="M85.464 26.578H29.719v72.983h55.745V26.578Z" fill="#B6DBCA" />
+      <Path
+        d="M89.138 25.09H28.227v75.966h60.911V25.09Z"
+        fill="#11270B"
+      />
+      <Path
+        d="M85.464 26.578H29.719v72.983h55.745V26.578Z"
+        fill="#B6DBCA"
+      />
       <Path
         d="M118.002 15.086h-1.533V120h1.533V15.086ZM116.467 120 85.461 99.64v-72.8l31.006-11.754V120Z"
         fill="#11270B"
@@ -56,7 +59,10 @@ export const ChartIcon = (props: SvgProps) => (
         fill="#C1EBD9"
         opacity={0.2}
       />
-      <G opacity={0.2} fill="#C1EBD9">
+      <G
+        opacity={0.2}
+        fill="#C1EBD9"
+      >
         <Path
           opacity={0.5}
           d="M101.123 21.328v3.716l-13.818 6.789V28.68l13.818-7.352ZM96.329 28.86v3.303L87.305 36.3v-3.027l9.024-4.414ZM101.123 38.07v3.6l-13.818 3.647v-2.855l13.818-4.392ZM101.123 43.594v3.298L87.305 49.86v-2.806l13.818-3.46ZM93.227 50.555v3.126l-5.922.748v-2.777l5.922-1.097ZM101.123 54.566v2.774L87.305 59.02v-2.773l13.818-1.682Z"
@@ -136,9 +142,13 @@ export const ChartIcon = (props: SvgProps) => (
         y1={12.338}
         x2={63.356}
         y2={28.757}
-        gradientUnits="userSpaceOnUse">
+        gradientUnits="userSpaceOnUse"
+      >
         <Stop stopColor="#fff" />
-        <Stop offset={1} stopColor="#C7E6F0" />
+        <Stop
+          offset={1}
+          stopColor="#C7E6F0"
+        />
       </LinearGradient>
       <LinearGradient
         id="c"
@@ -146,12 +156,19 @@ export const ChartIcon = (props: SvgProps) => (
         y1={14.899}
         x2={68.103}
         y2={25.845}
-        gradientUnits="userSpaceOnUse">
+        gradientUnits="userSpaceOnUse"
+      >
         <Stop stopColor="#fff" />
-        <Stop offset={1} stopColor="#C7E6F0" />
+        <Stop
+          offset={1}
+          stopColor="#C7E6F0"
+        />
       </LinearGradient>
       <ClipPath id="a">
-        <Path fill="#fff" d="M0 0h118v120H0z" />
+        <Path
+          fill="#fff"
+          d="M0 0h118v120H0z"
+        />
       </ClipPath>
     </Defs>
   </Svg>

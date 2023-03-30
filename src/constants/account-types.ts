@@ -1,3 +1,5 @@
+import { SelectCardOption } from 'reinvest-app-common/src/types/select-card-option';
+
 export enum AccountType {
   Beneficiary = 'BENEFICIARY',
   Corporate = 'CORPORATE',
@@ -23,12 +25,9 @@ export const ACCOUNT_TYPES = [
   },
 ] as const;
 
-export type AccountTypeValue = typeof ACCOUNT_TYPES[number]['value'];
+export type AccountTypeValue = (typeof ACCOUNT_TYPES)[number]['value'];
 
-export const ACCOUNT_TYPES_VALUES: [AccountTypeValue, ...AccountTypeValue[]] = [
-  ACCOUNT_TYPES[0].value,
-  ...ACCOUNT_TYPES.slice(1).map(({value}) => value),
-];
+export const ACCOUNT_TYPES_VALUES: [AccountTypeValue, ...AccountTypeValue[]] = [ACCOUNT_TYPES[0].value, ...ACCOUNT_TYPES.slice(1).map(({ value }) => value)];
 
 export const CORPORATION_TYPES = [
   {
@@ -48,22 +47,18 @@ export const CORPORATION_TYPES = [
   },
 ] as const;
 
-export type CorporationTypeValue = typeof CORPORATION_TYPES[number]['value'];
+export type CorporationTypeValue = (typeof CORPORATION_TYPES)[number]['value'];
 
-export const CORPORATION_TYPES_VALUES: [
-  CorporationTypeValue,
-  ...CorporationTypeValue[]
-] = [
+export const CORPORATION_TYPES_VALUES: [CorporationTypeValue, ...CorporationTypeValue[]] = [
   CORPORATION_TYPES[0].value,
-  ...CORPORATION_TYPES.slice(1).map(({value}) => value),
+  ...CORPORATION_TYPES.slice(1).map(({ value }) => value),
 ];
 
-export const CORPORATION_TYPES_AS_OPTIONS: SelectionOption[] =
-  CORPORATION_TYPES.map(({label, description, value}) => ({
-    title: label,
-    description,
-    value,
-  }));
+export const CORPORATION_TYPES_AS_OPTIONS: SelectCardOption[] = CORPORATION_TYPES.map(({ label, description, value }) => ({
+  title: label,
+  description,
+  value,
+}));
 
 export const TRUST_TYPES = [
   {
@@ -78,17 +73,12 @@ export const TRUST_TYPES = [
   },
 ] as const;
 
-export type TrustTypeValue = typeof TRUST_TYPES[number]['value'];
+export type TrustTypeValue = (typeof TRUST_TYPES)[number]['value'];
 
-export const TRUST_TYPES_VALUES: [TrustTypeValue, ...TrustTypeValue[]] = [
-  TRUST_TYPES[0].value,
-  ...TRUST_TYPES.slice(1).map(({value}) => value),
-];
+export const TRUST_TYPES_VALUES: [TrustTypeValue, ...TrustTypeValue[]] = [TRUST_TYPES[0].value, ...TRUST_TYPES.slice(1).map(({ value }) => value)];
 
-export const TRUST_TYPES_AS_OPTIONS: SelectionOption[] = TRUST_TYPES.map(
-  ({label, description, value}) => ({
-    title: label,
-    description,
-    value,
-  }),
-);
+export const TRUST_TYPES_AS_OPTIONS: SelectCardOption[] = TRUST_TYPES.map(({ label, description, value }) => ({
+  title: label,
+  description,
+  value,
+}));

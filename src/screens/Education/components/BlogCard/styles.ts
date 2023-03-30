@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {yScale} from '@utils/scale';
-import {palette} from '@constants/theme';
+import { palette } from '@constants/theme';
+import { yScale } from '@utils/scale';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   card: {

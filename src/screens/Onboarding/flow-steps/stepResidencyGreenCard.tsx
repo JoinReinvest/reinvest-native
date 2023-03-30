@@ -1,21 +1,18 @@
+import { Button } from '@components/Button';
+import { Dropdown } from '@components/Dropdown';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { COUNTRIES_AS_OPTIONS, countriesMap } from '@constants/countries';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { formValidationRules } from '@utils/formValidationRules';
 import React from 'react';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { z } from 'zod';
 
-import {ScrollView, View} from 'react-native';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {formValidationRules} from '@utils/formValidationRules';
-import {Dropdown} from '@components/Dropdown';
-import {COUNTRIES_AS_OPTIONS, countriesMap} from '@constants/countries';
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'birthCountry' | 'citizenshipCountry'>;
 
@@ -28,12 +25,8 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_GREEN_CARD,
   doesMeetConditionFields: fields => fields.residency === 'green-card',
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {formState, handleSubmit, setValue, watch} = useForm<Fields>({
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { formState, handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: storeFields,
@@ -59,33 +52,27 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
           />
           <Dropdown
             dark
-            value={
-              citizenshipCountry &&
-              countriesMap[citizenshipCountry as keyof typeof countriesMap]
-            }
+            value={citizenshipCountry && countriesMap[citizenshipCountry as keyof typeof countriesMap]}
             placeholder={'Citizenship Country'}
             data={COUNTRIES_AS_OPTIONS}
-            onSelect={value =>
-              setValue('citizenshipCountry', value.value.toString())
-            }
+            onSelect={value => setValue('citizenshipCountry', value.value.toString())}
           />
           <Dropdown
-            value={
-              birthCountry &&
-              countriesMap[birthCountry as keyof typeof countriesMap]
-            }
+            value={birthCountry && countriesMap[birthCountry as keyof typeof countriesMap]}
             placeholder={'Birth Country'}
             dark
             data={COUNTRIES_AS_OPTIONS}
-            onSelect={option =>
-              setValue('birthCountry', option.value.toString())
-            }
+            onSelect={option => setValue('birthCountry', option.value.toString())}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={!shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>

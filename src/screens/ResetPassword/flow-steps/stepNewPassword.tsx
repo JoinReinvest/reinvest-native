@@ -1,22 +1,20 @@
-import {zodResolver} from '@hookform/resolvers/zod';
-import React, {useState} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import zod, {Schema} from 'zod';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {ScrollView, View} from 'react-native';
-import {useAuth} from '@providers/AuthProvider';
-import {formValidationRules} from '@utils/formValidationRules';
-import {styles} from './styles';
-import {Controller} from '@components/typography/Controller';
-import {PasswordChecklist} from '@components/CheckList/PasswordCheckList';
-import {FormMessage} from '@components/Forms/FormMessage';
-import {ResetPasswordFormFields} from '../types';
-import {Identifiers} from '../identifires';
+import { Button } from '@components/Button';
+import { PasswordChecklist } from '@components/CheckList/PasswordCheckList';
+import { FormMessage } from '@components/Forms/FormMessage';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { Controller } from '@components/typography/Controller';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@providers/AuthProvider';
+import { formValidationRules } from '@utils/formValidationRules';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import zod, { Schema } from 'zod';
+
+import { Identifiers } from '../identifires';
+import { ResetPasswordFormFields } from '../types';
+import { styles } from './styles';
 
 interface Fields extends Pick<ResetPasswordFormFields, 'password'> {
   passwordConfirmation: string;
@@ -27,12 +25,8 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
 
   doesMeetConditionFields: fields => !!fields.email,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<ResetPasswordFormFields>) => {
-    const {loading, actions} = useAuth();
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<ResetPasswordFormFields>) => {
+    const { loading, actions } = useAuth();
     const [error, setError] = useState<string | undefined>(undefined);
     const schema: Schema<Fields> = zod
       .object({
@@ -44,7 +38,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const {handleSubmit, control, watch} = useForm<Fields>({
+    const { handleSubmit, control, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -58,14 +52,10 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
       setError(undefined);
       updateStoreFields(values);
       try {
-        await actions.forgotPasswordSubmit(
-          storeFields.email,
-          storeFields.authenticationCode,
-          values.password,
-        );
+        await actions.forgotPasswordSubmit(storeFields.email, storeFields.authenticationCode, values.password);
 
         moveToNextStep();
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
         }
@@ -78,19 +68,22 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
           <FormTitle
             dark
             headline={'Reset Password'}
-            description={
-              'Your new password must be different from previous used passwords.'
-            }
+            description={'Your new password must be different from previous used passwords.'}
           />
-          {error && <FormMessage message={error} variant={'error'} />}
+          {error && (
+            <FormMessage
+              message={error}
+              variant={'error'}
+            />
+          )}
           <Controller
-            inputProps={{dark: true, placeholder: 'Password '}}
+            inputProps={{ dark: true, placeholder: 'Password ' }}
             fieldName="password"
             control={control}
             onSubmit={handleSubmit(onSubmit)}
           />
           <Controller
-            inputProps={{dark: true, placeholder: 'Confirm Password'}}
+            inputProps={{ dark: true, placeholder: 'Confirm Password' }}
             fieldName="passwordConfirmation"
             control={control}
             onSubmit={handleSubmit(onSubmit)}
@@ -100,11 +93,15 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             passwordConfirmation={fields.passwordConfirmation}
           />
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={loading}
             isLoading={loading}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Change Password
           </Button>
         </View>

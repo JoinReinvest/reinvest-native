@@ -3,46 +3,20 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@constants/*": [
-        "src/constants/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@navigation/*": [
-        "src/navigation/*"
-      ],
-      "@screens/*": [
-        "src/screens/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@typings/*": [
-        "src/types/*"
-      ],
-      "@icons/*": [
-        "src/assets/icons/*"
-      ],
-      "@permissions/*": [
-        "src/permissions/*"
-      ],
-      "@providers/*": [
-        "src/providers/*"
-      ],
+      "@src/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@navigation/*": ["src/navigation/*"],
+      "@screens/*": ["src/screens/*"],
+      "@utils/*": ["src/utils/*"],
+      "@typings/*": ["src/types/*"],
+      "@icons/*": ["src/assets/icons/*"],
+      "@permissions/*": ["src/permissions/*"],
+      "@providers/*": ["src/providers/*"],
       "@api/*": ["src/api/*"]
     }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

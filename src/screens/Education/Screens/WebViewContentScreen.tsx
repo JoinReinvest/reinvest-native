@@ -1,23 +1,22 @@
+import { Loader } from '@components/Loader';
+import { isIOS } from '@constants/common';
+import { REINVEST_SITE_URL } from '@env';
 import Screens from '@navigation/screens';
-import {EducationStackProps} from '@screens/Education/types';
-import {WebView} from 'react-native-webview';
-import {Loader} from '@components/Loader';
-import {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
-import {styles} from './styles';
-import {isIOS} from '@constants/common';
-import {REINVEST_SITE_URL} from '@env';
+import { EducationStackProps } from '@screens/Education/types';
+import { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
+import { WebView } from 'react-native-webview';
+
+import { styles } from './styles';
 
 /*
  * Iframe is scaling on input focus
  */
 const jsInjection =
   "const meta =  document.querySelectorAll('meta')[1]; meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');";
-export const WebViewContentScreen = ({
-  route,
-}: EducationStackProps<Screens.WebViewContent>) => {
+export const WebViewContentScreen = ({ route }: EducationStackProps<Screens.WebViewContent>) => {
   const [isLoading, setIsLoading] = useState(true);
-  const {uri} = route.params;
+  const { uri } = route.params;
   const ref = useRef<WebView>(null);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export const WebViewContentScreen = ({
         scalesPageToFit={isIOS}
         javaScriptEnabled
         onLoadEnd={() => setIsLoading(false)}
-        source={{uri: `${REINVEST_SITE_URL}${uri}`}}
+        source={{ uri: `${REINVEST_SITE_URL}${uri}` }}
       />
       {isLoading && (
         <View style={styles.webViewLoader}>

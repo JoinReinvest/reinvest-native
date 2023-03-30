@@ -1,9 +1,14 @@
+import { palette } from '@constants/theme';
 import * as React from 'react';
-import Svg, {Circle, Path, SvgProps} from 'react-native-svg';
-import {palette} from '@constants/theme';
+import Svg, { Circle, Path, SvgProps } from 'react-native-svg';
 
-export const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
-  <Svg width={32} height={32} fill="none" {...rest}>
+export const Disabled = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
+  <Svg
+    width={32}
+    height={32}
+    fill="none"
+    {...rest}
+  >
     <Circle
       cx={16.5}
       cy={16.5}
@@ -12,6 +17,10 @@ export const Disabled = ({color = palette.pureBlack, ...rest}: SvgProps) => (
       stroke={color}
       strokeWidth={1.5}
     />
-    <Path stroke={color} strokeWidth={1.5} d="m21.273 12.081-8.485 8.485" />
+    <Path
+      stroke={color}
+      strokeWidth={1.5}
+      d="m21.273 12.081-8.485 8.485"
+    />
   </Svg>
 );

@@ -1,25 +1,18 @@
-import React from 'react';
-import type {
-  SignInScreenProps,
-  SignInStackParamsList,
-} from '@screens/SignIn/SignIn.types';
-import {
-  initialSteps,
-  ResetPasswordFormFlowProvider,
-} from '@screens/ResetPassword/flow-steps';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { Icon } from '@components/Icon';
+import { palette } from '@constants/theme';
 import Screens from '@navigation/screens';
-import {palette} from '@constants/theme';
-import {Icon} from '@components/Icon';
-import {BlackLayout} from './BlackLayout';
-import type {RouteProp} from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { initialSteps, ResetPasswordFormFlowProvider } from '@screens/ResetPassword/flow-steps';
+import React from 'react';
+
+import { SignInStackParamsList } from '../SignIn/types';
+import { BlackLayout } from './BlackLayout';
 
 const ResetPasswordStack = createNativeStackNavigator<SignInStackParamsList>();
 
-const blackScreenFormOptions = (props: {
-  route: RouteProp<SignInStackParamsList, Screens.BlackForm>;
-  navigation: any;
-}) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const blackScreenFormOptions = (props: { navigation: any; route: RouteProp<SignInStackParamsList, Screens.BlackForm> }) => ({
   title: 'Reset Password',
   headerStyle: {
     backgroundColor: palette.onboarding,
@@ -34,7 +27,7 @@ const blackScreenFormOptions = (props: {
   ),
 });
 
-export const ResetPassword = ({}: SignInScreenProps) => {
+export const ResetPassword = () => {
   return (
     <ResetPasswordFormFlowProvider initialStoreFields={initialSteps}>
       <ResetPasswordStack.Navigator>

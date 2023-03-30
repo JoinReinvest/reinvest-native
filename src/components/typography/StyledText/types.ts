@@ -1,4 +1,4 @@
-import {TextProps} from 'react-native';
+import { TextProps } from 'react-native';
 
 export interface StyledTextProps extends TextProps {
   color?: string;

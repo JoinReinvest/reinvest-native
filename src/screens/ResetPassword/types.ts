@@ -1,3 +1,3 @@
-import {LoginFormFields} from '../SignIn/types';
+import { LoginFormFields } from '../SignIn/types';
 
-export interface ResetPasswordFormFields extends LoginFormFields {}
+export type ResetPasswordFormFields = LoginFormFields;

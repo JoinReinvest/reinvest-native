@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {MAIN_WRAPPER_PADDING_HORIZONTAL} from '@constants/styles';
-import {yScale} from '@utils/scale';
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '@constants/styles';
+import { yScale } from '@utils/scale';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   header: {

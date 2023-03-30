@@ -1,33 +1,28 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useOnboardingFormFlow} from '.';
-import {ProgressBar} from '@src/components/ProgressBar';
-import {StyledText} from '@src/components/typography/StyledText';
-import {palette} from '@src/constants/theme';
-import {Box} from '@src/components/Containers/Box/Box';
-import {
-  CALLING_CODES,
-  UNIQUE_COUNTRIES_CALLING_CODES,
-} from '@src/constants/country-codes';
-import {SelectOptions} from 'reinvest-app-common/src/types/select-option';
-import {Controller} from '@src/components/typography/Controller';
-import {PHONE_MASK} from '@src/constants/masks';
-import {formValidationRules} from '@src/utils/formValidationRules';
-import {useDialog} from '@providers/DialogProvider';
-import {FormModalDisclaimer} from '@components/Modals/ModalContent/FormModalDisclaimer';
-import {onBoardingDisclaimers} from '@constants/strings';
+import { Button } from '@components/Button';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { FormModalDisclaimer } from '@components/Modals/ModalContent/FormModalDisclaimer';
+import { onBoardingDisclaimers } from '@constants/strings';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useDialog } from '@providers/DialogProvider';
+import { Box } from '@src/components/Containers/Box/Box';
+import { ProgressBar } from '@src/components/ProgressBar';
+import { Controller } from '@src/components/typography/Controller';
+import { StyledText } from '@src/components/typography/StyledText';
+import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '@src/constants/country-codes';
+import { PHONE_MASK } from '@src/constants/masks';
+import { palette } from '@src/constants/theme';
+import { formValidationRules } from '@src/utils/formValidationRules';
+import React, { useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { SelectOptions } from 'reinvest-app-common/src/types/select-option';
+import { z } from 'zod';
+
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
+import { styles } from './styles';
 
 interface Fields {
   countryCode: string;
@@ -39,28 +34,19 @@ const schema = z.object({
   phone: formValidationRules.phone,
 });
 
-const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(
-  ({callingCode}: {callingCode: string}) => ({
-    label: `+${callingCode}`,
-    value: callingCode,
-  }),
-);
+const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
+  label: `+${callingCode}`,
+  value: callingCode,
+}));
 
 export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PHONE_NUMBER,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const phoneNumber = storeFields.phoneNumber;
-    const {countryCode, phone} = useMemo(
-      () => getPhoneNumberAndCountryCode(phoneNumber),
-      [phoneNumber],
-    );
-    const {progressPercentage} = useOnboardingFormFlow();
-    const {formState, control, handleSubmit, setValue} = useForm<Fields>({
+    const { countryCode, phone } = useMemo(() => getPhoneNumberAndCountryCode(phoneNumber), [phoneNumber]);
+    const { progressPercentage } = useOnboardingFormFlow();
+    const { formState, control, handleSubmit, setValue } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
@@ -69,17 +55,16 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
       },
     });
 
-    const [selectedCountryCallingCode, setSelectedCountryCallingCode] =
-      useState(countryCode ? countryCode : OPTIONS[0].value);
+    const [selectedCountryCallingCode, setSelectedCountryCallingCode] = useState(countryCode ? countryCode : OPTIONS[0]?.value ?? '');
 
-    const {openDialog} = useDialog();
+    const { openDialog } = useDialog();
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      fields.phone = fields.phone.replaceAll('-', '');
+      fields.phone = fields.phone.split('-').join('');
       const phoneNumberFromFields = `${fields.countryCode}${fields.phone}`;
-      await updateStoreFields({phoneNumber: phoneNumberFromFields});
+      await updateStoreFields({ phoneNumber: phoneNumberFromFields });
       moveToNextStep();
       //TODO: send authentication code via SMS
     };
@@ -140,19 +125,27 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               />
             </View>
           </View>
-          <Box style={styles.row} mt="4">
+          <Box
+            style={styles.row}
+            mt="4"
+          >
             <StyledText
               color={palette.frostGreen}
               variant="link"
-              onPress={showDisclaimer}>
+              onPress={showDisclaimer}
+            >
               Required. Why?
             </StyledText>
           </Box>
         </ScrollView>
-        <View key={'buttons_section'} style={styles.buttonsSection}>
+        <View
+          key={'buttons_section'}
+          style={styles.buttonsSection}
+        >
           <Button
             disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+          >
             Continue
           </Button>
         </View>
@@ -176,5 +169,5 @@ const getPhoneNumberAndCountryCode = (phoneNumber: string | undefined) => {
     }
   }
 
-  return {countryCode: '', phone: ''};
+  return { countryCode: '', phone: '' };
 };

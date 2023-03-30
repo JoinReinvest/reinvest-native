@@ -1,19 +1,13 @@
+import { Input } from '@components/Input';
+import { Dropdown } from '@src/components/Dropdown';
 import React from 'react';
-import {Controller as ControllerBase} from 'react-hook-form';
-import {Input} from '@components/Input';
-import {ControllerProps} from './types';
-import {Dropdown} from '@src/components/Dropdown';
+import { Controller as ControllerBase } from 'react-hook-form';
 
-export const Controller = ({
-  select = false,
-  control,
-  fieldName,
-  onSubmit,
-  inputProps,
-  dropdownProps,
-  ...props
-}: ControllerProps) => {
+import { ControllerProps } from './types';
+
+export const Controller = ({ select = false, control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
   const Comp = select ? Dropdown : Input;
+
   return (
     <ControllerBase
       name={fieldName}
@@ -21,10 +15,7 @@ export const Controller = ({
       rules={{
         required: true,
       }}
-      render={({
-        field: {onChange, onBlur, value, ref},
-        fieldState: {error},
-      }) => {
+      render={({ field: { onChange, onBlur, value, ref }, fieldState: { error } }) => {
         return (
           <Comp
             onBlur={onBlur}
@@ -37,8 +28,7 @@ export const Controller = ({
             {...(select
               ? {
                   ...dropdownProps,
-                  onSelect: selected =>
-                    onChange({target: {value: selected.value}}),
+                  onSelect: selected => onChange({ target: { value: selected.value } }),
                 }
               : inputProps)}
             error={error?.message}

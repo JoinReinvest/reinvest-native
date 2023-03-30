@@ -1,12 +1,13 @@
-import {useNavigation} from '@react-navigation/native';
+import { Icon } from '@components/Icon';
+import { palette } from '@constants/theme';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import styles from './styles';
-import {Icon} from '@components/Icon';
-import {palette} from '@constants/theme';
+import { TouchableOpacity, View } from 'react-native';
 
-const DefaultLeftHeaderColumn = ({dark}: {dark?: boolean}) => {
-  const {canGoBack, goBack} = useNavigation();
+import styles from './styles';
+
+const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {
+  const { canGoBack, goBack } = useNavigation();
 
   return (
     <View style={styles.wrapper}>

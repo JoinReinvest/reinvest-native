@@ -1,11 +1,11 @@
-import {Fonts} from '@src/types/fonts';
-import {Platform, StyleSheet} from 'react-native';
+import { Fonts } from '@src/types/fonts';
+import { Platform, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   text: {
     ...Platform.select({
       ios: {},
-      android: {includeFontPadding: false, textAlignVertical: 'center'},
+      android: { includeFontPadding: false, textAlignVertical: 'center' },
     }),
   },
   h1: {

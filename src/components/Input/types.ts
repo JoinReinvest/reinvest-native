@@ -1,18 +1,18 @@
-import type {ReactNode} from 'react';
-import type {StyleProp, ViewStyle} from 'react-native';
-import {MaskInputProps} from 'react-native-mask-input';
+import type { ReactNode } from 'react';
+import type { StyleProp, ViewStyle } from 'react-native';
+import { MaskInputProps } from 'react-native-mask-input';
 
 export interface InputProps extends MaskInputProps {
-  value?: string;
-  onSubmit?: () => void;
-  error?: string;
-  nativeInputStyle?: StyleProp<ViewStyle>;
-  inputStyle?: StyleProp<ViewStyle>;
-  wrapperStyle?: StyleProp<ViewStyle>;
-  disabled?: boolean;
   dark?: boolean;
+  disabled?: boolean;
+  error?: string;
+  inputStyle?: StyleProp<ViewStyle>;
   leftSection?: ReactNode;
-  rightSection?: ReactNode;
-  onBlur?: () => void;
   maskedPlaceholder?: string;
+  nativeInputStyle?: StyleProp<ViewStyle>;
+  onBlur?: () => void;
+  onSubmit?: () => void;
+  rightSection?: ReactNode;
+  value?: string;
+  wrapperStyle?: StyleProp<ViewStyle>;
 }

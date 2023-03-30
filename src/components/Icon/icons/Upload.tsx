@@ -1,10 +1,19 @@
+import { palette } from '@constants/theme';
 import * as React from 'react';
-import Svg, {ClipPath, Defs, G, Path, SvgProps} from 'react-native-svg';
-import {palette} from '@constants/theme';
+import Svg, { ClipPath, Defs, G, Path, SvgProps } from 'react-native-svg';
 
-export const Upload = ({color = palette.pureBlack, ...rest}: SvgProps) => (
-  <Svg width={32} height={32} fill="none" {...rest}>
-    <G clipPath="url(#a)" stroke={color} strokeWidth={1.5}>
+export const Upload = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
+  <Svg
+    width={32}
+    height={32}
+    fill="none"
+    {...rest}
+  >
+    <G
+      clipPath="url(#a)"
+      stroke={color}
+      strokeWidth={1.5}
+    >
       <Path
         d="M18 9v3.111a.778.778 0 0 0 .778.778h3.11"
         strokeLinecap="square"
@@ -18,11 +27,17 @@ export const Upload = ({color = palette.pureBlack, ...rest}: SvgProps) => (
         strokeLinecap="square"
         strokeLinejoin="round"
       />
-      <Path d="m14.111 17.556 2.333-2.334 2.334 2.334" strokeLinecap="square" />
+      <Path
+        d="m14.111 17.556 2.333-2.334 2.334 2.334"
+        strokeLinecap="square"
+      />
     </G>
     <Defs>
       <ClipPath id="a">
-        <Path fill="none" d="M0 0h32v32H0z" />
+        <Path
+          fill="none"
+          d="M0 0h32v32H0z"
+        />
       </ClipPath>
     </Defs>
   </Svg>
