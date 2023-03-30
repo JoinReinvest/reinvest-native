@@ -1,6 +1,7 @@
 {
   "extends": "@hookooekoo/configs-tsconfig/tsconfig-react-native.json",
   "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
     "baseUrl": "./",
     "paths": {
       "@src/*": ["src/*"],
