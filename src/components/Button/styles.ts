@@ -54,6 +54,19 @@ export const styles = StyleSheet.create({
   secondaryLabelDisabled: {
     color: palette.dark3,
   },
+  draftDisabled: {},
+  draft: {
+    backgroundColor: palette.transparent,
+    borderStyle: 'dashed',
+    borderColor: palette.frostGreen,
+    borderWidth: 1,
+  },
+  draftLabel: {
+    backgroundColor: palette.transparent,
+  },
+  draftLabelDisabled: {
+    backgroundColor: palette.transparent,
+  },
   outlined: {
     borderWidth: 2,
     borderColor: palette.frostGreen,
@@ -69,4 +82,7 @@ export const styles = StyleSheet.create({
     color: palette.darkerGray,
   },
   pill: {},
+  darkLabel: {
+    color: palette.pureWhite,
+  },
 });
