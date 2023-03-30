@@ -7,6 +7,7 @@ import { StepAccountType } from './stepAccountType';
 import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepExperience } from './stepExperience';
 import { StepFullName } from './stepFullName';
+import { StepNetWorthAndNetIncome } from './stepNetWorthAndNetIncome';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
 import { StepProfilePicture } from './stepProfilePicture';
@@ -29,6 +30,7 @@ export const FLOW_STEPS = [
   StepProfilePicture,
   StepSSN,
   StepExperience,
+  StepNetWorthAndNetIncome,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
@@ -46,6 +48,8 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   profilePicture: undefined,
   ssn: undefined,
   experience: undefined,
+  netIncome: undefined,
+  netWorth: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
