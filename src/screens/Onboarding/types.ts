@@ -16,4 +16,13 @@ export interface OnboardingFormFields {
   phoneNumber?: string;
   phoneNumberAuthenticationCode?: string;
   visaType?: VisaType;
+  compliances?: {
+    // Are you or anyone in your immediate compliances, or, for any non-natural person, any officers, directors, or any person that owns or controls 5% (or greater) of the equity, associated with a FINRA member, organization, or the SEC.
+    isAssociatedWithFinra?: boolean;
+    // Are you or anyone in your compliances or immediate family, or, for any non-natural person, any of its directors, trustees, 10% (or more) equity holder, an officer, or member of the board of directors of a publicly traded company?
+    isAssociatedWithPubliclyTradedCompany?: boolean;
+    // Are you or any of your immediate family a senior political figure?
+    isSeniorPoliticalFigure?: boolean;
+  };
+  finraInstitution?: string;
 }

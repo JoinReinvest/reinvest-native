@@ -1,6 +1,6 @@
 import { Button } from '@components/Button';
 import { Box } from '@components/Containers/Box/Box';
-import { Row } from '@components/Containers/Box/Row';
+import { Row } from '@components/Containers/Row';
 import { Icon } from '@components/Icon';
 import { StyledText } from '@components/typography/StyledText';
 import { palette } from '@constants/theme';
