@@ -1,12 +1,13 @@
 import { Button } from '@components/Button';
 import { FormTitle } from '@components/Forms/FormTitle';
 import { RadioButtonGroup } from '@components/RadioButtonGroup';
-import { RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS, RESIDENCY_STATUS_VALUES, ResidencyStatusValue } from '@constants/residenty-status';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS, RESIDENCY_STATUS_VALUES } from 'reinvest-app-common/src/constants/residenty-status';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Identifiers } from '../identifiers';
@@ -50,7 +51,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
           />
           <RadioButtonGroup
             selectedValue={watchedResidency}
-            onSelect={val => setValue('residency', val as ResidencyStatusValue)}
+            onSelect={val => setValue('residency', val as DomicileType)}
             options={RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS}
           />
         </ScrollView>

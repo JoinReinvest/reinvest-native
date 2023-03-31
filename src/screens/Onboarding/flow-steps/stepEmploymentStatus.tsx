@@ -2,11 +2,11 @@ import { Button } from '@src/components/Button';
 import { Card } from '@src/components/Card';
 import { FormTitle } from '@src/components/Forms/FormTitle';
 import { ProgressBar } from '@src/components/ProgressBar';
-import { EMPLOYMENT_STATUSES, EmploymentStatusesValues } from '@src/constants/employment-status';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { EMPLOYMENT_STATUSES } from 'reinvest-app-common/src/constants/employment_statuses';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -24,7 +24,7 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedEmploymentStatus, setSelectedEmploymentStatus] = useState<EmploymentStatusesValues | undefined>(storeFields.employmentStatus);
+    const [selectedEmploymentStatus, setSelectedEmploymentStatus] = useState<EmploymentStatus | undefined>(storeFields.employmentStatus);
 
     const handleContinue = async () => {
       await updateStoreFields({ employmentStatus: selectedEmploymentStatus });
@@ -47,13 +47,13 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
             headline="Where are you employed?"
           />
           <View style={styles.cardsWrapper}>
-            {EMPLOYMENT_STATUSES.map(({ label, value }) => (
+            {EMPLOYMENT_STATUSES.map(({ title, value }) => (
               <Card
                 selected={value === selectedEmploymentStatus}
                 key={value}
                 id={value}
-                value={value as EmploymentStatusesValues}
-                title={label}
+                value={value as EmploymentStatus}
+                title={title}
                 onCardPress={setSelectedEmploymentStatus}
               />
             ))}

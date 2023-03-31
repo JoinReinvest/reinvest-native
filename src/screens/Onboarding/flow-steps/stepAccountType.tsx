@@ -6,11 +6,12 @@ import { Card } from '@src/components/Card';
 import { FormTitle } from '@src/components/Forms/FormTitle';
 import { ProgressBar } from '@src/components/ProgressBar';
 import { StyledText } from '@src/components/typography/StyledText';
-import { ACCOUNT_TYPES, AccountTypeValue } from '@src/constants/account-types';
 import { palette } from '@src/constants/theme';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -22,7 +23,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedAccountType, setSelectedAccountType] = useState<AccountTypeValue | undefined>(storeFields.accountType);
+    const [selectedAccountType, setSelectedAccountType] = useState<AccountType | undefined>(storeFields.accountType);
     const { openDialog } = useDialog();
 
     const handleContinue = () => {
@@ -49,13 +50,13 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             headline="Which type of account would you like to open?"
           />
           <View style={styles.cardsWrapper}>
-            {ACCOUNT_TYPES.map(({ label, value, description }) => (
+            {ACCOUNT_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
               <Card
                 selected={value === selectedAccountType}
                 key={value}
                 id={value}
-                value={value as AccountTypeValue}
-                title={label}
+                value={value as AccountType}
+                title={title}
                 description={description}
                 onCardPress={setSelectedAccountType}
               />
