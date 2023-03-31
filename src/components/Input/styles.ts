@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     height: 48,
     marginBottom: yScale(12),
-    flexShrink: 1,
+    // flexShrink: 1,
   },
   disabled: {
     borderColor: palette.darkerGray,
