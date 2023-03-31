@@ -1,10 +1,11 @@
-import { MainWrapper } from '@components/MainWrapper';
-import { StyledText } from '@components/typography/StyledText';
-import { useAuth } from '@providers/AuthProvider';
-import { useLogInNavigation } from '@src/navigation/hooks';
-import Screens from '@src/navigation/screens';
 import React from 'react';
 import { Button } from 'react-native';
+
+import { MainWrapper } from '../../components/MainWrapper';
+import { StyledText } from '../../components/typography/StyledText';
+import { useLogInNavigation } from '../../navigation/hooks';
+import Screens from '../../navigation/screens';
+import { useAuth } from '../../providers/AuthProvider';
 
 export const Settings = () => {
   const { actions, user } = useAuth();

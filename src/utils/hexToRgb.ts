@@ -1,4 +1,4 @@
-import { ThemeValues } from '@constants/theme';
+import { ThemeValues } from '../constants/theme';
 
 export const hexToRgbA = (hex: ThemeValues, opacity = 1) => {
   let c;

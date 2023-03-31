@@ -1,6 +1,3 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -8,6 +5,9 @@ import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Controller } from '../../../components/typography/Controller';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';

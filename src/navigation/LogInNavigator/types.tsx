@@ -1,7 +1,8 @@
-import { BottomTabsParamsBase } from '@navigation/BottomTabsNavigator/types';
-import Screens from '@navigation/screens';
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { BottomTabsParamsBase } from '../BottomTabsNavigator/types';
+import Screens from '../screens';
 
 export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;

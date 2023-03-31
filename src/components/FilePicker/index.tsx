@@ -1,13 +1,13 @@
-import { Button } from '@components/Button';
-import { Box } from '@components/Containers/Box/Box';
-import { Icon } from '@components/Icon';
-import { ImagePicker } from '@components/ImagePicker';
-import { palette } from '@constants/theme';
 import React, { PropsWithChildren, useCallback, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import DocumentPicker, { DocumentPickerResponse, isInProgress } from 'react-native-document-picker';
 import { Asset, ImagePickerResponse } from 'react-native-image-picker';
 
+import { palette } from '../../constants/theme';
+import { Button } from '../Button';
+import { Box } from '../Containers/Box/Box';
+import { Icon } from '../Icon';
+import { ImagePicker } from '../ImagePicker';
 import { FilePickerProps } from './types';
 
 export const isDocumentPickerResource = (file: DocumentPickerResponse | Asset): file is DocumentPickerResponse =>

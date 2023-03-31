@@ -1,11 +1,4 @@
-import { Button } from '@components/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Avatar } from '@src/components/Avatar';
-import { Box } from '@src/components/Containers/Box/Box';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { StyledText } from '@src/components/typography/StyledText';
-import { palette } from '@src/constants/theme';
-import { hexToRgbA } from '@src/utils/hexToRgb';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -13,6 +6,13 @@ import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-f
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Avatar } from '../../../components/Avatar';
+import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { hexToRgbA } from '../../../utils/hexToRgb';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';

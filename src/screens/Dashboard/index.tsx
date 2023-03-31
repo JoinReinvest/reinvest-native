@@ -1,9 +1,10 @@
-import { MainWrapper } from '@components/MainWrapper';
-import { StyledText } from '@components/typography/StyledText';
-import { useLogInNavigation } from '@src/navigation/hooks';
-import Screens from '@src/navigation/screens';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { MainWrapper } from '../../components/MainWrapper';
+import { StyledText } from '../../components/typography/StyledText';
+import { useLogInNavigation } from '../../navigation/hooks';
+import Screens from '../../navigation/screens';
 
 export const Dashboard = () => {
   const { top } = useSafeAreaInsets();

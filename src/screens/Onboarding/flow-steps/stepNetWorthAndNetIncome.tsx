@@ -1,13 +1,4 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormModalDisclaimer } from '@src/components/Modals/ModalContent/FormModalDisclaimer';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { StyledText } from '@src/components/typography/StyledText';
-import { palette } from '@src/constants/theme';
-import { useDialog } from '@src/providers/DialogProvider';
-import { formValidationRules } from '@src/utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -15,6 +6,15 @@ import { NET_WORTHS_AS_OPTIONS } from 'reinvest-app-common/src/constants/net-wor
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';

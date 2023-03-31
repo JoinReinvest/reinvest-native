@@ -1,7 +1,7 @@
-import { RadioButton } from '@components/RadioButton';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
+import { RadioButton } from '../RadioButton';
 import { styles } from './styles';
 import { RadioButtonGroupProps } from './types';
 

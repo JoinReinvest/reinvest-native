@@ -1,6 +1,7 @@
-import Screens from '@navigation/screens';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import Screens from '../screens';
 
 export type LogOutStackParamList = {
   [Screens.SignUp]: undefined;

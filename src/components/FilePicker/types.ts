@@ -1,6 +1,7 @@
-import { BoxProps } from '@components/Containers/Box/types';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import { Asset } from 'react-native-image-picker';
+
+import { BoxProps } from '../Containers/Box/types';
 
 export interface FilePickerProps extends BoxProps {
   label: string;

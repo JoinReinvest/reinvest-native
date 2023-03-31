@@ -1,7 +1,8 @@
-import Screens from '@navigation/screens';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
-import { EducationStackParamsList } from '@screens/Education/types';
+
+import { EducationStackParamsList } from '../../screens/Education/types';
+import Screens from '../screens';
 
 export type BottomTabsParamsBase = {
   [Screens.Dashboard]: undefined;

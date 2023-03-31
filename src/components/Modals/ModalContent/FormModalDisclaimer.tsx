@@ -1,9 +1,9 @@
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import React, { PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { palette } from '../../../constants/theme';
+import { StyledText } from '../../typography/StyledText';
 import { styles } from './styles';
 
 export const mockedContent =

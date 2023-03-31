@@ -1,6 +1,7 @@
-import { RadioButtonProps } from '@components/RadioButton/types';
 import { ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
+
+import { RadioButtonProps } from '../RadioButton/types';
 
 export interface RadioButtonOption extends Pick<RadioButtonProps, 'value'> {
   title: ReactNode;

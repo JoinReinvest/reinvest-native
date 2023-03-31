@@ -1,6 +1,7 @@
-import { palette } from '@src/constants/theme';
-import { xScale } from '@src/utils/scale';
 import { StyleSheet } from 'react-native';
+
+import { palette } from '../../constants/theme';
+import { xScale } from '../../utils/scale';
 
 export const styles = StyleSheet.create({
   wrapper: {

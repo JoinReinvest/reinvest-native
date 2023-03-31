@@ -2,22 +2,8 @@
   "extends": "@hookooekoo/configs-tsconfig/tsconfig-react-native.json",
   "compilerOptions": {
     "lib": ["ES2021", "DOM"],
-    "baseUrl": "./",
-    "paths": {
-      "@src/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@constants/*": ["src/constants/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@navigation/*": ["src/navigation/*"],
-      "@screens/*": ["src/screens/*"],
-      "@utils/*": ["src/utils/*"],
-      "@typings/*": ["src/types/*"],
-      "@icons/*": ["src/assets/icons/*"],
-      "@permissions/*": ["src/permissions/*"],
-      "@providers/*": ["src/providers/*"],
-      "@api/*": ["src/api/*"]
-    }
+    "baseUrl": "./src"
   },
-  "include": ["src"]
+  "include": ["./src/**/*.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["./out/**/*", "./node_modules/**/*"]
 }

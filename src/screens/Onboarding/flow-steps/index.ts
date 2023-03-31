@@ -1,7 +1,7 @@
-import { StepCompliance } from '@screens/Onboarding/flow-steps/stepCompliance';
-import { StepFinraInstitution } from '@screens/Onboarding/flow-steps/stepFinra';
 import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
 
+import { StepCompliance } from '../../Onboarding/flow-steps/stepCompliance';
+import { StepFinraInstitution } from '../../Onboarding/flow-steps/stepFinra';
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
 import { StepDateOfBirth } from './stepDateOfBirth';

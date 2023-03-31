@@ -1,12 +1,12 @@
-import { DarkScreenHeader } from '@components/CustomHeader';
-import { FirstStepLayout } from '@components/Layouts/FirstStepLayout';
-import Screens from '@navigation/screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { formFieldsInitialState, RegisterFormFlowProvider } from '@screens/SignUp/flow-steps';
-import { StepOutsideFlow } from '@screens/SignUp/flow-steps/stepEmail';
 import React from 'react';
 
+import { DarkScreenHeader } from '../../components/CustomHeader';
+import { FirstStepLayout } from '../../components/Layouts/FirstStepLayout';
+import Screens from '../../navigation/screens';
 import { BlackLayout } from './BlackLayout';
+import { formFieldsInitialState, RegisterFormFlowProvider } from './flow-steps';
+import { StepOutsideFlow } from './flow-steps/stepEmail';
 import { SignUpStackParamsList } from './types';
 
 const SignUpStack = createNativeStackNavigator<SignUpStackParamsList>();

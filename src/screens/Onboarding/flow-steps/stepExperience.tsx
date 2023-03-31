@@ -1,13 +1,13 @@
-import { Button } from '@src/components/Button';
-import { Card } from '@src/components/Card';
-import { FormTitle } from '@src/components/Forms/FormTitle';
-import { ProgressBar } from '@src/components/ProgressBar';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { EXPERIENCES_AS_OPTIONS } from 'reinvest-app-common/src/constants/experiences';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { Experience } from 'reinvest-app-common/src/types/graphql';
 
+import { Button } from '../../../components/Button';
+import { Card } from '../../../components/Card';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';

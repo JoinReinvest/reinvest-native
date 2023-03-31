@@ -1,12 +1,4 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box } from '@src/components/Containers/Box/Box';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { StyledText } from '@src/components/typography/StyledText';
-import { palette } from '@src/constants/theme';
-import { dateOlderThanEighteenYearsSchema } from '@src/utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
@@ -14,6 +6,14 @@ import { Masks } from 'react-native-mask-input';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { dateOlderThanEighteenYearsSchema } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';

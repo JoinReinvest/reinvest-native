@@ -1,6 +1,7 @@
-import { palette } from '@src/constants/theme';
 import * as React from 'react';
 import Svg, { Defs, Path, RadialGradient, Stop, SvgProps } from 'react-native-svg';
+
+import { palette } from '../../../constants/theme';
 
 export const LoadingSpinner = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg

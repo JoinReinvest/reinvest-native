@@ -1,9 +1,10 @@
-import { InputProps } from '@components/Input/types';
-import { DropdownProps } from '@src/components/Dropdown/types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ControllerProps as ControllerPropsBase } from 'react-hook-form';
 
+import { DropdownProps } from '../../Dropdown/types';
+import { InputProps } from '../../Input/types';
+
 export interface ControllerProps extends Partial<Omit<ControllerPropsBase, 'control'>> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any;
   fieldName: string;
   onSubmit: () => Promise<void> | void;

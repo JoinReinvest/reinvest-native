@@ -1,6 +1,6 @@
-import { StyledText } from '@components/typography/StyledText';
 import React from 'react';
 
+import { StyledText } from '../../typography/StyledText';
 import { styles } from './styles';
 
 enum MessageVariant {

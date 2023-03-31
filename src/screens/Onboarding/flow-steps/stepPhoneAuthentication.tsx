@@ -1,13 +1,4 @@
-import { Button } from '@components/Button';
-import { FormMessage } from '@components/Forms/FormMessage';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { CODE_MASK } from '@src/constants/masks';
-import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
@@ -15,6 +6,15 @@ import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-f
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { CODE_MASK } from '../../../constants/masks';
+import { palette } from '../../../constants/theme';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';

@@ -1,6 +1,7 @@
-import Screens from '@navigation/screens';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from 'react-native-screens/native-stack';
+
+import Screens from '../../navigation/screens';
 
 export type EducationStackParamsList = {
   [Screens.EducationMainScreen]: undefined;

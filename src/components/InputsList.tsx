@@ -1,8 +1,9 @@
-import { Button } from '@components/Button';
-import { Add } from '@components/Icon/icons';
-import { Input } from '@components/Input';
 import React from 'react';
 import { ScrollView, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+
+import { Button } from './Button';
+import { Add } from './Icon/icons';
+import { Input } from './Input';
 
 export interface DynamicInput {
   id: string;

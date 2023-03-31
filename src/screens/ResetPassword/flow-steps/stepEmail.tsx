@@ -1,16 +1,16 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormMessage } from '@src/components/Forms/FormMessage';
-import { useAuth } from '@src/providers/AuthProvider';
-import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Controller } from '../../../components/typography/Controller';
+import { useAuth } from '../../../providers/AuthProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifires';
 import { ResetPasswordFormFields } from '../types';
 import { styles } from './styles';

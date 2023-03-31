@@ -1,8 +1,4 @@
-import { Button } from '@components/Button';
-import { Dropdown } from '@components/Dropdown';
-import { FormTitle } from '@components/Forms/FormTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { formValidationRules } from '@utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -12,7 +8,11 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Dropdown } from '../../../components/Dropdown';
+import { FormTitle } from '../../../components/Forms/FormTitle';
 import { VisaType } from '../../../types/visaType';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';

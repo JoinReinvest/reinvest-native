@@ -1,6 +1,3 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { RadioButtonGroup } from '@components/RadioButtonGroup';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -10,6 +7,9 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';

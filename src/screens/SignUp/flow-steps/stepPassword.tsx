@@ -1,21 +1,21 @@
 import { Auth } from '@aws-amplify/auth';
-import { Button } from '@components/Button';
-import { PasswordChecklist } from '@components/CheckList/PasswordCheckList';
-import { FormMessage } from '@components/Forms/FormMessage';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '@providers/AuthProvider';
-import { styles } from '@screens/SignUp/flow-steps/styles';
-import { RegisterFormFields } from '@screens/SignUp/types';
-import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { PasswordChecklist } from '../../../components/CheckList/PasswordCheckList';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Controller } from '../../../components/typography/Controller';
+import { useAuth } from '../../../providers/AuthProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
+import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
+import { RegisterFormFields } from '../types';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;

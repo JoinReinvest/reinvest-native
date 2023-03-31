@@ -1,5 +1,6 @@
-import { Fonts } from '@src/types/fonts';
 import { Platform, StyleSheet } from 'react-native';
+
+import { Fonts } from '../../../types/fonts';
 
 const styles = StyleSheet.create({
   text: {

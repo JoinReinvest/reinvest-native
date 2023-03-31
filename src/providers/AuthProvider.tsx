@@ -1,7 +1,8 @@
 import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
-import AuthService from '@src/services/amplify.service';
 import { ISignUpResult } from 'amazon-cognito-identity-js';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+
+import AuthService from '../services/amplify.service';
 
 export enum ChallengeName {
   SMS_MFA = 'SMS_MFA',
