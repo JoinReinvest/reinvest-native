@@ -31,6 +31,7 @@ export interface OnboardingFormFields {
   finraInstitution?: string;
   firstName?: string;
   identificationDocument?: IdentificationDocuments;
+  isAccreditedInvestor?: boolean;
   lastName?: string;
   middleName?: string;
   netIncome?: string;
