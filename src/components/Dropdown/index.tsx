@@ -1,6 +1,7 @@
 import { Icon } from '@components/Icon';
 import { Input } from '@components/Input';
 import { StyledText } from '@components/typography/StyledText';
+import { INPUT_HEIGHT } from '@constants/styles';
 import { palette } from '@src/constants/theme';
 import { useForwardRef } from '@src/hooks/useForwardRef';
 import React, { forwardRef, useRef, useState } from 'react';
@@ -18,7 +19,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   const inputRef = useForwardRef(ref);
   const wrapperRef = useRef<View>(null);
   const [isListExpanded, setIsListExpanded] = useState(false);
-  const [position, setPosition] = useState<LayoutRectangle | undefined>();
+  const [position, setPosition] = useState<Omit<LayoutRectangle, 'height'> | undefined>();
   const statusSharedValue = useSharedValue(0);
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
@@ -61,7 +62,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
     inputRef.current?.focus();
 
     // Getting proper position for displaying list
-    wrapperRef.current?.measureInWindow((x, y, width, height) => setPosition({ x, y, width, height }));
+    wrapperRef.current?.measureInWindow((x, y, width) => setPosition({ x, y, width }));
 
     setIsListExpanded(true);
     statusSharedValue.value = 1;
@@ -122,7 +123,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
                 style={[
                   {
                     position: 'absolute',
-                    top: position?.y + position.height - 12,
+                    top: position?.y + INPUT_HEIGHT,
                     left: position.x,
                     width: position.width,
                   },
