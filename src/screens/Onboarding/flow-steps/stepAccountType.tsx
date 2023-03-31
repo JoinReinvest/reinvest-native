@@ -49,16 +49,16 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             headline="Which type of account would you like to open?"
           />
           <View style={styles.cardsWrapper}>
-            {ACCOUNT_TYPES.map(account => (
+            {ACCOUNT_TYPES.map(({ label, value, description }) => (
               <Card
-                selected={account.value === selectedAccountType}
-                key={account.value}
-                id={account.value}
-                title={account.label}
+                selected={value === selectedAccountType}
+                key={value}
+                id={value}
+                value={value as AccountTypeValue}
+                title={label}
+                description={description}
                 onCardPress={setSelectedAccountType}
-              >
-                {account.description}
-              </Card>
+              />
             ))}
           </View>
           <StyledText
