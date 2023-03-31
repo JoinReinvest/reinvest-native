@@ -1,11 +1,11 @@
-import { LogOutStackParamList } from '@navigation/LogOutNavigator/types';
-import { DialogProvider } from '@providers/DialogProvider';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { ResetPassword } from '@screens/ResetPassword';
-import { SignIn } from '@screens/SignIn';
-import { SignUp } from '@screens/SignUp';
 import React from 'react';
 
+import { DialogProvider } from '../../providers/DialogProvider';
+import { ResetPassword } from '../../screens/ResetPassword';
+import { SignIn } from '../../screens/SignIn';
+import { SignUp } from '../../screens/SignUp';
+import { LogOutStackParamList } from '../LogOutNavigator/types';
 import Screens from '../screens';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();

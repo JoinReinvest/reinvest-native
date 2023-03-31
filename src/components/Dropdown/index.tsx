@@ -1,14 +1,14 @@
-import { Icon } from '@components/Icon';
-import { Input } from '@components/Input';
-import { StyledText } from '@components/typography/StyledText';
-import { INPUT_HEIGHT } from '@constants/styles';
-import { palette } from '@src/constants/theme';
-import { useForwardRef } from '@src/hooks/useForwardRef';
 import React, { forwardRef, useRef, useState } from 'react';
 import { FlatList, Keyboard, LayoutRectangle, Modal, Pressable, TextInput, View } from 'react-native';
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SelectOption } from 'reinvest-app-common/src/types/select-option';
 
+import { INPUT_HEIGHT } from '../../constants/styles';
+import { palette } from '../../constants/theme';
+import { useForwardRef } from '../../hooks/useForwardRef';
+import { Icon } from '../Icon';
+import { Input } from '../Input';
+import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { DropdownProps } from './types';
 
@@ -86,7 +86,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   const rightSection = (
     <Animated.View style={[rotationAnimationStyles]}>
       <Icon
-        icon={'arrowDown'}
+        icon="arrowDown"
         color={dark ? palette.pureWhite : undefined}
       />
     </Animated.View>

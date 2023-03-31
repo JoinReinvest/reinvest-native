@@ -1,22 +1,23 @@
 import { Auth } from '@aws-amplify/auth';
-import { Button } from '@components/Button';
-import { FormMessage } from '@components/Forms/FormMessage';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { styles } from '@screens/SignUp/flow-steps/styles';
-import { Identifiers } from '@screens/SignUp/identifiers';
-import { RegisterFormFields } from '@screens/SignUp/types';
-import { CODE_MASK } from '@src/constants/masks';
-import { formValidationRules } from '@utils/formValidationRules';
-import { allRequiredFieldsExists } from '@utils/formValidator';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
+
+import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { CODE_MASK } from '../../../constants/masks';
+import { palette } from '../../../constants/theme';
+import { formValidationRules } from '../../../utils/formValidationRules';
+import { allRequiredFieldsExists } from '../../../utils/formValidator';
+import { styles } from '../flow-steps/styles';
+import { Identifiers } from '../identifiers';
+import { RegisterFormFields } from '../types';
 
 type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
 
@@ -64,18 +65,18 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Check Your Email'}
+            headline="Check Your Email"
             description={subtitleMessage}
           />
           {error && (
             <FormMessage
-              variant={'error'}
+              variant="error"
               message={error}
             />
           )}
           {infoMessage && (
             <FormMessage
-              variant={'info'}
+              variant="info"
               message={infoMessage}
             />
           )}
@@ -95,14 +96,14 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
           <View style={styles.row}>
             <StyledText
               onPress={resendCodeOnClick}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={() => Alert.alert('Get Help')}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Get Help
@@ -110,7 +111,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

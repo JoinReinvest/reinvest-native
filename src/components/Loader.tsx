@@ -1,8 +1,9 @@
-import { Icon } from '@components/Icon';
-import { ThemeValues } from '@src/constants/theme';
 import React, { useEffect } from 'react';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 import { SvgProps } from 'react-native-svg';
+
+import { ThemeValues } from '../constants/theme';
+import { Icon } from './Icon';
 
 export interface LoaderProps extends Pick<SvgProps, 'height' | 'width'> {
   color?: ThemeValues;

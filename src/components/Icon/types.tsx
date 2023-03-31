@@ -1,6 +1,6 @@
-import { type ThemeValues } from '@constants/theme';
 import { SvgProps } from 'react-native-svg';
 
+import { type ThemeValues } from '../../constants/theme';
 import { icons } from './constants';
 
 export type Icons = keyof typeof icons;

@@ -1,7 +1,7 @@
-import { CheckItem } from '@components/CheckItem';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
+import { CheckItem } from '../CheckItem';
 import { styles } from './styles';
 
 //TODO extend for other cases

@@ -1,13 +1,14 @@
-import { Sygnet } from '@components/Icon/icons';
-import { MainWrapper } from '@components/MainWrapper';
-import { StyledText } from '@components/typography/StyledText';
-import { Video } from '@components/Video';
-import { styles } from '@screens/SignIn/styles';
-import { palette } from '@src/constants/theme';
-import { hexToRgbA } from '@src/utils/hexToRgb';
 import React, { PropsWithChildren } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
+import { palette } from '../../../constants/theme';
+import { styles } from '../../../screens/SignIn/styles';
+import { hexToRgbA } from '../../../utils/hexToRgb';
+import { StyledText } from '../..//typography/StyledText';
+import { Sygnet } from '../../Icon/icons';
+import { MainWrapper } from '../../MainWrapper';
+import { Video } from '../../Video';
 
 interface FirstStepLayoutProps {
   description: string;
@@ -17,7 +18,7 @@ interface FirstStepLayoutProps {
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
   return (
     <MainWrapper style={{ justifyContent: 'flex-start' }}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle="light-content" />
       <Video />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
@@ -29,13 +30,13 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
       <View style={styles.descriptionSegment}>
         <StyledText
           style={[styles.text]}
-          variant={'h1'}
+          variant="h1"
         >
           {headline}
         </StyledText>
         <StyledText
           style={styles.text}
-          variant={'bonusHeading'}
+          variant="bonusHeading"
         >
           {description}
         </StyledText>

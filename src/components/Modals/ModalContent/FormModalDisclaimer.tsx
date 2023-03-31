@@ -1,9 +1,9 @@
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import React, { PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { palette } from '../../../constants/theme';
+import { StyledText } from '../../typography/StyledText';
 import { styles } from './styles';
 
 export const mockedContent =
@@ -26,18 +26,18 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
     <>
       <View style={styles.header}>
         <StyledText
-          variant={'h5'}
+          variant="h5"
           color={palette.pureWhite}
         >
           {headline}
         </StyledText>
       </View>
       <ScrollView
-        indicatorStyle={'white'}
+        indicatorStyle="white"
         contentContainerStyle={[styles.disclaimersContent, { paddingBottom: bottom }]}
       >
         <StyledText
-          variant={'paragraphLarge'}
+          variant="paragraphLarge"
           color={palette.pureWhite}
         >
           {content}

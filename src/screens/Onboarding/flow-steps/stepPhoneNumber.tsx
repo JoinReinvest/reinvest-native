@@ -1,17 +1,4 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { FormModalDisclaimer } from '@components/Modals/ModalContent/FormModalDisclaimer';
-import { onBoardingDisclaimers } from '@constants/strings';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useDialog } from '@providers/DialogProvider';
-import { Box } from '@src/components/Containers/Box/Box';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { StyledText } from '@src/components/typography/StyledText';
-import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '@src/constants/country-codes';
-import { PHONE_MASK } from '@src/constants/masks';
-import { palette } from '@src/constants/theme';
-import { formValidationRules } from '@src/utils/formValidationRules';
 import React, { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -19,6 +6,19 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import { SelectOptions } from 'reinvest-app-common/src/types/select-option';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '../../../constants/country-codes';
+import { PHONE_MASK } from '../../../constants/masks';
+import { onBoardingDisclaimers } from '../../../constants/strings';
+import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -71,7 +71,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const showDisclaimer = () => {
       openDialog(
         <FormModalDisclaimer
-          headline={'We need your phone number'}
+          headline="We need your phone number"
           content={onBoardingDisclaimers.requiredWhy}
         />,
       );
@@ -94,7 +94,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 select
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'countryCode'}
+                fieldName="countryCode"
                 dropdownProps={{
                   dark: true,
                   data: OPTIONS,
@@ -105,7 +105,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               <Controller
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'phone'}
+                fieldName="phone"
                 inputProps={{
                   dark: true,
                   mask: PHONE_MASK,
@@ -130,7 +130,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

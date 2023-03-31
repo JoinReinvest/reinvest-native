@@ -1,6 +1,7 @@
 import { REINVEST_SITE_URL } from '@env';
-import { BlogPost } from '@screens/Education/components/BlogCard/types';
 import { useQuery } from '@tanstack/react-query';
+
+import { BlogPost } from '../../screens/Education/components/BlogCard/types';
 
 const fetchBlogs = async () => {
   const response = await fetch(`${REINVEST_SITE_URL}api/posts`, {

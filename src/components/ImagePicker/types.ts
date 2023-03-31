@@ -5,7 +5,7 @@ export type ImagePickerActionTypes = 'capture' | 'library';
 
 export type BaseImagePickerOptions = Pick<OptionsCommon, 'mediaType' | 'includeBase64' | 'includeExtra'>;
 
-export interface ImagePickerProps extends Omit<PressableProps, 'onPress' | 'children' | 'style'> {
+export interface ImagePickerProps extends Omit<PressableProps, 'onPress' | 'children'> {
   onSelect: (response: ImagePickerResponse) => void;
   type: ImagePickerActionTypes;
   preAction?: () => void;

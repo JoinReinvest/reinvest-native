@@ -1,19 +1,19 @@
-import { Icon } from '@components/Icon';
-import { FirstStepLayout } from '@components/Layouts/FirstStepLayout';
-import { palette } from '@constants/theme';
-import Screens from '@navigation/screens';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { initialSteps, LoginFormFlowProvider } from '@screens/SignIn/flow-steps';
-import { StepOutsideFlow } from '@screens/SignIn/flow-steps/stepLogin';
 import React from 'react';
 
+import { Icon } from '../../components/Icon';
+import { FirstStepLayout } from '../../components/Layouts/FirstStepLayout';
+import { palette } from '../../constants/theme';
+import Screens from '../../navigation/screens';
 import { BlackLayout as BlackLayoutSignIn } from './BlackLayout';
+import { initialSteps, LoginFormFlowProvider } from './flow-steps';
+import { StepOutsideFlow } from './flow-steps/stepLogin';
 import type { SignInStackParamsList } from './types';
 
 const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blackScreenSignInFormOptions = (props: { navigation: any; route: RouteProp<SignInStackParamsList, Screens.BlackForm> }) => ({
   title: 'Sign In',
   headerStyle: {
@@ -23,7 +23,7 @@ const blackScreenSignInFormOptions = (props: { navigation: any; route: RouteProp
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon={'arrowLeft'}
+      icon="arrowLeft"
       onPress={props.navigation.goBack}
     />
   ),
@@ -39,8 +39,8 @@ export const SignIn = () => {
         >
           {() => (
             <FirstStepLayout
-              headline={'Sign in'}
-              description={'Building your wealth while rebuilding our communities.'}
+              headline="Sign in"
+              description="Building your wealth while rebuilding our communities."
             >
               <StepOutsideFlow initialSteps={initialSteps} />
             </FirstStepLayout>

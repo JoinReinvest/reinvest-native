@@ -1,19 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@src/components/Button';
-import { FormTitle } from '@src/components/Forms/FormTitle';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { AccountType } from '@src/constants/account-types';
-import { INDUSTRIES_LABELS } from '@src/constants/industries';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { INDUESTRIES_AS_OPTIONS } from 'reinvest-app-common/src/constants/industries';
 import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { INDUSTRIES_LABELS } from '../../../constants/industries';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -74,20 +73,20 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.employerName'}
+            fieldName="employmentDetails.employerName"
             inputProps={{ placeholder: 'Name of Employer', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.occupation'}
+            fieldName="employmentDetails.occupation"
             inputProps={{ placeholder: 'Title', dark: true }}
           />
           <Controller
             select
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.industry'}
+            fieldName="employmentDetails.industry"
             dropdownProps={{
               dark: true,
               data: INDUESTRIES_AS_OPTIONS,
@@ -96,7 +95,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

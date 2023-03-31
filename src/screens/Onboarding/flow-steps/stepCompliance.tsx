@@ -1,7 +1,3 @@
-import { Button } from '@components/Button';
-import { Box } from '@components/Containers/Box/Box';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { RadioButton } from '@components/RadioButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, FieldPath, SubmitHandler, useForm } from 'react-hook-form';
@@ -9,6 +5,10 @@ import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { RadioButton } from '../../../components/RadioButton';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';
@@ -117,7 +117,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
           {options.map(option => {
             return (
               <Box
-                mt={'16'}
+                mt="16"
                 key={option.name}
               >
                 <Controller
@@ -141,7 +141,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
         </ScrollView>
         {isAnyOptionChosen && (
           <View
-            key={'buttons_section'}
+            key="buttons_section"
             style={styles.buttonsSection}
           >
             <Button

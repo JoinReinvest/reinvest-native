@@ -1,16 +1,15 @@
-import { AccountTypeValue } from '@constants/account-types';
 import { Industry } from 'reinvest-app-common/src/constants/industries';
-import { Experience } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, DomicileType, Experience } from 'reinvest-app-common/src/types/graphql';
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
-export type VisaType = 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
+
+import { VisaType } from '../../types/visaType';
 
 export interface OnboardingFormFields {
-  residency: 'us' | 'green-card' | 'visa' | undefined;
   _hasAuthenticatedPhoneNumber?: boolean;
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
-
   _isSocialSecurityNumberBanned?: boolean;
-  accountType?: AccountTypeValue;
+
+  accountType?: AccountType;
   birthCountry?: string;
   citizenshipCountry?: string;
   compliances?: {
@@ -24,8 +23,8 @@ export interface OnboardingFormFields {
   dateOfBirth?: Date;
   employmentDetails?: EmploymentDetails;
   employmentStatus?: EmploymentStatus;
-
   experience?: Experience;
+
   finraInstitution?: string;
   firstName?: string;
   lastName?: string;
@@ -35,6 +34,7 @@ export interface OnboardingFormFields {
   phoneNumber?: string;
   phoneNumberAuthenticationCode?: string;
   profilePicture?: string | undefined;
+  residency?: DomicileType;
   ssn?: string;
   visaType?: VisaType;
 }

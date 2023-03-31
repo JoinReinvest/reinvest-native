@@ -1,8 +1,9 @@
-import { Icon } from '@components/Icon';
-import { palette } from '@constants/theme';
-import { useLogOutNavigation } from '@navigation/hooks';
 import React, { useEffect } from 'react';
 import { ContextState } from 'reinvest-app-common/src/services/form-flow/interfaces';
+
+import { Icon } from '../components/Icon';
+import { palette } from '../constants/theme';
+import { useLogOutNavigation } from '../navigation/hooks';
 
 export const useStepBackOverride = <T extends object>(useCurrentFormContext: () => ContextState<T>) => {
   const {
@@ -16,7 +17,7 @@ export const useStepBackOverride = <T extends object>(useCurrentFormContext: () 
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={() => navigation.goBack()}
           />
         ),
@@ -28,7 +29,7 @@ export const useStepBackOverride = <T extends object>(useCurrentFormContext: () 
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={moveToPreviousValidStep}
           />
         ),

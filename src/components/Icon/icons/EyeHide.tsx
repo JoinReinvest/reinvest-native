@@ -1,6 +1,7 @@
-import { palette } from '@constants/theme';
 import React from 'react';
 import Svg, { ClipPath, Defs, G, Path, SvgProps } from 'react-native-svg';
+
+import { palette } from '../../../constants/theme';
 
 export const EyeHide = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg

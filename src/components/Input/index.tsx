@@ -1,11 +1,11 @@
-import { Icon } from '@components/Icon';
-import { palette } from '@constants/theme';
-import { useForwardRef } from '@hooks/useForwardRef';
 import React, { forwardRef, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Pressable, TextInput, View } from 'react-native';
 import MaskInput from 'react-native-mask-input';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
+import { palette } from '../../constants/theme';
+import { useForwardRef } from '../../hooks/useForwardRef';
+import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import type { InputProps } from './types';
@@ -94,7 +94,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       if (secureTextEntry) {
         return (
           <Icon
-            icon={'eyeHide'}
+            icon="eyeHide"
             onPress={toggleShowSecureInput}
             color={dark ? palette.pureWhite : palette.pureBlack}
           />
@@ -165,8 +165,8 @@ export const Input = forwardRef<TextInput, InputProps>(
         {error && (
           <StyledText
             numberOfLines={1}
-            ellipsizeMode={'tail'}
-            variant={'paragraphSmall'}
+            ellipsizeMode="tail"
+            variant="paragraphSmall"
             style={styles.errorMessage}
           >
             {error}

@@ -1,8 +1,8 @@
-import { palette } from '@src/constants/theme';
-import { DEVICE_WIDTH } from '@src/utils/scale';
 import React from 'react';
 import { View } from 'react-native';
 
+import { palette } from '../../constants/theme';
+import { DEVICE_WIDTH } from '../../utils/scale';
 import { styles } from './styles';
 import { ProgressBarProps } from './types';
 

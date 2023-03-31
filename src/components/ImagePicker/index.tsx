@@ -1,9 +1,9 @@
-import { isIOS } from '@constants/common';
-import { requestAndroidPermissions } from '@permissions/requestAndroidPermissions';
 import React, { PropsWithChildren } from 'react';
 import { Pressable } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
+import { isIOS } from '../../constants/common';
+import { requestAndroidPermissions } from '../../permissions/requestAndroidPermissions';
 import { BaseImagePickerOptions, ImagePickerProps } from './types';
 
 export const baseOptions: BaseImagePickerOptions = {

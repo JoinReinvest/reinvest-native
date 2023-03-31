@@ -1,6 +1,7 @@
-import { palette } from '@constants/theme';
 import * as React from 'react';
 import Svg, { Circle, Path, SvgProps } from 'react-native-svg';
+
+import { palette } from '../../../constants/theme';
 
 export const Disabled = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg

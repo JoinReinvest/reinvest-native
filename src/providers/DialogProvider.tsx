@@ -1,6 +1,7 @@
-import { MainModalWrapper } from '@components/Modals/ModalWrappers/MainModalWrapper';
 import React, { createContext, PropsWithChildren, ReactNode, useContext, useMemo, useState } from 'react';
 import { Modal } from 'react-native';
+
+import { MainModalWrapper } from '../components/Modals/ModalWrappers/MainModalWrapper';
 
 interface DialogContextInterface {
   closeDialog: () => void;
@@ -47,7 +48,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
       {children}
       {!!dialogContent && (
         <Modal
-          animationType={'slide'}
+          animationType="slide"
           visible={!!dialogContent}
         >
           <Wrapper

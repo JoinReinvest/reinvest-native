@@ -1,12 +1,12 @@
-import DefaultLeftHeaderColumn from '@components/CustomHeader/DefaultLeftHeaderColumn';
-import { Logo } from '@components/Icon/icons';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { palette } from '../../constants/theme';
+import DefaultLeftHeaderColumn from '../CustomHeader/DefaultLeftHeaderColumn';
+import { Logo } from '../Icon/icons';
+import { StyledText } from '../typography/StyledText';
 import styles from './styles';
 
 export const CustomHeader = ({ children, style, dark, ...rest }: PropsWithChildren<ViewProps & { dark?: boolean }>) => {

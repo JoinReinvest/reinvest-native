@@ -1,8 +1,8 @@
-import { Loader } from '@components/Loader';
-import { palette } from '@src/constants/theme';
 import React, { PropsWithChildren } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { palette } from '../../constants/theme';
+import { Loader } from '../Loader';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { ButtonProps } from './types';

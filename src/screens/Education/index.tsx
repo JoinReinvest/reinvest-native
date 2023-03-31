@@ -1,15 +1,15 @@
-import { Avatar } from '@components/Avatar';
-import { Box } from '@components/Containers/Box/Box';
-import { ScreenHeader } from '@components/CustomHeader';
-import { Sygnet } from '@components/Icon/icons';
-import { palette } from '@constants/theme';
-import Screens from '@navigation/screens';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { BlogScreen } from '@screens/Education/Screens/BlogScreen';
-import { EducationMainScreen } from '@screens/Education/Screens/EducationMainScreen';
-import { WebViewContentScreen } from '@screens/Education/Screens/WebViewContentScreen';
 import React from 'react';
 
+import { Avatar } from '../../components/Avatar';
+import { Box } from '../../components/Containers/Box/Box';
+import { ScreenHeader } from '../../components/CustomHeader';
+import { Sygnet } from '../../components/Icon/icons';
+import { palette } from '../../constants/theme';
+import Screens from '../../navigation/screens';
+import { BlogScreen } from '../Education/Screens/BlogScreen';
+import { EducationMainScreen } from '../Education/Screens/EducationMainScreen';
+import { WebViewContentScreen } from '../Education/Screens/WebViewContentScreen';
 import { EducationStackParamsList } from './types';
 
 const Stack = createNativeStackNavigator<EducationStackParamsList>();
@@ -20,7 +20,7 @@ const stackOptions: Record<Extract<Screens, Screens.EducationMainScreen | Screen
     header: ScreenHeader,
     headerLeft: () => (
       <Box
-        m={'8'}
+        m="8"
         width={32}
         height={32}
       >
@@ -47,7 +47,7 @@ export const EducationStack = () => {
               onPress={() => {
                 navigation.navigate(Screens.Settings);
               }}
-              username={'Test'}
+              username="Test"
             />
           ),
         })}

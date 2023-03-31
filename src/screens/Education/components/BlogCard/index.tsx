@@ -1,12 +1,12 @@
-import { Box } from '@components/Containers/Box/Box';
-import { StyledText } from '@components/typography/StyledText';
-import { PADDED_SAFE_WIDTH } from '@constants/styles';
-import { palette } from '@constants/theme';
-import Screens from '@navigation/screens';
-import { EducationNavigationProp } from '@screens/Education/types';
 import { useCallback } from 'react';
 import FastImage from 'react-native-fast-image';
 
+import { Box } from '../../../../components/Containers/Box/Box';
+import { StyledText } from '../../../../components/typography/StyledText';
+import { PADDED_SAFE_WIDTH } from '../../../../constants/styles';
+import { palette } from '../../../../constants/theme';
+import Screens from '../../../../navigation/screens';
+import { EducationNavigationProp } from '../../../../screens/Education/types';
 import { styles } from './styles';
 import { BlogPost } from './types';
 
@@ -41,8 +41,8 @@ export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & Ed
       )}
       <Box
         style={styles.description}
-        px={'16'}
-        py={'12'}
+        px="16"
+        py="12"
         fw
       >
         <StyledText variant="bonusHeading">{title}</StyledText>

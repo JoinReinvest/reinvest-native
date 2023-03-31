@@ -1,6 +1,7 @@
-import { InputProps } from '@components/Input/types';
 import { StyleProp, ViewStyle } from 'react-native';
 import { SelectOption, SelectOptions } from 'reinvest-app-common/src/types/select-option';
+
+import { InputProps } from '../Input/types';
 
 export interface DropdownProps extends Omit<InputProps, 'inputRef'> {
   data?: SelectOptions;

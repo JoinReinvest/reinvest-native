@@ -1,15 +1,15 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { Controller } from '@src/components/typography/Controller';
-import { formValidationRules } from '@src/utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -53,29 +53,29 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline={'Enter your first and last name as it appears on your ID'}
+            headline="Enter your first and last name as it appears on your ID"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'firstName'}
+            fieldName="firstName"
             inputProps={{ placeholder: 'First Name', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'middleName'}
+            fieldName="middleName"
             inputProps={{ placeholder: 'Middle Name (Optional)', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'lastName'}
+            fieldName="lastName"
             inputProps={{ placeholder: 'Last Name', dark: true }}
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={[styles.buttonsSection]}
         >
           <Button

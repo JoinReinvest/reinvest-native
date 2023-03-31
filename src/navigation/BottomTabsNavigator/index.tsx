@@ -1,18 +1,19 @@
-import { DashboardIcon } from '@components/Icon/icons/TabNavigtionIcons/DashboardIcon';
-import { EducationIcon } from '@components/Icon/icons/TabNavigtionIcons/EducationIcon';
-import { NotificationIcon } from '@components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
-import { ReitIcon } from '@components/Icon/icons/TabNavigtionIcons/ReitIcon';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
-import { BottomTabsParamsBase } from '@navigation/BottomTabsNavigator/types';
-import Screens from '@navigation/screens';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Dashboard } from '@screens/Dashboard';
-import { EducationStack } from '@screens/Education';
-import { Notifications } from '@screens/Notifications';
-import { ReitScreen } from '@screens/REIT';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/DashboardIcon';
+import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
+import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
+import { ReitIcon } from '../../components/Icon/icons/TabNavigtionIcons/ReitIcon';
+import { StyledText } from '../../components/typography/StyledText';
+import { palette } from '../../constants/theme';
+import Screens from '../../navigation/screens';
+import { Dashboard } from '../../screens/Dashboard';
+import { EducationStack } from '../../screens/Education';
+import { Notifications } from '../../screens/Notifications';
+import { ReitScreen } from '../../screens/REIT';
+import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
 
@@ -37,7 +38,7 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
 
 const getLabel = (focused: boolean, children: string) => (
   <StyledText
-    variant={'today'}
+    variant="today"
     color={focused ? palette.pureBlack : palette.dark3}
   >
     {children}
@@ -50,7 +51,7 @@ export const BottomTabsNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName={Screens.EducationStack}
-      backBehavior={'history'}
+      backBehavior="history"
       screenOptions={{
         tabBarStyle: {
           height: 56 + bottom,

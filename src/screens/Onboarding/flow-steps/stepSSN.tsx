@@ -1,21 +1,21 @@
-import { Button } from '@components/Button';
-import { FormTitle } from '@components/Forms/FormTitle';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box } from '@src/components/Containers/Box/Box';
-import { FormModalDisclaimer } from '@src/components/Modals/ModalContent/FormModalDisclaimer';
-import { ProgressBar } from '@src/components/ProgressBar';
-import { SSN_MASK } from '@src/constants/masks';
-import { useDialog } from '@src/providers/DialogProvider';
-import { formValidationRules } from '@utils/formValidationRules';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod from 'zod';
 
+import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
+import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ProgressBar } from '../../../components/ProgressBar';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { SSN_MASK } from '../../../constants/masks';
+import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -62,8 +62,8 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
     const openRequiredModal = () => {
       openDialog(
         <FormModalDisclaimer
-          headline={'Required Why?'}
-          content={'CONTENT'}
+          headline="Required Why?"
+          content="CONTENT"
         />,
       );
     };
@@ -81,7 +81,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'ssn'}
+            fieldName="ssn"
             inputProps={{
               placeholder: 'SSN',
               dark: true,
@@ -92,7 +92,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           />
           <View style={styles.row}>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={openRequiredModal}
             >
@@ -117,7 +117,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

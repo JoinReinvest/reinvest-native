@@ -1,21 +1,21 @@
 import { CognitoUser } from '@aws-amplify/auth';
-import { Button } from '@components/Button';
-import { FormMessage } from '@components/Forms/FormMessage';
-import { Controller } from '@components/typography/Controller';
-import { StyledText } from '@components/typography/StyledText';
-import { palette } from '@constants/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLogOutNavigation } from '@navigation/hooks';
-import Screens from '@navigation/screens';
-import { ChallengeName, useAuth } from '@providers/AuthProvider';
-import { useLoginFormFlow } from '@screens/SignIn/flow-steps/index';
-import { LoginFormFields } from '@screens/SignIn/types';
-import { formValidationRules } from '@utils/formValidationRules';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import zod, { Schema } from 'zod';
 
+import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
+import { Controller } from '../../../components/typography/Controller';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { useLogOutNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
+import { ChallengeName, useAuth } from '../../../providers/AuthProvider';
+import { formValidationRules } from '../../../utils/formValidationRules';
+import { useLoginFormFlow } from '../flow-steps/index';
+import { LoginFormFields } from '../types';
 import { styles } from './styles';
 
 type Fields = Omit<LoginFormFields, 'authenticationCode'>;
@@ -71,24 +71,24 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       {error && (
         <FormMessage
           message={error}
-          variant={'error'}
+          variant="error"
         />
       )}
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'email'}
+        fieldName="email"
         inputProps={{ placeholder: 'Email Address' }}
       />
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'password'}
+        fieldName="password"
         inputProps={{ placeholder: 'Password' }}
       />
       <StyledText
         onPress={startForgotPasswordFlow}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
@@ -96,7 +96,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       </StyledText>
       <StyledText
         onPress={navigateToSignUp}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >

@@ -1,6 +1,7 @@
-import { palette } from '@constants/theme';
 import React from 'react';
 import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
+
+import { palette } from '../../../constants/theme';
 
 export const Checkbox = ({ color = palette.frostGreen, ...rest }: SvgProps) => (
   <Svg

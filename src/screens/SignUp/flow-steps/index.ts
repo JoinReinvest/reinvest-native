@@ -1,6 +1,6 @@
-import { RegisterFormFields } from '@screens/SignUp/types';
 import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
 
+import { RegisterFormFields } from '../types';
 import { StepAuthenticationCode } from './authenticationCode';
 import { StepReferralCode } from './referralCode';
 import { StepReferralCodeApplied } from './referralCodeApplied';
