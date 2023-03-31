@@ -27,6 +27,8 @@ export interface OnboardingFormFields {
   firstName?: string;
   lastName?: string;
   middleName?: string;
+  netIncome?: string;
+  netWorth?: string;
   phoneNumber?: string;
   phoneNumberAuthenticationCode?: string;
   profilePicture?: string | undefined;
