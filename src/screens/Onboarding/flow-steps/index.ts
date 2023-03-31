@@ -12,6 +12,7 @@ import { StepProfilePicture } from './stepProfilePicture';
 import { StepResidencyGreenCard } from './stepResidencyGreenCard';
 import { StepResidencyStatus } from './stepResidencyStatus';
 import { StepResidencyVisa } from './stepResidencyVisa';
+import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -25,6 +26,7 @@ export const FLOW_STEPS = [
   StepCompliance,
   StepFinraInstitution,
   StepProfilePicture,
+  StepSSN,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
@@ -40,6 +42,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   dateOfBirth: undefined,
   finraInstitution: undefined,
   profilePicture: undefined,
+  ssn: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
