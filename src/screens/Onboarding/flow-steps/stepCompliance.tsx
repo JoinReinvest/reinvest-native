@@ -1,31 +1,27 @@
+import { Button } from '@components/Button';
+import { Box } from '@components/Containers/Box/Box';
+import { FormTitle } from '@components/Forms/FormTitle';
+import { RadioButton } from '@components/RadioButton';
+import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import {
-  StepComponentProps,
-  StepParams,
-} from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { Controller, FieldPath, SubmitHandler, useForm } from 'react-hook-form';
+import { ScrollView, View } from 'react-native';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { z } from 'zod';
 
-import {ScrollView, View} from 'react-native';
-import {styles} from './styles';
-import {Button} from '@components/Button';
-import {FormTitle} from '@components/Forms/FormTitle';
-import {OnboardingFormFields} from '../types';
-import {Identifiers} from '../identifiers';
-import {z} from 'zod';
-import {Controller, FieldPath, SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Box} from '@components/Containers/Box/Box';
-import {RadioButton} from '@components/RadioButton';
+import { Identifiers } from '../identifiers';
+import { OnboardingFormFields } from '../types';
+import { styles } from './styles';
 
 type Fields = OnboardingFormFields['compliances'] & {
   doNoneApply: boolean;
 };
 
-const getInitialValues = ({compliances}: OnboardingFormFields): Fields => {
-  const hasCompliances =
-    compliances && Object.values(compliances).some(Boolean);
+const getInitialValues = ({ compliances }: OnboardingFormFields): Fields => {
+  const hasCompliances = compliances && Object.values(compliances).some(Boolean);
 
   if (hasCompliances) {
-    return {...compliances, doNoneApply: false};
+    return { ...compliances, doNoneApply: false };
   }
 
   return {
@@ -43,63 +39,41 @@ const schema = z
     isSeniorPoliticalFigure: z.boolean().optional(),
     doNoneApply: z.boolean().optional(),
   })
-  .superRefine(
-    (
-      {
-        isAssociatedWithFinra,
-        isAssociatedWithPubliclyTradedCompany,
-        isSeniorPoliticalFigure,
-        doNoneApply,
-      },
-      context,
-    ) => {
-      const compliances = {
-        isAssociatedWithFinra,
-        isAssociatedWithPubliclyTradedCompany,
-        isSeniorPoliticalFigure,
-      };
+  .superRefine(({ isAssociatedWithFinra, isAssociatedWithPubliclyTradedCompany, isSeniorPoliticalFigure, doNoneApply }, context) => {
+    const compliances = {
+      isAssociatedWithFinra,
+      isAssociatedWithPubliclyTradedCompany,
+      isSeniorPoliticalFigure,
+    };
 
-      const areSomeCompliancesTrue = Object.values(compliances).some(Boolean);
-      const areAllCompliancesFalse = Object.values(compliances).every(
-        value => !value,
-      );
-      const isDoNoneApplyChecked = !!doNoneApply;
-      const hasSomeCompliancesAndDoNoneApply =
-        areSomeCompliancesTrue && isDoNoneApplyChecked;
-      const hasAllCompliancesAndDoNoneApply =
-        areAllCompliancesFalse && !isDoNoneApplyChecked;
+    const areSomeCompliancesTrue = Object.values(compliances).some(Boolean);
+    const areAllCompliancesFalse = Object.values(compliances).every(value => !value);
+    const isDoNoneApplyChecked = !!doNoneApply;
+    const hasSomeCompliancesAndDoNoneApply = areSomeCompliancesTrue && isDoNoneApplyChecked;
+    const hasAllCompliancesAndDoNoneApply = areAllCompliancesFalse && !isDoNoneApplyChecked;
 
-      if (hasSomeCompliancesAndDoNoneApply || hasAllCompliancesAndDoNoneApply) {
-        context.addIssue({
-          path: ['doNoneApply'],
-          code: 'custom',
-          message: 'Please select only one option',
-        });
-      }
-    },
-  );
+    if (hasSomeCompliancesAndDoNoneApply || hasAllCompliancesAndDoNoneApply) {
+      context.addIssue({
+        path: ['doNoneApply'],
+        code: 'custom',
+        message: 'Please select only one option',
+      });
+    }
+  });
 
 export const StepCompliance: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.COMPLIANCES,
 
-  Component: ({
-    storeFields,
-    updateStoreFields,
-    moveToNextStep,
-  }: StepComponentProps<OnboardingFormFields>) => {
-    const {formState, handleSubmit, setValue, getValues, control, watch} =
-      useForm<Fields>({
-        mode: 'all',
-        resolver: zodResolver(schema),
-        defaultValues: getInitialValues(storeFields),
-      });
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { formState, handleSubmit, setValue, getValues, control, watch } = useForm<Fields>({
+      mode: 'all',
+      resolver: zodResolver(schema),
+      defaultValues: getInitialValues(storeFields),
+    });
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onFieldComplianceChange = (
-      key: Exclude<FieldPath<Fields>, 'doNoneApply'>,
-      value: boolean,
-    ) => {
+    const onFieldComplianceChange = (key: Exclude<FieldPath<Fields>, 'doNoneApply'>, value: boolean) => {
       const hasFieldDoNoneApplyChecked = !!getValues('doNoneApply');
 
       if (hasFieldDoNoneApplyChecked) {
@@ -115,21 +89,18 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
         setValue('isAssociatedWithPubliclyTradedCompany', false);
         setValue('isSeniorPoliticalFigure', false);
       }
+
       setValue('doNoneApply', value);
     };
 
-    const onSubmit: SubmitHandler<Fields> = async ({
-      isAssociatedWithFinra,
-      isAssociatedWithPubliclyTradedCompany,
-      isSeniorPoliticalFigure,
-    }) => {
+    const onSubmit: SubmitHandler<Fields> = async ({ isAssociatedWithFinra, isAssociatedWithPubliclyTradedCompany, isSeniorPoliticalFigure }) => {
       const compliances: OnboardingFormFields['compliances'] = {
         isAssociatedWithFinra,
         isAssociatedWithPubliclyTradedCompany,
         isSeniorPoliticalFigure,
       };
 
-      await updateStoreFields({compliances});
+      await updateStoreFields({ compliances });
       moveToNextStep();
     };
 
@@ -139,22 +110,27 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
     return (
       <>
         <ScrollView style={[styles.fw]}>
-          <FormTitle dark headline="Do any of the following apply to you?" />
+          <FormTitle
+            dark
+            headline="Do any of the following apply to you?"
+          />
           {options.map(option => {
             return (
-              <Box mt={'16'} key={option.name}>
+              <Box
+                mt={'16'}
+                key={option.name}
+              >
                 <Controller
                   name={option.name}
                   control={control}
-                  render={({field}) => (
+                  render={({ field }) => (
                     <RadioButton
                       onPress={() => {
-                        option.name !== 'doNoneApply'
-                          ? onFieldComplianceChange(option.name, !field.value)
-                          : onFieldDoNoneApplyChange(!field.value);
+                        option.name !== 'doNoneApply' ? onFieldComplianceChange(option.name, !field.value) : onFieldDoNoneApplyChange(!field.value);
                       }}
                       value={option.name}
-                      checked={!!field.value}>
+                      checked={!!field.value}
+                    >
                       {option.description}
                     </RadioButton>
                   )}
@@ -164,10 +140,14 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
           })}
         </ScrollView>
         {isAnyOptionChosen && (
-          <View key={'buttons_section'} style={styles.buttonsSection}>
+          <View
+            key={'buttons_section'}
+            style={styles.buttonsSection}
+          >
             <Button
               disabled={!shouldButtonBeDisabled}
-              onPress={handleSubmit(onSubmit)}>
+              onPress={handleSubmit(onSubmit)}
+            >
               Continue
             </Button>
           </View>
@@ -191,8 +171,7 @@ const options = [
   },
   {
     name: 'isSeniorPoliticalFigure',
-    description:
-      'Are you or any of your immediate family a senior political figure?',
+    description: 'Are you or any of your immediate family a senior political figure?',
   },
   {
     name: 'doNoneApply',

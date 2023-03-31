@@ -1,6 +1,5 @@
-import { StepResidencyGreenCard } from '@screens/Onboarding/flow-steps/stepResidencyGreenCard';
-import { StepResidencyStatus } from '@screens/Onboarding/flow-steps/stepResidencyStatus';
-import { StepResidencyVisa } from '@screens/Onboarding/flow-steps/stepResidencyVisa';
+import { StepCompliance } from '@screens/Onboarding/flow-steps/stepCompliance';
+import { StepFinraInstitution } from '@screens/Onboarding/flow-steps/stepFinra';
 import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
 
 import { OnboardingFormFields } from '../types';
@@ -9,8 +8,10 @@ import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepFullName } from './stepFullName';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
-import { StepCompliance } from '@screens/Onboarding/flow-steps/stepCompliance';
-import { StepFinraInstitution } from '@screens/Onboarding/flow-steps/stepFinra';
+import { StepProfilePicture } from './stepProfilePicture';
+import { StepResidencyGreenCard } from './stepResidencyGreenCard';
+import { StepResidencyStatus } from './stepResidencyStatus';
+import { StepResidencyVisa } from './stepResidencyVisa';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -23,6 +24,7 @@ export const FLOW_STEPS = [
   StepResidencyVisa,
   StepCompliance,
   StepFinraInstitution,
+  StepProfilePicture,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
@@ -37,6 +39,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   citizenshipCountry: '',
   dateOfBirth: undefined,
   finraInstitution: undefined,
+  profilePicture: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
