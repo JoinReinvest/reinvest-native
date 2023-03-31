@@ -85,13 +85,13 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           {error && (
             <FormMessage
               message={error}
-              variant={'error'}
+              variant="error"
             />
           )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'phoneNumberAuthenticationCode'}
+            fieldName="phoneNumberAuthenticationCode"
             inputProps={{
               placeholder: 'Authentication Code',
               dark: true,
@@ -102,14 +102,14 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           />
           <View style={styles.row}>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={resendCodeOnClick}
             >
               Resend Code
             </StyledText>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={() => Alert.alert('Get help')}
             >
@@ -118,7 +118,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

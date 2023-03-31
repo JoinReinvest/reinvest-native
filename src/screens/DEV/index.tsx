@@ -10,7 +10,7 @@ export const DEVScreen = () => {
 
   return (
     <MainWrapper>
-      <StyledText variant={'h6'}>DEV</StyledText>
+      <StyledText variant="h6">DEV</StyledText>
       <Button
         onPress={() =>
           navigation.navigate(Screens.BottomNavigator, {

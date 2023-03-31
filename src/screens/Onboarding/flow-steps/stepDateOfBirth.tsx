@@ -51,12 +51,12 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
         <ScrollView>
           <FormTitle
             dark
-            headline={'Enter your date of birth'}
+            headline="Enter your date of birth"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'dateOfBirth'}
+            fieldName="dateOfBirth"
             inputProps={{
               placeholder: 'Date of Birth',
               dark: true,
@@ -79,7 +79,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

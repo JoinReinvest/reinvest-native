@@ -54,20 +54,20 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
           <Dropdown
             dark
             value={citizenshipCountry}
-            placeholder={'Citizenship Country'}
+            placeholder="Citizenship Country"
             data={COUNTRIES}
             onSelect={value => setValue('citizenshipCountry', value.value.toString())}
           />
           <Dropdown
             value={birthCountry}
-            placeholder={'Birth Country'}
+            placeholder="Birth Country"
             dark
             data={COUNTRIES}
             onSelect={option => setValue('birthCountry', option.value.toString())}
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

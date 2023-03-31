@@ -20,7 +20,7 @@ const stackOptions: Record<Extract<Screens, Screens.EducationMainScreen | Screen
     header: ScreenHeader,
     headerLeft: () => (
       <Box
-        m={'8'}
+        m="8"
         width={32}
         height={32}
       >
@@ -47,7 +47,7 @@ export const EducationStack = () => {
               onPress={() => {
                 navigation.navigate(Screens.Settings);
               }}
-              username={'Test'}
+              username="Test"
             />
           ),
         })}

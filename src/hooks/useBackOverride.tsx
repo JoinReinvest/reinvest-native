@@ -34,7 +34,7 @@ export const useStepBackOverride = <T extends object>(useCurrentFormContext: () 
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={() => navigation.goBack()}
           />
         ),
@@ -46,7 +46,7 @@ export const useStepBackOverride = <T extends object>(useCurrentFormContext: () 
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={moveToPreviousValidStep}
           />
         ),

@@ -60,7 +60,7 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

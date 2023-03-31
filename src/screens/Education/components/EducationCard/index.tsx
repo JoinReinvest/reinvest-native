@@ -20,29 +20,29 @@ export const EducationCard = ({
 }: EducationCardProps & EducationNavigationProp<Screens.EducationMainScreen>) => {
   return (
     <Box
-      mb={'16'}
-      p={'24'}
+      mb="16"
+      p="24"
       fw
-      color={'frostGreen'}
+      color="frostGreen"
       colorOpacity={0.3}
     >
-      <StyledText variant={'h5'}>{title}</StyledText>
+      <StyledText variant="h5">{title}</StyledText>
       <Box
-        mt={'8'}
-        mb={'16'}
+        mt="8"
+        mb="16"
       >
         <StyledText
-          variant={'paragraphLarge'}
+          variant="paragraphLarge"
           color={palette.dark2}
         >
           {subtitle}
         </StyledText>
       </Box>
-      <Row justifyContent={'space-between'}>
+      <Row justifyContent="space-between">
         <Button
           onPress={() => navigation.navigate(Screens.WebViewContent, { title, uri })}
           isPill
-          endIcon={<Icon icon={'arrowRight'} />}
+          endIcon={<Icon icon="arrowRight" />}
           style={styles.button}
         >
           {buttonLabel}

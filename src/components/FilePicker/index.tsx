@@ -114,7 +114,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
       startIcon={
         <Icon
           color={maxLimitReached ? palette.dark3 : undefined}
-          icon={'upload'}
+          icon="upload"
         />
       }
     >
@@ -159,7 +159,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
 
   return (
     <Box
-      mb={'12'}
+      mb="12"
       {...rest}
     >
       {mainSegment}
@@ -167,7 +167,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
         results.map(file => (
           <Button
             dark
-            variant={'draft'}
+            variant="draft"
             endIcon={
               <Icon
                 icon="trash"

@@ -56,7 +56,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

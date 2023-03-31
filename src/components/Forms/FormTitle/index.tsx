@@ -19,7 +19,7 @@ export const FormTitle = ({ headline, description, dark, informationMessage }: P
     <View style={styles.wrapper}>
       <StyledText
         color={dark ? palette.pureWhite : palette.pureBlack}
-        variant={'h5'}
+        variant="h5"
         style={styles.headline}
       >
         {headline}
@@ -27,7 +27,7 @@ export const FormTitle = ({ headline, description, dark, informationMessage }: P
       {description && (
         <StyledText
           color={dark ? palette.pureWhite : palette.pureBlack}
-          variant={'paragraphLarge'}
+          variant="paragraphLarge"
           style={styles.description}
         >
           {description}
@@ -35,15 +35,15 @@ export const FormTitle = ({ headline, description, dark, informationMessage }: P
       )}
       {informationMessage && (
         <Row
-          mt={'8'}
-          alignItems={'center'}
+          mt="8"
+          alignItems="center"
         >
           <Icon
-            icon={'circleAlert'}
+            icon="circleAlert"
             color={palette.frostGreen}
           />
           <StyledText
-            variant={'paragraphSmall'}
+            variant="paragraphSmall"
             color={palette.frostGreen}
           >
             {informationMessage}

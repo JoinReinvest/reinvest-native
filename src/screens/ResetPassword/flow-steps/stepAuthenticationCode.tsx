@@ -68,18 +68,18 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Check Your Email'}
+            headline="Check Your Email"
             description={subtitleMessage}
           />
           {error && (
             <FormMessage
-              variant={'error'}
+              variant="error"
               message={error}
             />
           )}
           {infoMessage && (
             <FormMessage
-              variant={'info'}
+              variant="info"
               message={infoMessage}
             />
           )}
@@ -98,14 +98,14 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
           <View style={styles.row}>
             <StyledText
               onPress={resendCodeOnClick}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={() => Alert.alert('Get Help')}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Get Help
@@ -113,7 +113,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

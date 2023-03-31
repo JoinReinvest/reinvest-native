@@ -54,7 +54,7 @@ export const StepExperience: StepParams<OnboardingFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

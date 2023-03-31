@@ -5,7 +5,7 @@ import React from 'react';
 export const Notifications = () => {
   return (
     <MainWrapper>
-      <StyledText variant={'h6'}>Notifications screen</StyledText>
+      <StyledText variant="h6">Notifications screen</StyledText>
     </MainWrapper>
   );
 };

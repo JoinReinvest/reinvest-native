@@ -49,8 +49,8 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
     const handleOpenDialog = () => {
       openDialog(
         <FormModalDisclaimer
-          headline={'Required. Why?'}
-          content={'CONTENT'}
+          headline="Required. Why?"
+          content="CONTENT"
         />,
       );
     };
@@ -63,13 +63,13 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline={'What is approximate net worth and income?'}
+            headline="What is approximate net worth and income?"
           />
           <Controller
             select
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'netIncome'}
+            fieldName="netIncome"
             dropdownProps={{
               placeholder: 'Net Income',
               dark: true,
@@ -80,7 +80,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
             select
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'netWorth'}
+            fieldName="netWorth"
             dropdownProps={{
               placeholder: 'Net Worth',
               dark: true,
@@ -98,7 +98,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={[styles.buttonsSection]}
         >
           <Button

@@ -54,13 +54,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         {error && (
           <FormMessage
             message={error}
-            variant={'error'}
+            variant="error"
           />
         )}
         <Controller
           onSubmit={handleSubmit(onSubmit)}
           control={control}
-          fieldName={'authenticationCode'}
+          fieldName="authenticationCode"
           inputProps={{
             placeholder: 'Authentication Code',
             dark: true,
@@ -71,13 +71,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         />
         <View style={styles.row}>
           <StyledText
-            variant={'link'}
+            variant="link"
             color={palette.frostGreen}
           >
             Resend Code
           </StyledText>
           <StyledText
-            variant={'link'}
+            variant="link"
             color={palette.frostGreen}
           >
             Get Help

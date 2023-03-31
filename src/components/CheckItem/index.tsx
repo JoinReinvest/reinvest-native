@@ -10,13 +10,13 @@ export const CheckItem = ({ isChecked, label }: { isChecked: boolean; label: str
   return (
     <View style={styles.itemWrapper}>
       <StyledText
-        variant={'paragraphLarge'}
+        variant="paragraphLarge"
         color={isChecked ? palette.pureWhite : palette.dark3}
       >
         {label}
       </StyledText>
       <Icon
-        icon={'tick'}
+        icon="tick"
         color={isChecked ? palette.success : palette.dark3}
       />
     </View>

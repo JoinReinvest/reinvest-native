@@ -55,10 +55,10 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
           <View style={styles.flex}>
             <FormTitle
               dark
-              headline={'Verifying Account Information'}
+              headline="Verifying Account Information"
             />
             <ActivityIndicator
-              size={'large'}
+              size="large"
               style={styles.flex}
             />
           </View>

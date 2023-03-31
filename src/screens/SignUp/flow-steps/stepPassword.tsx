@@ -88,13 +88,13 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Sign up to REINVEST'}
-            description={'Create a unique password for your account to continue.'}
+            headline="Sign up to REINVEST"
+            description="Create a unique password for your account to continue."
           />
           {error && (
             <FormMessage
               message={error}
-              variant={'error'}
+              variant="error"
             />
           )}
           <Controller
@@ -123,7 +123,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

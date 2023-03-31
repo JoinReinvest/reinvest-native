@@ -47,7 +47,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
       {children}
       {!!dialogContent && (
         <Modal
-          animationType={'slide'}
+          animationType="slide"
           visible={!!dialogContent}
         >
           <Wrapper

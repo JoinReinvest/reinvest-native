@@ -94,7 +94,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       if (secureTextEntry) {
         return (
           <Icon
-            icon={'eyeHide'}
+            icon="eyeHide"
             onPress={toggleShowSecureInput}
             color={dark ? palette.pureWhite : palette.pureBlack}
           />
@@ -165,8 +165,8 @@ export const Input = forwardRef<TextInput, InputProps>(
         {error && (
           <StyledText
             numberOfLines={1}
-            ellipsizeMode={'tail'}
-            variant={'paragraphSmall'}
+            ellipsizeMode="tail"
+            variant="paragraphSmall"
             style={styles.errorMessage}
           >
             {error}

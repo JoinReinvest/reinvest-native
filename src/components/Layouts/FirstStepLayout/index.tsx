@@ -17,7 +17,7 @@ interface FirstStepLayoutProps {
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
   return (
     <MainWrapper style={{ justifyContent: 'flex-start' }}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle="light-content" />
       <Video />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
@@ -29,13 +29,13 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
       <View style={styles.descriptionSegment}>
         <StyledText
           style={[styles.text]}
-          variant={'h1'}
+          variant="h1"
         >
           {headline}
         </StyledText>
         <StyledText
           style={styles.text}
-          variant={'bonusHeading'}
+          variant="bonusHeading"
         >
           {description}
         </StyledText>

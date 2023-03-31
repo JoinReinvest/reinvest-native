@@ -41,8 +41,8 @@ export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & Ed
       )}
       <Box
         style={styles.description}
-        px={'16'}
-        py={'12'}
+        px="16"
+        py="12"
         fw
       >
         <StyledText variant="bonusHeading">{title}</StyledText>

@@ -117,7 +117,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
           {options.map(option => {
             return (
               <Box
-                mt={'16'}
+                mt="16"
                 key={option.name}
               >
                 <Controller
@@ -141,7 +141,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
         </ScrollView>
         {isAnyOptionChosen && (
           <View
-            key={'buttons_section'}
+            key="buttons_section"
             style={styles.buttonsSection}
           >
             <Button

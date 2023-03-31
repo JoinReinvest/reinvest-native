@@ -67,13 +67,13 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Reset Password'}
-            description={'Your new password must be different from previous used passwords.'}
+            headline="Reset Password"
+            description="Your new password must be different from previous used passwords."
           />
           {error && (
             <FormMessage
               message={error}
-              variant={'error'}
+              variant="error"
             />
           )}
           <Controller
@@ -94,7 +94,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

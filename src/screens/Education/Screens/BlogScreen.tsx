@@ -10,7 +10,7 @@ export const BlogScreen = ({ navigation }: EducationStackProps<Screens.BlogScree
 
   return (
     <MainWrapper>
-      <StyledText variant={'h6'}>Education screen</StyledText>
+      <StyledText variant="h6">Education screen</StyledText>
       <Button onPress={() => navigation.goBack()}>BACK</Button>
       <Button onPress={() => navigation.navigate(Screens.EducationMainScreen)}>DASH</Button>
       <Button onPress={() => loginNavigation.navigate(Screens.DEV)}>DEV</Button>

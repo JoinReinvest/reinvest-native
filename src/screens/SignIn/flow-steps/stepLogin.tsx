@@ -71,24 +71,24 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       {error && (
         <FormMessage
           message={error}
-          variant={'error'}
+          variant="error"
         />
       )}
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'email'}
+        fieldName="email"
         inputProps={{ placeholder: 'Email Address' }}
       />
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'password'}
+        fieldName="password"
         inputProps={{ placeholder: 'Password' }}
       />
       <StyledText
         onPress={startForgotPasswordFlow}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
@@ -96,7 +96,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       </StyledText>
       <StyledText
         onPress={navigateToSignUp}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >

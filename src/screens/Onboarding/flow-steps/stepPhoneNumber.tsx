@@ -71,7 +71,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const showDisclaimer = () => {
       openDialog(
         <FormModalDisclaimer
-          headline={'We need your phone number'}
+          headline="We need your phone number"
           content={onBoardingDisclaimers.requiredWhy}
         />,
       );
@@ -94,7 +94,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 select
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'countryCode'}
+                fieldName="countryCode"
                 dropdownProps={{
                   dark: true,
                   data: OPTIONS,
@@ -105,7 +105,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               <Controller
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'phone'}
+                fieldName="phone"
                 inputProps={{
                   dark: true,
                   mask: PHONE_MASK,
@@ -130,7 +130,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

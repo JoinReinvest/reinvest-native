@@ -48,7 +48,7 @@ export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Indivi
       {isEditable && (
         <ImagePicker
           style={[styles.edit]}
-          type={'library'}
+          type="library"
           onSelect={handleImageSelect}
         >
           <Icon icon="edit" />

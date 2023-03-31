@@ -73,20 +73,20 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.employerName'}
+            fieldName="employmentDetails.employerName"
             inputProps={{ placeholder: 'Name of Employer', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.occupation'}
+            fieldName="employmentDetails.occupation"
             inputProps={{ placeholder: 'Title', dark: true }}
           />
           <Controller
             select
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'employmentDetails.industry'}
+            fieldName="employmentDetails.industry"
             dropdownProps={{
               dark: true,
               data: INDUESTRIES_AS_OPTIONS,
@@ -95,7 +95,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

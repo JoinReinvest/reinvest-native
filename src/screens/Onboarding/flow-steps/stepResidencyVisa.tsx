@@ -57,13 +57,13 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
           <Dropdown
             dark
             value={citizenshipCountry}
-            placeholder={'Citizenship Country'}
+            placeholder="Citizenship Country"
             data={COUNTRIES}
             onSelect={option => setValue('citizenshipCountry', option.value.toString())}
           />
           <Dropdown
             value={birthCountry}
-            placeholder={'Birth Country'}
+            placeholder="Birth Country"
             dark
             data={COUNTRIES}
             onSelect={option => setValue('birthCountry', option.value.toString())}
@@ -71,13 +71,13 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
           <Dropdown
             dark
             value={visa}
-            placeholder={'Visa Type'}
+            placeholder="Visa Type"
             data={VISAS_AS_OPTIONS}
             onSelect={option => setValue('visaType', option.value as VisaType)}
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

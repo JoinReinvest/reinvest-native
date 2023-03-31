@@ -4,9 +4,9 @@ import Svg, { ClipPath, Defs, G, Path, SvgProps } from 'react-native-svg';
 
 export const Tick = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg
-    width={'100%'}
-    height={'100%'}
-    viewBox={'0 , 0 , 32, 32'}
+    width="100%"
+    height="100%"
+    viewBox="0 , 0 , 32, 32"
     fill="none"
     {...rest}
   >

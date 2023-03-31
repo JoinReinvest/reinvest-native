@@ -51,13 +51,13 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Do you have a referral code? (optional)'}
-            description={'You and your referrer will receive $20 in dividend following your first investment!'}
+            headline="Do you have a referral code? (optional)"
+            description="You and your referrer will receive $20 in dividend following your first investment!"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'referralCode'}
+            fieldName="referralCode"
             inputProps={{
               placeholder: 'Referral code',
               dark: true,
@@ -70,11 +70,11 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
           <ReferralCodeCheckList referralCode={fields.password || ''} />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
-            variant={'outlined'}
+            variant="outlined"
             onPress={onSkip}
           >
             Skip

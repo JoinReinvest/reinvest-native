@@ -86,7 +86,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   const rightSection = (
     <Animated.View style={[rotationAnimationStyles]}>
       <Icon
-        icon={'arrowDown'}
+        icon="arrowDown"
         color={dark ? palette.pureWhite : undefined}
       />
     </Animated.View>

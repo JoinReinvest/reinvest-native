@@ -21,7 +21,7 @@ const blackScreenFormOptions = (props: { navigation: any; route: RouteProp<SignI
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon={'arrowLeft'}
+      icon="arrowLeft"
       onPress={props.navigation.goBack}
     />
   ),

@@ -23,7 +23,7 @@ const blackScreenSignInFormOptions = (props: { navigation: any; route: RouteProp
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon={'arrowLeft'}
+      icon="arrowLeft"
       onPress={props.navigation.goBack}
     />
   ),
@@ -39,8 +39,8 @@ export const SignIn = () => {
         >
           {() => (
             <FirstStepLayout
-              headline={'Sign in'}
-              description={'Building your wealth while rebuilding our communities.'}
+              headline="Sign in"
+              description="Building your wealth while rebuilding our communities."
             >
               <StepOutsideFlow initialSteps={initialSteps} />
             </FirstStepLayout>

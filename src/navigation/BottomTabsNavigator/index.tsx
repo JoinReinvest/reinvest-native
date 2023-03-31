@@ -37,7 +37,7 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
 
 const getLabel = (focused: boolean, children: string) => (
   <StyledText
-    variant={'today'}
+    variant="today"
     color={focused ? palette.pureBlack : palette.dark3}
   >
     {children}
@@ -50,7 +50,7 @@ export const BottomTabsNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName={Screens.EducationStack}
-      backBehavior={'history'}
+      backBehavior="history"
       screenOptions={{
         tabBarStyle: {
           height: 56 + bottom,

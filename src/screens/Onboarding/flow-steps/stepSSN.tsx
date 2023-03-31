@@ -62,8 +62,8 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
     const openRequiredModal = () => {
       openDialog(
         <FormModalDisclaimer
-          headline={'Required Why?'}
-          content={'CONTENT'}
+          headline="Required Why?"
+          content="CONTENT"
         />,
       );
     };
@@ -81,7 +81,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'ssn'}
+            fieldName="ssn"
             inputProps={{
               placeholder: 'SSN',
               dark: true,
@@ -92,7 +92,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           />
           <View style={styles.row}>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={openRequiredModal}
             >
@@ -117,7 +117,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

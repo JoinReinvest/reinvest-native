@@ -18,7 +18,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
 
   return (
     <MainWrapper dark>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle="light-content" />
       <CurrentStepView />
       {shouldShowFooter && <TermsFooter />}
     </MainWrapper>

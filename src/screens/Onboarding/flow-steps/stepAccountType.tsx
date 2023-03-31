@@ -34,7 +34,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const openDisclaimer = () =>
       openDialog(
         <FormModalDisclaimer
-          headline={'Account types'}
+          headline="Account types"
           content={onBoardingDisclaimers.notSureWhichBestForYou}
         />,
       );
@@ -72,7 +72,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
           </StyledText>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

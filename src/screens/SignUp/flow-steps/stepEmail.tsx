@@ -53,12 +53,12 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'email'}
+        fieldName="email"
         inputProps={{ placeholder: 'Email Address' }}
       />
       <StyledText
         onPress={() => navigation.navigate(Screens.SignIn)}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
