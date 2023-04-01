@@ -1,56 +1,94 @@
+import { CorporationAnnualRevenue, CorporationNumberOfEmployees } from 'reinvest-app-common/src/constants/corporation';
 import { Industry } from 'reinvest-app-common/src/constants/industries';
-import { Address, CorporateCompanyType, DomicileType, DraftAccountType, Experience } from 'reinvest-app-common/src/types/graphql';
-import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
-
-import { VisaType } from '../../types/visaType';
+import {
+  Address,
+  CorporateCompanyType,
+  DomicileType,
+  DraftAccountType,
+  EmploymentStatus,
+  Experience,
+  StatementType,
+  TrustCompanyType,
+} from 'reinvest-app-common/src/types/graphql';
 
 export interface OnboardingFormFields {
-  permanentAddress: Address | null;
+  address: Address | null;
+  dateOfBirth: string | null | Date;
+  experience?: Experience | null;
+  isCompletedProfile: boolean;
+  residency: DomicileType | null;
+  _currentCompanyMajorStakeholder?: IndexedSchema<Applicant>;
+  _currentTrustTrusteeGrantorOrProtector?: IndexedSchema<Applicant>;
   _didDocumentIdentificationValidationSucceed?: boolean;
   _hasAuthenticatedPhoneNumber?: boolean;
-
+  _isEditingCompanyMajorStakeholderApplicant?: boolean;
+  _isEditingTrustTrusteeGrantorOrProtector?: boolean;
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
   _isSocialSecurityNumberBanned?: boolean;
+  _willHaveMajorStakeholderApplicants?: boolean;
+  _willHaveTrustTrusteesGrantorsOrProtectors?: boolean;
+  accountId?: string;
   accountType?: DraftAccountType;
+  authCode?: string;
+  authenticationCode?: string;
   birthCountry?: string;
+  businessAddress?: Address;
   citizenshipCountry?: string;
+  companyMajorStakeholderApplicants?: Applicant[];
   companyTickerSymbols?: CompanyTickerSymbol[];
-  compliances?: {
-    // Are you or anyone in your immediate compliances, or, for any non-natural person, any officers, directors, or any person that owns or controls 5% (or greater) of the equity, associated with a FINRA member, organization, or the SEC.
-    isAssociatedWithFinra?: boolean;
-    // Are you or anyone in your compliances or immediate family, or, for any non-natural person, any of its directors, trustees, 10% (or more) equity holder, an officer, or member of the board of directors of a publicly traded company?
-    isAssociatedWithPubliclyTradedCompany?: boolean;
-    // Are you or any of your immediate family a senior political figure?
-    isSeniorPoliticalFigure?: boolean;
-  };
+  compliances?: Compliances;
+  corporationAnnualRevenue?: CorporationAnnualRevenue;
+  corporationIndustry?: Industry;
+  corporationLegalName?: string;
+  corporationNumberOfEmployees?: CorporationNumberOfEmployees;
   corporationType?: CorporateCompanyType;
-  dateOfBirth?: Date;
+  documentsForCorporation?: File[];
+  documentsForTrust?: File[];
+  domicile?: {
+    forGreenCard?: {
+      birthCountry: string;
+      citizenshipCountry: string;
+    };
+    forVisa?: {
+      birthCountry: string;
+      citizenshipCountry: string;
+      visaType: string;
+    };
+  };
+  ein?: string;
+  employment?: {
+    employerName?: string;
+    industry?: string;
+    occupation?: string;
+  };
   employmentDetails?: EmploymentDetails;
-
   employmentStatus?: EmploymentStatus;
-  experience?: Experience;
   finraInstitution?: string;
-  firstName?: string;
+  finraInstitutionName?: string;
   identificationDocument?: IdentificationDocuments;
   isAccreditedInvestor?: boolean;
   isAuthorizedSignatoryEntity?: boolean;
-  lastName?: string;
-  middleName?: string;
+  name?: {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+  };
   netIncome?: string;
   netWorth?: string;
-  phoneNumber?: string;
+  permanentAddress?: Address;
+  phone?: {
+    countryCode?: string;
+    number?: string;
+  };
   phoneNumberAuthenticationCode?: string;
-  profilePicture?: string | undefined;
-  residency?: DomicileType;
+  profilePicture?: string;
   seniorPoliticalFigure?: string;
   ssn?: string;
-  visaType?: VisaType;
-}
-
-interface EmploymentDetails {
-  employerName: string;
-  industry: Industry;
-  occupation: string;
+  statementTypes?: StatementType[];
+  trustLegalName?: string;
+  trustTrusteesGrantorsOrProtectors?: Applicant[];
+  trustType?: TrustCompanyType;
+  visaType?: 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 }
 
 export interface CompanyTickerSymbol {
@@ -58,3 +96,30 @@ export interface CompanyTickerSymbol {
 }
 
 export type IdentificationDocuments = string[];
+
+interface EmploymentDetails {
+  employerName: string;
+  industry: Industry;
+  occupation: string;
+}
+
+interface Compliances {
+  isAssociatedWithFinra?: boolean;
+  isAssociatedWithPubliclyTradedCompany?: boolean;
+  isSeniorPoliticalFigure?: boolean;
+}
+
+export interface Applicant {
+  dateOfBirth?: Date;
+  domicile?: 'us' | 'green-card' | 'visa';
+  firstName?: string;
+  identificationDocument?: File;
+  lastName?: string;
+  middleName?: string;
+  residentialAddress?: string;
+  socialSecurityNumber?: string;
+}
+
+export type IndexedSchema<Schema> = Schema & {
+  _index?: number;
+};

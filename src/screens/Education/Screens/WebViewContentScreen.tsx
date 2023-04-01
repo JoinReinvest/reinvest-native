@@ -14,9 +14,9 @@ import { styles } from './styles';
  */
 const jsInjection =
   "const meta =  document.querySelectorAll('meta')[1]; meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');";
-export const WebViewContentScreen = ({ route }: EducationStackProps<Screens.WebViewContent>) => {
+export const WebViewContentScreen = ({ route: { params } }: EducationStackProps<Screens.WebViewContent>) => {
   const [isLoading, setIsLoading] = useState(true);
-  const { uri } = route.params;
+
   const ref = useRef<WebView>(null);
 
   useEffect(() => {
@@ -28,13 +28,15 @@ export const WebViewContentScreen = ({ route }: EducationStackProps<Screens.WebV
 
   return (
     <>
-      <WebView
-        ref={ref}
-        scalesPageToFit={isIOS}
-        javaScriptEnabled
-        onLoadEnd={() => setIsLoading(false)}
-        source={{ uri: `${REINVEST_SITE_URL}${uri}` }}
-      />
+      {params?.uri && (
+        <WebView
+          ref={ref}
+          scalesPageToFit={isIOS}
+          javaScriptEnabled
+          onLoadEnd={() => setIsLoading(false)}
+          source={{ uri: `${REINVEST_SITE_URL}${params.uri}` }}
+        />
+      )}
       {isLoading && (
         <View style={styles.webViewLoader}>
           <Loader />

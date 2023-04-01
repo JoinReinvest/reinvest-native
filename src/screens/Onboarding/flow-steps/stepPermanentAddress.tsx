@@ -3,7 +3,9 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -15,13 +17,35 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-type Fields = Exclude<OnboardingFormFields['permanentAddress'], null>;
+type Fields = Exclude<OnboardingFormFields['permanentAddress'], undefined>;
 
 const schema = formValidationRules.address;
 
 export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PERMANENT_ADDRESS,
 
+  willBePartOfTheFlow(fields) {
+    return fields.accountType === DraftAccountType.Individual;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [
+      fields.name?.firstName,
+      fields.name?.lastName,
+      fields.phone?.number,
+      fields.phone?.countryCode,
+      fields.authCode,
+      fields.dateOfBirth,
+      fields.residency,
+    ];
+
+    const individualFields = [fields.ssn];
+
+    return (
+      (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields)) ||
+      (fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields))
+    );
+  },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
     const defaultValues: Fields = storeFields.permanentAddress || initialValues;

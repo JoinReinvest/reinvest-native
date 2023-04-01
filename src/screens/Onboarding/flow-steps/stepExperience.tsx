@@ -18,7 +18,7 @@ export const StepExperience: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedExperience, setSelectedExperience] = useState<Experience | undefined>(storeFields.experience);
+    const [selectedExperience, setSelectedExperience] = useState<Experience | null | undefined>(storeFields.experience);
 
     const handleContinue = () => {
       updateStoreFields({ experience: selectedExperience });

@@ -6,7 +6,7 @@ import Screens from '../../navigation/screens';
 export type EducationStackParamsList = {
   [Screens.EducationMainScreen]: undefined;
   [Screens.BlogScreen]: undefined;
-  [Screens.WebViewContent]: { title: string; uri: string };
+  [Screens.WebViewContent]: { title: string; uri: string } | undefined;
 };
 
 export type EducationStackNavigationProp<T extends keyof EducationStackParamsList> = NativeStackNavigationProp<EducationStackParamsList, T>;

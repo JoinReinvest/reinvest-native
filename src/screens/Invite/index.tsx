@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Share } from 'react-native';
 import { useGetInvitationLink } from 'reinvest-app-common/src/services/queries/getInvitationLink';
 
-import { apiClient } from '../../api/apiClient';
+import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
 import { Input } from '../../components/Input';
 import { MainWrapper } from '../../components/MainWrapper';
@@ -10,7 +10,7 @@ import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
 
 export const InviteScreen = () => {
-  const { data, isLoading, isSuccess } = useGetInvitationLink(apiClient);
+  const { data, isLoading, isSuccess } = useGetInvitationLink(getApiClient);
   const [url, setUrl] = useState<undefined | string>('');
 
   const share = async () => {

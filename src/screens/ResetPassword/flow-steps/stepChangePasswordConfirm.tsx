@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
-import { allRequiredFieldsExists } from '../../../utils/formValidator';
 import { Identifiers } from '../identifires';
 import { ResetPasswordFormFields } from '../types';
 import { styles } from './styles';

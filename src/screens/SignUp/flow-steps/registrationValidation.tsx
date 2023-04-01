@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { useAuth } from '../../../providers/AuthProvider';
-import { allRequiredFieldsExists } from '../../../utils/formValidator';
 import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';

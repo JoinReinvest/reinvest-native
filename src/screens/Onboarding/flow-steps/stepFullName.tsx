@@ -1,10 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { ProgressBar } from '../../../components/ProgressBar';
@@ -15,7 +18,7 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-type Fields = Pick<OnboardingFormFields, 'firstName' | 'middleName' | 'lastName'>;
+type Fields = Exclude<OnboardingFormFields['name'], undefined>;
 
 const schema = z.object({
   firstName: formValidationRules.firstName,
@@ -26,24 +29,40 @@ const schema = z.object({
 export const StepFullName: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.FULL_NAME,
 
+  willBePartOfTheFlow(fields) {
+    return !fields.accountType && !fields.isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType];
+
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+  },
+
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
+
     const { handleSubmit, control, formState } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: {
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        ...storeFields,
+        ...storeFields.name,
       },
     });
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields(fields);
-      moveToNextStep();
+      await completeProfileMutate({ input: { name: fields } });
+      await updateStoreFields({ name: fields });
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     return (
       <>
@@ -80,7 +99,7 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
         >
           <Button
             disabled={shouldButtonBeDisabled}
-            isLoading={false}
+            isLoading={isLoading}
             onPress={handleSubmit(onSubmit)}
           >
             Continue

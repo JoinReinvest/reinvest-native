@@ -10,4 +10,9 @@ export const privacyPolicy = 'lorem ipsum ';
 export const onBoardingDisclaimers = {
   notSureWhichBestForYou: 'Lorem ipsum',
   requiredWhy: 'Lorem ipsum',
+  phoneNumberAuthenticationCodeGetHelp: 'lorem ipsum ',
+};
+
+export const onBoardingModalHeadlines = {
+  getHelpPhoneNumber: 'Phone number Authentication code',
 };

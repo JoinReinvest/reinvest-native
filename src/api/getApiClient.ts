@@ -2,7 +2,7 @@ import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { API_URL } from '@env';
 import { GraphQLClient } from 'graphql-request';
 
-export const apiClient = async (): Promise<GraphQLClient | undefined> => {
+export const getApiClient = async (): Promise<GraphQLClient | undefined> => {
   try {
     const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
 

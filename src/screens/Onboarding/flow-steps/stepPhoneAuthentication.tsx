@@ -1,19 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useSetPhoneNumber } from 'reinvest-app-common/src/services/queries/setPhoneNumber';
+import { useVerifyPhoneNumber } from 'reinvest-app-common/src/services/queries/verifyPhoneNumber';
 import zod from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { LoadingSpinner } from '../../../components/Icon/icons';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
+import { onBoardingDisclaimers, onBoardingModalHeadlines } from '../../../constants/strings';
 import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -23,21 +30,22 @@ import { styles } from './styles';
 type Fields = Pick<OnboardingFormFields, 'phoneNumberAuthenticationCode'>;
 
 const schema = zod.object({
-  phoneNumberAuthenticationCode: formValidationRules.authenticationCode,
+  phoneNumberAuthenticationCode: formValidationRules.numberAuthenticationCode,
 });
 
 export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
 
   doesMeetConditionFields: fields => {
-    return allRequiredFieldsExists([fields.accountType, fields.phoneNumber]);
+    return allRequiredFieldsExists([fields.accountType, fields.phone]);
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
 
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    const { openDialog } = useDialog();
+
     const defaultValues: Fields = {
       phoneNumberAuthenticationCode: storeFields.phoneNumberAuthenticationCode || '',
     };
@@ -45,20 +53,30 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
       defaultValues,
       resolver: zodResolver(schema),
     });
+    const { isLoading: resendLoading, mutate: setPhoneNumberMutate } = useSetPhoneNumber(getApiClient);
+    const { isLoading: verificationLoading, mutate: verifyPhoneNumber, isSuccess: verificationSuccess } = useVerifyPhoneNumber(getApiClient);
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
+    useEffect(() => {
+      if (verificationSuccess) {
+        moveToNextStep();
+      }
+    }, [verificationSuccess, moveToNextStep]);
+
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || verificationLoading;
 
     const onSubmit: SubmitHandler<Fields> = async ({ phoneNumberAuthenticationCode }) => {
       try {
         if (!phoneNumberAuthenticationCode) return;
 
-        setLoading(true);
         phoneNumberAuthenticationCode = phoneNumberAuthenticationCode.replace('-', '');
+
         await updateStoreFields({
           phoneNumberAuthenticationCode,
           _hasAuthenticatedPhoneNumber: true,
         });
-        setLoading(false);
+
+        const { countryCode, number } = storeFields.phone!;
+        await verifyPhoneNumber({ phoneNumber: number || '', countryCode: countryCode || '', authCode: phoneNumberAuthenticationCode });
         moveToNextStep();
       } catch (err) {
         setError((err as Error).message);
@@ -66,7 +84,17 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
     };
 
     const resendCodeOnClick = async () => {
-      Alert.alert('Resend code');
+      const { countryCode, number } = storeFields.phone!;
+      await setPhoneNumberMutate({ countryCode: countryCode || '', phoneNumber: number || '' });
+    };
+
+    const showGetHelp = () => {
+      openDialog(
+        <FormModalDisclaimer
+          headline={onBoardingModalHeadlines.getHelpPhoneNumber}
+          content={onBoardingDisclaimers.phoneNumberAuthenticationCodeGetHelp}
+        />,
+      );
     };
 
     return (
@@ -78,7 +106,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           <FormTitle
             dark
             headline="Check Your Phone"
-            description={`Enter the SMS authentication code sent to your phone (xx) xxx-xxx-x${storeFields.phoneNumber?.slice(-2)}.`}
+            description={`Enter the SMS authentication code sent to your phone (xx) xxx-xxx-x${storeFields.phone?.number?.slice(-2)}.`}
           />
           {error && (
             <FormMessage
@@ -93,23 +121,27 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
             inputProps={{
               placeholder: 'Authentication Code',
               dark: true,
-              keyboardType: 'numeric',
               maxLength: 7, // xxx-xxx
               mask: CODE_MASK,
+              autoCapitalize: 'characters',
             }}
           />
           <View style={styles.row}>
+            {resendLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <StyledText
+                variant="link"
+                color={palette.frostGreen}
+                onPress={resendCodeOnClick}
+              >
+                Resend Code
+              </StyledText>
+            )}
             <StyledText
               variant="link"
               color={palette.frostGreen}
-              onPress={resendCodeOnClick}
-            >
-              Resend Code
-            </StyledText>
-            <StyledText
-              variant="link"
-              color={palette.frostGreen}
-              onPress={() => Alert.alert('Get help')}
+              onPress={showGetHelp}
             >
               Get Help
             </StyledText>

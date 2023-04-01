@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/createDraftAccount';
+import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -30,8 +33,28 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const [selectedAccountType, setSelectedAccountType] = useState<DraftAccountType | undefined>(storeFields.accountType);
     const { openDialog } = useDialog();
 
-    const handleContinue = () => {
-      updateStoreFields({ accountType: selectedAccountType });
+    const { isSuccess, mutateAsync: createDraftAccount } = useCreateDraftAccount(getApiClient);
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
+
+    const { data: draftAccountList } = useGetListAccount(getApiClient);
+
+    const handleContinue = async () => {
+      const existingDraft = draftAccountList?.find(draft => draft?.type === selectedAccountType);
+
+      if (existingDraft) {
+        await updateStoreFields({ accountType: existingDraft.type || undefined, accountId: existingDraft?.id || undefined });
+
+        return moveToNextStep();
+      }
+
+      await createDraftAccount({ type: selectedAccountType! });
+
+      await updateStoreFields({ accountType: selectedAccountType });
       moveToNextStep();
     };
 
@@ -55,7 +78,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
           />
           <View style={styles.cardsWrapper}>
             {ACCOUNT_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
-              <Card
+              <Card<DraftAccountType>
                 selected={value === selectedAccountType}
                 key={value}
                 id={value}
