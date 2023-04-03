@@ -6,7 +6,6 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import zod, { Schema } from 'zod';
 
 import { Button } from '../../../components/Button';
-import { ReferralCodeCheckList } from '../../../components/CheckList/ReferralCodeCheckList';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
 import { CODE_MASK } from '../../../constants/masks';
@@ -26,15 +25,11 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       referralCode: formValidationRules.referralCode,
     });
 
-    const { handleSubmit, control, getValues, watch } = useForm<Fields>({
+    const { handleSubmit, control, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
       mode: 'all',
     });
-
-    const fields = {
-      password: watch('referralCode'),
-    };
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       values.referralCode = values.referralCode?.replace('-', '');
@@ -46,18 +41,20 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       moveToNextStep();
     };
 
+    const referralValue = watch('referralCode');
+
     return (
       <>
-        <ScrollView style={styles.fw}>
+        <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline={'Do you have a referral code? (optional)'}
-            description={'You and your referrer will receive $20 in dividend following your first investment!'}
+            headline="Do you have a referral code? (optional)"
+            description="You and your referrer will receive $20 in dividend following your first investment!"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'referralCode'}
+            fieldName="referralCode"
             inputProps={{
               placeholder: 'Referral code',
               dark: true,
@@ -67,20 +64,19 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               returnKeyType: 'done',
             }}
           />
-          <ReferralCodeCheckList referralCode={fields.password || ''} />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
-            variant={'outlined'}
+            variant="outlined"
             onPress={onSkip}
           >
             Skip
           </Button>
           <Button
-            disabled={!getValues?.().referralCode?.length}
+            disabled={referralValue?.replace('-', '').length !== 6}
             isLoading={false}
             onPress={handleSubmit(onSubmit)}
           >

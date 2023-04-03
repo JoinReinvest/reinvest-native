@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
@@ -35,8 +35,8 @@ const schema = z.object({
 });
 
 const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
-  label: `+${callingCode}`,
-  value: callingCode,
+  label: callingCode,
+  value: callingCode.replace('+', ''),
 }));
 
 export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
@@ -46,7 +46,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const phoneNumber = storeFields.phoneNumber;
     const { countryCode, phone } = useMemo(() => getPhoneNumberAndCountryCode(phoneNumber), [phoneNumber]);
     const { progressPercentage } = useOnboardingFormFlow();
-    const { formState, control, handleSubmit, setValue } = useForm<Fields>({
+    const { formState, control, handleSubmit } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
@@ -55,23 +55,18 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
       },
     });
 
-    const [selectedCountryCallingCode, setSelectedCountryCallingCode] = useState(countryCode ? countryCode : OPTIONS[0].value);
-
     const { openDialog } = useDialog();
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       fields.phone = fields.phone.replaceAll('-', '');
+      fields.countryCode = OPTIONS.find(callingCode => callingCode.label === fields.countryCode)?.value ?? '';
       const phoneNumberFromFields = `${fields.countryCode}${fields.phone}`;
       await updateStoreFields({ phoneNumber: phoneNumberFromFields });
       moveToNextStep();
       //TODO: send authentication code via SMS
     };
-
-    useEffect(() => {
-      setValue('countryCode', selectedCountryCallingCode);
-    }, [selectedCountryCallingCode, setValue]);
 
     const showDisclaimer = () => {
       openDialog(
@@ -99,14 +94,10 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 select
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'countryCode'}
+                fieldName="countryCode"
                 dropdownProps={{
-                  prefix: '+',
                   dark: true,
                   data: OPTIONS,
-                  onSelect: selected => {
-                    setSelectedCountryCallingCode(selected.value);
-                  },
                 }}
               />
             </View>
@@ -114,7 +105,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               <Controller
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName={'phone'}
+                fieldName="phone"
                 inputProps={{
                   dark: true,
                   mask: PHONE_MASK,
@@ -139,7 +130,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
@@ -160,7 +151,7 @@ const getPhoneNumberAndCountryCode = (phoneNumber: string | undefined) => {
 
     if (phoneNumberDigits) {
       const phone = phoneNumber.slice(-9);
-      const countryCode = phoneNumber.replace(phone, '');
+      const countryCode = `+${phoneNumber.replace(phone, '')}`;
 
       return {
         countryCode,
@@ -169,5 +160,5 @@ const getPhoneNumberAndCountryCode = (phoneNumber: string | undefined) => {
     }
   }
 
-  return { countryCode: '', phone: '' };
+  return { countryCode: OPTIONS[0]?.label ?? '', phone: '' };
 };

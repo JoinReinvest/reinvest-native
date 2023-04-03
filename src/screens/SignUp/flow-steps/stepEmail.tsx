@@ -12,8 +12,8 @@ import { palette } from '../../../constants/theme';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { useRegisterFormFlow } from '../flow-steps';
 import { RegisterFormFields } from '../types';
-import { useRegisterFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'email'>;
@@ -44,7 +44,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
   const navigation = useLogOutNavigation();
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
-    await updateStoreFields(fields);
+    updateStoreFields(fields);
     navigation.navigate(Screens.BlackForm);
   };
 
@@ -53,12 +53,12 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'email'}
+        fieldName="email"
         inputProps={{ placeholder: 'Email Address' }}
       />
       <StyledText
         onPress={() => navigation.navigate(Screens.SignIn)}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >

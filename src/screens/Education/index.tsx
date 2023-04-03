@@ -7,9 +7,9 @@ import { ScreenHeader } from '../../components/CustomHeader';
 import { Sygnet } from '../../components/Icon/icons';
 import { palette } from '../../constants/theme';
 import Screens from '../../navigation/screens';
-import { BlogScreen } from './Screens/BlogScreen';
-import { EducationMainScreen } from './Screens/EducationMainScreen';
-import { WebViewContentScreen } from './Screens/WebViewContentScreen';
+import { BlogScreen } from '../Education/Screens/BlogScreen';
+import { EducationMainScreen } from '../Education/Screens/EducationMainScreen';
+import { WebViewContentScreen } from '../Education/Screens/WebViewContentScreen';
 import { EducationStackParamsList } from './types';
 
 const Stack = createNativeStackNavigator<EducationStackParamsList>();
@@ -20,7 +20,7 @@ const stackOptions: Record<Extract<Screens, Screens.EducationMainScreen | Screen
     header: ScreenHeader,
     headerLeft: () => (
       <Box
-        m={'8'}
+        m="8"
         width={32}
         height={32}
       >
@@ -47,8 +47,7 @@ export const EducationStack = () => {
               onPress={() => {
                 navigation.navigate(Screens.Settings);
               }}
-              username={'Test'}
-              variant={'individual'}
+              username="Test"
             />
           ),
         })}

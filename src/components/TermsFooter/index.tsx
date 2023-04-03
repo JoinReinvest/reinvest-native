@@ -7,8 +7,8 @@ import { palette } from '../../constants/theme';
 import { useDialog } from '../../providers/DialogProvider';
 import { yScale } from '../../utils/scale';
 import { FormModalDisclaimer } from '../Modals/ModalContent/FormModalDisclaimer';
+import { styles } from '../TermsFooter/styles';
 import { StyledText } from '../typography/StyledText';
-import { styles } from './styles';
 
 export const TermsFooter = () => {
   const { bottom } = useSafeAreaInsets();
@@ -17,7 +17,7 @@ export const TermsFooter = () => {
   const showTerms = () => {
     openDialog(
       <FormModalDisclaimer
-        headline={'Terms and Conditions'}
+        headline="Terms and Conditions"
         content={termsAndConditions}
       />,
     );
@@ -26,7 +26,7 @@ export const TermsFooter = () => {
   const showPP = () => {
     openDialog(
       <FormModalDisclaimer
-        headline={'Privacy Policy'}
+        headline="Privacy Policy"
         content={privacyPolicy}
       />,
     );
@@ -34,21 +34,21 @@ export const TermsFooter = () => {
 
   return (
     <View
-      key={'terms and conditions'}
+      key="terms and conditions"
       style={[styles.wrapper, { paddingBottom: bottom || yScale(12) }]}
     >
       <StyledText
         color={palette.pureWhite}
-        variant={'paragraphSmall'}
+        variant="paragraphSmall"
         style={{ textAlign: 'center' }}
       >
-        By continuing, you agree to the REINVEST{' '}
+        By continuing, you agree to the REINVEST
       </StyledText>
       <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
         <StyledText
           color={palette.frostGreen}
           onPress={showTerms}
-          variant={'link'}
+          variant="link"
         >
           Terms of Conditions
         </StyledText>
@@ -61,7 +61,7 @@ export const TermsFooter = () => {
         </StyledText>
         <StyledText
           color={palette.frostGreen}
-          variant={'link'}
+          variant="link"
           onPress={showPP}
         >
           Privacy Policy.

@@ -3,6 +3,7 @@ import { FlatList, Keyboard, LayoutRectangle, Modal, Pressable, TextInput, View 
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SelectOption } from 'reinvest-app-common/src/types/select-option';
 
+import { INPUT_HEIGHT } from '../../constants/styles';
 import { palette } from '../../constants/theme';
 import { useForwardRef } from '../../hooks/useForwardRef';
 import { Icon } from '../Icon';
@@ -18,7 +19,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   const inputRef = useForwardRef(ref);
   const wrapperRef = useRef<View>(null);
   const [isListExpanded, setIsListExpanded] = useState(false);
-  const [position, setPosition] = useState<LayoutRectangle | undefined>();
+  const [position, setPosition] = useState<Omit<LayoutRectangle, 'height'> | undefined>();
   const statusSharedValue = useSharedValue(0);
 
   const rotationAnimationStyles = useAnimatedStyle(() => {
@@ -61,7 +62,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
     inputRef.current?.focus();
 
     // Getting proper position for displaying list
-    wrapperRef.current?.measureInWindow((x, y, width, height) => setPosition({ x, y, width, height }));
+    wrapperRef.current?.measureInWindow((x, y, width) => setPosition({ x, y, width }));
 
     setIsListExpanded(true);
     statusSharedValue.value = 1;
@@ -85,7 +86,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   const rightSection = (
     <Animated.View style={[rotationAnimationStyles]}>
       <Icon
-        icon={'arrowDown'}
+        icon="arrowDown"
         color={dark ? palette.pureWhite : undefined}
       />
     </Animated.View>
@@ -122,7 +123,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
                 style={[
                   {
                     position: 'absolute',
-                    top: position?.y + position.height - 12,
+                    top: position?.y + INPUT_HEIGHT,
                     left: position.x,
                     width: position.width,
                   },

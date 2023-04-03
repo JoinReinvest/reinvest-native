@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
 import { StatusCircle } from '../../../components/StatusCircle';
@@ -21,7 +21,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
     return allRequiredFieldsExists(requiredFields);
   },
 
-  Component: ({}: StepComponentProps<ResetPasswordFormFields>) => {
+  Component: () => {
     const navigation = useLogOutNavigation();
 
     const goBackToLoginForm = () => {

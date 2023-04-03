@@ -10,13 +10,13 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { ProgressBar } from '../../../components/ProgressBar';
-import { Controller } from '../../../components/typography/Controller'
+import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { dateOlderThanEighteenYearsSchema } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from './index';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'dateOfBirth'>;
@@ -51,12 +51,12 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
         <ScrollView>
           <FormTitle
             dark
-            headline={'Enter your date of birth'}
+            headline="Enter your date of birth"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'dateOfBirth'}
+            fieldName="dateOfBirth"
             inputProps={{
               placeholder: 'Date of Birth',
               dark: true,
@@ -79,7 +79,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
           </Box>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

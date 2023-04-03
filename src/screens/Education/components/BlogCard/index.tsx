@@ -6,17 +6,19 @@ import { StyledText } from '../../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../../constants/styles';
 import { palette } from '../../../../constants/theme';
 import Screens from '../../../../navigation/screens';
-import { EducationNavigationProp } from '../../types';
+import { EducationNavigationProp } from '../../../../screens/Education/types';
 import { styles } from './styles';
 import { BlogPost } from './types';
 
 export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & EducationNavigationProp<Screens.EducationMainScreen>) => {
   const getImageDimensions = useCallback(() => {
-    if (image) {
-      const ratio = image.width / image.height;
+    let ratio = 1;
 
-      return { width: '100%', height: PADDED_SAFE_WIDTH / ratio };
+    if (image) {
+      ratio = image.width / image.height;
     }
+
+    return { width: '100%', height: PADDED_SAFE_WIDTH / ratio };
   }, [image]);
 
   const navigateToBlog = () => {
@@ -39,8 +41,8 @@ export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & Ed
       )}
       <Box
         style={styles.description}
-        px={'16'}
-        py={'12'}
+        px="16"
+        py="12"
         fw
       >
         <StyledText variant="bonusHeading">{title}</StyledText>

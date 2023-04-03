@@ -15,16 +15,20 @@ const syncPromise: Promise<string[]> | null = null;
  */
 function setItem(key: string, value: string) {
   AsyncStorage.setItem(MEMORY_KEY_PREFIX + key, value);
-  dataMemory[key] = value;
+  dataMemory[`${key}`] = value;
 
-  return dataMemory[key];
+  return dataMemory[`${key}`];
 }
 
 /**
  * This is used to get a specific key from storage
  */
 function getItem(key: string) {
-  return dataMemory.hasOwnProperty(key) ? dataMemory[key as string] : null;
+  if (!Object.prototype.hasOwnProperty.call(dataMemory, key)) {
+    return null;
+  }
+
+  return dataMemory[`${key}`] ?? null;
 }
 
 /**
@@ -33,7 +37,7 @@ function getItem(key: string) {
 function removeItem(key: string) {
   AsyncStorage.removeItem(MEMORY_KEY_PREFIX + key);
 
-  return delete dataMemory[key];
+  return delete dataMemory[`${key}`];
 }
 
 /**
@@ -62,10 +66,12 @@ async function sync() {
         const value = store[1];
         const memoryKey = key.replace(MEMORY_KEY_PREFIX, '');
 
-        dataMemory[memoryKey] = value;
+        dataMemory[`${memoryKey}`] = value;
       });
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        throw err;
+      }
     }
   }
 

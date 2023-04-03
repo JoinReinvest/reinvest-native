@@ -19,11 +19,16 @@ const awsInit = () => {
 };
 
 async function getToken() {
+  let currentUser: CognitoUser | null = null;
   try {
-    const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
+    currentUser = await Auth.currentAuthenticatedUser();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
 
-    return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
-  } catch (error) {} // eslint-disble-line no-empty
+  return currentUser?.getSignInUserSession()?.getAccessToken().getJwtToken();
 }
 
 export default { awsInit, getToken };

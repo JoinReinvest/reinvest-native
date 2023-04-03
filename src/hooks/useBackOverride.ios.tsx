@@ -5,7 +5,7 @@ import { Icon } from '../components/Icon';
 import { palette } from '../constants/theme';
 import { useLogOutNavigation } from '../navigation/hooks';
 
-export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextState<T>) => {
+export const useStepBackOverride = <T extends object>(useCurrentFormContext: () => ContextState<T>) => {
   const {
     meta: { isFirstStep },
     moveToPreviousValidStep,
@@ -17,7 +17,7 @@ export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextStat
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={() => navigation.goBack()}
           />
         ),
@@ -29,7 +29,7 @@ export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextStat
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={moveToPreviousValidStep}
           />
         ),

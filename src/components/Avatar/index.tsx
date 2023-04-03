@@ -1,7 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Image, Pressable } from 'react-native';
+import { ImagePickerResponse } from 'react-native-image-picker';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Icon } from '../Icon';
+import { ImagePicker } from '../ImagePicker';
 import { StyledText } from '../typography/StyledText';
 import { TextVariants } from '../typography/StyledText/types';
 import { styles } from './styles';
@@ -14,39 +17,43 @@ const AvatarSizesSuffixes: { [key in AvatarSize]: TextVariants } = {
   s: 'avatarInitialsSmall',
 };
 
-export const computeUserInitials = (username: string) => {
-  const namesArr = username.split(' ');
-  const firstName = namesArr[0];
-  let lastName = '';
-
-  if (namesArr.length > 1) {
-    // skip middle name
-    lastName = namesArr.pop()!;
-  }
-
-  return lastName ? `${firstName[0]}${lastName[0]}` : `${firstName[0]}`;
-};
-
-export const Avatar = ({ username, size = 'm', variant = 'individual', isEditable = false, onPress }: AvatarProps) => {
+export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Individual, isEditable = false, onPress, onImageSelect }: AvatarProps) => {
   const [firstName, lastName] = username.split(' ');
-  const initials = lastName ? `${firstName[0]}${lastName[0]}` : firstName[0];
+  const initials = lastName ? `${firstName?.[0]}${lastName[0]}` : firstName?.[0];
+
+  const handleImageSelect = (response: ImagePickerResponse) => {
+    const selectedImage = response.assets?.[0]?.uri;
+
+    onImageSelect?.(selectedImage);
+  };
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
-      style={[styles.wrapper, styles[size], styles[variant]]}
+      style={[styles.wrapper, styles[`${size}`], styles[`${variant}`]]}
     >
       <StyledText
-        style={[styles.initials, styles[variant], styles.avatarInitialsBase]}
-        variant={AvatarSizesSuffixes[size]}
+        style={[styles.initials, styles[`${variant}`], styles.avatarInitialsBase]}
+        variant={AvatarSizesSuffixes[`${size}`]}
       >
         {initials}
       </StyledText>
-      {isEditable && (
-        <View style={[styles.edit]}>
-          <Icon icon="edit" />
-        </View>
+      {uri && (
+        <Image
+          style={styles.image}
+          source={{ uri }}
+          resizeMode="cover"
+        />
       )}
-    </TouchableOpacity>
+      {isEditable && (
+        <ImagePicker
+          style={[styles.edit]}
+          type="library"
+          onSelect={handleImageSelect}
+        >
+          <Icon icon="edit" />
+        </ImagePicker>
+      )}
+    </Pressable>
   );
 };

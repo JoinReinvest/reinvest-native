@@ -4,9 +4,10 @@ import { Pressable, View, ViewStyle } from 'react-native';
 import { palette } from '../../../constants/theme';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { xScale, yScale } from '../../../utils/scale';
-import { BoxProps, sizes, SizesEnum, SpacingProps } from './types';
+import type { BoxProps, SizesEnum, SpacingProps } from './types';
+import { sizes } from './types';
 
-const getSize = (size: SizesEnum | undefined) => size && sizes[size];
+const getSize = (size: SizesEnum | undefined) => size && sizes[`${size}`];
 
 function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
   return {
@@ -64,7 +65,7 @@ export const Box = ({
           borderRadius: radius,
           alignItems,
           justifyContent,
-          backgroundColor: color ? hexToRgbA(palette[color], colorOpacity) : undefined,
+          backgroundColor: color ? hexToRgbA(palette[`${color}`], colorOpacity) : undefined,
           width: fw ? '100%' : width,
           height,
           flex,

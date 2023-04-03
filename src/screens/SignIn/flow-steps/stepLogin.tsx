@@ -14,8 +14,8 @@ import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { ChallengeName, useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { useLoginFormFlow } from '../flow-steps/index';
 import { LoginFormFields } from '../types';
-import { useLoginFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Omit<LoginFormFields, 'authenticationCode'>;
@@ -43,9 +43,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
     setError('');
-
-    await updateStoreFields(fields);
-
+    updateStoreFields(fields);
     const { email, password } = fields;
 
     const result = await actions.signIn(email, password);
@@ -64,33 +62,45 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
 
   const startForgotPasswordFlow = () => navigation.navigate(Screens.ResetPassword);
 
+  const navigateToSignUp = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.wrapper}>
       {error && (
         <FormMessage
           message={error}
-          variant={'error'}
+          variant="error"
         />
       )}
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'email'}
+        fieldName="email"
         inputProps={{ placeholder: 'Email Address' }}
       />
       <Controller
         onSubmit={handleSubmit(onSubmit)}
         control={control}
-        fieldName={'password'}
+        fieldName="password"
         inputProps={{ placeholder: 'Password' }}
       />
       <StyledText
         onPress={startForgotPasswordFlow}
-        variant={'link'}
+        variant="link"
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
         Forgot Password ?
+      </StyledText>
+      <StyledText
+        onPress={navigateToSignUp}
+        variant="link"
+        color={palette.pureWhite}
+        style={styles.firstStepLink}
+      >
+        {`Don't have an account`}
       </StyledText>
       <Button
         disabled={!formState.dirtyFields}

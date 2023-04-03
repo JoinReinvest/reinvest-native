@@ -1,11 +1,13 @@
 import type { TouchableOpacityProps } from 'react-native';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 export type AvatarSize = 'xl' | 'l' | 'm' | 's';
-export type AvatarVariant = 'individual' | 'corporate' | 'trust' | 'beneficiary';
 
 export interface AvatarProps extends Pick<TouchableOpacityProps, 'onPress'> {
   username: string;
-  variant: AvatarVariant;
   isEditable?: boolean;
+  onImageSelect?: (uri: string | undefined) => void;
   size?: AvatarSize;
+  uri?: string;
+  variant?: AccountType;
 }

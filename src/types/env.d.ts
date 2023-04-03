@@ -5,4 +5,5 @@ declare module '@env' {
   export const REINVEST_SITE_URL: string;
   export const AWS_REGION: string;
   export const REINVEST_SITE_URL: string;
+  export const SENTRY_DNS: string;
 }

@@ -13,9 +13,9 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
-import { styles } from './styles';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;
@@ -52,9 +52,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
-
-      await updateStoreFields(values);
-
+      updateStoreFields(values);
       try {
         await actions.signUp({
           username: storeFields.email,
@@ -68,7 +66,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         });
 
         return moveToNextStep();
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (err instanceof Error) {
           if (err.name === 'UsernameExistsException') {
             await Auth.resendSignUp(storeFields.email);
@@ -90,13 +88,13 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Sign up to REINVEST'}
-            description={'Create a unique password for your account to continue.'}
+            headline="Sign up to REINVEST"
+            description="Create a unique password for your account to continue."
           />
           {error && (
             <FormMessage
               message={error}
-              variant={'error'}
+              variant="error"
             />
           )}
           <Controller
@@ -125,7 +123,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

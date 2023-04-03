@@ -8,11 +8,11 @@ import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/
 import { ReitIcon } from '../../components/Icon/icons/TabNavigtionIcons/ReitIcon';
 import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
+import Screens from '../../navigation/screens';
 import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
-import Screens from '../screens';
 import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
@@ -38,7 +38,7 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
 
 const getLabel = (focused: boolean, children: string) => (
   <StyledText
-    variant={'today'}
+    variant="today"
     color={focused ? palette.pureBlack : palette.dark3}
   >
     {children}
@@ -51,7 +51,7 @@ export const BottomTabsNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName={Screens.EducationStack}
-      backBehavior={'history'}
+      backBehavior="history"
       screenOptions={{
         tabBarStyle: {
           height: 56 + bottom,

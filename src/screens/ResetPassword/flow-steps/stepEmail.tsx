@@ -33,7 +33,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
     });
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields(fields);
+      updateStoreFields(fields);
 
       try {
         await actions.forgotPassword(fields.email);
@@ -50,7 +50,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
         {error && (
           <FormMessage
             message={error}
-            variant={'error'}
+            variant="error"
           />
         )}
         <ScrollView style={styles.fw}>
@@ -62,7 +62,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'email'}
+            fieldName="email"
             inputProps={{
               placeholder: 'Email Address',
               dark: true,
@@ -70,7 +70,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

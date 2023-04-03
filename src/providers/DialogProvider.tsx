@@ -1,6 +1,7 @@
 import React, { createContext, PropsWithChildren, ReactNode, useContext, useMemo, useState } from 'react';
 import { Modal } from 'react-native';
-import { MainModalWrapper } from '../components/Modals/ModalWrappers/MainModalWrapper'
+
+import { MainModalWrapper } from '../components/Modals/ModalWrappers/MainModalWrapper';
 
 interface DialogContextInterface {
   closeDialog: () => void;
@@ -37,7 +38,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
     };
   }, [dialogContent]);
 
-  const Wrapper = modals[type];
+  const Wrapper = modals[`${type}`];
 
   return (
     <DialogContext.Provider
@@ -47,7 +48,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
       {children}
       {!!dialogContent && (
         <Modal
-          animationType={'slide'}
+          animationType="slide"
           visible={!!dialogContent}
         >
           <Wrapper
@@ -66,5 +67,6 @@ export const useDialog = () => {
   if (context === undefined) {
     throw new Error('useDialog must be used within a DialogProvider');
   }
+
   return context;
 };

@@ -3,12 +3,12 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { palette } from '../../../constants/theme';
+import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
+import { StyledText } from '../..//typography/StyledText';
 import { Sygnet } from '../../Icon/icons';
 import { MainWrapper } from '../../MainWrapper';
-import { StyledText } from '../../typography/StyledText';
 import { Video } from '../../Video';
-import { styles } from './styles';
 
 interface FirstStepLayoutProps {
   description: string;
@@ -18,7 +18,7 @@ interface FirstStepLayoutProps {
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
   return (
     <MainWrapper style={{ justifyContent: 'flex-start' }}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle="light-content" />
       <Video />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
@@ -30,13 +30,13 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
       <View style={styles.descriptionSegment}>
         <StyledText
           style={[styles.text]}
-          variant={'h1'}
+          variant="h1"
         >
           {headline}
         </StyledText>
         <StyledText
           style={styles.text}
-          variant={'bonusHeading'}
+          variant="bonusHeading"
         >
           {description}
         </StyledText>

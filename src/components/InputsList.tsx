@@ -25,7 +25,7 @@ export const InputsList = ({ inputs, buttonLabel, placeholder, onAddInput, onCha
     const updatedInputs = [...inputs];
     const inputToUpdateIndex = inputs.findIndex(dynamicInput => dynamicInput.id === id);
 
-    updatedInputs[inputToUpdateIndex] = { id, value: enteredText };
+    updatedInputs[`${inputToUpdateIndex}`] = { id, value: enteredText };
     onChangeText(updatedInputs);
   };
 

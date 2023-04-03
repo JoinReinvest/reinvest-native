@@ -6,7 +6,7 @@ import { ContextState } from 'reinvest-app-common/src/services/form-flow/interfa
 import { Icon } from '../components/Icon';
 import { palette } from '../constants/theme';
 
-export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextState<T>) => {
+export const useStepBackOverride = <T extends object>(useCurrentFormContext: () => ContextState<T>) => {
   const {
     meta: { previousStepIdentifier, isFirstStep },
     moveToPreviousValidStep,
@@ -35,7 +35,7 @@ export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextStat
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={() => navigation.goBack()}
           />
         ),
@@ -47,7 +47,7 @@ export const useStepBackOverride = <T,>(useCurrentFormContext: () => ContextStat
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon="arrowLeft"
             onPress={moveToPreviousValidStep}
           />
         ),

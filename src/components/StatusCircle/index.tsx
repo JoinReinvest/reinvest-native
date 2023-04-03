@@ -14,7 +14,7 @@ export const StatusCircle = ({ variant = 'success', title, children }: PropsWith
     <View style={[styles.wrapper]}>
       <View style={[styles.iconContainer, !success && styles.iconContainerError]}>
         <Icon
-          size={'xl'}
+          size="xl"
           icon={success ? 'tick' : 'hamburgerClose'}
           color={success ? palette.pureBlack : palette.pureWhite}
         />

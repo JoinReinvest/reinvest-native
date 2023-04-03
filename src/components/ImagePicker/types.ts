@@ -8,5 +8,7 @@ export type BaseImagePickerOptions = Pick<OptionsCommon, 'mediaType' | 'includeB
 export interface ImagePickerProps extends Omit<PressableProps, 'onPress' | 'children'> {
   onSelect: (response: ImagePickerResponse) => void;
   type: ImagePickerActionTypes;
+  preAction?: () => void;
   selectionImageLimit?: number;
+  setLoading?: (isLoading: boolean) => void;
 }

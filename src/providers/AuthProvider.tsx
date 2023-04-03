@@ -18,7 +18,7 @@ interface AuthContextInterface {
     forgotPasswordSubmit: (email: string, code: string, newPassword: string) => Promise<Error | void> | null;
     signIn: (email: string, password: string) => Promise<Error | CognitoUser | null>;
     signOut: () => Promise<Error | void> | null;
-    signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | undefined> | null;
+    signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | null> | null;
   };
   loading: boolean;
   user: CognitoUser | null;
@@ -74,15 +74,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (signUpParams: SignUpParams) => {
     setLoading(true);
+    let userResult: ISignUpResult | null = null;
     try {
-      const userResult: ISignUpResult = await Auth.signUp(signUpParams);
-
-      return userResult;
-    } catch (err) {
-      throw err;
+      userResult = await Auth.signUp(signUpParams);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        throw err;
+      }
     } finally {
       setLoading(false);
     }
+
+    return userResult;
   };
 
   const confirmSignUp = async (email: string, authenticationCode: string) => Auth.confirmSignUp(email, authenticationCode);
@@ -109,13 +112,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   async function getToken() {
+    let currentUser: CognitoUser | null = null;
     try {
-      const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
-
-      return currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
+      currentUser = await Auth.currentAuthenticatedUser();
     } catch (e) {
       setError('Problem with token');
     }
+
+    return currentUser?.getSignInUserSession()?.getAccessToken().getJwtToken();
   }
 
   const forgotPassword = async (email: string) => {

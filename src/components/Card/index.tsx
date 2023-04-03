@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { Pressable } from 'react-native';
 
 import { palette } from '../../constants/theme';
@@ -6,8 +6,8 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CardProps } from './types';
 
-export const Card = <T extends unknown>({ id, title, children, selected = false, onCardPress }: PropsWithChildren<CardProps<T>>) => {
-  const handleCardPress = () => onCardPress?.(selected ? undefined : id);
+export const Card = <T extends string>({ id, title, value, description, selected = false, onCardPress }: CardProps<T>) => {
+  const handleCardPress = () => onCardPress?.(selected ? undefined : value);
 
   return (
     <Pressable
@@ -22,13 +22,15 @@ export const Card = <T extends unknown>({ id, title, children, selected = false,
       >
         {title}
       </StyledText>
-      <StyledText
-        color={palette.darkerGray}
-        variant="paragraph"
-        style={[styles.cardContent, selected && styles.selected]}
-      >
-        {children}
-      </StyledText>
+      {description && (
+        <StyledText
+          color={palette.darkerGray}
+          variant="paragraph"
+          style={[styles.cardContent, selected && styles.selected]}
+        >
+          {description}
+        </StyledText>
+      )}
     </Pressable>
   );
 };

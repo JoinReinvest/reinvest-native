@@ -1,1 +1,1 @@
-export { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+export { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';

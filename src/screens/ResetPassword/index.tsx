@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
@@ -5,9 +6,9 @@ import React from 'react';
 import { Icon } from '../../components/Icon';
 import { palette } from '../../constants/theme';
 import Screens from '../../navigation/screens';
-import { SignInScreenProps, SignInStackParamsList } from '../SignIn/types';
+import { initialSteps, ResetPasswordFormFlowProvider } from '../ResetPassword/flow-steps';
+import { SignInStackParamsList } from '../SignIn/types';
 import { BlackLayout } from './BlackLayout';
-import { initialSteps, ResetPasswordFormFlowProvider } from './flow-steps';
 
 const ResetPasswordStack = createNativeStackNavigator<SignInStackParamsList>();
 
@@ -20,13 +21,13 @@ const blackScreenFormOptions = (props: { navigation: any; route: RouteProp<SignI
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon={'arrowLeft'}
+      icon="arrowLeft"
       onPress={props.navigation.goBack}
     />
   ),
 });
 
-export const ResetPassword = ({}: SignInScreenProps) => {
+export const ResetPassword = () => {
   return (
     <ResetPasswordFormFlowProvider initialStoreFields={initialSteps}>
       <ResetPasswordStack.Navigator>

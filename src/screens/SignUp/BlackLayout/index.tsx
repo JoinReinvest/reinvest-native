@@ -14,7 +14,6 @@ import { RegisterFormFields } from '../types';
 interface Props {
   shouldShowFooter?: boolean;
 }
-
 export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   const { CurrentStepView } = useRegisterFormFlow();
   useStepBackOverride<RegisterFormFields>(useRegisterFormFlow);

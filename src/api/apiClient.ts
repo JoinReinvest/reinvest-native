@@ -16,8 +16,10 @@ export const apiClient = async (): Promise<GraphQLClient | undefined> => {
         };
       },
     });
-  } catch (err) {
-    console.error(err);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw err;
+    }
 
     return undefined;
   }

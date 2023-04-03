@@ -13,16 +13,16 @@ export const Settings = () => {
 
   return (
     <MainWrapper>
-      <StyledText variant={'h6'}>Settings Screen</StyledText>
-      <StyledText variant={'h6'}>Logged as</StyledText>
-      <StyledText variant={'paragraphSmall'}>{user?.getUsername()}</StyledText>
+      <StyledText variant="h6">Settings Screen</StyledText>
+      <StyledText variant="h6">Logged as</StyledText>
+      <StyledText variant="paragraphSmall">{user?.getUsername()}</StyledText>
       <Button
-        title={'start onboarding'}
+        title="start onboarding"
         onPress={() => navigation.navigate(Screens.Onboarding)}
       />
 
       <Button
-        title={'signout'}
+        title="signout"
         onPress={() => actions.signOut()}
       />
     </MainWrapper>

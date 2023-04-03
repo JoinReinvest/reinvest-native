@@ -17,7 +17,7 @@ export const MainModalWrapper = ({ dialogContent, dark }: { dialogContent: React
       <Icon
         onPress={closeDialog}
         style={[styles.closeIcon, { top: top || 12 }]}
-        icon={'hamburgerClose'}
+        icon="hamburgerClose"
         color={dark ? palette.pureWhite : palette.pureBlack}
       />
     </View>

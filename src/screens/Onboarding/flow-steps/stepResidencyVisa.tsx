@@ -2,17 +2,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { COUNTRIES } from 'reinvest-app-common/src/constants/countries';
+import { VISAS_AS_OPTIONS } from 'reinvest-app-common/src/constants/visas';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { Dropdown } from '../../../components/Dropdown';
 import { FormTitle } from '../../../components/Forms/FormTitle';
-import { COUNTRIES_AS_OPTIONS, countriesMap } from '../../../constants/countries';
-import { VISAS_AS_OPTIONS } from '../../../constants/visas';
+import { VisaType } from '../../../types/visaType';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
-import { OnboardingFormFields, VisaType } from '../types';
+import { OnboardingFormFields } from '../types';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'birthCountry' | 'citizenshipCountry' | 'visaType'>;
@@ -25,7 +27,7 @@ const schema = z.object({
 
 export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_VISA,
-  doesMeetConditionFields: fields => fields.residency === 'visa',
+  doesMeetConditionFields: fields => fields.residency === DomicileType.Visa,
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { formState, handleSubmit, watch, setValue } = useForm<Fields>({
       mode: 'all',
@@ -54,28 +56,28 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
           />
           <Dropdown
             dark
-            value={citizenshipCountry && countriesMap[citizenshipCountry as keyof typeof countriesMap]}
-            placeholder={'Citizenship Country'}
-            data={COUNTRIES_AS_OPTIONS}
+            value={citizenshipCountry}
+            placeholder="Citizenship Country"
+            data={COUNTRIES}
             onSelect={option => setValue('citizenshipCountry', option.value.toString())}
           />
           <Dropdown
-            value={birthCountry && countriesMap[birthCountry as keyof typeof countriesMap]}
-            placeholder={'Birth Country'}
+            value={birthCountry}
+            placeholder="Birth Country"
             dark
-            data={COUNTRIES_AS_OPTIONS}
+            data={COUNTRIES}
             onSelect={option => setValue('birthCountry', option.value.toString())}
           />
           <Dropdown
             dark
             value={visa}
-            placeholder={'Visa Type'}
+            placeholder="Visa Type"
             data={VISAS_AS_OPTIONS}
             onSelect={option => setValue('visaType', option.value as VisaType)}
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

@@ -18,8 +18,8 @@ interface Props {
 export const FormMessage = ({ variant, message }: Props) => {
   return (
     <StyledText
-      style={[styles.message, styles[variant]]}
-      variant={'h6'}
+      style={[styles.message, styles[`${variant}`]]}
+      variant="h6"
     >
       {message}
     </StyledText>

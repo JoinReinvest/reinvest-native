@@ -7,9 +7,9 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { useAuth } from '../../../providers/AuthProvider';
 import { allRequiredFieldsExists } from '../../../utils/formValidator';
+import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
-import { styles } from './styles';
 
 export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,
@@ -51,22 +51,22 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     }, []);
 
     return (
-      <View style={[styles.wrapper, styles.fw]}>
+      <View style={[styles.wrapper, styles.fw, styles.flex]}>
         {isLoading ? (
           <View style={styles.flex}>
             <FormTitle
               dark
-              headline={'Verifying Account Information'}
+              headline="Verifying Account Information"
             />
             <ActivityIndicator
-              size={'large'}
+              size="large"
               style={styles.flex}
             />
           </View>
         ) : (
           <>
             <StatusCircle
-              title={error || 'Your login credentials were successfully created'}
+              title={error ? error : 'Your login credentials were successfully created'}
               variant={error ? 'error' : undefined}
             />
             <Button

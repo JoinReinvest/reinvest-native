@@ -21,6 +21,8 @@ export const useKeyboardAware = (enabled = true, offset?: number) => {
         AvoidSoftInput.setShouldMimicIOSBehavior(false);
       };
     }
+
+    return;
   }, [enabled, offset]);
 
   useFocusEffect(onFocusEffect);

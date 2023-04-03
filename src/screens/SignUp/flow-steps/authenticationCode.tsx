@@ -15,9 +15,9 @@ import { CODE_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { allRequiredFieldsExists } from '../../../utils/formValidator';
+import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
-import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
 
@@ -45,9 +45,9 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
 
     const subtitleMessage = `Enter the email authentication code sent to your email ${storeFields.email}.`;
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
+    const onSubmit: SubmitHandler<Fields> = fields => {
       fields.authenticationCode = fields.authenticationCode.replace('-', '');
-      await updateStoreFields(fields);
+      updateStoreFields(fields);
       moveToNextStep();
     };
 
@@ -65,18 +65,18 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline={'Check Your Email'}
+            headline="Check Your Email"
             description={subtitleMessage}
           />
           {error && (
             <FormMessage
-              variant={'error'}
+              variant="error"
               message={error}
             />
           )}
           {infoMessage && (
             <FormMessage
-              variant={'info'}
+              variant="info"
               message={infoMessage}
             />
           )}
@@ -96,14 +96,14 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
           <View style={styles.row}>
             <StyledText
               onPress={resendCodeOnClick}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={() => Alert.alert('Get Help')}
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
             >
               Get Help
@@ -111,7 +111,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

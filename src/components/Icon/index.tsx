@@ -15,8 +15,8 @@ export const Icon = ({
   style,
   ...props
 }: IconProps) => {
-  const IconComp = icons[icon];
-  const styles = useMemo(() => StyleSheet.flatten([{ width: sizes[size], height: sizes[size] }, style]), [size, style]);
+  const IconComp = icons[`${icon}`];
+  const styles = useMemo(() => StyleSheet.flatten([{ width: sizes[`${size}`], height: sizes[`${size}`] }, style]), [size, style]);
 
   if (onPress) {
     return (
@@ -26,8 +26,8 @@ export const Icon = ({
         hitSlop={defaultHitSlop}
       >
         <IconComp
-          width={sizes[size]}
-          height={sizes[size]}
+          width={sizes[`${size}`]}
+          height={sizes[`${size}`]}
           color={color}
         />
       </TouchableOpacity>

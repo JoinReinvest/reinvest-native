@@ -11,6 +11,7 @@ export const formValidationRules = {
   ...commonFormValidationRules,
   referralCode: zod.string().regex(maskedCodeRegex, { message: 'Invalid referral code' }),
   authenticationCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid authentication code' }),
+  date: zod.string({ required_error: requiredError }).regex(/^(\d{2})\/(\d{2})\/(\d{4})$/, { message: 'Invalid date format' }),
   resetPasswordCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid reset password code' }),
   phone: zod.string({ required_error: requiredError }).regex(phoneWIthoutCallingCodeRegex, {
     message: 'Invalid phone number',

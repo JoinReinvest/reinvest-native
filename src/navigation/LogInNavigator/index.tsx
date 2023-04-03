@@ -6,8 +6,8 @@ import { DEVScreen } from '../../screens/DEV';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
+import { LogInStackParamList } from '../LogInNavigator/types';
 import Screens from '../screens';
-import { LogInStackParamList } from './types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { RouteProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
@@ -9,7 +10,7 @@ import Screens from '../../navigation/screens';
 import { BlackLayout as BlackLayoutSignIn } from './BlackLayout';
 import { initialSteps, LoginFormFlowProvider } from './flow-steps';
 import { StepOutsideFlow } from './flow-steps/stepLogin';
-import type { SignInScreenProps, SignInStackParamsList } from './types';
+import type { SignInStackParamsList } from './types';
 
 const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 
@@ -22,13 +23,13 @@ const blackScreenSignInFormOptions = (props: { navigation: any; route: RouteProp
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon={'arrowLeft'}
+      icon="arrowLeft"
       onPress={props.navigation.goBack}
     />
   ),
 });
 
-export const SignIn = ({}: SignInScreenProps) => {
+export const SignIn = () => {
   return (
     <LoginFormFlowProvider initialStoreFields={initialSteps}>
       <SignInStack.Navigator>
@@ -38,8 +39,8 @@ export const SignIn = ({}: SignInScreenProps) => {
         >
           {() => (
             <FirstStepLayout
-              headline={'Sign in'}
-              description={'Building your wealth while rebuilding our communities.'}
+              headline="Sign in"
+              description="Building your wealth while rebuilding our communities."
             >
               <StepOutsideFlow initialSteps={initialSteps} />
             </FirstStepLayout>

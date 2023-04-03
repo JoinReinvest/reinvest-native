@@ -6,7 +6,7 @@ import { WebView } from 'react-native-webview';
 import { Loader } from '../../../components/Loader';
 import { isIOS } from '../../../constants/common';
 import Screens from '../../../navigation/screens';
-import { EducationStackProps } from '../types';
+import { EducationStackProps } from '../../Education/types';
 import { styles } from './styles';
 
 /*

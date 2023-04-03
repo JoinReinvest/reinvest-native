@@ -14,15 +14,14 @@ export const MainWrapper = ({
   noPadding,
 }: PropsWithChildren<MainWrapperProps>) => {
   return (
-    <View style={[dark ? styles.dark : styles.light]}>
+    <View style={[!dark ? styles.light : styles.dark, styles.flex]}>
       <StatusBar
         hidden={false}
         barStyle={dark ? 'light-content' : 'dark-content'}
       />
       {isScroll ? (
         <>
-          <ScrollView
-contentContainerStyle={[styles.wrapper, noPadding && styles.noPadding, contentContainerStyle, dark && styles.dark]}>
+          <ScrollView contentContainerStyle={[styles.wrapper, noPadding && styles.noPadding, contentContainerStyle, dark && styles.dark]}>
             {children}
           </ScrollView>
           {noScrollableContent?.(styles.wrapperPadding)}

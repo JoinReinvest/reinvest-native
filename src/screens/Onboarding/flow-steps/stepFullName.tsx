@@ -12,7 +12,7 @@ import { Controller } from '../../../components/typography/Controller';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from './index';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'firstName' | 'middleName' | 'lastName'>;
@@ -53,29 +53,29 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline={'Enter your first and last name as it appears on your ID'}
+            headline="Enter your first and last name as it appears on your ID"
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'firstName'}
+            fieldName="firstName"
             inputProps={{ placeholder: 'First Name', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'middleName'}
+            fieldName="middleName"
             inputProps={{ placeholder: 'Middle Name (Optional)', dark: true }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'lastName'}
+            fieldName="lastName"
             inputProps={{ placeholder: 'Last Name', dark: true }}
           />
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={[styles.buttonsSection]}
         >
           <Button

@@ -17,7 +17,7 @@ import { palette } from '../../../constants/theme';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from './index';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'phoneNumberAuthenticationCode'>;
@@ -50,15 +50,13 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async ({ phoneNumberAuthenticationCode }) => {
       try {
-        if (!phoneNumberAuthenticationCode) {
-          return;
-        }
+        if (!phoneNumberAuthenticationCode) return;
 
         setLoading(true);
-
+        phoneNumberAuthenticationCode = phoneNumberAuthenticationCode.replace('-', '');
         // TODO: Add validation of the code
         await updateStoreFields({
-          phoneNumberAuthenticationCode: phoneNumberAuthenticationCode.replace('-', ''),
+          phoneNumberAuthenticationCode,
           _hasAuthenticatedPhoneNumber: true,
         });
         setLoading(false);
@@ -87,13 +85,13 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           {error && (
             <FormMessage
               message={error}
-              variant={'error'}
+              variant="error"
             />
           )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
-            fieldName={'phoneNumberAuthenticationCode'}
+            fieldName="phoneNumberAuthenticationCode"
             inputProps={{
               placeholder: 'Authentication Code',
               dark: true,
@@ -104,14 +102,14 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           />
           <View style={styles.row}>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={resendCodeOnClick}
             >
               Resend Code
             </StyledText>
             <StyledText
-              variant={'link'}
+              variant="link"
               color={palette.frostGreen}
               onPress={() => Alert.alert('Get help')}
             >
@@ -120,7 +118,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           </View>
         </ScrollView>
         <View
-          key={'buttons_section'}
+          key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button

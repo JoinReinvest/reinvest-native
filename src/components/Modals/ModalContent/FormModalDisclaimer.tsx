@@ -26,18 +26,18 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
     <>
       <View style={styles.header}>
         <StyledText
-          variant={'h5'}
+          variant="h5"
           color={palette.pureWhite}
         >
           {headline}
         </StyledText>
       </View>
       <ScrollView
-        indicatorStyle={'white'}
+        indicatorStyle="white"
         contentContainerStyle={[styles.disclaimersContent, { paddingBottom: bottom }]}
       >
         <StyledText
-          variant={'paragraphLarge'}
+          variant="paragraphLarge"
           color={palette.pureWhite}
         >
           {content}

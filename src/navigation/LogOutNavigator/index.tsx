@@ -5,8 +5,8 @@ import { DialogProvider } from '../../providers/DialogProvider';
 import { ResetPassword } from '../../screens/ResetPassword';
 import { SignIn } from '../../screens/SignIn';
 import { SignUp } from '../../screens/SignUp';
+import { LogOutStackParamList } from '../LogOutNavigator/types';
 import Screens from '../screens';
-import { LogOutStackParamList } from './types';
 
 const LogOutStack = createNativeStackNavigator<LogOutStackParamList>();
 

@@ -9,10 +9,10 @@ import { MainWrapper } from '../../../components/MainWrapper';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import Screens from '../../../navigation/screens';
-import { BlogCard } from '../components/BlogCard';
-import { EducationCard } from '../components/EducationCard';
-import { educationCards } from '../constants';
-import { EducationStackProps } from '../types';
+import { BlogCard } from '../../Education/components/BlogCard';
+import { EducationCard } from '../../Education/components/EducationCard';
+import { educationCards } from '../../Education/constants';
+import { EducationStackProps } from '../../Education/types';
 import { styles } from './styles';
 
 export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.EducationMainScreen>) => {
@@ -27,15 +27,15 @@ export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.
     >
       <ImageBackground
         style={styles.imageBackground}
-        resizeMode={'cover'}
+        resizeMode="cover"
         source={require('../../../assets/images/education-hero.jpg')}
       >
         <Box
-          px={'24'}
-          py={'24'}
+          px="24"
+          py="24"
         >
           <StyledText
-            variant={'h3'}
+            variant="h3"
             color={palette.pureWhite}
           >
             Learn About Real Estate Investing
@@ -43,7 +43,7 @@ export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.
         </Box>
       </ImageBackground>
       <Box
-        px={'24'}
+        px="24"
         fw
       >
         {educationCards.map(card => (
@@ -53,13 +53,13 @@ export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.
             {...card}
           />
         ))}
-        <Box my={'16'}>
-          <StyledText variant={'h5'}>Learn the basics</StyledText>
+        <Box my="16">
+          <StyledText variant="h5">Learn the basics</StyledText>
         </Box>
         {isLoading && (
           <Box
             fw
-            alignItems={'center'}
+            alignItems="center"
           >
             <Loader />
           </Box>

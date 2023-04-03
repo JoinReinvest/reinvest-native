@@ -4,9 +4,9 @@ import { View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '../../constants/theme';
+import DefaultLeftHeaderColumn from '../CustomHeader/DefaultLeftHeaderColumn';
 import { Logo } from '../Icon/icons';
 import { StyledText } from '../typography/StyledText';
-import DefaultLeftHeaderColumn from './DefaultLeftHeaderColumn';
 import styles from './styles';
 
 export const CustomHeader = ({ children, style, dark, ...rest }: PropsWithChildren<ViewProps & { dark?: boolean }>) => {
@@ -35,6 +35,7 @@ export const ScreenHeader = ({
     if (headerLeft) {
       return headerLeft?.(headerProps);
     }
+
     return <DefaultLeftHeaderColumn dark={dark} />;
   }, [dark, headerLeft, headerProps]);
 

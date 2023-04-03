@@ -2,12 +2,11 @@ import React from 'react';
 
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
-import { REITScreenProps } from './types';
 
-export const ReitScreen = ({}: REITScreenProps) => {
+export const ReitScreen = () => {
   return (
     <MainWrapper>
-      <StyledText variant={'h6'}>Community REIT</StyledText>
+      <StyledText variant="h6">Community REIT</StyledText>
     </MainWrapper>
   );
 };

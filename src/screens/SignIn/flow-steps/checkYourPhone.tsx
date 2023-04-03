@@ -13,10 +13,10 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
 import { useAuth } from '../../../providers/AuthProvider';
+import { styles } from '../../../screens/SignIn/flow-steps/styles';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { LoginFormFields } from '../../SignIn/types';
 import { Identifiers } from '../identifiers';
-import { LoginFormFields } from '../types';
-import { styles } from './styles';
 
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
@@ -54,13 +54,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         {error && (
           <FormMessage
             message={error}
-            variant={'error'}
+            variant="error"
           />
         )}
         <Controller
           onSubmit={handleSubmit(onSubmit)}
           control={control}
-          fieldName={'authenticationCode'}
+          fieldName="authenticationCode"
           inputProps={{
             placeholder: 'Authentication Code',
             dark: true,
@@ -71,13 +71,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         />
         <View style={styles.row}>
           <StyledText
-            variant={'link'}
+            variant="link"
             color={palette.frostGreen}
           >
             Resend Code
           </StyledText>
           <StyledText
-            variant={'link'}
+            variant="link"
             color={palette.frostGreen}
           >
             Get Help
