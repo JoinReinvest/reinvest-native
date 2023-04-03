@@ -6,7 +6,6 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import zod, { Schema } from 'zod';
 
 import { Button } from '../../../components/Button';
-import { ReferralCodeCheckList } from '../../../components/CheckList/ReferralCodeCheckList';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
 import { CODE_MASK } from '../../../constants/masks';
@@ -26,15 +25,11 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       referralCode: formValidationRules.referralCode,
     });
 
-    const { handleSubmit, control, getValues, watch } = useForm<Fields>({
+    const { handleSubmit, control, getValues } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
       mode: 'all',
     });
-
-    const fields = {
-      password: watch('referralCode'),
-    };
 
     const onSubmit: SubmitHandler<Fields> = values => {
       values.referralCode = values.referralCode?.replace('-', '');
@@ -67,7 +62,6 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               returnKeyType: 'done',
             }}
           />
-          <ReferralCodeCheckList referralCode={fields.password || ''} />
         </ScrollView>
         <View
           key="buttons_section"
