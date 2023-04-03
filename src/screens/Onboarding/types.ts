@@ -1,14 +1,15 @@
 import { Industry } from 'reinvest-app-common/src/constants/industries';
-import { AccountType, DomicileType, Experience } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, Address, DomicileType, Experience } from 'reinvest-app-common/src/types/graphql';
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { VisaType } from '../../types/visaType';
 
 export interface OnboardingFormFields {
+  permanentAddress: Address | null;
   _hasAuthenticatedPhoneNumber?: boolean;
+
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
   _isSocialSecurityNumberBanned?: boolean;
-
   accountType?: AccountType;
   birthCountry?: string;
   citizenshipCountry?: string;

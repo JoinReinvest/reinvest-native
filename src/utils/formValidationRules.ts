@@ -3,13 +3,24 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { formValidationRules as commonFormValidationRules } from 'reinvest-app-common/src/form-schemas';
 import zod from 'zod';
 
+import { STATE_NAMES } from '../constants/states';
+
 const requiredError = 'This field is required';
 const maskedCodeRegex = /^([0-9]){3}-([0-9]){3}$/;
 const referralCodeRegex = /^([A-Z0-9]){3}-([A-Z0-9]){3}$/;
 const phoneWithoutCallingCodeRegex = /^([0-9]){3}-([0-9]){3}-([0-9]){3}$/;
+const standardRequiredString = zod.string().min(1, requiredError);
 
 export const formValidationRules = {
   ...commonFormValidationRules,
+  address: zod.object({
+    addressLine1: standardRequiredString,
+    addressLine2: zod.string().nullable(),
+    city: standardRequiredString,
+    state: zod.enum(STATE_NAMES),
+    // eslint-disable-next-line security/detect-unsafe-regex
+    zip: zod.string().regex(/^\d{5}(?:-\d{4})?$/, { message: 'Invalid zip code' }),
+  }),
   referralCode: zod.string().regex(referralCodeRegex, { message: 'Invalid referral code' }),
   authenticationCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid authentication code' }),
   date: zod.string({ required_error: requiredError }).regex(/^(\d{2})\/(\d{2})\/(\d{4})$/, { message: 'Invalid date format' }),
