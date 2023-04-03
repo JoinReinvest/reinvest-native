@@ -21,7 +21,9 @@ import { AuthProvider } from './providers/AuthProvider';
 const queryClient = new QueryClient();
 const App = () => {
   useEffect(() => {
-    SplashScreen.hide();
+    (() => {
+      setTimeout(() => SplashScreen.hide(), 1500);
+    })();
   }, []);
 
   return (
