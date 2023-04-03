@@ -25,15 +25,15 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       referralCode: formValidationRules.referralCode,
     });
 
-    const { handleSubmit, control, getValues } = useForm<Fields>({
+    const { handleSubmit, control, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
       mode: 'all',
     });
 
-    const onSubmit: SubmitHandler<Fields> = values => {
+    const onSubmit: SubmitHandler<Fields> = async values => {
       values.referralCode = values.referralCode?.replace('-', '');
-      updateStoreFields(values);
+      await updateStoreFields(values);
       moveToNextStep();
     };
 
@@ -41,9 +41,11 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
       moveToNextStep();
     };
 
+    const referralValue = watch('referralCode');
+
     return (
       <>
-        <ScrollView style={styles.fw}>
+        <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
             headline="Do you have a referral code? (optional)"
@@ -74,7 +76,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Skip
           </Button>
           <Button
-            disabled={!getValues?.().referralCode?.length}
+            disabled={referralValue?.replace('-', '').length !== 6}
             isLoading={false}
             onPress={handleSubmit(onSubmit)}
           >
