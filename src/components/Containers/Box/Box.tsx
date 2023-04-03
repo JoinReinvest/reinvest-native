@@ -12,10 +12,10 @@ const getSize = (size: SizesEnum | undefined) => size && sizes[`${size}`];
 function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
   return {
     padding: getSize(props.p),
-    paddingRight: getSize(props.pr),
-    paddingTop: getSize(props.pt),
-    paddingBottom: getSize(props.pb),
-    paddingLeft: getSize(props.pl),
+    paddingRight: getSize(props.pr || props.p),
+    paddingTop: getSize(props.pt || props.p),
+    paddingBottom: getSize(props.pb || props.p),
+    paddingLeft: getSize(props.pl || props.p),
     paddingVertical: yScale(getSize(props.py)),
     paddingHorizontal: xScale(getSize(props.px)),
     margin: getSize(props.m),
