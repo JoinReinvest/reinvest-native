@@ -6,6 +6,7 @@ import { VisaType } from '../../types/visaType';
 
 export interface OnboardingFormFields {
   permanentAddress: Address | null;
+  _didDocumentIdentificationValidationSucceed?: boolean;
   _hasAuthenticatedPhoneNumber?: boolean;
 
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
@@ -29,6 +30,7 @@ export interface OnboardingFormFields {
   experience?: Experience;
   finraInstitution?: string;
   firstName?: string;
+  identificationDocument?: IdentificationDocuments;
   lastName?: string;
   middleName?: string;
   netIncome?: string;
@@ -49,4 +51,8 @@ interface EmploymentDetails {
 
 export interface CompanyTickerSymbol {
   symbol: string;
+}
+export interface IdentificationDocuments {
+  back: string | null;
+  front: string | null;
 }

@@ -101,7 +101,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
       return file.name;
     }
 
-    return file.fileName?.split('.').pop();
+    return file.fileName?.split('.').shift();
   };
 
   const maxLimitReached = results.length >= (type === 'single' ? 1 : selectionLimit);
@@ -140,6 +140,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
         setLoading={setLoading}
         type="library"
         onSelect={onImagePickerSelect}
+        selectionImageLimit={type === 'single' ? 1 : selectionLimit}
       >
         <Button
           vessel
