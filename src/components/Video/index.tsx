@@ -8,7 +8,7 @@ export const Video = () => {
 
   return (
     <VideoRN
-      source={require('../../assets/welcomeBackground.m4v')}
+      source={require('../../assets/welcomeScreen.mp4')}
       ref={videoRef}
       resizeMode="cover"
       repeat
