@@ -1,3 +1,4 @@
+import { SENTRY_DNS } from '@env';
 import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -5,7 +6,6 @@ import SplashScreen from 'react-native-splash-screen';
 
 import { RootNavigator } from './navigation/RootNavigator';
 import { AuthProvider } from './providers/AuthProvider';
-import { SENTRY_DNS } from '@env';
 
 /*
  * Sending custom transaction for monitoring :

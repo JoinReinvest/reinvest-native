@@ -48,8 +48,9 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
 
   const onAssetSelect = (assets: DocumentPickerResponse[] | Asset[] | undefined) => {
     if (assets) {
-      setResults(prev => [...prev, ...assets]);
-      onSelect(assets);
+      const uploaded = [...results, ...assets];
+      setResults(uploaded);
+      onSelect(uploaded);
     }
 
     setChoosingMode(false);
@@ -105,6 +106,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
   };
 
   const maxLimitReached = results.length >= (type === 'single' ? 1 : selectionLimit);
+  const filesLeftToUpload = (type === 'single' ? 1 : selectionLimit) - results.length;
 
   const mainSegment = !choosingMode ? (
     <Button
@@ -140,7 +142,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
         setLoading={setLoading}
         type="library"
         onSelect={onImagePickerSelect}
-        selectionImageLimit={type === 'single' ? 1 : selectionLimit}
+        selectionImageLimit={filesLeftToUpload}
       >
         <Button
           vessel
@@ -152,6 +154,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
       <Button
         isLoading={loading}
         onPress={pickFile}
+        disabled={!filesLeftToUpload}
       >
         Pick from files
       </Button>

@@ -13,20 +13,20 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-type Fields = Pick<OnboardingFormFields, 'identificationDocument'>;
-
-// TODO: Selection limit (?)
-// TODO: Validation
-
 export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.IDENTIFICATION_DOCUMENTS,
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
+
     const handleContinue = () => {
+      const selectedFilesUris = selectedFiles.map(({ uri }) => uri ?? '');
+      updateStoreFields({ identificationDocument: selectedFilesUris });
       moveToNextStep();
     };
+
+    const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;
 
     return (
       <>
@@ -44,7 +44,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
             label="Upload Files"
             onSelect={setSelectedFiles}
             type="multi"
-            selectionLimit={2}
+            selectionLimit={5}
           />
         </ScrollView>
         <View
@@ -53,7 +53,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
         >
           <Button
             onPress={handleContinue}
-            disabled={selectedFiles.length !== 2}
+            disabled={shouldButtonBeDisabled}
           >
             Continue
           </Button>

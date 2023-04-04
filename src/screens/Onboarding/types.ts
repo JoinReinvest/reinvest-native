@@ -52,7 +52,5 @@ interface EmploymentDetails {
 export interface CompanyTickerSymbol {
   symbol: string;
 }
-export interface IdentificationDocuments {
-  back: string | null;
-  front: string | null;
-}
+
+export type IdentificationDocuments = string[];
