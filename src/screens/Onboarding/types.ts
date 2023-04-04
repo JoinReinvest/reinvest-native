@@ -12,6 +12,7 @@ export interface OnboardingFormFields {
   accountType?: AccountType;
   birthCountry?: string;
   citizenshipCountry?: string;
+  companyTickerSymbols?: CompanyTickerSymbol[];
   compliances?: {
     // Are you or anyone in your immediate compliances, or, for any non-natural person, any officers, directors, or any person that owns or controls 5% (or greater) of the equity, associated with a FINRA member, organization, or the SEC.
     isAssociatedWithFinra?: boolean;
@@ -23,8 +24,8 @@ export interface OnboardingFormFields {
   dateOfBirth?: Date;
   employmentDetails?: EmploymentDetails;
   employmentStatus?: EmploymentStatus;
-  experience?: Experience;
 
+  experience?: Experience;
   finraInstitution?: string;
   firstName?: string;
   lastName?: string;
@@ -43,4 +44,8 @@ interface EmploymentDetails {
   employerName: string;
   industry: Industry;
   occupation: string;
+}
+
+export interface CompanyTickerSymbol {
+  symbol: string;
 }

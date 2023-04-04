@@ -4,6 +4,7 @@ import { StepCompliance } from '../../Onboarding/flow-steps/stepCompliance';
 import { StepFinraInstitution } from '../../Onboarding/flow-steps/stepFinra';
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
+import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepEmploymentDetails } from './stepEmploymentDetails';
 import { StepEmploymentStatus } from './stepEmploymentStatus';
@@ -29,6 +30,7 @@ export const FLOW_STEPS = [
   StepResidencyVisa,
   StepCompliance,
   StepFinraInstitution,
+  StepCompanyTickerSymbols,
   StepSSN,
   StepExperience,
   StepEmploymentStatus,
@@ -56,6 +58,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   netWorth: undefined,
   employmentStatus: undefined,
   employmentDetails: undefined,
+  companyTickerSymbols: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
