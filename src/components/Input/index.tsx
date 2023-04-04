@@ -94,7 +94,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       if (secureTextEntry) {
         return (
           <Icon
-            icon="eyeHide"
+            icon={!showSecuredInput ? 'eyeVisible' : 'eyeHide'}
             onPress={toggleShowSecureInput}
             color={dark ? palette.pureWhite : palette.pureBlack}
           />
@@ -102,7 +102,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       }
 
       return rightSection;
-    }, [dark, rightSection, secureTextEntry]);
+    }, [dark, rightSection, secureTextEntry, showSecuredInput]);
 
     return (
       <>

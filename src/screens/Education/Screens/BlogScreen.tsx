@@ -13,7 +13,7 @@ export const BlogScreen = ({ navigation }: EducationStackProps<Screens.BlogScree
       <StyledText variant="h6">Education screen</StyledText>
       <Button onPress={() => navigation.goBack()}>BACK</Button>
       <Button onPress={() => navigation.navigate(Screens.EducationMainScreen)}>DASH</Button>
-      <Button onPress={() => loginNavigation.navigate(Screens.DEV)}>DEV</Button>
+      <Button onPress={() => loginNavigation.navigate(Screens.Invite)}>Invite</Button>
     </MainWrapper>
   );
 };

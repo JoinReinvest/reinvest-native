@@ -5,15 +5,16 @@ import zod from 'zod';
 
 const requiredError = 'This field is required';
 const maskedCodeRegex = /^([0-9]){3}-([0-9]){3}$/;
-const phoneWIthoutCallingCodeRegex = /^([0-9]){3}-([0-9]){3}-([0-9]){3}$/;
+const referralCodeRegex = /^([A-Z0-9]){3}-([A-Z0-9]){3}$/;
+const phoneWithoutCallingCodeRegex = /^([0-9]){3}-([0-9]){3}-([0-9]){3}$/;
 
 export const formValidationRules = {
   ...commonFormValidationRules,
-  referralCode: zod.string().regex(maskedCodeRegex, { message: 'Invalid referral code' }),
+  referralCode: zod.string().regex(referralCodeRegex, { message: 'Invalid referral code' }),
   authenticationCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid authentication code' }),
   date: zod.string({ required_error: requiredError }).regex(/^(\d{2})\/(\d{2})\/(\d{4})$/, { message: 'Invalid date format' }),
   resetPasswordCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid reset password code' }),
-  phone: zod.string({ required_error: requiredError }).regex(phoneWIthoutCallingCodeRegex, {
+  phone: zod.string({ required_error: requiredError }).regex(phoneWithoutCallingCodeRegex, {
     message: 'Invalid phone number',
   }),
 };

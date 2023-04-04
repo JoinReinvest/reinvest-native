@@ -17,7 +17,7 @@ interface Props {
 export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   const { CurrentStepView } = useRegisterFormFlow();
   useStepBackOverride<RegisterFormFields>(useRegisterFormFlow);
-  useKeyboardAware();
+  useKeyboardAware(true, 16);
 
   return (
     <MainWrapper dark>

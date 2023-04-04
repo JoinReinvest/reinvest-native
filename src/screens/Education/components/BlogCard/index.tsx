@@ -12,13 +12,7 @@ import { BlogPost } from './types';
 
 export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & EducationNavigationProp<Screens.EducationMainScreen>) => {
   const getImageDimensions = useCallback(() => {
-    let ratio = 1;
-
-    if (image) {
-      ratio = image.width / image.height;
-    }
-
-    return { width: '100%', height: PADDED_SAFE_WIDTH / ratio };
+    return { width: '100%', height: (PADDED_SAFE_WIDTH * 9) / 16 };
   }, [image]);
 
   const navigateToBlog = () => {

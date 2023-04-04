@@ -51,7 +51,7 @@ export const BottomTabsNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName={Screens.EducationStack}
-      backBehavior="history"
+      backBehavior="none"
       screenOptions={{
         tabBarStyle: {
           height: 56 + bottom,

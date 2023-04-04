@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>${PRODUCT_NAME} wants to access images gallery.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>${PRODUCT_NAME} wants to access camera.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -39,8 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>${PRODUCT_NAME} wants to access camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>${PRODUCT_NAME} wants to access images gallery.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>GTAmerica-Medium.otf</string>

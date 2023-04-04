@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { View, ViewProps } from 'react-native';
 
 import { CheckItem } from '../CheckItem';
 import { styles } from './styles';
 
 //TODO extend for other cases
 
-interface PasswordCheckListProps {
+interface PasswordCheckListProps extends ViewProps {
   password: string;
   passwordConfirmation: string;
 }
 
-export const PasswordChecklist = ({ password = '', passwordConfirmation = '' }: PasswordCheckListProps) => {
+export const PasswordChecklist = ({ password = '', passwordConfirmation = '', ...props }: PasswordCheckListProps) => {
   const hasLowerCaseLetter = password.toUpperCase() != password;
   const hasUpperCaseLetter = password.toLowerCase() != password;
   const hasNumber = /\d/.test(password);
@@ -30,7 +30,10 @@ export const PasswordChecklist = ({ password = '', passwordConfirmation = '' }: 
   );
 
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={styles.wrapper}
+      {...props}
+    >
       {checks.map(([label, isChecked]) => (
         <CheckItem
           key={label}
