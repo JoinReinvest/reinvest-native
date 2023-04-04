@@ -15,6 +15,7 @@ enum Screens {
   DEV = 'DEV',
   Onboarding = 'Onboarding',
   ResetPassword = 'ResetPassword',
+  Invite = 'Invite',
 }
 
 export default Screens;

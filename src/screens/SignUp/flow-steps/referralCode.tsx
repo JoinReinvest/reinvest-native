@@ -1,14 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
+import { validateReferralCode } from '../../../api/validateReferralCode';
 import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
-import { CODE_MASK } from '../../../constants/masks';
+import { REFERRAL_CODE_MASK } from '../../../constants/masks';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
@@ -24,7 +26,8 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
     const schema: Schema<Fields> = zod.object({
       referralCode: formValidationRules.referralCode,
     });
-
+    const [validationError, setValidationError] = useState<string | undefined>();
+    const [isValidating, setIsValidating] = useState(false);
     const { handleSubmit, control, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
@@ -33,8 +36,18 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       values.referralCode = values.referralCode?.replace('-', '');
-      await updateStoreFields(values);
-      moveToNextStep();
+      setIsValidating(true);
+      try {
+        await validateReferralCode(values?.referralCode || '');
+        await updateStoreFields(values);
+        moveToNextStep();
+      } catch (err) {
+        if (err instanceof Error) {
+          setValidationError(err.message);
+        }
+      } finally {
+        setIsValidating(false);
+      }
     };
 
     const onSkip = () => {
@@ -51,6 +64,12 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             headline="Do you have a referral code? (optional)"
             description="You and your referrer will receive $20 in dividend following your first investment!"
           />
+          {validationError && (
+            <FormMessage
+              variant={'error'}
+              message={validationError}
+            />
+          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -58,9 +77,9 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             inputProps={{
               placeholder: 'Referral code',
               dark: true,
-              keyboardType: 'numeric',
+              autoCapitalize: 'characters',
               maxLength: 7,
-              mask: CODE_MASK, // xxx-xxx
+              mask: REFERRAL_CODE_MASK, // xxx-xxx
               returnKeyType: 'done',
             }}
           />
@@ -76,8 +95,8 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Skip
           </Button>
           <Button
-            disabled={referralValue?.replace('-', '').length !== 6}
-            isLoading={false}
+            disabled={referralValue?.replace('-', '').length !== 6 || isValidating}
+            isLoading={isValidating}
             onPress={handleSubmit(onSubmit)}
           >
             Enter code

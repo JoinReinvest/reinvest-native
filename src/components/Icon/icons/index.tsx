@@ -14,6 +14,7 @@ import { Disabled } from './Disabled';
 import { Down } from './Down';
 import { Edit } from './Edit';
 import { EyeHide } from './EyeHide';
+import { EyeVisible } from './EyeVisible';
 import { File } from './File';
 import { HamburgerClose } from './HamburgerClose';
 import { HamburgerOpen } from './HamburgerOpen';
@@ -38,6 +39,7 @@ import { Trash } from './Trash';
 import { Trophy } from './Trophy';
 import { Up } from './Up';
 import { Upload } from './Upload';
+
 export {
   Add,
   AddUser,
@@ -55,6 +57,7 @@ export {
   Down,
   Edit,
   EyeHide,
+  EyeVisible,
   File,
   HamburgerClose,
   HamburgerOpen,

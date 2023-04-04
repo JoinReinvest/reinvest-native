@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { useSoftInputState } from 'react-native-avoid-softinput';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
@@ -11,6 +12,7 @@ import { PasswordChecklist } from '../../../components/CheckList/PasswordCheckLi
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
+import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { styles } from '../flow-steps/styles';
@@ -30,6 +32,10 @@ export const StepPassword: StepParams<RegisterFormFields> = {
     const { loading, actions } = useAuth();
 
     const [error, setError] = useState<string | undefined>(undefined);
+
+    useKeyboardAware(false);
+    const { isSoftInputShown } = useSoftInputState();
+
     const schema: Schema<Fields> = zod
       .object({
         password: formValidationRules.password,
@@ -52,7 +58,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
-      updateStoreFields(values);
+      await updateStoreFields(values);
       try {
         await actions.signUp({
           username: storeFields.email,
@@ -90,6 +96,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             dark
             headline="Sign up to REINVEST"
             description="Create a unique password for your account to continue."
+            compact={isSoftInputShown}
           />
           {error && (
             <FormMessage

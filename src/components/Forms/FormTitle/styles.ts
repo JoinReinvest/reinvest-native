@@ -9,6 +9,6 @@ export const styles = StyleSheet.create({
   description: {},
   wrapper: {
     marginTop: yScale(24),
-    marginBottom: yScale(60),
+    // marginBottom: yScale(60),
   },
 });

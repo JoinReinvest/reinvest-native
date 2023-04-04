@@ -6,7 +6,7 @@ export const apiClient = async (): Promise<GraphQLClient | undefined> => {
   try {
     const currentUser: CognitoUser = await Auth.currentAuthenticatedUser();
 
-    return new GraphQLClient(`${API_URL}`, {
+    return new GraphQLClient(`${API_URL}/api`, {
       requestMiddleware: async request => {
         const token = currentUser.getSignInUserSession()?.getAccessToken().getJwtToken();
 
