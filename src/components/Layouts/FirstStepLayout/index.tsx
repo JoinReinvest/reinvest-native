@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { palette } from '../../../constants/theme';
+import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { StyledText } from '../..//typography/StyledText';
@@ -16,32 +17,42 @@ interface FirstStepLayoutProps {
 }
 
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
+  useKeyboardAware(true, 48);
+
   return (
-    <MainWrapper style={{ justifyContent: 'flex-start' }}>
+    <MainWrapper
+      noPadding
+      style={{ justifyContent: 'flex-start' }}
+    >
       <StatusBar barStyle="light-content" />
       <Video />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
         colors={['transparent', hexToRgbA(palette.pureBlack, 0.6)]}
       />
-      <View style={styles.signet}>
-        <Sygnet />
-      </View>
-      <View style={styles.descriptionSegment}>
-        <StyledText
-          style={[styles.text]}
-          variant="h1"
-        >
-          {headline}
-        </StyledText>
-        <StyledText
-          style={styles.text}
-          variant="bonusHeading"
-        >
-          {description}
-        </StyledText>
-      </View>
-      {children}
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.signet}>
+          <Sygnet />
+        </View>
+        <View style={styles.descriptionSegment}>
+          <StyledText
+            style={[styles.text]}
+            variant="h1"
+          >
+            {headline}
+          </StyledText>
+          <StyledText
+            style={styles.text}
+            variant="bonusHeading"
+          >
+            {description}
+          </StyledText>
+        </View>
+        {children}
+      </ScrollView>
     </MainWrapper>
   );
 };

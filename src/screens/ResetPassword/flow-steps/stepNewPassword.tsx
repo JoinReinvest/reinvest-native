@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { useSoftInputState } from 'react-native-avoid-softinput';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
@@ -10,6 +11,7 @@ import { PasswordChecklist } from '../../../components/CheckList/PasswordCheckLi
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
+import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifires';
@@ -28,6 +30,10 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<ResetPasswordFormFields>) => {
     const { loading, actions } = useAuth();
     const [error, setError] = useState<string | undefined>(undefined);
+
+    const { isSoftInputShown } = useSoftInputState();
+    useKeyboardAware(false);
+
     const schema: Schema<Fields> = zod
       .object({
         password: formValidationRules.password,
@@ -69,6 +75,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             dark
             headline="Reset Password"
             description="Your new password must be different from previous used passwords."
+            compact={isSoftInputShown}
           />
           {error && (
             <FormMessage
