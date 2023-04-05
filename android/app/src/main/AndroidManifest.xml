@@ -17,9 +17,26 @@
         android:windowSoftInputMode="adjustPan"
         android:screenOrientation="portrait"
         android:exported="true">
-        <intent-filter>
+        <intent-filter android:autoVerify="true">
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="reinvest" />
+        </intent-filter>
+<!--     after getting proper domain add intent currently only integration -->
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="http" />
+          <data android:scheme="https" />
+          <data android:host="https://d21r2b9v31mnek.cloudfront.net" />
+          <data android:host="https://d3ssx1anhylgvi.cloudfront.net" />
+          <data android:host="https://d28mk13kxv7hic.cloudfront.net" />
         </intent-filter>
       </activity>
     </application>

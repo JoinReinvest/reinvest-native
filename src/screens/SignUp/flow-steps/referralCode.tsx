@@ -77,10 +77,11 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             inputProps={{
               placeholder: 'Referral code',
               dark: true,
-              autoCapitalize: 'characters',
+              autoCapitalize: 'none',
               maxLength: 7,
               mask: REFERRAL_CODE_MASK, // xxx-xxx
               returnKeyType: 'done',
+              autoComplete: 'off',
             }}
           />
         </ScrollView>

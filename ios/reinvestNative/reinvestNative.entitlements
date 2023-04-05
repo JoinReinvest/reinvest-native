@@ -3,6 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>com.apple.developer.associated-domains</key>
-	<array/>
+	<array>
+		<string>applinks:d21r2b9v31mnek.cloudfront.net</string>
+		<string>applinks:d3ssx1anhylgvi.cloudfront.net</string>
+		<string>applinks:d28mk13kxv7hic.cloudfront.net</string>
+	</array>
 </dict>
 </plist>

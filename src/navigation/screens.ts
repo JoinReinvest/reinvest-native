@@ -12,7 +12,6 @@ enum Screens {
   Notifications = 'Notifications',
   Settings = 'Settings',
   WebViewContent = 'WebViewContent',
-  DEV = 'DEV',
   Onboarding = 'Onboarding',
   ResetPassword = 'ResetPassword',
   Invite = 'Invite',
