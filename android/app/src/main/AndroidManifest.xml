@@ -35,6 +35,8 @@
           <data android:scheme="http" />
           <data android:scheme="https" />
           <data android:host="https://d21r2b9v31mnek.cloudfront.net" />
+          <data android:host="https://d3ssx1anhylgvi.cloudfront.net" />
+          <data android:host="https://d28mk13kxv7hic.cloudfront.net" />
         </intent-filter>
       </activity>
     </application>

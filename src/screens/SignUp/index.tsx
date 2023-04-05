@@ -22,7 +22,6 @@ const stackOptions: Record<Extract<Screens, Screens.BlackForm>, NativeStackNavig
 export const SignUp = ({ route: { params } }: LogoutProps<Screens.SignUp>) => {
   const initialState = {
     ...formFieldsInitialState,
-    //TODO remove concatenation while removing masks for this input
     referralCode: params?.referralCode ? `${params?.referralCode.substring(0, 3)}-${params?.referralCode.substring(3)}` : '',
   };
 

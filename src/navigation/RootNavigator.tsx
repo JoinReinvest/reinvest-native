@@ -1,4 +1,4 @@
-import { CLOUDFRONT_URL } from '@env';
+import { CLOUDFRONT_DEV, CLOUDFRONT_INT, CLOUDFRONT_STG } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
@@ -14,7 +14,7 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['https://reinvest.com', 'reinvest://', 'https://*.reinvest.com', 'http://*.reinvest.com', CLOUDFRONT_URL],
+  prefixes: ['https://reinvest.com', 'reinvest://', 'https://*.reinvest.com', 'http://*.reinvest.com', CLOUDFRONT_STG, CLOUDFRONT_INT, CLOUDFRONT_DEV],
   config,
 };
 
