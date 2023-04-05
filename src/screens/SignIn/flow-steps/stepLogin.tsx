@@ -92,7 +92,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
-        Forgot Password ?
+        Forgot password?
       </StyledText>
       <StyledText
         onPress={navigateToSignUp}
@@ -100,14 +100,14 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
-        {`Don't have an account`}
+        {`Don't have an account?`}
       </StyledText>
       <Button
         disabled={!formState.dirtyFields}
         isLoading={loading}
         onPress={handleSubmit(onSubmit)}
       >
-        SignIn
+        Sign In
       </Button>
     </View>
   );
