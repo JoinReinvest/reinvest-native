@@ -3,10 +3,11 @@ import { Controller as ControllerBase } from 'react-hook-form';
 
 import { Dropdown } from '../../Dropdown';
 import { Input } from '../../Input';
+import { TextArea } from '../../TextArea';
 import { ControllerProps } from './types';
 
-export const Controller = ({ select = false, control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
-  const Comp = select ? Dropdown : Input;
+export const Controller = ({ select = false, type, control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
+  const Comp = type === 'textarea' ? TextArea : select ? Dropdown : Input;
 
   return (
     <ControllerBase

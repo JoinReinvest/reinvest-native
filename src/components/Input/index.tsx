@@ -15,6 +15,7 @@ export const Input = forwardRef<TextInput, InputProps>(
     {
       value,
       inputStyle,
+      wrapperStyle,
       nativeInputStyle,
       onSubmit,
       error,
@@ -27,6 +28,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       rightSection,
       secureTextEntry,
       onBlur,
+      style,
       ...props
     },
     ref,
@@ -108,7 +110,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       <>
         <Pressable
           onPress={onPressFocusHandler}
-          style={[styles.wrapper]}
+          style={[styles.wrapper, wrapperStyle]}
         >
           <View
             style={[
@@ -146,6 +148,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   !placeholder && styles.centerText,
                   nativeInputStyle,
                   disabled && styles.nativeInputDisabled,
+                  style,
                 ]}
                 placeholderTextColor={dark ? palette.dark3 : undefined}
                 onFocus={() => {
