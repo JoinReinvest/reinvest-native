@@ -11,6 +11,7 @@ import { StepEmploymentStatus } from './stepEmploymentStatus';
 import { StepExperience } from './stepExperience';
 import { StepFullName } from './stepFullName';
 import { StepNetWorthAndNetIncome } from './stepNetWorthAndNetIncome';
+import { StepPermanentAddress } from './stepPermanentAddress';
 import { StepPhoneAuthentication } from './stepPhoneAuthentication';
 import { StepPhoneNumber } from './stepPhoneNumber';
 import { StepProfilePicture } from './stepProfilePicture';
@@ -32,6 +33,7 @@ export const FLOW_STEPS = [
   StepFinraInstitution,
   StepCompanyTickerSymbols,
   StepSSN,
+  StepPermanentAddress,
   StepExperience,
   StepEmploymentStatus,
   StepEmploymentDetails,
@@ -59,6 +61,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   employmentStatus: undefined,
   employmentDetails: undefined,
   companyTickerSymbols: undefined,
+  permanentAddress: null,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
