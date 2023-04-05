@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
@@ -23,7 +23,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedAccountType, setSelectedAccountType] = useState<AccountType | undefined>(storeFields.accountType);
+    const [selectedAccountType, setSelectedAccountType] = useState<DraftAccountType | undefined>(storeFields.accountType);
     const { openDialog } = useDialog();
 
     const handleContinue = () => {
@@ -55,7 +55,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 selected={value === selectedAccountType}
                 key={value}
                 id={value}
-                value={value as AccountType}
+                value={value as DraftAccountType}
                 title={title}
                 description={description}
                 onCardPress={setSelectedAccountType}

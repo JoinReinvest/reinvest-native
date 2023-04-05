@@ -5,7 +5,7 @@ import { ScrollView, View } from 'react-native';
 import { INDUESTRIES_AS_OPTIONS } from 'reinvest-app-common/src/constants/industries';
 import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { AccountType, EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccountType, EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
@@ -34,7 +34,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
   doesMeetConditionFields(fields) {
     const { accountType, employmentStatus } = fields;
 
-    return accountType === AccountType.Individual && employmentStatus === EmploymentStatus.Employed;
+    return accountType === DraftAccountType.Individual && employmentStatus === EmploymentStatus.Employed;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

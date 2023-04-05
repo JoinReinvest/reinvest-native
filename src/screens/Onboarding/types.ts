@@ -1,5 +1,5 @@
 import { Industry } from 'reinvest-app-common/src/constants/industries';
-import { AccountType, Address, DomicileType, Experience } from 'reinvest-app-common/src/types/graphql';
+import { Address, DomicileType, DraftAccountType, Experience } from 'reinvest-app-common/src/types/graphql';
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { VisaType } from '../../types/visaType';
@@ -11,7 +11,7 @@ export interface OnboardingFormFields {
 
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
   _isSocialSecurityNumberBanned?: boolean;
-  accountType?: AccountType;
+  accountType?: DraftAccountType;
   birthCountry?: string;
   citizenshipCountry?: string;
   companyTickerSymbols?: CompanyTickerSymbol[];
@@ -32,6 +32,7 @@ export interface OnboardingFormFields {
   firstName?: string;
   identificationDocument?: IdentificationDocuments;
   isAccreditedInvestor?: boolean;
+  isAuthorizedSignatoryEntity?: boolean;
   lastName?: string;
   middleName?: string;
   netIncome?: string;
