@@ -41,6 +41,7 @@ export interface OnboardingFormFields {
   phoneNumberAuthenticationCode?: string;
   profilePicture?: string | undefined;
   residency?: DomicileType;
+  seniorPoliticalFigure?: string;
   ssn?: string;
   visaType?: VisaType;
 }
