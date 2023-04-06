@@ -17,7 +17,7 @@ interface FirstStepLayoutProps {
 }
 
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
-  useKeyboardAware(true, 48);
+  useKeyboardAware(true, 32);
 
   return (
     <MainWrapper

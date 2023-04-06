@@ -15,11 +15,11 @@ export const useKeyboardAware = (enabled = true, offset?: number) => {
       if (offset) {
         AvoidSoftInput.setAvoidOffset(offset);
       }
+    }
 
-      return () => {
-        AvoidSoftInput.setEnabled(false);
-        AvoidSoftInput.setShouldMimicIOSBehavior(false);
-      };
+    if (!enabled) {
+      AvoidSoftInput.setEnabled(false);
+      AvoidSoftInput.setShouldMimicIOSBehavior(false);
     }
 
     return;

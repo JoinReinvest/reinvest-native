@@ -63,7 +63,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
   const startForgotPasswordFlow = () => navigation.navigate(Screens.ResetPassword);
 
   const navigateToSignUp = () => {
-    navigation.goBack();
+    navigation.navigate(Screens.SignUp);
   };
 
   return (
