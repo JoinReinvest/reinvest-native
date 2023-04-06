@@ -62,7 +62,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         color={palette.pureWhite}
         style={styles.firstStepLink}
       >
-        Already have an account ?
+        Already have an account?
       </StyledText>
       <Button
         disabled={!formState.dirtyFields}
