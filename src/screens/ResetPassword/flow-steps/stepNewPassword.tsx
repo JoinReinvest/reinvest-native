@@ -44,7 +44,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const { handleSubmit, control, watch } = useForm<Fields>({
+    const { formState, handleSubmit, control, watch } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -53,6 +53,8 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
       password: watch('password'),
       passwordConfirmation: watch('passwordConfirmation'),
     };
+
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
@@ -105,7 +107,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={loading}
+            disabled={shouldButtonBeDisabled}
             isLoading={loading}
             onPress={handleSubmit(onSubmit)}
           >
