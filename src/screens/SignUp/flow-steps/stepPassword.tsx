@@ -46,7 +46,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const { handleSubmit, control, watch, setFocus } = useForm<Fields>({
+    const { formState, handleSubmit, control, watch, setFocus } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -55,6 +55,8 @@ export const StepPassword: StepParams<RegisterFormFields> = {
       password: watch('password'),
       passwordConfirmation: watch('passwordConfirmation'),
     };
+
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
@@ -134,7 +136,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={loading}
+            disabled={shouldButtonBeDisabled}
             isLoading={loading}
             onPress={handleSubmit(onSubmit)}
           >
