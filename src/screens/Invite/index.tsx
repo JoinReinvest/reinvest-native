@@ -7,6 +7,7 @@ import { Box } from '../../components/Containers/Box/Box';
 import { Input } from '../../components/Input';
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
+import { isIOS } from '../../constants/common';
 import { palette } from '../../constants/theme';
 
 export const InviteScreen = () => {
@@ -14,9 +15,11 @@ export const InviteScreen = () => {
 
   const share = async () => {
     await Share.share({
-      message: 'React Native | A framework for building native apps using React',
+      message: data?.url ?? '',
     });
   };
+
+  const inputUrlValue = (isIOS ? data?.url?.substring(0, 37) : data?.url) ?? '';
 
   return (
     <MainWrapper isLoading={isLoading}>
@@ -29,8 +32,10 @@ export const InviteScreen = () => {
           <>
             <Box my={'16'}>{data && <StyledText variant="h4">Your Referral Code: {data?.url?.split('/').pop()}</StyledText>}</Box>
             <Input
+              pointerEvents="none"
               focusable={false}
-              value={`${data.url}`}
+              caretHidden={true}
+              value={inputUrlValue}
             />
             <StyledText
               onPress={share}
