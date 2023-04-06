@@ -1,13 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -53,7 +54,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
             variant="error"
           />
         )}
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Reset Password"
@@ -68,7 +69,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
               dark: true,
             }}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

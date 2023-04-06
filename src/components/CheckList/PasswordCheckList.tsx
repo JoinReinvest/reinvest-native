@@ -4,8 +4,6 @@ import { View, ViewProps } from 'react-native';
 import { CheckItem } from '../CheckItem';
 import { styles } from './styles';
 
-//TODO extend for other cases
-
 interface PasswordCheckListProps extends ViewProps {
   password: string;
   passwordConfirmation: string;
