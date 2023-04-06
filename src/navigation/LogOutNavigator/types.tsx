@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Screens from '../screens';
 
 export type LogOutStackParamList = {
-  [Screens.SignUp]: { referralCode: string };
+  [Screens.SignUp]: { referralCode?: string } | undefined;
   [Screens.SignIn]: undefined;
   [Screens.BlackForm]: undefined;
   [Screens.ResetPassword]: undefined;

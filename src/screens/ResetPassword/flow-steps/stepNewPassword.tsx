@@ -45,7 +45,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
         path: ['passwordConfirmation'],
       });
 
-    const { formState, handleSubmit, control, watch } = useForm<Fields>({
+    const { formState, handleSubmit, control, watch, setFocus } = useForm<Fields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
@@ -59,7 +59,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async values => {
       setError(undefined);
-      updateStoreFields(values);
+      await updateStoreFields(values);
       try {
         await actions.forgotPasswordSubmit(storeFields.email, storeFields.authenticationCode, values.password);
 
@@ -69,6 +69,10 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
           setError(err.message);
         }
       }
+    };
+
+    const handleSubmitFromKeyboard = (field: keyof Fields) => {
+      fields[field] ? handleSubmit(onSubmit)() : setFocus(field);
     };
 
     return (
@@ -90,13 +94,13 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             inputProps={{ dark: true, placeholder: 'Password ' }}
             fieldName="password"
             control={control}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={() => handleSubmitFromKeyboard('passwordConfirmation')}
           />
           <Controller
             inputProps={{ dark: true, placeholder: 'Confirm Password' }}
             fieldName="passwordConfirmation"
             control={control}
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={() => handleSubmitFromKeyboard('password')}
           />
           <PasswordChecklist
             password={fields.password}
