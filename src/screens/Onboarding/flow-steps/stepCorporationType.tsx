@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
+import { CORPORATION_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { CorporateCompanyType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
@@ -18,20 +18,16 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-export const StepAccountType: StepParams<OnboardingFormFields> = {
-  identifier: Identifiers.ACCOUNT_TYPE,
-
-  willBePartOfTheFlow(fields) {
-    return fields.accountType === AccountType.Corporate;
-  },
+export const StepCorporationType: StepParams<OnboardingFormFields> = {
+  identifier: Identifiers.CORPORATION_TYPE,
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedAccountType, setSelectedAccountType] = useState<DraftAccountType | undefined>(storeFields.accountType);
+    const [selectedCorporationType, setSelectedCorporationType] = useState<CorporateCompanyType | undefined>(storeFields.corporationType);
     const { openDialog } = useDialog();
 
     const handleContinue = () => {
-      updateStoreFields({ accountType: selectedAccountType });
+      updateStoreFields({ corporationType: selectedCorporationType });
       moveToNextStep();
     };
 
@@ -51,18 +47,18 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline="Which type of account would you like to open?"
+            headline="What type of Corporation do you have?"
           />
           <View style={styles.cardsWrapper}>
-            {ACCOUNT_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
+            {CORPORATION_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
               <Card
-                selected={value === selectedAccountType}
+                selected={value === selectedCorporationType}
                 key={value}
                 id={value}
-                value={value as DraftAccountType}
+                value={value as CorporateCompanyType}
                 title={title}
                 description={description}
-                onCardPress={setSelectedAccountType}
+                onCardPress={setSelectedCorporationType}
               />
             ))}
           </View>
@@ -81,7 +77,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         >
           <Button
             onPress={handleContinue}
-            disabled={!selectedAccountType}
+            disabled={!selectedCorporationType}
           >
             Continue
           </Button>
