@@ -4,10 +4,23 @@ import { Controller as ControllerBase } from 'react-hook-form';
 import { Dropdown } from '../../Dropdown';
 import { Input } from '../../Input';
 import { TextArea } from '../../TextArea';
-import { ControllerProps } from './types';
+import { ControllerProps, InputType } from './types';
 
-export const Controller = ({ select = false, type, control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
-  const Comp = type === 'textarea' ? TextArea : select ? Dropdown : Input;
+const getComponent = (type: InputType) => {
+  switch (type) {
+    case 'input':
+      return Input;
+    case 'textarea':
+      return TextArea;
+    case 'dropdown':
+      return Dropdown;
+    default:
+      return Input;
+  }
+};
+
+export const Controller = ({ type = 'input', control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
+  const Comp = getComponent(type);
 
   return (
     <ControllerBase
@@ -26,7 +39,7 @@ export const Controller = ({ select = false, type, control, fieldName, onSubmit,
             onChangeText={onChange}
             secureTextEntry={/password/gim.test(fieldName)}
             autoCapitalize={/email/gim.test(fieldName) ? 'none' : undefined}
-            {...(select
+            {...(type === 'dropdown'
               ? {
                   ...dropdownProps,
                   onSelect: selected => {

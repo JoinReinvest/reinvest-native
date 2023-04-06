@@ -83,7 +83,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
             inputProps={{ placeholder: 'Title', dark: true }}
           />
           <Controller
-            select
+            type="dropdown"
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="employmentDetails.industry"

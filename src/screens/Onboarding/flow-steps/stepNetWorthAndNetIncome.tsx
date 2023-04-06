@@ -66,7 +66,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
             headline="What is approximate net worth and income?"
           />
           <Controller
-            select
+            type="dropdown"
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="netIncome"
@@ -77,7 +77,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
             }}
           />
           <Controller
-            select
+            type="dropdown"
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="netWorth"

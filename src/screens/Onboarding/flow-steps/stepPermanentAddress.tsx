@@ -72,7 +72,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
             inputProps={{ placeholder: 'City', dark: true }}
           />
           <Controller
-            select
+            type="dropdown"
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="state"
