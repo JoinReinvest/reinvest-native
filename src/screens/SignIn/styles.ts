@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 import { palette } from '../../constants/theme';
 import { Fonts } from '../../types/fonts';
-import { xScale, yScale } from '../../utils/scale';
+import { isIOS } from './../../constants/common';
+import { AVAILABLE_HEIGHT, xScale, yScale } from './../../utils/scale';
 
 export const styles = StyleSheet.create({
   signet: {
@@ -21,5 +22,11 @@ export const styles = StyleSheet.create({
     paddingBottom: 8,
     fontSize: 15,
   },
-  scrollContainer: { alignItems: 'center', paddingHorizontal: 24 },
+  scrollContainer: {
+    height: isIOS ? '100%' : AVAILABLE_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 24,
+    paddingBottom: 36,
+  },
 });
