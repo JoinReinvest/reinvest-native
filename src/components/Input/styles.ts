@@ -65,7 +65,6 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     fontFamily: Fonts.GTAmericaExtendedRegular,
-    lineHeight: 19,
   },
   darkInput: {
     color: palette.pureWhite,
