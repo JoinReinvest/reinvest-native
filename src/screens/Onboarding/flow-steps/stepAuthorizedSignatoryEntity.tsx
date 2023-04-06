@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BOOLEAN_OPTIONS } from 'constants/booleanOptions';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
@@ -10,6 +9,7 @@ import { z } from 'zod';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
+import { BOOLEAN_OPTIONS } from '../../../constants/booleanOptions';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';
