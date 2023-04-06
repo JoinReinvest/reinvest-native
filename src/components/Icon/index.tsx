@@ -6,15 +6,7 @@ import { palette } from '../../constants/theme';
 import { icons, sizes } from './constants';
 import { IconProps } from './types';
 
-export const Icon = ({
-  icon,
-  //TODO extend icons with 100% width and height of a parent component
-  size = 'm',
-  color = palette.pureBlack,
-  onPress,
-  style,
-  ...props
-}: IconProps) => {
+export const Icon = ({ icon, size = 'm', color = palette.pureBlack, onPress, style, ...props }: IconProps) => {
   const IconComp = icons[`${icon}`];
   const styles = useMemo(() => StyleSheet.flatten([{ width: sizes[`${size}`], height: sizes[`${size}`] }, style]), [size, style]);
 

@@ -65,7 +65,6 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
       const phoneNumberFromFields = `${fields.countryCode}${fields.phone}`;
       await updateStoreFields({ phoneNumber: phoneNumberFromFields });
       moveToNextStep();
-      //TODO: send authentication code via SMS
     };
 
     const showDisclaimer = () => {

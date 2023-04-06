@@ -29,7 +29,7 @@ export const StepChangePasswordConfirm: StepParams<ResetPasswordFormFields> = {
     };
 
     return (
-      <View style={[styles.wrapper, styles.fw]}>
+      <View style={[styles.wrapper, styles.fw, styles.padded]}>
         <StatusCircle title="Your Password Has Been Reset" />
         <Button onPress={goBackToLoginForm}>Continue</Button>
       </View>

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { useSoftInputState } from 'react-native-avoid-softinput';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
@@ -10,6 +10,7 @@ import { Button } from '../../../components/Button';
 import { PasswordChecklist } from '../../../components/CheckList/PasswordCheckList';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useAuth } from '../../../providers/AuthProvider';
@@ -72,7 +73,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
 
     return (
       <>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Reset Password"
@@ -101,7 +102,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
             password={fields.password}
             passwordConfirmation={fields.passwordConfirmation}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

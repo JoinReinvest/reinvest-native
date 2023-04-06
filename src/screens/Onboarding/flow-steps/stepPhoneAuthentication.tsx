@@ -54,7 +54,6 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
 
         setLoading(true);
         phoneNumberAuthenticationCode = phoneNumberAuthenticationCode.replace('-', '');
-        // TODO: Add validation of the code
         await updateStoreFields({
           phoneNumberAuthenticationCode,
           _hasAuthenticatedPhoneNumber: true,
@@ -67,7 +66,6 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
     };
 
     const resendCodeOnClick = async () => {
-      // TODO: Implement resend code logic
       Alert.alert('Resend code');
     };
 

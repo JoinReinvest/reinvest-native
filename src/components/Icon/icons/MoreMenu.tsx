@@ -5,8 +5,9 @@ import { palette } from '../../../constants/theme';
 
 export const MoreMenu = ({ color = palette.lightGray, ...rest }: SvgProps) => (
   <Svg
-    width={32}
-    height={32}
+    width="100%"
+    height="100%"
+    viewBox="0 , 0 , 32, 32"
     fill="none"
     {...rest}
   >

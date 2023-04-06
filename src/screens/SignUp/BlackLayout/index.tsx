@@ -7,10 +7,6 @@ import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useRegisterFormFlow } from '../flow-steps';
 import { RegisterFormFields } from '../types';
 
-/* TODO we should pass noPadding prop to main wrapper and narrow screen directly in content since scroll view scroll indicator is rendered unnecessarily padded
-    after merging changes from RIA-525 - Main Wrapper has this additional prop there
- */
-
 interface Props {
   shouldShowFooter?: boolean;
 }
@@ -20,7 +16,10 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   useKeyboardAware(true, 16);
 
   return (
-    <MainWrapper dark>
+    <MainWrapper
+      dark
+      noPadding
+    >
       <CurrentStepView />
       {shouldShowFooter && <TermsFooter />}
     </MainWrapper>
