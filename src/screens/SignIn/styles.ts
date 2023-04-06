@@ -21,4 +21,5 @@ export const styles = StyleSheet.create({
     paddingBottom: 8,
     fontSize: 15,
   },
+  scrollContainer: { alignItems: 'center', paddingHorizontal: 24 },
 });

@@ -78,7 +78,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         onSubmit={handleSubmit(onSubmit)}
         control={control}
         fieldName="email"
-        inputProps={{ placeholder: 'Email Address', autoComplete: 'off' }}
+        inputProps={{ placeholder: 'Email Address' }}
       />
       <Controller
         onSubmit={handleSubmit(onSubmit)}
