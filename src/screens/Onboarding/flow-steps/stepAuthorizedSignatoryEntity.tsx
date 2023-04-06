@@ -4,70 +4,60 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
-import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
-import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { styles } from './styles';
 
 interface Fields {
-  isAccreditedInvestor: boolean | undefined;
+  isAuthorizedSignatoryEntity: boolean | undefined;
 }
 
 const schema = z.object({
-  isAccreditedInvestor: z.boolean(),
+  isAuthorizedSignatoryEntity: z.boolean(),
 });
 
-export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
-  identifier: Identifiers.ACCREDITED_INVESTOR,
+export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
+  identifier: Identifiers.AUTHORIZED_SIGNATORY_ENTITY,
+
+  willBePartOfTheFlow: ({ accountType }) => accountType !== DraftAccountType.Individual,
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const storedValue = storeFields.isAccreditedInvestor;
-    const defaultValues: Fields = { isAccreditedInvestor: storedValue };
+    const storedValue = storeFields.isAuthorizedSignatoryEntity;
+    const defaultValues: Fields = { isAuthorizedSignatoryEntity: storedValue };
+
     const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues,
     });
-    const { openDialog } = useDialog();
 
-    const shouldButtonBeDisabled = watch('isAccreditedInvestor') !== undefined;
+    const shouldButtonBeDisabled = watch('isAuthorizedSignatoryEntity') !== undefined;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields({ isAccreditedInvestor: fields.isAccreditedInvestor });
+      await updateStoreFields({ isAuthorizedSignatoryEntity: fields.isAuthorizedSignatoryEntity });
       moveToNextStep();
     };
 
-    const watchedAccreditedInvestor = watch('isAccreditedInvestor');
+    const watchedAuthorizedSignatoryEntity = watch('isAuthorizedSignatoryEntity');
 
-    const handleOpenDialog = () => {
-      openDialog(
-        <FormModalDisclaimer
-          headline={'What is an accredited investor?'}
-          content="CONTENT"
-        />,
-      );
-    };
-
-    const selectedValue = watchedAccreditedInvestor ? (watchedAccreditedInvestor ? 'yes' : 'false') : undefined;
+    const selectedValue = watchedAuthorizedSignatoryEntity ? (watchedAuthorizedSignatoryEntity ? 'yes' : 'false') : undefined;
 
     return (
       <>
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline="Are you an accredited investor?"
-            link="What is an accredited investor?"
-            onLinkPress={handleOpenDialog}
+            headline="Are you an authorized signatory & beneficiary owner of this entity?"
           />
           <RadioButtonGroup
             selectedValue={selectedValue}
-            onSelect={val => setValue('isAccreditedInvestor', val === 'yes' ? true : false)}
+            onSelect={val => setValue('isAuthorizedSignatoryEntity', val === 'yes' ? true : false)}
             options={BOOLEAN_OPTIONS}
           />
         </ScrollView>
