@@ -17,12 +17,13 @@ import { styles } from './styles';
 
 type Fields = Pick<ResetPasswordFormFields, 'email'>;
 
+const schema: Schema<Fields> = zod.object({
+  email: formValidationRules.email,
+});
+
 export const StepEmail: StepParams<ResetPasswordFormFields> = {
   identifier: Identifiers.EMAIL,
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<ResetPasswordFormFields>) => {
-    const schema: Schema<Fields> = zod.object({
-      email: formValidationRules.email,
-    });
     const { loading, actions } = useAuth();
     const [error, setError] = useState<string | undefined>();
 
@@ -31,6 +32,8 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
       mode: 'onSubmit',
       resolver: zodResolver(schema),
     });
+
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || loading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       updateStoreFields(fields);
@@ -74,7 +77,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!formState.dirtyFields || loading}
+            disabled={shouldButtonBeDisabled}
             isLoading={loading}
             onPress={handleSubmit(onSubmit)}
           >
