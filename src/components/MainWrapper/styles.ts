@@ -27,4 +27,5 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   flex: { flex: 1 },
+  loaderWrapper: { justifyContent: 'center', alignItems: 'center', flex: 1 },
 });
