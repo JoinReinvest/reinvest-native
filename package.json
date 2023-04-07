@@ -33,6 +33,7 @@
     "react-hook-form": "7.43.8",
     "react-native": "0.71.4",
     "react-native-avoid-softinput": "3.1.5",
+    "react-native-config": "^1.5.0",
     "react-native-document-picker": "8.2.0",
     "react-native-fast-image": "8.6.3",
     "react-native-image-picker": "5.3.1",

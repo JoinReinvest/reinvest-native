@@ -1,7 +1,15 @@
 apply plugin: "com.android.application"
+project.ext.envConfigFiles = [
+  integrationrelease: ".env.development",
+  integrationdebug: ".env.development",
+  stagingdebug: ".env.staging",
+  stagingrelease: ".env.staging",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: "com.facebook.react"
 
 import com.android.build.OutputFile
+
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -121,6 +129,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -130,6 +139,18 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+
+  flavorDimensions "default"
+  productFlavors {
+    integration {
+      resValue "string", "app_name", "devRE-INVEST"
+      applicationId "com.reinvestcommunity.dev"
+    }
+    staging {
+      resValue "string", "app_name", "stgRE-INVEST"
+      applicationId "com.reinvestcommunity.app"
+    }
+  }
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
