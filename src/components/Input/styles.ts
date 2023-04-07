@@ -12,7 +12,6 @@ export const styles = StyleSheet.create({
     maxWidth: '100%',
     height: INPUT_HEIGHT,
     marginBottom: yScale(12),
-    // flexShrink: 1,
   },
   disabled: {
     borderColor: palette.darkerGray,
@@ -49,6 +48,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     width: '100%',
+  },
+  removedHorizontalPadding: {
+    paddingHorizontal: 0,
+  },
+  removeLeftPadding: {
+    paddingHorizontal: 0,
+    textAlign: 'center',
+  },
+  smallerPaddingRight: {
+    paddingRight: 4,
   },
   mainSection: {
     flex: 1,
@@ -91,4 +100,7 @@ export const styles = StyleSheet.create({
 
   nativeInputDisabled: { color: palette.darkerGray },
   rightSegmentDisabled: { opacity: 0.7 },
+  rightAlignment: {
+    textAlign: 'right',
+  },
 });

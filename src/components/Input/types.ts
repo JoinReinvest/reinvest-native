@@ -12,6 +12,10 @@ export interface InputProps extends MaskInputProps {
   nativeInputStyle?: StyleProp<ViewStyle>;
   onBlur?: () => void;
   onSubmit?: () => void;
+  /*
+    while using predefined for smaller not editable values mainly as a dropdown component
+   */
+  predefined?: boolean;
   rightSection?: ReactNode;
   value?: string;
   wrapperStyle?: StyleProp<ViewStyle>;
