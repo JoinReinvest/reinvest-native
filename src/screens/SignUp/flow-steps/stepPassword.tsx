@@ -101,24 +101,6 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             description="Create a unique password for your account to continue."
             compact={isSoftInputShown}
           />
-          <FormTitle
-            dark
-            headline="Sign up to REINVEST"
-            description="Create a unique password for your account to continue."
-            compact={isSoftInputShown}
-          />
-          <FormTitle
-            dark
-            headline="Sign up to REINVEST"
-            description="Create a unique password for your account to continue."
-            compact={isSoftInputShown}
-          />
-          <FormTitle
-            dark
-            headline="Sign up to REINVEST"
-            description="Create a unique password for your account to continue."
-            compact={isSoftInputShown}
-          />
           {error && (
             <FormMessage
               message={error}
