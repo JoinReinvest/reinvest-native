@@ -3,8 +3,13 @@ import { ActivityIndicator, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { StatusCircle } from '../../../components/StatusCircle';
+import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
+import { useLogOutNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
 import { useAuth } from '../../../providers/AuthProvider';
 import { allRequiredFieldsExists } from '../../../utils/formValidator';
 import { styles } from '../flow-steps/styles';
@@ -25,7 +30,8 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     const { actions } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | undefined>();
-
+    const [displayLoginLink, setDisplayLoginLink] = useState(false);
+    const navigation = useLogOutNavigation();
     const onPress = async () => {
       setIsLoading(true);
       try {
@@ -37,18 +43,29 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
       }
     };
 
+    const goToSignIn = () => navigation.navigate(Screens.SignIn);
+
     useEffect(() => {
-      (async () => {
+      const confirmEmail = async () => {
         try {
           await actions.confirmSignUp(storeFields.email, storeFields.authenticationCode);
         } catch (err) {
-          setError((err as Error).message);
+          const error = err as Error;
+
+          if (error.message.includes('Current status is CONFIRMED')) {
+            error.message = 'The user with this email is already registered.';
+            setDisplayLoginLink(true);
+          }
+
+          setError(error.message);
         } finally {
           setIsLoading(false);
         }
-      })();
+      };
+
+      confirmEmail();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [storeFields.authenticationCode, storeFields.email]);
 
     return (
       <View style={[styles.wrapper, styles.fw, styles.flex]}>
@@ -68,14 +85,31 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
             <StatusCircle
               title={error ? error : 'Your login credentials were successfully created'}
               variant={error ? 'error' : undefined}
-            />
-            <Button
-              isLoading={isLoading}
-              onPress={onPress}
-              disabled={isLoading || !!error}
             >
-              Continue
-            </Button>
+              {displayLoginLink && (
+                <Box mt="16">
+                  <StyledText
+                    variant="link"
+                    color={palette.frostGreen}
+                    onPress={goToSignIn}
+                  >
+                    Go to sign in
+                  </StyledText>
+                </Box>
+              )}
+            </StatusCircle>
+            <View
+              key="buttons_section"
+              style={styles.buttonsSection}
+            >
+              <Button
+                isLoading={isLoading}
+                onPress={onPress}
+                disabled={isLoading || !!error}
+              >
+                Continue
+              </Button>
+            </View>
           </>
         )}
       </View>
