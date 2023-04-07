@@ -2,7 +2,7 @@ import { Auth } from '@aws-amplify/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
@@ -61,6 +61,8 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
       }
     };
 
+    const openMail = () => Linking.openURL('mailto:support@reinvestcommunity.com');
+
     return (
       <>
         <PaddedScrollView>
@@ -103,7 +105,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
               Resend Code
             </StyledText>
             <StyledText
-              onPress={() => Alert.alert('Get Help')}
+              onPress={openMail}
               variant="link"
               color={palette.frostGreen}
             >
