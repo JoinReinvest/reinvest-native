@@ -1,5 +1,5 @@
 import { Industry } from 'reinvest-app-common/src/constants/industries';
-import { Address, DomicileType, DraftAccountType, Experience } from 'reinvest-app-common/src/types/graphql';
+import { Address, CorporateCompanyType, DomicileType, DraftAccountType, Experience } from 'reinvest-app-common/src/types/graphql';
 import { EmploymentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { VisaType } from '../../types/visaType';
@@ -23,10 +23,11 @@ export interface OnboardingFormFields {
     // Are you or any of your immediate family a senior political figure?
     isSeniorPoliticalFigure?: boolean;
   };
+  corporationType?: CorporateCompanyType;
   dateOfBirth?: Date;
   employmentDetails?: EmploymentDetails;
-  employmentStatus?: EmploymentStatus;
 
+  employmentStatus?: EmploymentStatus;
   experience?: Experience;
   finraInstitution?: string;
   firstName?: string;
