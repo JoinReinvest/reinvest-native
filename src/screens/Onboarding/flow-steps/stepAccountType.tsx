@@ -22,7 +22,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,
 
   willBePartOfTheFlow(fields) {
-    return fields.accountType === AccountType.Corporate;
+    return fields.accountType === DraftAccountType.Corporate;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
