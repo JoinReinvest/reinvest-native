@@ -46,8 +46,8 @@ export interface OnboardingFormFields {
   };
   corporationAnnualRevenue?: CorporationAnnualRevenue;
   corporationIndustry?: Industry;
-  corporationLegalName?: string;
 
+  corporationLegalName?: string;
   corporationNumberOfEmployees?: CorporationNumberOfEmployees;
   corporationType?: CorporateCompanyType;
   documentsForCorporation?: File[];
@@ -69,6 +69,7 @@ export interface OnboardingFormFields {
     industry?: string;
     occupation?: string;
   };
+
   employmentDetails?: EmploymentDetails;
   employmentStatus?: EmploymentStatus;
   experience?: Experience | null;
