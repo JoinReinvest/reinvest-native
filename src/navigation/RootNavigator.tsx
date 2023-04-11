@@ -19,7 +19,7 @@ const linking = {
 };
 
 export const RootNavigator = () => {
-  const { user } = useAuth();
+  const { loggedIn } = useAuth();
 
-  return <NavigationContainer linking={linking}>{user ? <LogInNavigator /> : <LogOutNavigator />}</NavigationContainer>;
+  return <NavigationContainer linking={linking}>{loggedIn ? <LogInNavigator /> : <LogOutNavigator />}</NavigationContainer>;
 };
