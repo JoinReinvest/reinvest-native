@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { yScale } from '../../utils/scale';
-
 export const styles = StyleSheet.create({
   wrapper: {
     height: 120,
@@ -10,11 +8,16 @@ export const styles = StyleSheet.create({
     height: '100%',
     textAlignVertical: 'top',
     paddingHorizontal: 0,
+    color: '#fff',
   },
   inputStyle: {
     height: '100%',
+    paddingTop: 12,
+  },
+  inputWrapperOnAndroid: {
+    paddingTop: 10,
   },
   inputStyleOnIOS: {
-    paddingTop: yScale(16),
+    paddingTop: 18,
   },
 });

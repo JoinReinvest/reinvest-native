@@ -21,6 +21,7 @@ import { StepProfilePicture } from './stepProfilePicture';
 import { StepResidencyGreenCard } from './stepResidencyGreenCard';
 import { StepResidencyStatus } from './stepResidencyStatus';
 import { StepResidencyVisa } from './stepResidencyVisa';
+import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
@@ -35,6 +36,7 @@ export const FLOW_STEPS = [
   StepCompliance,
   StepFinraInstitution,
   StepCompanyTickerSymbols,
+  StepSeniorPoliticalFigure,
   StepSSN,
   StepIdentificationDocuments,
   StepPermanentAddress,
@@ -72,6 +74,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   _didDocumentIdentificationValidationSucceed: false,
   isAccreditedInvestor: undefined,
   isAuthorizedSignatoryEntity: undefined,
+  seniorPoliticalFigure: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({

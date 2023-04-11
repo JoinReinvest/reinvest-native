@@ -90,7 +90,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           <View style={styles.phoneRow}>
             <View style={styles.callingCodeDropdown}>
               <Controller
-                select
+                type="dropdown"
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
                 fieldName="countryCode"
