@@ -8,4 +8,7 @@ declare module '@env' {
   export const CLOUDFRONT_INT: string;
   export const CLOUDFRONT_DEV: string;
   export const CLOUDFRONT_STG: string;
+  export const GOOGLE_MAPS_API_KEY: string;
+  export const GOOGLE_MAPS_PLACES_URL: string;
+  export const GOOGLE_MAPS_AUTOCOMPLETE_URL: string;
 }

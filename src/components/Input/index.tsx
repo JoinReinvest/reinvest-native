@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo, useState } from 'react';
+import React, { forwardRef, useEffect, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Pressable, TextInput, View } from 'react-native';
 import MaskInput from 'react-native-mask-input';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -36,6 +36,10 @@ export const Input = forwardRef<TextInput, InputProps>(
     const [focused, setFocused] = useState(false);
     const [showSecuredInput, setShowSecuredInput] = useState(secureTextEntry);
     const sharedValue = useSharedValue(value ? 1 : 0);
+
+    useEffect(() => {
+      sharedValue.value = value ? 1 : 0;
+    }, [value]);
 
     const setFocusedAnimatedStyle = (isFocused: boolean) => {
       'worklet';
@@ -130,7 +134,12 @@ export const Input = forwardRef<TextInput, InputProps>(
                   onLayout={calculateSizeHandler}
                   style={[styles.placeholder, animatedStyle]}
                 >
-                  <StyledText style={[styles.placeholderText]}>{placeholder}</StyledText>
+                  <StyledText
+                    numberOfLines={1}
+                    style={[styles.placeholderText]}
+                  >
+                    {placeholder}
+                  </StyledText>
                 </Animated.View>
               )}
               <MaskInput

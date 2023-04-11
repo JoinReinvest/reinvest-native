@@ -24,6 +24,7 @@ import { StepResidencyVisa } from './stepResidencyVisa';
 import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
+  StepPermanentAddress,
   StepAccountType,
   StepFullName,
   StepPhoneNumber,
@@ -37,7 +38,6 @@ export const FLOW_STEPS = [
   StepCompanyTickerSymbols,
   StepSSN,
   StepIdentificationDocuments,
-  StepPermanentAddress,
   StepAuthorizedSignatoryEntity,
   StepAccreditedInvestor,
   StepExperience,

@@ -14,12 +14,14 @@ export const Dashboard = () => {
   return (
     <MainWrapper style={{ paddingTop: top }}>
       <StyledText variant="h6">DashBoard</StyledText>
-      <StyledText
-        variant="link"
-        onPress={() => navigation.navigate(Screens.Onboarding)}
-      >
-        Start Onboarding
-      </StyledText>
+      {__DEV__ && (
+        <StyledText
+          variant="link"
+          onPress={() => navigation.navigate(Screens.Onboarding)}
+        >
+          Start Onboarding
+        </StyledText>
+      )}
     </MainWrapper>
   );
 };
