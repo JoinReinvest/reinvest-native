@@ -7,6 +7,7 @@ import { StepAccountType } from './stepAccountType';
 import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
+import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationType } from './stepCorporationType';
 import { StepDateOfBirth } from './stepDateOfBirth';
 import { StepEmploymentDetails } from './stepEmploymentDetails';
@@ -27,6 +28,7 @@ import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
   StepAccountType,
+  StepCorporationInformation,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -77,6 +79,9 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   isAuthorizedSignatoryEntity: undefined,
   seniorPoliticalFigure: undefined,
   corporationType: undefined,
+  corporationAnnualRevenue: undefined,
+  corporationIndustry: undefined,
+  corporationNumberOfEmployees: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
