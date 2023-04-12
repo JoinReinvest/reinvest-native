@@ -29,9 +29,7 @@ import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
 
 export const FLOW_STEPS = [
-  StepPermanentAddress,
   StepAccountType,
-
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -45,6 +43,7 @@ export const FLOW_STEPS = [
   StepSeniorPoliticalFigure,
   StepSSN,
   StepIdentificationDocuments,
+  StepPermanentAddress,
   StepAuthorizedSignatoryEntity,
   StepAccreditedInvestor,
   StepExperience,

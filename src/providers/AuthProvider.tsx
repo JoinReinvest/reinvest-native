@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setLoading(true);
     try {
       const cognitoUser: CognitoUser = await Auth.currentAuthenticatedUser();
+      checkTwoFactorAuthentication(cognitoUser.challengeName);
       setUser(cognitoUser);
     } catch (err) {
       setUser(null);
