@@ -17,11 +17,11 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
+export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.IDENTIFICATION_DOCUMENTS,
 
   willBePartOfTheFlow: fields => {
-    return fields.accountType === DraftAccountType.Corporate;
+    return fields.accountType === DraftAccountType.Trust;
   },
 
   Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -30,7 +30,7 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
 
     const handleContinue = async () => {
       const uris = selectedFiles.map(({ uri }) => uri ?? '');
-      await updateStoreFields({ documentsForCorporation: uris });
+      await updateStoreFields({ documentsForTrust: uris });
       moveToNextStep();
     };
 
@@ -44,7 +44,7 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
         <ScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline="Upload the following documents to verify your organization"
+            headline="Upload the following documents to verify your trust."
             description={
               <StyledText
                 variant="paragraphLarge"
@@ -56,7 +56,7 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
                 >
                   Required documents:
                 </StyledText>{' '}
-                Articles of Incorporation, Certificate of Formation, By-laws, Shareholders and Authorized Signers List.
+                The Full Trust Document or Certification of Trust,List of All Trustees, Grantors and Protectors.
               </StyledText>
             }
           />
