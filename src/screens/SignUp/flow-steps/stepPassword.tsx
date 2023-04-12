@@ -97,7 +97,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
         <PaddedScrollView>
           <FormTitle
             dark
-            headline="Sign up to REINVEST"
+            headline="Sign Up to REINVEST"
             description="Create a unique password for your account to continue."
             compact={isSoftInputShown}
           />
@@ -141,7 +141,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
             isLoading={loading}
             onPress={handleSubmit(onSubmit)}
           >
-            Sign up
+            Sign Up
           </Button>
         </View>
       </>

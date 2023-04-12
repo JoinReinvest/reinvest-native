@@ -34,7 +34,7 @@ export const SignUp = ({ route: { params } }: LogoutProps<Screens.SignUp>) => {
         >
           {() => (
             <FirstStepLayout
-              headline="Sign up"
+              headline="Sign Up"
               description="Enter your email below to get started."
             >
               <StepOutsideFlow initialSteps={initialState} />

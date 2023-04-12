@@ -101,7 +101,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             isLoading={isValidating}
             onPress={handleSubmit(onSubmit)}
           >
-            Enter code
+            Enter Code
           </Button>
         </View>
       </>
