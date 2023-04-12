@@ -43,6 +43,17 @@ This template follows a very simple project structure:
 
 - Run `npm start --reset-cache`
 
+## ENV files
+
+This project uses React-native-config to provide specific env variables 
+
+In order to run application we need three env files : 
+- .env.development 
+- .env.staging 
+- .env.production
+Each specific file should consist aws specific environmental variables
+Change flavour in android studio or schema to build proper version 
+
 ## Expand
 
 ## Project Principles
