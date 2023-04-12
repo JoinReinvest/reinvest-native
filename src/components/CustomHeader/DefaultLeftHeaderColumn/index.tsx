@@ -14,7 +14,8 @@ const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {
       {canGoBack() && (
         <TouchableOpacity onPress={() => goBack()}>
           <Icon
-            icon="arrowLeft"
+            icon="down"
+            style={{ transform: [{ rotate: '90deg' }] }}
             color={dark ? palette.pureWhite : palette.pureBlack}
           />
         </TouchableOpacity>
