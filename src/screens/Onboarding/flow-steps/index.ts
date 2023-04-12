@@ -53,12 +53,9 @@ export const FLOW_STEPS = [
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
   StepProfilePicture,
-<<<<<<< HEAD
   StepCorporationInformation,
   StepCorporationLegalName,
-=======
   StepEIN,
->>>>>>> e526c27 (RIA-699: Implement EIN step)
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
