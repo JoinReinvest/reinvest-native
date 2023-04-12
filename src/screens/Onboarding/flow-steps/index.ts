@@ -11,6 +11,7 @@ import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
 import { StepDateOfBirth } from './stepDateOfBirth';
+import { StepEIN } from './stepEIN';
 import { StepEmploymentDetails } from './stepEmploymentDetails';
 import { StepEmploymentStatus } from './stepEmploymentStatus';
 import { StepExperience } from './stepExperience';
@@ -52,8 +53,12 @@ export const FLOW_STEPS = [
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
   StepProfilePicture,
+<<<<<<< HEAD
   StepCorporationInformation,
   StepCorporationLegalName,
+=======
+  StepEIN,
+>>>>>>> e526c27 (RIA-699: Implement EIN step)
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
@@ -86,6 +91,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   corporationIndustry: undefined,
   corporationNumberOfEmployees: undefined,
   corporationLegalName: undefined,
+  ein: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
