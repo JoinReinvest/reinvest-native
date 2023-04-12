@@ -14,10 +14,12 @@ export const Settings = () => {
 
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
-      <Button
-        title="start onboarding"
-        onPress={() => navigation.navigate(Screens.Onboarding)}
-      />
+      {__DEV__ && (
+        <Button
+          title="start onboarding"
+          onPress={() => navigation.navigate(Screens.Onboarding)}
+        />
+      )}
       <Button
         title="Invite friend"
         onPress={() => navigation.navigate(Screens.Invite)}
