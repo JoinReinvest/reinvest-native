@@ -1,5 +1,7 @@
 import { Dimensions, Platform, StatusBar } from 'react-native';
 
+import { isIOS } from './../constants/common';
+
 const { width, height } = Dimensions.get('window');
 
 export const DEVICE_HEIGHT = Dimensions.get('screen').height;
@@ -10,6 +12,7 @@ export const WINDOW_WIDTH = Dimensions.get('window').width;
 export const NAVBAR_HEIGHT = DEVICE_HEIGHT - WINDOW_HEIGHT;
 
 export const realHeight = Platform.OS === 'ios' ? WINDOW_HEIGHT : WINDOW_HEIGHT - STATUS_BAR;
+export const AVAILABLE_HEIGHT = isIOS ? realHeight : realHeight - NAVBAR_HEIGHT;
 export const IS_SMALL_DEVICE = realHeight < 680; // iPhone SE (2nd gen) -> 667
 export const IS_REAL_SMALL_DEVICE = realHeight < 600;
 

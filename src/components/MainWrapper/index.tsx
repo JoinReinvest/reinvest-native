@@ -26,6 +26,7 @@ export const MainWrapper = ({
     <View style={[!dark ? styles.light : styles.dark, styles.flex]}>
       <StatusBar
         hidden={false}
+        backgroundColor="transparent"
         barStyle={dark ? 'light-content' : 'dark-content'}
       />
       {isScroll ? (

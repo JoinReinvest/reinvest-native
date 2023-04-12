@@ -20,23 +20,20 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
   useKeyboardAware(true, 32);
 
   return (
-    <MainWrapper
-      noPadding
-      style={{ justifyContent: 'flex-start' }}
-    >
+    <MainWrapper noPadding>
       <StatusBar barStyle="light-content" />
       <Video />
       <LinearGradient
         style={StyleSheet.absoluteFillObject}
         colors={['transparent', hexToRgbA(palette.pureBlack, 0.6)]}
       />
+      <View style={styles.signet}>
+        <Sygnet />
+      </View>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={styles.signet}>
-          <Sygnet />
-        </View>
         <View style={styles.descriptionSegment}>
           <StyledText
             style={[styles.text]}
