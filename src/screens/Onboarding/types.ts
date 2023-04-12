@@ -99,8 +99,8 @@ export interface CompanyTickerSymbol {
 export type IdentificationDocuments = string | { fileName: string; id: string }[];
 
 export interface Applicant {
-  dateOfBirth?: Date;
-  domicile?: 'us' | 'green-card' | 'visa';
+  dateOfBirth?: string | null;
+  domicile?: DomicileType;
   firstName?: string;
   identificationDocument?: string;
   lastName?: string;

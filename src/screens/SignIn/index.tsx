@@ -23,7 +23,8 @@ const blackScreenSignInFormOptions = (props: { navigation: any; route: RouteProp
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon="arrowLeft"
+      icon="down"
+      style={{ transform: [{ rotate: '90deg' }] }}
       onPress={props.navigation.goBack}
     />
   ),

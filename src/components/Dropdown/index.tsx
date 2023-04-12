@@ -38,7 +38,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
   });
 
   const expandListAnimationStyles = useAnimatedStyle(() => {
-    const height = interpolate(statusSharedValue.value, [0, 1], [0, LIST_HEIGHT]);
+    const height = interpolate(statusSharedValue.value, [0, 1], [0, (data?.length ?? 0) >= 5 ? LIST_HEIGHT : 5 * 24]);
 
     return {
       height: withTiming(height, {

@@ -19,7 +19,8 @@ export const useBackOverrideBase = <T extends object>(useCurrentFormContext: () 
           navigation.canGoBack() ? (
             <Icon
               color={palette.pureWhite}
-              icon={'arrowLeft'}
+              icon={'down'}
+              style={{ transform: [{ rotate: '90deg' }] }}
               onPress={() => navigation.goBack()}
             />
           ) : null,
@@ -31,7 +32,8 @@ export const useBackOverrideBase = <T extends object>(useCurrentFormContext: () 
         headerLeft: () => (
           <Icon
             color={palette.pureWhite}
-            icon={'arrowLeft'}
+            icon={'down'}
+            style={{ transform: [{ rotate: '90deg' }] }}
             onPress={moveToPreviousValidStep}
           />
         ),

@@ -6,6 +6,8 @@ import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepCompliance } from './stepCompliance';
+import { StepCorporateApplicantsDetails } from './stepCorporateApplicantsDetails';
+import { StepCorporateApplicantsLanding } from './stepCorporateApplicantsLanding';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
@@ -56,13 +58,15 @@ export const FLOW_STEPS = [
   StepCorporationType,
   StepCorporationLegalName,
   StepEIN,
+  StepDocumentsForCorporation,
+  StepDocumentsForTrust,
   StepCorporationInformation,
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
+  StepCorporateApplicantsLanding,
+  StepCorporateApplicantsDetails,
   StepProfilePicture,
-  StepDocumentsForCorporation,
-  StepDocumentsForTrust,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
