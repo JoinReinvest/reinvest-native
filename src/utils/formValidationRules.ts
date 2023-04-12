@@ -6,9 +6,9 @@ import zod from 'zod';
 import { STATE_NAMES } from '../constants/states';
 
 const requiredError = 'This field is required';
-const maskedCodeRegex = /^([0-9]){3}-([0-9]){3}$/;
+const maskedCodeRegex = /^(\d){3}-(\d){3}$/;
 const referralCodeRegex = /^([a-zA-Z0-9]){3}-([a-zA-Z0-9]){3}$/;
-const phoneWithoutCallingCodeRegex = /^([0-9]){3}-([0-9]){3}-([0-9]){3}$/;
+const phoneWithoutCallingCodeRegex = /^(\d){3}-(\d){3}-(\d{3}|\d{4})$/;
 const standardRequiredString = zod.string().min(1, requiredError);
 const maskedVerificationPhoneCode = /^([A-Z0-9]){3}-([A-Z0-9]){3}$/;
 

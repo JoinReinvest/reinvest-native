@@ -29,6 +29,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       secureTextEntry,
       onBlur,
       style,
+      predefined,
       ...props
     },
     ref,
@@ -106,6 +107,20 @@ export const Input = forwardRef<TextInput, InputProps>(
       return rightSection;
     }, [dark, rightSection, secureTextEntry, showSecuredInput]);
 
+    const getPredefinedPaddingForDropdown = useMemo(() => {
+      const stringLength = value?.length || 0;
+
+      if (stringLength > 3) {
+        return { mainSection: styles.removedHorizontalPadding, input: styles.smallerPaddingRight };
+      }
+
+      if (stringLength > 2) {
+        return { mainSection: styles.removeLeftPadding };
+      }
+
+      return null;
+    }, [value]);
+
     return (
       <>
         <Pressable
@@ -122,11 +137,12 @@ export const Input = forwardRef<TextInput, InputProps>(
               dark && styles.dark,
               dark && focused && styles.focusedDark,
               dark && !!error && styles.errorDark,
+              predefined && getPredefinedPaddingForDropdown?.input,
             ]}
           >
             <View />
             {leftSection}
-            <View style={[styles.mainSection, !placeholder && styles.centerText]}>
+            <View style={[styles.mainSection, !placeholder && styles.centerText, predefined && getPredefinedPaddingForDropdown?.mainSection]}>
               {placeholder && (
                 <Animated.View
                   onLayout={calculateSizeHandler}
@@ -148,6 +164,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   !placeholder && styles.centerText,
                   nativeInputStyle,
                   disabled && styles.nativeInputDisabled,
+                  predefined && styles.rightAlignment,
                   style,
                 ]}
                 placeholderTextColor={dark ? palette.dark3 : undefined}

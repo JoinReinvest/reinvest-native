@@ -142,6 +142,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
                         variant="paragraph"
                         style={[styles.item]}
                       >
+                        {prefix}
                         {item.label}
                       </StyledText>
                     </Pressable>

@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from 'reinvest-app-common/src/constants/country-codes';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useSetPhoneNumber } from 'reinvest-app-common/src/services/queries/setPhoneNumber';
@@ -17,7 +18,6 @@ import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/For
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '../../../constants/countryCodes';
 import { PHONE_MASK } from '../../../constants/masks';
 import { onBoardingDisclaimers } from '../../../constants/strings';
 import { palette } from '../../../constants/theme';
@@ -40,7 +40,7 @@ const schema = z.object({
 
 const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
   label: callingCode,
-  value: callingCode.replace('+', ''),
+  value: callingCode,
 }));
 
 export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
@@ -70,7 +70,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
 
     const { openDialog } = useDialog();
 
-    const shouldButtonBeDisabled = isLoading || !formState.isValid || formState.isSubmitting;
+    const shouldButtonBeDisabled = isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       fields.number = fields.number.replaceAll('-', '');
@@ -119,8 +119,10 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 control={control}
                 fieldName="countryCode"
                 dropdownProps={{
+                  prefix: '+',
                   dark: true,
                   data: OPTIONS,
+                  predefined: true,
                 }}
               />
             </View>
@@ -132,9 +134,9 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 inputProps={{
                   dark: true,
                   mask: PHONE_MASK,
-                  placeholder: '000-000-000',
+                  placeholder: '000-000-0000',
                   keyboardType: 'numeric',
-                  maxLength: 11,
+                  maxLength: 12,
                 }}
               />
             </View>
@@ -166,22 +168,4 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
       </>
     );
   },
-};
-
-const getPhoneNumberAndCountryCode = (phoneNumber: string | undefined) => {
-  if (phoneNumber) {
-    const phoneNumberDigits = /\d{10}$/.exec(phoneNumber);
-
-    if (phoneNumberDigits) {
-      const phone = phoneNumber.slice(-9);
-      const countryCode = `+${phoneNumber.replace(phone, '')}`;
-
-      return {
-        countryCode,
-        phone: phone.match(/.{1,3}/g)?.join('-'), // add mask xxx-xxx-xxx
-      };
-    }
-  }
-
-  return { countryCode: OPTIONS[0]?.label ?? '', phone: '' };
 };
