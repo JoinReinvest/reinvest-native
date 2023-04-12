@@ -46,6 +46,7 @@ export const FLOW_STEPS = [
   StepCompanyTickerSymbols,
   StepSeniorPoliticalFigure,
   StepSSN,
+  StepPermanentAddress,
   StepIdentificationDocuments,
   StepPermanentAddress,
   StepAuthorizedSignatoryEntity,

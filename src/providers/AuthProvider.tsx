@@ -1,6 +1,6 @@
 import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
 import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cognito-identity-js';
-import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import AuthService from '../services/amplify.service';
 
@@ -106,7 +106,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const getCurrentUser = async () => {
+  const getCurrentUser = useCallback(async () => {
     setLoading(true);
     try {
       const cognitoUser: CognitoUser = await Auth.currentAuthenticatedUser();
@@ -117,7 +117,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   async function getToken() {
     let currentUser: CognitoUser | null = null;
@@ -156,7 +156,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     getCurrentUser();
-  }, []);
+  }, [getCurrentUser]);
 
   const ctx = useMemo(() => {
     return {
