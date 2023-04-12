@@ -3,13 +3,15 @@ import { StyleSheet } from 'react-native';
 import { palette } from '../../constants/theme';
 import { Fonts } from '../../types/fonts';
 import { isIOS } from './../../constants/common';
-import { AVAILABLE_HEIGHT, xScale, yScale } from './../../utils/scale';
+import { AVAILABLE_HEIGHT, STATUS_BAR, xScale, yScale } from './../../utils/scale';
+
+const signetMargin = isIOS ? yScale(86) : yScale(86 + STATUS_BAR);
 
 export const styles = StyleSheet.create({
   signet: {
-    width: 72,
-    height: 72,
-    marginVertical: yScale(80),
+    width: 144,
+    height: 144,
+    marginTop: signetMargin,
   },
   text: {
     fontFamily: Fonts.GTAmericaExtendedRegular,
