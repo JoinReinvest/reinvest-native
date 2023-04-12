@@ -1,5 +1,5 @@
 import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
-import { ISignUpResult } from 'amazon-cognito-identity-js';
+import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cognito-identity-js';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
 import AuthService from '../services/amplify.service';
@@ -21,12 +21,14 @@ interface AuthContextInterface {
     signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | null> | null;
   };
   loading: boolean;
+  loggedIn: boolean;
   user: CognitoUser | null;
 }
 
 export const AuthContext = createContext<AuthContextInterface>({
   user: null,
   loading: true,
+  loggedIn: false,
   actions: {
     signIn: async () => null,
     confirmSignIn: async () => null,
@@ -46,14 +48,18 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState<CognitoUser | null>(null);
   const [error, setError] = useState<Error | string | undefined>();
+
+  const checkTwoFactorAuthentication = (challengeName: CognitoChallengeName | undefined) => setLoggedIn(!challengeName);
 
   const signIn = async (email: string, password: string): Promise<CognitoUser | Error> => {
     setLoading(true);
     try {
       const currentUser: CognitoUser = await Auth.signIn(email, password);
       setUser(currentUser);
+      checkTwoFactorAuthentication(currentUser.challengeName);
 
       return currentUser;
     } catch (e) {
@@ -68,6 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const confirmSignIn = async (authenticationCode: string) => {
     const confirmedUser: CognitoUser = await Auth.confirmSignIn(user, authenticationCode, ChallengeName.SMS_MFA);
     setUser(confirmedUser);
+    setLoggedIn(true);
 
     return confirmedUser;
   };
@@ -152,6 +159,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const ctx = useMemo(() => {
     return {
+      loggedIn,
       loading,
       user,
       error,
