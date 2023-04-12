@@ -3,13 +3,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
-import { useLogInNavigation } from '../../navigation/hooks';
+import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 
-export const Dashboard = () => {
+export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { top } = useSafeAreaInsets();
-
-  const navigation = useLogInNavigation();
 
   return (
     <MainWrapper style={{ paddingTop: top }}>

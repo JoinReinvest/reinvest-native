@@ -1,17 +1,17 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 import { BackHandler } from 'react-native';
 import { ContextState } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
-import { Icon } from '../components/Icon';
-import { palette } from '../constants/theme';
+import { useBackOverrideBase } from './useBackOverrideBase';
 
 export const useStepBackOverride = <T extends object>(useCurrentFormContext: () => ContextState<T>) => {
   const {
-    meta: { previousStepIdentifier, isFirstStep },
+    meta: { previousStepIdentifier },
     moveToPreviousValidStep,
   } = useCurrentFormContext();
-  const navigation = useNavigation();
+  useBackOverrideBase(useCurrentFormContext);
+
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
@@ -29,29 +29,4 @@ export const useStepBackOverride = <T extends object>(useCurrentFormContext: () 
       return () => subscription.remove();
     }, [moveToPreviousValidStep, previousStepIdentifier]),
   );
-  useEffect(() => {
-    if (isFirstStep) {
-      navigation.setOptions({
-        headerLeft: () => (
-          <Icon
-            color={palette.pureWhite}
-            icon="arrowLeft"
-            onPress={() => navigation.goBack()}
-          />
-        ),
-      });
-
-      return;
-    } else {
-      navigation.setOptions({
-        headerLeft: () => (
-          <Icon
-            color={palette.pureWhite}
-            icon="arrowLeft"
-            onPress={moveToPreviousValidStep}
-          />
-        ),
-      });
-    }
-  }, [isFirstStep, moveToPreviousValidStep, navigation]);
 };

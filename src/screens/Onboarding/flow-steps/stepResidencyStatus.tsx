@@ -50,7 +50,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
             informationMessage="REINVEST does not accept non-US residents at this time."
           />
           <RadioButtonGroup
-            selectedValue={watchedResidency}
+            selectedValue={watchedResidency || ''}
             onSelect={val => setValue('residency', val as DomicileType)}
             options={RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS}
           />

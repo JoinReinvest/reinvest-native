@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
@@ -15,7 +16,6 @@ import { CODE_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { allRequiredFieldsExists } from '../../../utils/formValidator';
 import { Identifiers } from '../identifires';
 import { ResetPasswordFormFields } from '../types';
 import { styles } from './styles';

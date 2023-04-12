@@ -72,7 +72,8 @@
     ],
     "rules": {
       "@tanstack/query/exhaustive-deps": 0,
-      "@tanstack/query/prefer-query-object-syntax": "error"
+      "@tanstack/query/prefer-query-object-syntax": "error",
+      "import/extensions": "off"
     }
   },
   "prettier": "@hookooekoo/eslint-config/prettier.json"

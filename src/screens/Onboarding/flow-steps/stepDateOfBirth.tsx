@@ -1,13 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Alert, ScrollView, View } from 'react-native';
 import { Masks } from 'react-native-mask-input';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
@@ -27,6 +31,22 @@ const schema = z.object({
 
 export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.DATE_OF_BIRTH,
+  willBePartOfTheFlow(fields) {
+    return !fields.accountType && !fields.isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [
+      fields.accountType,
+      fields.name?.firstName,
+      fields.name?.lastName,
+      fields.phone?.number,
+      fields.phone?.countryCode,
+      fields.authCode,
+    ];
+
+    return allRequiredFieldsExists(requiredFields);
+  },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
@@ -36,12 +56,21 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
       defaultValues: storeFields,
     });
 
+    const { error: profileDetailsError, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+
     const shouldButtonBeDisabled = formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async ({ dateOfBirth }) => {
       await updateStoreFields({ dateOfBirth });
+      await completeProfileMutate({ input: { dateOfBirth: { dateOfBirth } } });
       moveToNextStep();
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     return (
       <>
@@ -53,6 +82,12 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
             dark
             headline="Enter your date of birth"
           />
+          {profileDetailsError && (
+            <FormMessage
+              variant="error"
+              message={profileDetailsError.message}
+            />
+          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}

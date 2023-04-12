@@ -20,9 +20,11 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
     const { progressPercentage } = useOnboardingFormFlow();
     const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
       const selectedFilesUris = selectedFiles.map(({ uri }) => uri ?? '');
-      updateStoreFields({ identificationDocument: selectedFilesUris });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await updateStoreFields({ identificationDocument: selectedFilesUris });
       moveToNextStep();
     };
 

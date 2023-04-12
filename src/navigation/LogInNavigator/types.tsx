@@ -14,3 +14,8 @@ export type LogInStackParamList = {
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;
 export type LogInRouteProps<T extends keyof LogInStackParamList> = RouteProp<LogInStackParamList, T>;
+
+export type LogInProps<T extends keyof LogInStackParamList> = {
+  navigation: LogInNavProps<T>;
+  route: LogInRouteProps<T>;
+};

@@ -1,19 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useSetPhoneNumber } from 'reinvest-app-common/src/services/queries/setPhoneNumber';
 import { SelectOptions } from 'reinvest-app-common/src/types/select-option';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '../../../constants/country-codes';
+import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from '../../../constants/countryCodes';
 import { PHONE_MASK } from '../../../constants/masks';
 import { onBoardingDisclaimers } from '../../../constants/strings';
 import { palette } from '../../../constants/theme';
@@ -26,12 +30,12 @@ import { styles } from './styles';
 
 interface Fields {
   countryCode: string;
-  phone: string;
+  number: string;
 }
 
 const schema = z.object({
   countryCode: z.enum(CALLING_CODES),
-  phone: formValidationRules.phone,
+  number: formValidationRules.phone,
 });
 
 const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
@@ -42,30 +46,44 @@ const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode
 export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PHONE_NUMBER,
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const phoneNumber = storeFields.phoneNumber;
-    const { countryCode, phone } = useMemo(() => getPhoneNumberAndCountryCode(phoneNumber), [phoneNumber]);
+  willBePartOfTheFlow(fields) {
+    return !fields.accountType && !fields.isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+  },
+
+  Component: ({ storeFields: { phone }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const { formState, control, handleSubmit } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
-        countryCode,
-        phone,
+        number: phone?.number || '',
+        countryCode: phone?.countryCode || CALLING_CODES[0],
       },
     });
+    const { error: phoneNumberError, isLoading, mutate: setPhoneNumberMutate, isSuccess } = useSetPhoneNumber(getApiClient);
 
     const { openDialog } = useDialog();
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const shouldButtonBeDisabled = isLoading || !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      fields.phone = fields.phone.replaceAll('-', '');
+      fields.number = fields.number.replaceAll('-', '');
       fields.countryCode = OPTIONS.find(callingCode => callingCode.label === fields.countryCode)?.value ?? '';
-      const phoneNumberFromFields = `${fields.countryCode}${fields.phone}`;
-      await updateStoreFields({ phoneNumber: phoneNumberFromFields });
-      moveToNextStep();
+      await setPhoneNumberMutate({ countryCode: fields.countryCode, phoneNumber: fields.number });
+      await updateStoreFields({ phone: fields });
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const showDisclaimer = () => {
       openDialog(
@@ -87,6 +105,12 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
             headline="Enter your phone number"
             description="We’ll text you a confirmation code within 10 minutes."
           />
+          {phoneNumberError && (
+            <FormMessage
+              variant="error"
+              message={phoneNumberError.message}
+            />
+          )}
           <View style={styles.phoneRow}>
             <View style={styles.callingCodeDropdown}>
               <Controller
@@ -104,7 +128,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               <Controller
                 onSubmit={handleSubmit(onSubmit)}
                 control={control}
-                fieldName="phone"
+                fieldName="number"
                 inputProps={{
                   dark: true,
                   mask: PHONE_MASK,

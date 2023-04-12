@@ -7,7 +7,7 @@ import Screens from '../screens';
 export type BottomTabsParamsBase = {
   [Screens.Dashboard]: undefined;
   [Screens.REIT]: undefined;
-  [Screens.EducationStack]: EducationStackParamsList;
+  [Screens.EducationStack]: EducationStackParamsList | undefined;
   [Screens.Notifications]: undefined;
 };
 

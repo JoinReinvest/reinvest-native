@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ScrollView, View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Avatar } from '../../../components/Avatar';
@@ -28,13 +29,29 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PROFILE_PICTURE,
 
   doesMeetConditionFields(fields) {
-    const profileFields = [fields.accountType, fields.firstName, fields.lastName];
+    const profileFields = [
+      fields.name?.firstName,
+      fields.name?.lastName,
+      fields.phone?.number,
+      fields.phone?.countryCode,
+      fields.authCode,
+      fields.dateOfBirth,
+      fields.residency,
+      fields.ssn,
+      fields.identificationDocument,
+      fields.accountType,
+    ];
 
-    return allRequiredFieldsExists(profileFields);
+    const individualAccountFields = [fields.netIncome, fields.netWorth];
+
+    return (
+      fields.isCompletedProfile &&
+      ((fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(profileFields)) || allRequiredFieldsExists(individualAccountFields))
+    );
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { profilePicture, firstName, lastName, accountType } = storeFields;
+    const { profilePicture, name, accountType } = storeFields;
 
     const [selectedImageUri, setSelectedImageUri] = useState<string | undefined>(profilePicture);
 
@@ -76,7 +93,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           <Avatar
             uri={selectedImageUri}
             size="xl"
-            username={`${firstName} ${lastName}`}
+            username={`${name?.firstName} ${name?.lastName}`}
             variant={accountType}
             isEditable
             onImageSelect={handleSelectProfilePicture}

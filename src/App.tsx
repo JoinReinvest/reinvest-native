@@ -19,6 +19,7 @@ import { AuthProvider } from './providers/AuthProvider';
   });
 
 const queryClient = new QueryClient();
+
 const App = () => {
   useEffect(() => {
     (() => {
