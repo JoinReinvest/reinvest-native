@@ -27,6 +27,7 @@ import { StepResidencyStatus } from './stepResidencyStatus';
 import { StepResidencyVisa } from './stepResidencyVisa';
 import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
+import { StepTrustLegalName } from './stepTrustLegalName';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -45,6 +46,7 @@ export const FLOW_STEPS = [
   StepIdentificationDocuments,
   StepPermanentAddress,
   StepAuthorizedSignatoryEntity,
+  StepTrustLegalName,
   StepAccreditedInvestor,
   StepExperience,
   StepCorporationType,
