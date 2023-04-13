@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { DocumentPickerResponse } from 'react-native-document-picker';
-import { Asset } from 'react-native-image-picker';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
@@ -30,15 +28,19 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [identificationDocument, setIdentificationDocument] = useState<(DocumentPickerResponse | Asset)[]>([]);
+    const [identificationDocument, setIdentificationDocument] = useState<string>('');
 
     const handleContinue = async () => {
       const { _isEditingCompanyMajorStakeholderApplicant } = storeFields;
-      const currentMajorStakeholderApplicant = { ...storeFields._currentCompanyMajorStakeholder, identificationDocument: identificationDocument[0]?.uri };
+      const currentMajorStakeholderApplicant = { ...storeFields._currentCompanyMajorStakeholder, identificationDocument };
       const currentMajorStakeholderApplicantIndex = currentMajorStakeholderApplicant._index;
       await updateStoreFields({ _currentCompanyMajorStakeholder: currentMajorStakeholderApplicant });
 
-      if (!!_isEditingCompanyMajorStakeholderApplicant && currentMajorStakeholderApplicantIndex) {
+      if (
+        !!_isEditingCompanyMajorStakeholderApplicant &&
+        typeof currentMajorStakeholderApplicantIndex !== 'undefined' &&
+        currentMajorStakeholderApplicantIndex >= 0
+      ) {
         const allApplicants = storeFields.companyMajorStakeholderApplicants || [];
         const updatedApplicants = allApplicants.map((applicant, index) => {
           if (index === currentMajorStakeholderApplicantIndex) {
@@ -79,7 +81,7 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
           <FilePicker
             dark
             label="Upload Files"
-            onSelect={setIdentificationDocument}
+            onSelect={res => setIdentificationDocument(res[0]?.uri ?? '')}
             type="single"
           />
         </ScrollView>
@@ -89,7 +91,7 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
         >
           <Button
             onPress={handleContinue}
-            disabled={!identificationDocument.length}
+            disabled={!identificationDocument}
           >
             Continue
           </Button>

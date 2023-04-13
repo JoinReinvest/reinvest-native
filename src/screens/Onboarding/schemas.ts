@@ -3,6 +3,7 @@ import { formValidationRules, generateFileSchema } from 'reinvest-app-common/src
 import { z } from 'zod';
 
 import { dateOlderThanEighteenYearsSchema } from '../../utils/formValidationRules';
+import { DOMICILE_LABELS } from './../../constants/domicile';
 
 export const ACCEPTED_FILES_MIME_TYPES: PartialMimeTypeKeys = ['pdf', 'png', 'jpeg'];
 export const FILE_SIZE_LIMIT_IN_MEGABYTES = 5;
@@ -14,7 +15,7 @@ export const APPLICANT_WITHOUT_IDENTIFICATION = z.object({
   residentialAddress: z.string().min(1),
   socialSecurityNumber: z.string().min(1),
   dateOfBirth: dateOlderThanEighteenYearsSchema,
-  domicile: z.enum(['US Citizen', 'Green Card', 'Visa']),
+  domicile: z.enum(DOMICILE_LABELS),
 });
 
 export const APPLICANT_IDENTIFICATION = z.object({

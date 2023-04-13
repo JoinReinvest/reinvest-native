@@ -5,7 +5,7 @@ import { ScrollView, View } from 'react-native';
 import { Masks } from 'react-native-mask-input';
 import { RESIDENCY_STATUS_OPTIONS } from 'reinvest-app-common/src/constants/residenty-status';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DomicileType, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -14,23 +14,8 @@ import { SSN_MASK } from '../../../constants/masks';
 import { Identifiers } from '../identifiers';
 import { APPLICANT_WITHOUT_IDENTIFICATION } from '../schemas';
 import { Applicant, OnboardingFormFields } from '../types';
-import { getDefaultValuesForApplicantWithoutIdentification } from '../utilites';
+import { ApplicantFormFields, getDefaultValuesForApplicantWithoutIdentification, mapDomicileLabelToDomicileType } from '../utilities';
 import { styles } from './styles';
-
-type Fields = Omit<Applicant, 'identificationDocument'>;
-
-const mapToDomicile = (value: string | undefined) => {
-  switch (value) {
-    case 'US Citizen':
-      return DomicileType.Citizen;
-    case 'Visa':
-      return DomicileType.Visa;
-    case 'Green Card':
-      return DomicileType.GreenCard;
-    default:
-      return undefined;
-  }
-};
 
 export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.CORPORATE_APPLICANT_DETAILS,
@@ -48,7 +33,7 @@ export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const defaultValues = getDefaultValuesForApplicantWithoutIdentification(storeFields, DraftAccountType.Corporate);
 
-    const { control, formState, handleSubmit } = useForm<Fields>({
+    const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
       mode: 'onBlur',
       resolver: zodResolver(APPLICANT_WITHOUT_IDENTIFICATION),
       defaultValues: async () => defaultValues,
@@ -56,11 +41,15 @@ export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = 
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
-      fields.domicile = mapToDomicile(fields.domicile);
-      fields.dateOfBirth = fields.dateOfBirth?.replaceAll('/', '-');
+    const onSubmit: SubmitHandler<ApplicantFormFields> = async fields => {
+      const { _currentCompanyMajorStakeholder } = storeFields;
 
-      await updateStoreFields({ _currentCompanyMajorStakeholder: fields });
+      const applicant: Applicant = {
+        ...fields,
+        domicile: mapDomicileLabelToDomicileType(fields.domicile),
+      };
+
+      await updateStoreFields({ _currentCompanyMajorStakeholder: { ...applicant, _index: _currentCompanyMajorStakeholder?._index } });
       moveToNextStep();
     };
 
@@ -93,7 +82,7 @@ export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = 
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="dateOfBirth"
-            inputProps={{ placeholder: 'DOB (MM/DD/YYYY)', dark: true, mask: Masks.DATE_MMDDYYYY }}
+            inputProps={{ placeholder: 'Date of birth', maskedPlaceholder: 'MM/DD/YYYY', dark: true, mask: Masks.DATE_MMDDYYYY }}
           />
           <Controller
             onSubmit={handleSubmit(onSubmit)}
