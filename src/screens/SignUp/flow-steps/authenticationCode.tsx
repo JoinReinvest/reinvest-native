@@ -121,7 +121,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
           >
-            Sign Up
+            Verify Email
           </Button>
         </View>
       </>

@@ -39,7 +39,7 @@ export const SignIn = () => {
         >
           {() => (
             <FirstStepLayout
-              headline="Sign in"
+              headline="Sign In"
               description="Building your wealth while rebuilding our communities."
             >
               <StepOutsideFlow initialSteps={initialSteps} />
