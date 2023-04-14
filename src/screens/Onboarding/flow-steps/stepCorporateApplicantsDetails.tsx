@@ -17,6 +17,15 @@ import { Applicant, OnboardingFormFields } from '../types';
 import { ApplicantFormFields, getDefaultValuesForApplicantWithoutIdentification, mapDomicileLabelToDomicileType } from '../utilities';
 import { styles } from './styles';
 
+const EMPTY_APPLICANT_FORM: ApplicantFormFields = {
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  socialSecurityNumber: '',
+  residentialAddress: '',
+  domicile: undefined,
+};
+
 export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.CORPORATE_APPLICANT_DETAILS,
 
@@ -32,11 +41,15 @@ export const StepCorporateApplicantsDetails: StepParams<OnboardingFormFields> = 
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const defaultValues = getDefaultValuesForApplicantWithoutIdentification(storeFields, DraftAccountType.Corporate);
+    const isEditing =
+      storeFields._currentCompanyMajorStakeholder?._index !== undefined &&
+      storeFields._isEditingCompanyMajorStakeholderApplicant &&
+      storeFields._currentCompanyMajorStakeholder._index >= 0;
 
     const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
       mode: 'onBlur',
       resolver: zodResolver(APPLICANT_WITHOUT_IDENTIFICATION),
-      defaultValues: async () => defaultValues,
+      defaultValues: async () => (isEditing ? defaultValues : EMPTY_APPLICANT_FORM),
     });
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;

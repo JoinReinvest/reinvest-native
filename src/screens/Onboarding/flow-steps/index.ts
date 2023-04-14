@@ -9,7 +9,6 @@ import { StepCompliance } from './stepCompliance';
 import { StepCorporateApplicantIdentification } from './stepCorporateApplicantIdentification';
 import { StepCorporateApplicantList } from './stepCorporateApplicantList';
 import { StepCorporateApplicantsDetails } from './stepCorporateApplicantsDetails';
-import { StepCorporateApplicantsLanding } from './stepCorporateApplicantsLanding';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
@@ -38,10 +37,9 @@ import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
-  StepCorporateApplicantsLanding,
+  StepCorporateApplicantList,
   StepCorporateApplicantsDetails,
   StepCorporateApplicantIdentification,
-  StepCorporateApplicantList,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,

@@ -14,4 +14,5 @@ export const styles = StyleSheet.create({
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
   },
   bottomBordered: { borderBottomWidth: 1, borderBottomColor: palette.dark2 },
+  buttonsSection: { alignSelf: 'flex-end', width: '100%', paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL },
 });

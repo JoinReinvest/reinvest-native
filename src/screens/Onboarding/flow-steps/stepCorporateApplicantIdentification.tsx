@@ -26,7 +26,7 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
     return accountType === DraftAccountType.Corporate;
   },
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const [identificationDocument, setIdentificationDocument] = useState<string>('');
 
@@ -56,7 +56,7 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
           _isEditingCompanyMajorStakeholderApplicant: false,
         });
 
-        moveToNextStep();
+        moveToStepByIdentifier(Identifiers.CORPORATE_APPLICANTS_LANDING);
 
         return;
       } else {
@@ -64,7 +64,7 @@ export const StepCorporateApplicantIdentification: StepParams<OnboardingFormFiel
         const updatedApplicants = [...allApplicants, currentMajorStakeholderApplicant];
 
         await updateStoreFields({ companyMajorStakeholderApplicants: updatedApplicants, _isEditingCompanyMajorStakeholderApplicant: false });
-        moveToNextStep();
+        moveToStepByIdentifier(Identifiers.CORPORATE_APPLICANTS_LANDING);
       }
     };
 
