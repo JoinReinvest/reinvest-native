@@ -28,6 +28,7 @@ import { StepResidencyVisa } from './stepResidencyVisa';
 import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
 import { StepTrustLegalName } from './stepTrustLegalName';
+import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
@@ -49,14 +50,16 @@ export const FLOW_STEPS = [
   StepTrustLegalName,
   StepAccreditedInvestor,
   StepExperience,
+  StepTrustType,
   StepCorporationType,
+  StepCorporationLegalName,
+  StepAuthorizedSignatoryEntity,
+  StepEIN,
+  StepCorporationInformation,
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
   StepProfilePicture,
-  StepCorporationInformation,
-  StepCorporationLegalName,
-  StepEIN,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
