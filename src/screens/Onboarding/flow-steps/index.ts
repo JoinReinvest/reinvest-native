@@ -30,6 +30,7 @@ import { StepResidencyStatus } from './stepResidencyStatus';
 import { StepResidencyVisa } from './stepResidencyVisa';
 import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
+import { StepTrustApplicantList } from './stepTrustApplicantList';
 import { StepTrustLegalName } from './stepTrustLegalName';
 import { StepTrustType } from './stepTrustType';
 
@@ -48,14 +49,26 @@ export const FLOW_STEPS = [
   StepSeniorPoliticalFigure,
   StepSSN,
   StepIdentificationDocuments,
+<<<<<<< HEAD
+=======
+  StepAuthorizedSignatoryEntity,
+>>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
   StepPermanentAddress,
   StepAccreditedInvestor,
   StepAuthorizedSignatoryEntity,
   StepExperience,
+<<<<<<< HEAD
   StepTrustLegalName,
   StepTrustType,
+=======
+>>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
   StepCorporationType,
+  StepTrustType,
   StepCorporationLegalName,
+<<<<<<< HEAD
+=======
+  StepTrustLegalName,
+>>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
   StepEIN,
   StepDocumentsForCorporation,
   StepDocumentsForTrust,
@@ -63,6 +76,7 @@ export const FLOW_STEPS = [
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
+  StepTrustApplicantList,
   StepCorporateApplicantList,
   StepProfilePicture,
 ];
