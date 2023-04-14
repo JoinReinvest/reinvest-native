@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { ScrollView, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
@@ -25,25 +25,25 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
     return accountType === DraftAccountType.Corporate;
   },
 
-  Component: ({ storeFields, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { companyMajorStakeholderApplicants, corporationLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(corporationLegalName || '');
 
-    const [applicants, setApplicants] = useState<Applicant[]>(companyMajorStakeholderApplicants ?? []);
+    const applicantsRef = useRef<Applicant[]>(companyMajorStakeholderApplicants ?? []);
 
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog, closeDialog } = useDialog();
 
-    const hasApplicants = !!applicants.length;
+    const hasApplicants = !!applicantsRef.current.length;
 
-    const indexedStakeholderApplicants: IndexedSchema<Applicant>[] = applicants.map((item, index) => ({
+    const indexedStakeholderApplicants: IndexedSchema<Applicant>[] = applicantsRef.current.map((item, index) => ({
       ...item,
       _index: index,
     }));
 
-    const submit = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
+    const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
       if (applicantIndex !== undefined && applicantIndex >= 0) {
-        const updatedApplicants = applicants.map((applicant, index) => {
+        const updatedApplicants = applicantsRef.current.map((applicant, index) => {
           if (applicantIndex === index) {
             return submittedApplicant;
           }
@@ -51,30 +51,50 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
           return applicant;
         });
 
-        setApplicants(updatedApplicants);
+        applicantsRef.current = updatedApplicants;
         closeDialog();
+        await updateStoreFields({
+          companyMajorStakeholderApplicants: applicantsRef.current,
+          _currentCompanyMajorStakeholder: undefined,
+          _isEditingCompanyMajorStakeholderApplicant: false,
+        });
 
         return;
       }
 
-      setApplicants(prev => [...prev, submittedApplicant]);
+      applicantsRef.current = [...applicantsRef.current, submittedApplicant];
+
+      await updateStoreFields({
+        companyMajorStakeholderApplicants: applicantsRef.current,
+        _currentCompanyMajorStakeholder: undefined,
+        _isEditingCompanyMajorStakeholderApplicant: false,
+      });
       closeDialog();
     };
 
-    const onAddNewApplicant = () => {
-      updateStoreFields({ _willHaveMajorStakeholderApplicants: true, _currentCompanyMajorStakeholder: undefined });
+    const onAddNewApplicant = async () => {
+      await updateStoreFields({ _willHaveMajorStakeholderApplicants: true, _currentCompanyMajorStakeholder: undefined });
       openDialog(
         <ApplicantFormModal
           storeFields={storeFields}
-          onSubmit={submit}
+          onSubmit={updateApplicants}
           onClose={closeDialog}
         />,
+        {
+          animationType: 'none',
+          closeIcon: false,
+        },
       );
     };
 
     const onContinue = () => {
-      updateStoreFields({ _willHaveMajorStakeholderApplicants: hasApplicants });
-      moveToStepByIdentifier(Identifiers.PROFILE_PICTURE);
+      updateStoreFields({
+        _willHaveMajorStakeholderApplicants: hasApplicants,
+        companyMajorStakeholderApplicants: applicantsRef.current,
+        _currentCompanyMajorStakeholder: undefined,
+        _isEditingCompanyMajorStakeholderApplicant: false,
+      });
+      moveToNextStep();
     };
 
     const onEditApplicant = async (applicant: IndexedSchema<Applicant>) => {
@@ -84,13 +104,17 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
             applicantIndex={applicant._index}
             storeFields={{
               ...storeFields,
-              companyMajorStakeholderApplicants: applicants,
+              companyMajorStakeholderApplicants: applicantsRef.current,
               _currentCompanyMajorStakeholder: applicant,
               _isEditingCompanyMajorStakeholderApplicant: true,
             }}
-            onSubmit={submit}
+            onSubmit={updateApplicants}
             onClose={closeDialog}
           />,
+          {
+            animationType: 'none',
+            closeIcon: false,
+          },
         );
       }
     };

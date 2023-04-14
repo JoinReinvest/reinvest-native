@@ -6,9 +6,7 @@ import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepCompliance } from './stepCompliance';
-import { StepCorporateApplicantIdentification } from './stepCorporateApplicantIdentification';
 import { StepCorporateApplicantList } from './stepCorporateApplicantList';
-import { StepCorporateApplicantsDetails } from './stepCorporateApplicantsDetails';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
@@ -38,8 +36,6 @@ import { StepTrustType } from './stepTrustType';
 export const FLOW_STEPS = [
   StepAccountType,
   StepCorporateApplicantList,
-  StepCorporateApplicantsDetails,
-  StepCorporateApplicantIdentification,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -68,8 +64,7 @@ export const FLOW_STEPS = [
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
-  StepCorporateApplicantsLanding,
-  StepCorporateApplicantsDetails,
+  StepCorporateApplicantList,
   StepProfilePicture,
 ];
 

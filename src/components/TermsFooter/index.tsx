@@ -43,7 +43,7 @@ export const TermsFooter = () => {
       >
         By continuing, you agree to the REINVEST
       </StyledText>
-      <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center' }}>
         <StyledText
           color="frostGreen"
           onPress={showTerms}

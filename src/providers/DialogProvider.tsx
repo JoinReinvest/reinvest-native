@@ -3,10 +3,17 @@ import { Modal } from 'react-native';
 
 import { MainModalWrapper } from '../components/Modals/ModalWrappers/MainModalWrapper';
 
+type AnimationType = 'slide' | 'none' | 'fade';
+
+interface Options {
+  animationType: AnimationType;
+  closeIcon: boolean;
+}
+
 interface DialogContextInterface {
   closeDialog: () => void;
   isDialogOpen: boolean;
-  openDialog: (content: ReactNode) => void;
+  openDialog: (content: ReactNode, options?: Partial<Options>) => void;
 }
 
 export const DialogContext = createContext<DialogContextInterface>({
@@ -20,6 +27,7 @@ const modals = {
 };
 
 export interface DialogProviderProps {
+  animationType?: AnimationType;
   dark?: boolean;
   /*
   In case we  need additional type , we should extend
@@ -29,10 +37,18 @@ export interface DialogProviderProps {
 
 export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithChildren<DialogProviderProps>) => {
   const [dialogContent, setDialogContent] = useState<ReactNode>(null);
+  const [closeIconVisible, setCloseIconVisible] = useState<boolean>(true);
+  const [animationType, setAnimationType] = useState<AnimationType>('slide');
+
   const closeDialog = () => setDialogContent(false);
+
   const ctx = useMemo(() => {
     return {
-      openDialog: (content: ReactNode) => setDialogContent(content),
+      openDialog: (content: ReactNode, options?: Partial<Options>) => {
+        setDialogContent(content);
+        setCloseIconVisible(options?.closeIcon ?? true);
+        setAnimationType(options?.animationType ?? 'slide');
+      },
       closeDialog,
       isDialogOpen: !!dialogContent,
     };
@@ -48,10 +64,11 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
       {children}
       {!!dialogContent && (
         <Modal
-          animationType="slide"
+          animationType={animationType}
           visible={!!dialogContent}
         >
           <Wrapper
+            closeIcon={closeIconVisible}
             dialogContent={dialogContent}
             {...props}
           />
