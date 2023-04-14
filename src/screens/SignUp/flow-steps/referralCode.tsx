@@ -7,6 +7,7 @@ import zod, { Schema } from 'zod';
 
 import { validateReferralCode } from '../../../api/validateReferralCode';
 import { Button } from '../../../components/Button';
+import { ReferralCodeCheckList } from '../../../components/CheckList/ReferralCodeCheckList';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -85,6 +86,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               autoComplete: 'off',
             }}
           />
+          <ReferralCodeCheckList code={referralValue ?? ''} />
         </PaddedScrollView>
         <View
           key="buttons_section"
