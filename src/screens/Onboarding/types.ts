@@ -50,8 +50,8 @@ export interface OnboardingFormFields {
   corporationLegalName?: string;
   corporationNumberOfEmployees?: CorporationNumberOfEmployees;
   corporationType?: CorporateCompanyType;
-  documentsForCorporation?: File[];
-  documentsForTrust?: File[];
+  documentsForCorporation?: string[];
+  documentsForTrust?: string[];
   domicile?: {
     forGreenCard?: {
       birthCountry: string;
@@ -117,7 +117,7 @@ export interface Applicant {
   dateOfBirth?: Date;
   domicile?: 'us' | 'green-card' | 'visa';
   firstName?: string;
-  identificationDocument?: File;
+  identificationDocument?: string;
   lastName?: string;
   middleName?: string;
   residentialAddress?: string;
