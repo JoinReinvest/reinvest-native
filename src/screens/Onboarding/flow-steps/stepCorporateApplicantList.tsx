@@ -10,11 +10,13 @@ import { Icon } from '../../../components/Icon';
 import { ApplicantFormModal } from '../../../components/Modals/ModalContent/ApplicantForm';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
+import { EMPTY_APPLICANT_FORM } from '../../../constants/applicants';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { Identifiers } from '../identifiers';
 import { Applicant, IndexedSchema, OnboardingFormFields } from '../types';
+import { getDefaultValuesForApplicantWithoutIdentification } from '../utilities';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -42,43 +44,28 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
     }));
 
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
-      if (applicantIndex !== undefined && applicantIndex >= 0) {
-        const updatedApplicants = applicantsRef.current.map((applicant, index) => {
-          if (applicantIndex === index) {
-            return submittedApplicant;
-          }
-
-          return applicant;
-        });
-
-        applicantsRef.current = updatedApplicants;
-        closeDialog();
-        await updateStoreFields({
-          companyMajorStakeholderApplicants: applicantsRef.current,
-          _currentCompanyMajorStakeholder: undefined,
-          _isEditingCompanyMajorStakeholderApplicant: false,
-        });
-
-        return;
+      if (applicantIndex === undefined) {
+        applicantsRef.current = [...applicantsRef.current, submittedApplicant];
       }
 
-      applicantsRef.current = [...applicantsRef.current, submittedApplicant];
+      if (applicantIndex !== undefined && applicantIndex >= 0) {
+        const updatedApplicants = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
+
+        applicantsRef.current = updatedApplicants;
+      }
 
       await updateStoreFields({
         companyMajorStakeholderApplicants: applicantsRef.current,
-        _currentCompanyMajorStakeholder: undefined,
-        _isEditingCompanyMajorStakeholderApplicant: false,
       });
       closeDialog();
     };
 
-    const onAddNewApplicant = async () => {
-      await updateStoreFields({ _willHaveMajorStakeholderApplicants: true, _currentCompanyMajorStakeholder: undefined });
+    const onAddNewApplicant = () => {
       openDialog(
         <ApplicantFormModal
-          storeFields={storeFields}
           onSubmit={updateApplicants}
           onClose={closeDialog}
+          defaultValues={EMPTY_APPLICANT_FORM}
         />,
         {
           animationType: 'none',
@@ -87,27 +74,21 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
       );
     };
 
-    const onContinue = () => {
-      updateStoreFields({
-        _willHaveMajorStakeholderApplicants: hasApplicants,
+    const onContinue = async () => {
+      await updateStoreFields({
         companyMajorStakeholderApplicants: applicantsRef.current,
-        _currentCompanyMajorStakeholder: undefined,
-        _isEditingCompanyMajorStakeholderApplicant: false,
       });
       moveToNextStep();
     };
 
     const onEditApplicant = async (applicant: IndexedSchema<Applicant>) => {
+      const defaultValues = getDefaultValuesForApplicantWithoutIdentification(applicantsRef.current, applicant._index);
+
       if (applicant._index !== undefined) {
         openDialog(
           <ApplicantFormModal
+            defaultValues={defaultValues}
             applicantIndex={applicant._index}
-            storeFields={{
-              ...storeFields,
-              companyMajorStakeholderApplicants: applicantsRef.current,
-              _currentCompanyMajorStakeholder: applicant,
-              _isEditingCompanyMajorStakeholderApplicant: true,
-            }}
             onSubmit={updateApplicants}
             onClose={closeDialog}
           />,

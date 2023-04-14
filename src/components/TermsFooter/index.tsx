@@ -9,7 +9,11 @@ import { FormModalDisclaimer } from '../Modals/ModalContent/FormModalDisclaimer'
 import { styles } from '../TermsFooter/styles';
 import { StyledText } from '../typography/StyledText';
 
-export const TermsFooter = () => {
+export interface TermsFooterProps {
+  noPadding?: boolean;
+}
+
+export const TermsFooter = ({ noPadding = false }: TermsFooterProps) => {
   const { bottom } = useSafeAreaInsets();
   const { openDialog } = useDialog();
 
@@ -31,10 +35,12 @@ export const TermsFooter = () => {
     );
   };
 
+  const paddingBottom = noPadding ? 0 : bottom || yScale(12);
+
   return (
     <View
       key="terms and conditions"
-      style={[styles.wrapper, { paddingBottom: bottom || yScale(12) }]}
+      style={[styles.wrapper, { paddingBottom }]}
     >
       <StyledText
         color="pureWhite"

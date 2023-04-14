@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+import { isIOS } from '../../../constants/common';
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
-import { yScale } from '../../../utils/scale';
+import { STATUS_BAR, yScale } from '../../../utils/scale';
 
 export const styles = StyleSheet.create({
   header: {
@@ -14,5 +15,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
   },
   bottomBordered: { borderBottomWidth: 1, borderBottomColor: palette.dark2 },
-  buttonsSection: { position: 'absolute', bottom: 0, width: '100%' },
+
+  headerWrapper: {
+    position: 'absolute',
+    top: isIOS ? 0 : -STATUS_BAR,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    elevation: 1,
+  },
+  fw: {
+    width: '100%',
+  },
 });

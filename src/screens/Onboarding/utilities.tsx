@@ -1,7 +1,8 @@
-import { DomicileType, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 
+import { EMPTY_APPLICANT_FORM } from '../../constants/applicants';
 import { DomicileLabel } from '../../constants/domicile';
-import { Applicant, OnboardingFormFields } from './types';
+import { Applicant } from './types';
 
 export const mapDomicileTypeToDomicileLabel = (domicileType: DomicileType | undefined): DomicileLabel => {
   switch (domicileType) {
@@ -31,38 +32,20 @@ export const mapDomicileLabelToDomicileType = (label: DomicileLabel | undefined)
 
 export type ApplicantFormFields = Omit<Applicant, 'identificationDocument' | 'domicile'> & { domicile?: DomicileLabel };
 
-type GetDefaultValuesForApplicantWithoutIdentification = (
-  fields: OnboardingFormFields,
-  type: DraftAccountType.Corporate | DraftAccountType.Trust,
-) => ApplicantFormFields;
+type GetDefaultValuesForApplicantWithoutIdentification = (applicants: Applicant[], currentApplicantIndex: number | undefined) => ApplicantFormFields;
 
-export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValuesForApplicantWithoutIdentification = (
-  fields,
-  type = DraftAccountType.Corporate,
-) => {
-  const isRetrievingFieldsForCorporate = type === DraftAccountType.Corporate;
-
-  const listOfApplicants = (isRetrievingFieldsForCorporate ? fields.companyMajorStakeholderApplicants : fields.trustTrusteesGrantorsOrProtectors) || [];
-  const hasApplicants = !!listOfApplicants.length;
-  const currentApplicant = isRetrievingFieldsForCorporate ? fields._currentCompanyMajorStakeholder : fields._currentTrustTrusteeGrantorOrProtector;
-  const currentApplicantIndex = isRetrievingFieldsForCorporate ? currentApplicant?._index : currentApplicant?._index;
+export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValuesForApplicantWithoutIdentification = (applicants, currentApplicantIndex) => {
+  const hasApplicants = !!applicants.length;
   const hasAnIndex = currentApplicantIndex !== undefined;
-  const hasAtLeastOneFieldFilled = Object.values(currentApplicant || {}).some(Boolean);
-  const isEditingAnApplicant = isRetrievingFieldsForCorporate
-    ? fields._isEditingCompanyMajorStakeholderApplicant
-    : fields._isEditingTrustTrusteeGrantorOrProtector;
+  const isEditingAnApplicant = hasAnIndex && currentApplicantIndex >= 0;
 
   if (hasApplicants && isEditingAnApplicant && hasAnIndex) {
-    const applicant = listOfApplicants.at(currentApplicantIndex);
+    const applicant = applicants.at(currentApplicantIndex);
 
     if (applicant) {
       return { ...applicant, domicile: mapDomicileTypeToDomicileLabel(applicant.domicile), dateOfBirth: applicant.dateOfBirth?.replaceAll('-', '/') };
     }
   }
 
-  if (!isEditingAnApplicant && hasAtLeastOneFieldFilled) {
-    return { ...({ ...currentApplicant, domicile: mapDomicileTypeToDomicileLabel(currentApplicant?.domicile) } || {}) };
-  }
-
-  return {};
+  return EMPTY_APPLICANT_FORM;
 };
