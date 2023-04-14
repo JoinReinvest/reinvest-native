@@ -133,15 +133,20 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
         </ScrollView>
         <View
           key="buttons_section"
-          style={styles.buttonsSection}
+          style={[styles.buttonsSection, { flexDirection: hasApplicants ? 'column-reverse' : 'column' }]}
         >
           <Button
-            variant="outlined"
+            variant={hasApplicants ? 'primary' : 'outlined'}
+            onPress={onContinue}
+          >
+            {hasApplicants ? 'Continue' : 'Skip'}
+          </Button>
+          <Button
+            variant={hasApplicants ? 'outlined' : 'primary'}
             onPress={onAddNewApplicant}
           >
             Add Applicant
           </Button>
-          {<Button onPress={onContinue}>{hasApplicants ? 'Continue' : 'Skip'}</Button>}
         </View>
       </>
     );
