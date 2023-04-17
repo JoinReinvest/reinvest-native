@@ -1,14 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS, RESIDENCY_STATUS_VALUES } from 'reinvest-app-common/src/constants/residenty-status';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -23,26 +27,44 @@ const schema = z.object({
 export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_STATUS,
 
-  Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth];
+
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+  },
+  Component: ({ storeFields, moveToNextStep, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<OnboardingFormFields>) => {
     const defaultValues: Fields = { residency: storeFields.residency };
+
     const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues,
     });
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
-    const shouldButtonBeDisabled = watch('residency');
+    const shouldButtonBeDisabled = watch('residency') || !isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields(fields);
-      moveToNextStep();
+
+      if (fields.residency === DomicileType.Citizen) {
+        return completeProfileMutate({ input: { domicile: { type: DomicileType.Citizen } } });
+      }
+
+      return moveToNextStep();
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToStepByIdentifier(Identifiers.COMPLIANCES);
+      }
+    }, [isSuccess, moveToStepByIdentifier]);
 
     const watchedResidency = watch('residency');
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Residency Status"
@@ -54,7 +76,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
             onSelect={val => setValue('residency', val as DomicileType)}
             options={RESIDENCY_STATUS_AS_RADIO_GROUP_OPTIONS}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

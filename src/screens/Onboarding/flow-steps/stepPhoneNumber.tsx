@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { CALLING_CODES, UNIQUE_COUNTRIES_CALLING_CODES } from 'reinvest-app-common/src/constants/country-codes';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
@@ -15,6 +15,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -58,7 +59,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields: { phone }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const { formState, control, handleSubmit } = useForm<Fields>({
+    const { control, handleSubmit } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
@@ -99,7 +100,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter your phone number"
@@ -108,7 +109,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           {phoneNumberError && (
             <FormMessage
               variant="error"
-              message={phoneNumberError.message}
+              message={phoneNumberError?.response?.errors[0]?.message || ''}
             />
           )}
           <View style={styles.phoneRow}>
@@ -153,7 +154,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
               Required. Why?
             </StyledText>
           </Box>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

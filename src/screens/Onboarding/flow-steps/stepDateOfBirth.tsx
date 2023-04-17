@@ -1,22 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { Masks } from 'react-native-mask-input';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
 import { z } from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
-import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
+import { onBoardingDisclaimers } from '../../../constants/strings';
 import { palette } from '../../../constants/theme';
+import { useDialog } from '../../../providers/DialogProvider';
 import { dateOlderThanEighteenYearsSchema } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -36,16 +40,9 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
   },
 
   doesMeetConditionFields(fields) {
-    const requiredFields = [
-      fields.accountType,
-      fields.name?.firstName,
-      fields.name?.lastName,
-      fields.phone?.number,
-      fields.phone?.countryCode,
-      fields.authCode,
-    ];
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
 
-    return allRequiredFieldsExists(requiredFields);
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -53,17 +50,19 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
     const { formState, control, handleSubmit } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
-      defaultValues: storeFields,
+      defaultValues: { ...storeFields, dateOfBirth: storeFields.dateOfBirth || '' },
     });
 
-    const { error: profileDetailsError, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
-
+    const { mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+    const { openDialog } = useDialog();
     const shouldButtonBeDisabled = formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async ({ dateOfBirth }) => {
-      await updateStoreFields({ dateOfBirth });
-      await completeProfileMutate({ input: { dateOfBirth: { dateOfBirth } } });
-      moveToNextStep();
+      if (dateOfBirth) {
+        await updateStoreFields({ dateOfBirth });
+
+        await completeProfileMutate({ input: { dateOfBirth: { dateOfBirth: formatDateForApi(dateOfBirth) } } });
+      }
     };
 
     useEffect(() => {
@@ -72,22 +71,24 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
       }
     }, [isSuccess, moveToNextStep]);
 
+    const openDisclaimer = () =>
+      openDialog(
+        <FormModalDisclaimer
+          headline="Account types"
+          content={onBoardingDisclaimers.requiredWhy}
+        />,
+      );
+
     return (
       <>
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter your date of birth"
           />
-          {profileDetailsError && (
-            <FormMessage
-              variant="error"
-              message={profileDetailsError.message}
-            />
-          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -107,12 +108,12 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
             <StyledText
               color={palette.frostGreen}
               variant="link"
-              onPress={() => Alert.alert('Required. Why?')}
+              onPress={openDisclaimer}
             >
               Required. Why?
             </StyledText>
           </Box>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

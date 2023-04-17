@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import {
   CORPORATION_ANNUAL_REVENUE_AS_OPTIONS,
   CORPORATION_ANNUAL_REVENUES,
@@ -15,6 +15,7 @@ import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { INDUSTRIES_LABELS } from '../../../constants/industries';
 import { Identifiers } from '../identifiers';
@@ -34,6 +35,9 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
 
   willBePartOfTheFlow: ({ accountType }) => {
     return accountType === DraftAccountType.Corporate;
+  },
+  doesMeetConditionFields: fields => {
+    return fields.accountType !== DraftAccountType.Individual;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -63,7 +67,7 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Please provide the following information regarding your corporation."
@@ -101,7 +105,7 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
               placeholder: 'Industry',
             }}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

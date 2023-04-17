@@ -100,6 +100,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     try {
       await Auth.signOut();
+      setLoggedIn(false);
       setUser(null);
     } catch (e: unknown) {
       setError('SignOut error');

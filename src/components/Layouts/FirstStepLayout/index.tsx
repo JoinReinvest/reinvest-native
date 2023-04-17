@@ -1,14 +1,14 @@
 import React, { PropsWithChildren } from 'react';
-import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { palette } from '../../../constants/theme';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
-import { StyledText } from '../..//typography/StyledText';
 import { Sygnet } from '../../Icon/icons';
 import { MainWrapper } from '../../MainWrapper';
+import { StyledText } from '../../typography/StyledText';
 import { Video } from '../../Video';
 
 interface FirstStepLayoutProps {

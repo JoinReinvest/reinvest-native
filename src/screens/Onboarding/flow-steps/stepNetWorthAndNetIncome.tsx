@@ -1,14 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { NET_WORTHS_AS_OPTIONS } from 'reinvest-app-common/src/constants/net-worths';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/completeIndividualDraftAccount';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -30,8 +35,18 @@ const schema = z.object({
 export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.NET_WORTH_AND_INCOME,
 
+  doesMeetConditionFields(fields) {
+    const profileFields = [fields.employmentStatus];
+
+    const isAccountIndividual = fields.accountType === DraftAccountType.Individual;
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+
+    return isAccountIndividual && hasProfileFields;
+  },
+
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
+
     const { openDialog } = useDialog();
     const { handleSubmit, control, formState } = useForm<Fields>({
       mode: 'all',
@@ -39,12 +54,21 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
       defaultValues: storeFields,
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const { isLoading, mutateAsync: completeIndividualDraftAccountMutate, isSuccess } = useCompleteIndividualDraftAccount(getApiClient);
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields(fields);
-      moveToNextStep();
+      const netWorth = fields.netWorth ? { range: fields.netWorth } : undefined;
+      const netIncome = fields.netIncome ? { range: fields.netIncome } : undefined;
+      await completeIndividualDraftAccountMutate({ accountId: storeFields.accountId || '', input: { netWorth, netIncome } });
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const handleOpenDialog = () => {
       openDialog(
@@ -60,7 +84,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="What is approximate net worth and income?"
@@ -96,7 +120,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
               Required. Why?
             </StyledText>
           </View>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={[styles.buttonsSection]}

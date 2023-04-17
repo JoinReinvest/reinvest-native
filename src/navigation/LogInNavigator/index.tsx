@@ -1,9 +1,12 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../api/getApiClient';
+import { Box } from '../../components/Containers/Box/Box';
 import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
+import { Loader } from '../../components/Loader';
+import { palette } from '../../constants/theme';
 import { InviteScreen } from '../../screens/Invite';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
@@ -30,14 +33,32 @@ const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Invite 
 };
 
 export const LogInNavigator: React.FC = () => {
-  const { data } = useGetUserProfile(getApiClient);
+  const { data, refetch } = useGetUserProfile(getApiClient);
+
   const navigation = useLogInNavigation();
+
+  useLayoutEffect(() => {
+    refetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (data?.isCompleted) {
       navigation.navigate(Screens.BottomNavigator, { screen: Screens.EducationStack });
     }
   }, [data, navigation]);
+
+  if (!data)
+    return (
+      <Box
+        flex={1}
+        fw
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Loader color={palette.pureBlack} />
+      </Box>
+    );
 
   return (
     <LogInStack.Navigator>

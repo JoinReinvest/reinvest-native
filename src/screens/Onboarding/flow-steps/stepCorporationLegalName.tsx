@@ -1,13 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { Identifiers } from '../identifiers';
@@ -26,6 +27,10 @@ export const StepCorporationLegalName: StepParams<OnboardingFormFields> = {
 
   willBePartOfTheFlow: ({ accountType }) => {
     return accountType === DraftAccountType.Corporate;
+  },
+
+  doesMeetConditionFields: fields => {
+    return fields.accountType !== DraftAccountType.Individual;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -49,7 +54,7 @@ export const StepCorporationLegalName: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter your Corporation's legal name"
@@ -63,11 +68,8 @@ export const StepCorporationLegalName: StepParams<OnboardingFormFields> = {
               dark: true,
             }}
           />
-        </ScrollView>
-        <View
-          key="buttons_section"
-          style={styles.buttonsSection}
-        >
+        </PaddedScrollView>
+        <View style={styles.buttonsSection}>
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}

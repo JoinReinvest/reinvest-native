@@ -1,13 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, FieldPath, SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { RadioButton } from '../../../components/RadioButton';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -64,14 +66,18 @@ const schema = z
 export const StepCompliance: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.COMPLIANCES,
 
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
+
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+  },
+
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { formState, handleSubmit, setValue, getValues, control, watch } = useForm<Fields>({
+    const { handleSubmit, setValue, getValues, control, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: getInitialValues(storeFields),
     });
-
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onFieldComplianceChange = (key: Exclude<FieldPath<Fields>, 'doNoneApply'>, value: boolean) => {
       const hasFieldDoNoneApplyChecked = !!getValues('doNoneApply');
@@ -109,7 +115,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Do any of the following apply to you?"
@@ -138,18 +144,13 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
               </Box>
             );
           })}
-        </ScrollView>
+        </PaddedScrollView>
         {isAnyOptionChosen && (
           <View
             key="buttons_section"
             style={styles.buttonsSection}
           >
-            <Button
-              disabled={!shouldButtonBeDisabled}
-              onPress={handleSubmit(onSubmit)}
-            >
-              Continue
-            </Button>
+            <Button onPress={handleSubmit(onSubmit)}>Continue</Button>
           </View>
         )}
       </>

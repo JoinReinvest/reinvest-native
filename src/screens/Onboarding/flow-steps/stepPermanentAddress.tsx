@@ -1,17 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
-import { Address } from 'reinvest-app-common/src/types/graphql';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { Address, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
 import { SearchDialog } from '../../../components/Modals/ModalContent/PlacesModal';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { palette } from '../../../constants/theme';
@@ -34,6 +36,7 @@ const placeholders = {
   city: 'City',
 };
 
+const getValueFromOption = (id: string) => STATES_AS_SELECT_OPTION.find(({ value }) => value === id)?.label;
 export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PERMANENT_ADDRESS,
 
@@ -42,15 +45,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   },
 
   doesMeetConditionFields(fields) {
-    const requiredFields = [
-      fields.name?.firstName,
-      fields.name?.lastName,
-      fields.phone?.number,
-      fields.phone?.countryCode,
-      fields.authCode,
-      fields.dateOfBirth,
-      fields.residency,
-    ];
+    const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
 
     const individualFields = [fields.ssn];
 
@@ -61,7 +56,9 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
-    const defaultValues: Fields = storeFields.permanentAddress || initialValues;
+    const defaultValues: Fields = storeFields.permanentAddress
+      ? { ...storeFields.permanentAddress, state: getValueFromOption(storeFields.permanentAddress.state || '') }
+      : initialValues;
 
     const { openDialog } = useDialog();
 
@@ -71,20 +68,35 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
       resolver: zodResolver(schema),
       defaultValues,
     });
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async permanentAddress => {
-      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === permanentAddress.state)?.value;
-      permanentAddress.state = selectedStateCode;
+      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === permanentAddress.state)?.value || '';
+      const { addressLine1, addressLine2, city, zip, state } = permanentAddress;
+
       await updateStoreFields({ permanentAddress });
-      moveToNextStep();
+
+      if (addressLine1 && city && state && zip) {
+        await completeProfileMutate({ input: { address: { addressLine2, addressLine1, city, country: 'USA', state: selectedStateCode, zip } } });
+      }
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const addressWatched = watch('addressLine1');
 
-    const fillFieldsFromPrediction = (address: Address) => {
-      reset(address);
-    };
+    const fillFieldsFromPrediction = useCallback(
+      (address: Address) => {
+        reset({ ...address, state: STATES_AS_SELECT_OPTION.find(({ value }) => value === address.state)?.label });
+      },
+      [reset],
+    );
 
     const showSearchDialog = useCallback(() => {
       return openDialog(
@@ -94,7 +106,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
           fillDetailsCallback={fillFieldsFromPrediction}
         />,
       );
-    }, [addressWatched]);
+    }, [addressWatched, fillFieldsFromPrediction, openDialog]);
 
     const getRightComponent = () => {
       return (
@@ -111,10 +123,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView
-          style={[styles.fw]}
-          keyboardShouldPersistTaps="always"
-        >
+        <PaddedScrollView keyboardShouldPersistTaps="always">
           <FormTitle
             dark
             headline="What is your permanent address?"
@@ -151,13 +160,13 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
             fieldName="zip"
             inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric' }}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={[styles.buttonsSection]}
         >
           <Button
-            disabled={shouldButtonBeDisabled}
+            disabled={shouldButtonBeDisabled || isLoading}
             isLoading={false}
             onPress={handleSubmit(onSubmit)}
           >

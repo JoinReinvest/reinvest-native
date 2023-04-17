@@ -25,4 +25,7 @@ export const styles = StyleSheet.create({
   fw: {
     width: '100%',
   },
+  hPadding: {
+    paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
+  },
 });

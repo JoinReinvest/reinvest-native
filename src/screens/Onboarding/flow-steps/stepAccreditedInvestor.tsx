@@ -1,13 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { AccreditedInvestorStatement, DraftAccountType, StatementType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { BOOLEAN_OPTIONS } from '../../../constants/booleanOptions';
 import { useDialog } from '../../../providers/DialogProvider';
@@ -26,6 +31,16 @@ const schema = z.object({
 export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCREDITED_INVESTOR,
 
+  willBePartOfTheFlow: ({ accountType, isCompletedProfile }) => {
+    return accountType === DraftAccountType.Individual && !isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile && !!fields.isAccreditedInvestor;
+  },
+
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const storedValue = storeFields.isAccreditedInvestor;
     const defaultValues: Fields = { isAccreditedInvestor: storedValue };
@@ -38,8 +53,29 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = watch('isAccreditedInvestor') !== undefined;
 
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
+
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields({ isAccreditedInvestor: fields.isAccreditedInvestor });
+      await completeProfileMutate({
+        input: {
+          statements: [
+            {
+              type: StatementType.AccreditedInvestor,
+              forAccreditedInvestor: {
+                statement: fields.isAccreditedInvestor
+                  ? AccreditedInvestorStatement.IAmAnAccreditedInvestor
+                  : AccreditedInvestorStatement.IAmNotExceeding_10PercentOfMyNetWorthOrAnnualIncome,
+              },
+            },
+          ],
+        },
+      });
       moveToNextStep();
     };
 
@@ -58,7 +94,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Are you an accredited investor?"
@@ -70,13 +106,13 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
             onSelect={val => setValue('isAccreditedInvestor', val === 'yes' ? true : false)}
             options={BOOLEAN_OPTIONS}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key={'buttons_section'}
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!shouldButtonBeDisabled}
+            disabled={!shouldButtonBeDisabled || isLoading}
             onPress={handleSubmit(onSubmit)}
           >
             Continue

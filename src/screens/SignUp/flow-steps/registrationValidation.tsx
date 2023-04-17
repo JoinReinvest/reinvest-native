@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useAuth } from '../../../providers/AuthProvider';
-import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
+import { styles } from './styles';
 
 export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
   identifier: Identifiers.FLOW_COMPLETION,
@@ -46,7 +47,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     const goToSignIn = () => navigation.navigate(Screens.SignIn);
 
     useEffect(() => {
-      const confirmEmail = async () => {
+      (async () => {
         try {
           await actions.confirmSignUp(storeFields.email, storeFields.authenticationCode);
         } catch (err) {
@@ -61,24 +62,26 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
         } finally {
           setIsLoading(false);
         }
-      };
+      })();
 
-      confirmEmail();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [storeFields.authenticationCode, storeFields.email]);
 
     return (
-      <View style={[styles.wrapper, styles.fw, styles.flex]}>
+      <View style={[styles.wrapper, styles.fw, styles.flex, styles.hPadding]}>
         {isLoading ? (
           <View style={styles.flex}>
             <FormTitle
               dark
               headline="Verifying Account Information"
             />
-            <ActivityIndicator
-              size="large"
-              style={styles.flex}
-            />
+            <Box
+              justifyContent={'center'}
+              alignItems={'center'}
+              flex={1}
+            >
+              <Loader color={palette.pureWhite} />
+            </Box>
           </View>
         ) : (
           <>
