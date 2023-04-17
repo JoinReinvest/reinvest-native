@@ -1,8 +1,10 @@
+import { RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 
 import { EMPTY_APPLICANT_FORM } from '../../constants/applicants';
-import { DomicileLabel } from '../../constants/domicile';
 import { Applicant } from './types';
+
+type DomicileLabel = (typeof RESIDENCY_STATUS_LABELS)[number];
 
 export const mapDomicileTypeToDomicileLabel = (domicileType: DomicileType | undefined): DomicileLabel => {
   switch (domicileType) {

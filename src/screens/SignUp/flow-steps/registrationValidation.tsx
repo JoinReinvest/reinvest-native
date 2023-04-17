@@ -1,3 +1,4 @@
+import { palette } from 'constants/theme';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';

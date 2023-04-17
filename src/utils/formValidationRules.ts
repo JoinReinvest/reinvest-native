@@ -12,6 +12,8 @@ const phoneWithoutCallingCodeRegex = /^(\d){3}-(\d){3}-(\d{3}|\d{4})$/;
 const standardRequiredString = zod.string().min(1, requiredError);
 const maskedVerificationPhoneCode = /^([A-Z0-9]){3}-([A-Z0-9]){3}$/;
 
+export const MAX_APPLICANTS_COUNT = 5;
+
 export const formValidationRules = {
   ...commonFormValidationRules,
   address: zod.object({

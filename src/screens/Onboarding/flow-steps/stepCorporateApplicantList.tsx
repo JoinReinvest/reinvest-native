@@ -13,6 +13,7 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { EMPTY_APPLICANT_FORM } from '../../../constants/applicants';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
+import { MAX_APPLICANTS_COUNT } from '../../../utils/formValidationRules';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { Identifiers } from '../identifiers';
 import { Applicant, IndexedSchema, OnboardingFormFields } from '../types';
@@ -118,7 +119,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
                   style={{ flexDirection: 'row', columnGap: 27, justifyContent: 'space-between' }}
                   key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
                 >
-                  <StyledText color={palette.pureWhite}>
+                  <StyledText color="pureWhite">
                     {applicant.firstName} {applicant.lastName}
                   </StyledText>
                   <Icon
@@ -142,6 +143,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
             {hasApplicants ? 'Continue' : 'Skip'}
           </Button>
           <Button
+            disabled={applicantsRef.current.length >= MAX_APPLICANTS_COUNT}
             variant={hasApplicants ? 'outlined' : 'primary'}
             onPress={onAddNewApplicant}
           >

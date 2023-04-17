@@ -67,6 +67,82 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
 
   const goToNextStep = () => setCurrentStep(prevStep => prevStep + 1);
 
+  const renderStep = () => {
+    if (!currentStep) {
+      return (
+        <>
+          <FormTitle
+            dark
+            headline="Enter the following information for your applicant."
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="firstName"
+            inputProps={{ placeholder: 'First Name', dark: true }}
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="middleName"
+            inputProps={{ placeholder: 'Middle Name (Optional)', dark: true }}
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="lastName"
+            inputProps={{ placeholder: 'Last Name', dark: true }}
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="dateOfBirth"
+            inputProps={{ placeholder: 'Date of birth', maskedPlaceholder: 'MM/DD/YYYY', dark: true, mask: Masks.DATE_MMDDYYYY }}
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="socialSecurityNumber"
+            inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', dark: true, mask: SSN_MASK }}
+          />
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="residentialAddress"
+            inputProps={{ placeholder: 'Residential Address', dark: true }}
+          />
+          <Controller
+            type="dropdown"
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="domicile"
+            dropdownProps={{
+              placeholder: 'Domicile',
+              dark: true,
+              data: RESIDENCY_STATUS_OPTIONS,
+              defaultValue: defaultValues?.domicile,
+            }}
+          />
+        </>
+      );
+    }
+
+    return (
+      <>
+        <FormTitle
+          dark
+          headline="Upload the ID of your applicant."
+        />
+        <FilePicker
+          dark
+          label="Upload Files"
+          onSelect={res => setIdentificationDocument(res[0]?.uri ?? '')}
+          type="single"
+        />
+      </>
+    );
+  };
+
   return (
     <>
       <View style={styles.headerWrapper}>
@@ -90,75 +166,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
         mt={isIOS ? '56' : '12'}
         style={{ flex: 1 }}
       >
-        {!currentStep ? (
-          <PaddedScrollView style={styles.fw}>
-            <FormTitle
-              dark
-              headline="Enter the following information for your applicant."
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="firstName"
-              inputProps={{ placeholder: 'First Name', dark: true }}
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="middleName"
-              inputProps={{ placeholder: 'Middle Name (Optional)', dark: true }}
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="lastName"
-              inputProps={{ placeholder: 'Last Name', dark: true }}
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="dateOfBirth"
-              inputProps={{ placeholder: 'Date of birth', maskedPlaceholder: 'MM/DD/YYYY', dark: true, mask: Masks.DATE_MMDDYYYY }}
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="socialSecurityNumber"
-              inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', dark: true, mask: SSN_MASK }}
-            />
-            <Controller
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="residentialAddress"
-              inputProps={{ placeholder: 'Residential Address', dark: true }}
-            />
-            <Controller
-              type="dropdown"
-              onSubmit={handleSubmit(onSubmit)}
-              control={control}
-              fieldName="domicile"
-              dropdownProps={{
-                placeholder: 'Domicile',
-                dark: true,
-                data: RESIDENCY_STATUS_OPTIONS,
-                defaultValue: defaultValues?.domicile,
-              }}
-            />
-          </PaddedScrollView>
-        ) : (
-          <PaddedScrollView style={styles.fw}>
-            <FormTitle
-              dark
-              headline="Upload the ID of your applicant."
-            />
-            <FilePicker
-              dark
-              label="Upload Files"
-              onSelect={res => setIdentificationDocument(res[0]?.uri ?? '')}
-              type="single"
-            />
-          </PaddedScrollView>
-        )}
+        <PaddedScrollView style={styles.fw}>{renderStep()}</PaddedScrollView>
       </Box>
       <Button
         disabled={currentStep === 0 ? shouldButtonBeDisabled : !identificationDocument}
