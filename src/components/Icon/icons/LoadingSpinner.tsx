@@ -5,8 +5,8 @@ import { palette } from '../../../constants/theme';
 
 export const LoadingSpinner = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg
-    width={56}
-    height={56}
+    width="100%"
+    height="100%"
     viewBox="0 0 56 56"
     fill="none"
     {...rest}

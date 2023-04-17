@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
+import { FlexAlignType } from 'react-native';
 import Animated, { cancelAnimation, Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import { SvgProps } from 'react-native-svg';
 
 import { ThemeValues } from '../constants/theme';
 import { Icon } from './Icon';
+import { sizes } from './Icon/constants';
+import { IconProps } from './Icon/types';
 
-export interface LoaderProps extends Pick<SvgProps, 'height' | 'width'> {
+export interface LoaderProps extends Pick<IconProps, 'size'> {
+  align?: 'auto' | FlexAlignType | undefined;
   color?: ThemeValues;
 }
 
-export const Loader = ({ height = '100%', width = '100%', color }: LoaderProps) => {
+export const Loader = ({ size = 'm', color, align = 'center' }: LoaderProps) => {
   const rotation = useSharedValue(0);
-
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [
@@ -35,12 +37,11 @@ export const Loader = ({ height = '100%', width = '100%', color }: LoaderProps) 
   }, [rotation]);
 
   return (
-    <Animated.View style={[animatedStyles]}>
+    <Animated.View style={[animatedStyles, { height: sizes[`${size}`], width: sizes[`${size}`], justifyContent: 'center', alignSelf: align }]}>
       <Icon
         icon="loadingSpinner"
-        height={height}
-        width={width}
         color={color}
+        size={size}
       />
     </Animated.View>
   );
