@@ -17,9 +17,12 @@ import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'companyTickerSymbols'>;
 
-const MINIMUM_COMPANY_TICKER_SYMBOLS = 3;
+const DEFAULT_FIELDS = 3;
+const MINIMUM_COMPANY_TICKER_SYMBOLS = 1;
+const MAXIMUM_COMPANY_TICKER_SYMBOLS = 5;
+
 const EMPTY_COMPANY_TICKER_SYMBOL: CompanyTickerSymbol = { symbol: '' };
-const initialValues = new Array(MINIMUM_COMPANY_TICKER_SYMBOLS).fill(undefined).map(() => EMPTY_COMPANY_TICKER_SYMBOL);
+const initialValues = new Array(DEFAULT_FIELDS).fill(undefined).map(() => EMPTY_COMPANY_TICKER_SYMBOL);
 
 const schema = z
   .object({
@@ -28,7 +31,8 @@ const schema = z
         symbol: z.string(),
       })
       .array()
-      .min(MINIMUM_COMPANY_TICKER_SYMBOLS),
+      .min(MINIMUM_COMPANY_TICKER_SYMBOLS)
+      .max(MAXIMUM_COMPANY_TICKER_SYMBOLS),
   })
   .superRefine((fields, context) => {
     const countOfFilledFields = fields.companyTickerSymbols.filter(({ symbol }) => symbol !== '').length;
@@ -77,7 +81,7 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
         const hasFilledAllFields = !!companyTickerSymbols?.every(ticker => !!ticker?.symbol && ticker?.symbol !== '');
         const hasAtLeastAnElement = !!companyTickerSymbols?.length;
 
-        setShouldAppendButtonBeDisabled(hasAtLeastAnElement && !hasFilledAllFields);
+        setShouldAppendButtonBeDisabled((hasAtLeastAnElement && !hasFilledAllFields) || (companyTickerSymbols?.length ?? 0) >= MAXIMUM_COMPANY_TICKER_SYMBOLS);
       });
 
       return () => {
