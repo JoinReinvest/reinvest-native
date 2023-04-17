@@ -33,7 +33,7 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.CORPORATION_INFORMATION,
 
   willBePartOfTheFlow: ({ accountType }) => {
-    return accountType === DraftAccountType.Corporate;
+    return accountType !== DraftAccountType.Individual;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -66,7 +66,9 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
         <ScrollView style={[styles.fw]}>
           <FormTitle
             dark
-            headline="Please provide the following information regarding your corporation."
+            headline={`Please provide the following information regarding your ${
+              storeFields.accountType === DraftAccountType.Corporate ? 'corporation' : 'trust'
+            }.`}
           />
           <Controller
             type="dropdown"

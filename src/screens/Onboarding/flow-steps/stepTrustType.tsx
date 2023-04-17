@@ -52,7 +52,7 @@ export const StepTrustType: StepParams<OnboardingFormFields> = {
         <PaddedScrollView style={styles.fw}>
           <FormTitle
             dark
-            headline="Which type of account would you like to open?"
+            headline="Which type of Trust do you have?"
           />
           <View style={styles.cardsWrapper}>
             {TRUST_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
