@@ -8,7 +8,6 @@ import zod, { Schema } from 'zod';
 import { Button } from '../../../components/Button';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -59,7 +58,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       <StyledText
         onPress={() => navigation.navigate(Screens.SignIn)}
         variant="link"
-        color={palette.pureWhite}
+        color="pureWhite"
         style={styles.firstStepLink}
       >
         Already have an account?

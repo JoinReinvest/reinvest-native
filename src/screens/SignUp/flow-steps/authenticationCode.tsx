@@ -14,7 +14,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
-import { palette } from '../../../constants/theme';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
@@ -100,14 +99,14 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             <StyledText
               onPress={resendCodeOnClick}
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={openMail}
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
             >
               Get Help
             </StyledText>

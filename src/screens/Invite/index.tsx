@@ -7,7 +7,6 @@ import { Box } from '../../components/Containers/Box/Box';
 import { Input } from '../../components/Input';
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
-import { palette } from '../../constants/theme';
 
 export const InviteScreen = () => {
   const { data, isLoading, isSuccess } = useGetInvitationLink(getApiClient);
@@ -44,7 +43,7 @@ export const InviteScreen = () => {
           />
           <StyledText
             onPress={share}
-            color={palette.dark3}
+            color="dark3"
             variant="paragraph"
           >
             copy and share the link above

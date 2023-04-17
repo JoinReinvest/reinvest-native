@@ -11,7 +11,7 @@ export const CheckItem = ({ isChecked, label }: { isChecked: boolean; label: str
     <View style={styles.itemWrapper}>
       <StyledText
         variant="paragraphLarge"
-        color={isChecked ? palette.pureWhite : palette.dark3}
+        color={isChecked ? 'pureWhite' : 'dark3'}
       >
         {label}
       </StyledText>

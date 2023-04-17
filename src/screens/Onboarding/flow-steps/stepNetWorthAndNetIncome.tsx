@@ -17,7 +17,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -114,7 +113,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
           <View style={[styles.row]}>
             <StyledText
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
               onPress={handleOpenDialog}
             >
               Required. Why?

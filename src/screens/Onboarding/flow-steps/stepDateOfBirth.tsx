@@ -19,7 +19,6 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { dateOlderThanEighteenYearsSchema } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -106,7 +105,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
             mt="4"
           >
             <StyledText
-              color={palette.frostGreen}
+              color="frostGreen"
               variant="link"
               onPress={openDisclaimer}
             >

@@ -21,7 +21,6 @@ import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { PHONE_MASK } from '../../../constants/masks';
 import { onBoardingDisclaimers } from '../../../constants/strings';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -147,7 +146,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
             mt="4"
           >
             <StyledText
-              color={palette.frostGreen}
+              color="frostGreen"
               variant="link"
               onPress={showDisclaimer}
             >

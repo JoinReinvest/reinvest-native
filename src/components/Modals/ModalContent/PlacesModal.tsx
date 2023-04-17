@@ -95,7 +95,7 @@ export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchView
                 key={el.fullAddress}
               >
                 <StyledText
-                  color={palette.pureWhite}
+                  color="pureWhite"
                   onPress={() => parseDetails(el.placeId)}
                 >
                   {el.fullAddress}

@@ -39,7 +39,7 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
 const getLabel = (focused: boolean, children: string) => (
   <StyledText
     variant="today"
-    color={focused ? palette.pureBlack : palette.dark3}
+    color={focused ? 'pureBlack' : 'dark3'}
   >
     {children}
   </StyledText>

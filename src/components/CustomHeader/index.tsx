@@ -49,7 +49,7 @@ export const ScreenHeader = ({
           </View>
         ) : (
           <StyledText
-            color={dark ? palette.pureWhite : palette.pureBlack}
+            color={dark ? 'pureWhite' : 'pureBlack'}
             variant="h5"
           >
             {title}

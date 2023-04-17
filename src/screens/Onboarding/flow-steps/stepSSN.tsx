@@ -18,7 +18,6 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { SSN_MASK } from '../../../constants/masks';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -126,7 +125,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           <View style={styles.row}>
             <StyledText
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
               onPress={openRequiredModal}
             >
               Required. Why?
@@ -134,14 +133,14 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           </View>
           <Box mt="24">
             <StyledText
-              color={palette.pureWhite}
+              color="pureWhite"
               variant="paragraphLarge"
             >
               *REINVEST is required by law to collect your social security number.
             </StyledText>
             <Box mt="4">
               <StyledText
-                color={palette.dark3}
+                color="dark3"
                 variant="paragraphLarge"
               >
                 We take the security of your data very seriously, vestibulum non lacus et eros elementum pellentesque. Duis urna et nunc porta facilisis.

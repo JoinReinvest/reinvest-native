@@ -22,7 +22,7 @@ export const StatusCircle = ({ variant = 'success', title, children }: PropsWith
       <StyledText
         variant="h5"
         style={styles.title}
-        color={palette.pureWhite}
+        color="pureWhite"
       >
         {title}
       </StyledText>

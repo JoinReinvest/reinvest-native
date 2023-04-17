@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { privacyPolicy, termsAndConditions } from '../../constants/strings';
-import { palette } from '../../constants/theme';
 import { useDialog } from '../../providers/DialogProvider';
 import { yScale } from '../../utils/scale';
 import { FormModalDisclaimer } from '../Modals/ModalContent/FormModalDisclaimer';
@@ -38,7 +37,7 @@ export const TermsFooter = () => {
       style={[styles.wrapper, { paddingBottom: bottom || yScale(12) }]}
     >
       <StyledText
-        color={palette.pureWhite}
+        color="pureWhite"
         variant="paragraphSmall"
         style={{ textAlign: 'center' }}
       >
@@ -46,21 +45,21 @@ export const TermsFooter = () => {
       </StyledText>
       <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
         <StyledText
-          color={palette.frostGreen}
+          color="frostGreen"
           onPress={showTerms}
           variant="link"
         >
           Terms of Conditions
         </StyledText>
         <StyledText
-          color={palette.pureWhite}
+          color="pureWhite"
           variant="paragraphSmall"
         >
           {' '}
           and{' '}
         </StyledText>
         <StyledText
-          color={palette.frostGreen}
+          color="frostGreen"
           variant="link"
           onPress={showPP}
         >

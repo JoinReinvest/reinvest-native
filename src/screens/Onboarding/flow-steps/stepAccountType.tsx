@@ -16,7 +16,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -124,7 +123,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
           </View>
           <StyledText
             style={styles.link}
-            color={palette.frostGreen}
+            color="frostGreen"
             variant="link"
             onPress={openDisclaimer}
           >

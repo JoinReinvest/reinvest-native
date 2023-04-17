@@ -20,7 +20,6 @@ import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
 import { onBoardingDisclaimers, onBoardingModalHeadlines } from '../../../constants/strings';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -133,7 +132,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
             ) : (
               <StyledText
                 variant="link"
-                color={palette.frostGreen}
+                color="frostGreen"
                 onPress={resendCodeOnClick}
               >
                 Resend Code
@@ -141,7 +140,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
             )}
             <StyledText
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
               onPress={showGetHelp}
             >
               Get Help
