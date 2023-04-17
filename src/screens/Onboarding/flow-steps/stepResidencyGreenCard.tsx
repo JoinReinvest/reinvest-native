@@ -1,15 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { COUNTRIES } from 'reinvest-app-common/src/constants/countries';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Dropdown } from '../../../components/Dropdown';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -24,28 +27,51 @@ const schema = z.object({
 
 export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_GREEN_CARD,
-  doesMeetConditionFields: fields => fields.residency === DomicileType.GreenCard,
-
+  willBePartOfTheFlow(fields) {
+    return fields.residency === DomicileType.GreenCard && !fields.isCompletedProfile;
+  },
+  doesMeetConditionFields(fields) {
+    return fields.residency === DomicileType.GreenCard && !fields.isCompletedProfile;
+  },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { formState, handleSubmit, setValue, watch } = useForm<Fields>({
+    const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
-      defaultValues: storeFields,
+      defaultValues: {
+        birthCountry: storeFields.birthCountry,
+        citizenshipCountry: storeFields.citizenshipCountry,
+      },
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields(fields);
-      moveToNextStep();
+
+      if (fields.birthCountry && fields.citizenshipCountry) {
+        await completeProfileMutate({
+          input: {
+            domicile: {
+              type: DomicileType.GreenCard,
+              forGreenCard: { birthCountry: fields.birthCountry, citizenshipCountry: fields.citizenshipCountry },
+            },
+          },
+        });
+      }
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const birthCountry = watch('birthCountry');
     const citizenshipCountry = watch('citizenshipCountry');
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Please enter your US Green Card details."
@@ -65,13 +91,13 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
             data={COUNTRIES}
             onSelect={option => setValue('birthCountry', option.value.toString())}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!shouldButtonBeDisabled}
+            disabled={(!birthCountry && !citizenshipCountry) || isLoading}
             onPress={handleSubmit(onSubmit)}
           >
             Continue

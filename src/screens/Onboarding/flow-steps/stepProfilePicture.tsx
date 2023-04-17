@@ -1,18 +1,29 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/completeIndividualDraftAccount';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { useCreateAvatarFileLink } from 'reinvest-app-common/src/services/queries/createAvatarFileLink';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { useOpenAccount } from 'reinvest-app-common/src/services/queries/openAccount';
+import { useRemoveDraftAccount } from 'reinvest-app-common/src/services/queries/removeDraftAccount';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
+import { sendFilesToS3Bucket } from '../../../api/sendFilesToS3Bucket';
 import { Avatar } from '../../../components/Avatar';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
+import { useLogInNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -32,26 +43,20 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     const profileFields = [
       fields.name?.firstName,
       fields.name?.lastName,
-      fields.phone?.number,
-      fields.phone?.countryCode,
-      fields.authCode,
       fields.dateOfBirth,
       fields.residency,
       fields.ssn,
-      fields.identificationDocument,
+      fields.identificationDocument?.length,
       fields.accountType,
     ];
 
     const individualAccountFields = [fields.netIncome, fields.netWorth];
 
-    return (
-      fields.isCompletedProfile &&
-      ((fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(profileFields)) || allRequiredFieldsExists(individualAccountFields))
-    );
+    return (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(profileFields)) || allRequiredFieldsExists(individualAccountFields);
   },
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { profilePicture, name, accountType } = storeFields;
+  Component: ({ storeFields, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
+    const { profilePicture, name, accountType, accountId } = storeFields;
 
     const [selectedImageUri, setSelectedImageUri] = useState<string | undefined>(profilePicture);
 
@@ -64,18 +69,86 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       },
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const { isLoading: isCompleteProfileDetailsLoading, mutateAsync: completeProfileMutate } = useCompleteProfileDetails(getApiClient);
+    const { isLoading: isCreateAvatarLinkLoading, mutateAsync: createAvatarLinkMutate } = useCreateAvatarFileLink(getApiClient);
+    const { isLoading: isIndividualDraftAccountLoading, mutateAsync: completeIndividualDraftAccountMutate } = useCompleteIndividualDraftAccount(getApiClient);
+    const { isLoading: isRemoveDraftAccountLoading, mutateAsync: removeDraftAccountMutate } = useRemoveDraftAccount(getApiClient);
+    const { isLoading: isOpenAccountLoading, mutateAsync: openAccountMutate, isSuccess: isOpenAccountSuccess } = useOpenAccount(getApiClient);
+
+    const shouldButtonBeDisabled =
+      !formState.isValid ||
+      formState.isSubmitting ||
+      isCompleteProfileDetailsLoading ||
+      isCompleteProfileDetailsLoading ||
+      isOpenAccountLoading ||
+      isIndividualDraftAccountLoading ||
+      isRemoveDraftAccountLoading ||
+      isCreateAvatarLinkLoading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields({
         profilePicture: fields.profilePicture,
       });
-      moveToNextStep();
+      const avatarLink = await createAvatarLinkMutate({});
+
+      if (fields.profilePicture) {
+        if (avatarLink?.url && avatarLink.id) {
+          await sendFilesToS3Bucket([{ file: { uri: fields.profilePicture }, url: avatarLink.url, id: avatarLink.id }]);
+
+          const avatarId = avatarLink.id;
+
+          if (accountId && avatarId) {
+            if (!storeFields.isCompletedProfile) {
+              await completeProfileMutate({ input: { verifyAndFinish: true } });
+            }
+
+            const avatar = { id: avatarLink.id };
+            const individualDraftAccount = await completeIndividualDraftAccountMutate({
+              accountId,
+              input: { avatar },
+            });
+
+            if (individualDraftAccount?.isCompleted) {
+              await openAccountMutate({ draftAccountId: accountId });
+              await removeDraftAccountMutate({ draftAccountId: accountId });
+            }
+          }
+        }
+      }
     };
+    const navigation = useLogInNavigation();
+    const { refetch } = useGetUserProfile(getApiClient);
+
+    useEffect(() => {
+      if (isOpenAccountSuccess) {
+        (async () => {
+          navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+          await refetch();
+        })();
+      }
+    }, [isOpenAccountSuccess, navigation, refetch]);
 
     const handleSelectProfilePicture = (uri: string | undefined) => {
       setValue('profilePicture', uri);
       setSelectedImageUri(uri);
+    };
+
+    const onSkip = async () => {
+      if (accountId) {
+        if (!storeFields.isCompletedProfile) {
+          await completeProfileMutate({ input: { verifyAndFinish: true } });
+        }
+
+        const individualDraftAccount = await completeIndividualDraftAccountMutate({
+          accountId,
+          input: {},
+        });
+
+        if (individualDraftAccount?.isCompleted) {
+          await openAccountMutate({ draftAccountId: accountId });
+          await removeDraftAccountMutate({ draftAccountId: accountId });
+        }
+      }
     };
 
     return (
@@ -83,7 +156,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView
+        <PaddedScrollView
           contentContainerStyle={{
             flex: 1,
             alignItems: 'center',
@@ -116,7 +189,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
               </StyledText>
             </Box>
           </Box>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
@@ -130,7 +203,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           <Button
             variant="outlined"
             disabled={shouldButtonBeDisabled}
-            onPress={moveToNextStep}
+            onPress={onSkip}
           >
             Skip
           </Button>

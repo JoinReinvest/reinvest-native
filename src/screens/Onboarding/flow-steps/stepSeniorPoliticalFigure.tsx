@@ -1,12 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { StatementType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { Identifiers } from '../identifiers';
@@ -23,6 +28,16 @@ const schema = z.object({
 export const StepSeniorPoliticalFigure: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.SENIOR_POLITICAL_FIGURE,
 
+  willBePartOfTheFlow: ({ statementTypes, isCompletedProfile }) => {
+    return !!statementTypes?.includes(StatementType.Politician) && !isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
+
+    return allRequiredFieldsExists(requiredFields) && !!fields.compliances?.isSeniorPoliticalFigure && !fields.isCompletedProfile;
+  },
+
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const { handleSubmit, control, formState } = useForm<Fields>({
@@ -35,17 +50,28 @@ export const StepSeniorPoliticalFigure: StepParams<OnboardingFormFields> = {
     });
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields(fields);
-      moveToNextStep();
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+
+    const onSubmit: SubmitHandler<Fields> = async ({ seniorPoliticalFigure }) => {
+      await updateStoreFields({ seniorPoliticalFigure });
+
+      if (seniorPoliticalFigure) {
+        await completeProfileMutate({ input: { statements: [{ type: StatementType.Politician, forPolitician: { description: seniorPoliticalFigure } }] } });
+      }
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     return (
       <>
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Please provide the name and position of this senior political figure."
@@ -57,13 +83,13 @@ export const StepSeniorPoliticalFigure: StepParams<OnboardingFormFields> = {
             fieldName="seniorPoliticalFigure"
             inputProps={{ placeholder: '220 characters', dark: true }}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={[styles.buttonsSection]}
         >
           <Button
-            disabled={shouldButtonBeDisabled}
+            disabled={shouldButtonBeDisabled || isLoading}
             isLoading={false}
             onPress={handleSubmit(onSubmit)}
           >

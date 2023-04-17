@@ -23,7 +23,7 @@ export const InviteScreen = () => {
     if (isSuccess) {
       setUrl(data?.url || '');
     }
-  }, [isSuccess]);
+  }, [data?.url, isSuccess]);
 
   return (
     <MainWrapper

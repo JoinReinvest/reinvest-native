@@ -7,7 +7,7 @@ import { styles } from './styles';
 import { ProgressBarProps } from './types';
 
 export const ProgressBar = ({ value, max = DEVICE_WIDTH, style, barStyle, color = palette.frostGreen, absolute = true }: ProgressBarProps) => {
-  const width = (Math.min(value, 100) * max) / 100;
+  const width = (Math.min(value || 0, 100) * max) / 100;
 
   return (
     <View style={[styles.wrapper, style]}>

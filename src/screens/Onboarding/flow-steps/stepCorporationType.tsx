@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { CORPORATION_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { CorporateCompanyType } from 'reinvest-app-common/src/types/graphql';
+import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { CorporateCompanyType, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
@@ -20,6 +21,11 @@ import { styles } from './styles';
 
 export const StepCorporationType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.CORPORATION_TYPE,
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn];
+
+    return fields.accountType === DraftAccountType.Corporate && !fields.isCompletedProfile && allRequiredFieldsExists(requiredFields);
+  },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
@@ -44,7 +50,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="What type of Corporation do you have?"
@@ -70,7 +76,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
           >
             Not sure which is best for you?
           </StyledText>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

@@ -1,13 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { View } from 'react-native';
+import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { StatementType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { Identifiers } from '../identifiers';
@@ -44,14 +48,27 @@ const schema = z
   });
 
 export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
-  identifier: Identifiers.ACCOUNT_TYPE,
+  identifier: Identifiers.COMPANY_TICKER_SYMBOLS,
+
+  willBePartOfTheFlow: ({ statementTypes, isCompletedProfile }) => {
+    return !!statementTypes?.includes(StatementType.TradingCompanyStakeholder) && !isCompletedProfile;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
+
+    return allRequiredFieldsExists(requiredFields) && !!fields.compliances?.isAssociatedWithPubliclyTradedCompany && !fields.isCompletedProfile;
+  },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const hasStoredTickerSymbols = !!storeFields.companyTickerSymbols?.length;
     const defaultValues: Fields = { companyTickerSymbols: hasStoredTickerSymbols ? storeFields.companyTickerSymbols : initialValues };
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
-    const [shouldAppendButtonBeDisabled, setShouldAppendButtonBeDisabled] = useState(true);
+    const [shouldAppendButtonBeDisabled, setShouldAppendButtonBeDisabled] = useState(
+      !((storeFields.companyTickerSymbols?.length || 0) >= MINIMUM_COMPANY_TICKER_SYMBOLS),
+    );
 
     const { formState, control, handleSubmit, watch } = useForm<Fields>({
       mode: 'all',
@@ -65,10 +82,20 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
       append(EMPTY_COMPANY_TICKER_SYMBOL);
     };
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields({ companyTickerSymbols: fields.companyTickerSymbols });
-      moveToNextStep();
+    const onSubmit: SubmitHandler<Fields> = async ({ companyTickerSymbols }) => {
+      await updateStoreFields({ companyTickerSymbols });
+      const tickerSymbols = companyTickerSymbols?.map(ticker => ticker.symbol);
+
+      if (tickerSymbols) {
+        await completeProfileMutate({ input: { statements: [{ type: StatementType.TradingCompanyStakeholder, forStakeholder: { tickerSymbols } }] } });
+      }
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const shouldSubmitButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
@@ -90,7 +117,7 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Please list ticker symbols of the publicly traded company(s) below."
@@ -115,14 +142,14 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
           >
             Add Additional Company
           </Button>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
             onPress={handleSubmit(onSubmit)}
-            disabled={shouldSubmitButtonBeDisabled}
+            disabled={shouldSubmitButtonBeDisabled || isLoading}
           >
             Continue
           </Button>

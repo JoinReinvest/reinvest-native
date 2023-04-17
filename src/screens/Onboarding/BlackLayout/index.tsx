@@ -19,7 +19,10 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
 
   return (
     <DialogProvider dark>
-      <MainWrapper dark>
+      <MainWrapper
+        dark
+        noPadding
+      >
         <CurrentStepView />
         {shouldShowFooter && <TermsFooter />}
       </MainWrapper>

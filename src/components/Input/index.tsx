@@ -41,8 +41,9 @@ export const Input = forwardRef<TextInput, InputProps>(
     const sharedValue = useSharedValue(value ? 1 : 0);
 
     useEffect(() => {
-      sharedValue.value = value ? 1 : 0;
-    }, [value]);
+      sharedValue.value = value || focused ? 1 : 0;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value, focused]);
 
     const setFocusedAnimatedStyle = (isFocused: boolean) => {
       'worklet';

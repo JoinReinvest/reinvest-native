@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -69,7 +70,7 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter your first and last name as it appears on your ID"
@@ -92,7 +93,7 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
             fieldName="lastName"
             inputProps={{ placeholder: 'Last Name', dark: true }}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={[styles.buttonsSection]}

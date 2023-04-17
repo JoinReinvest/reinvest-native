@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
+import { isIOS } from '../../constants/common';
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../constants/styles';
 import { palette } from '../../constants/theme';
 import { Fonts } from '../../types/fonts';
-import { isIOS } from './../../constants/common';
-import { MAIN_WRAPPER_PADDING_HORIZONTAL } from './../../constants/styles';
-import { DEVICE_HEIGHT, STATUS_BAR, xScale, yScale } from './../../utils/scale';
+import { DEVICE_HEIGHT, STATUS_BAR, xScale } from '../../utils/scale';
 
 export const styles = StyleSheet.create({
   signet: {

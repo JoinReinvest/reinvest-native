@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/createDraftAccount';
+import { useGetIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/getIndividualDraftAccount';
 import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccount, DraftAccountType, Employer, EmploymentStatus, IndividualDraftAccount } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
@@ -24,14 +26,11 @@ import { styles } from './styles';
 export const StepAccountType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.ACCOUNT_TYPE,
 
-  willBePartOfTheFlow(fields) {
-    return fields.accountType === DraftAccountType.Corporate;
-  },
-
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const [selectedAccountType, setSelectedAccountType] = useState<DraftAccountType | undefined>(storeFields.accountType);
     const { openDialog } = useDialog();
+    const [accountId, setAccountId] = useState<string>('');
 
     const { isSuccess, mutateAsync: createDraftAccount } = useCreateDraftAccount(getApiClient);
 
@@ -42,17 +41,51 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     }, [isSuccess, moveToNextStep]);
 
     const { data: draftAccountList } = useGetListAccount(getApiClient);
+    const { refetch: refetchIndividualDraft } = useGetIndividualDraftAccount(getApiClient, {
+      accountId,
+      config: { enabled: false },
+    });
+
+    const selectType = (type: DraftAccountType | undefined) => {
+      if (draftAccountList) {
+        const specificTypeDraftID = draftAccountList.find(el => (el as DraftAccount).type === type)?.id || '';
+        setAccountId(specificTypeDraftID);
+      }
+
+      setSelectedAccountType(type);
+    };
 
     const handleContinue = async () => {
       const existingDraft = draftAccountList?.find(draft => draft?.type === selectedAccountType);
 
       if (existingDraft) {
-        await updateStoreFields({ accountType: existingDraft.type || undefined, accountId: existingDraft?.id || undefined });
+        let draftAccountDetails;
+
+        /*
+        For each type of account we will need to map values to feed form
+         */
+        if (existingDraft.type === DraftAccountType.Individual) {
+          const response = await refetchIndividualDraft();
+          draftAccountDetails = response.data;
+
+          await updateStoreFields({
+            accountType: existingDraft.type || undefined,
+            accountId: existingDraft?.id || undefined,
+            profilePicture: draftAccountDetails?.avatar?.url || '',
+            ...((draftAccountDetails?.details as Exclude<IndividualDraftAccount, null | undefined>) || {}),
+            employmentStatus: draftAccountDetails?.details?.employmentStatus?.status as EmploymentStatus,
+            employer: draftAccountDetails?.details?.employer as Employer,
+            netWorth: draftAccountDetails?.details?.netWorth?.range as string,
+            netIncome: draftAccountDetails?.details?.netIncome?.range as string,
+          });
+        } else {
+          await updateStoreFields({ accountType: existingDraft.type || undefined, accountId: existingDraft?.id || undefined });
+        }
 
         return moveToNextStep();
       }
 
-      await createDraftAccount({ type: selectedAccountType! });
+      await createDraftAccount({ type: selectedAccountType as DraftAccountType });
 
       await updateStoreFields({ accountType: selectedAccountType });
       moveToNextStep();
@@ -71,7 +104,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Which type of account would you like to open?"
@@ -85,7 +118,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 value={value as DraftAccountType}
                 title={title}
                 description={description}
-                onCardPress={setSelectedAccountType}
+                onCardPress={selectType}
               />
             ))}
           </View>
@@ -97,7 +130,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
           >
             Not sure which is best for you?
           </StyledText>
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

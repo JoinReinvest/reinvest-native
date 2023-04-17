@@ -5,6 +5,7 @@ import {
   CorporateCompanyType,
   DomicileType,
   DraftAccountType,
+  Employer,
   EmploymentStatus,
   Experience,
   StatementType,
@@ -13,7 +14,7 @@ import {
 
 export interface OnboardingFormFields {
   address: Address | null;
-  dateOfBirth: string | null | Date;
+  dateOfBirth: string | null;
   isCompletedProfile: boolean;
   residency: DomicileType | null;
   _currentCompanyMajorStakeholder?: IndexedSchema<Applicant>;
@@ -52,25 +53,15 @@ export interface OnboardingFormFields {
   corporationType?: CorporateCompanyType;
   documentsForCorporation?: string[];
   documentsForTrust?: string[];
-  domicile?: {
-    forGreenCard?: {
-      birthCountry: string;
-      citizenshipCountry: string;
-    };
-    forVisa?: {
-      birthCountry: string;
-      citizenshipCountry: string;
-      visaType: string;
-    };
-  };
+  domicile?: Domicile;
   ein?: string;
+  employer?: Employer;
+
   employment?: {
     employerName?: string;
     industry?: string;
     occupation?: string;
   };
-
-  employmentDetails?: EmploymentDetails;
   employmentStatus?: EmploymentStatus;
   experience?: Experience | null;
   finraInstitution?: string;
@@ -105,13 +96,7 @@ export interface CompanyTickerSymbol {
   symbol: string;
 }
 
-export type IdentificationDocuments = string[];
-
-interface EmploymentDetails {
-  employerName: string;
-  industry: Industry;
-  occupation: string;
-}
+export type IdentificationDocuments = string | { fileName: string; id: string }[];
 
 export interface Applicant {
   dateOfBirth?: Date;
@@ -127,3 +112,15 @@ export interface Applicant {
 export type IndexedSchema<Schema> = Schema & {
   _index?: number;
 };
+
+export interface Domicile {
+  forGreenCard?: {
+    birthCountry: string;
+    citizenshipCountry: string;
+  };
+  forVisa?: {
+    birthCountry: string;
+    citizenshipCountry: string;
+    visaType: string;
+  };
+}

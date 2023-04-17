@@ -1,12 +1,11 @@
 import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
 
-import { StepCompliance } from '../../Onboarding/flow-steps/stepCompliance';
-import { StepFinraInstitution } from '../../Onboarding/flow-steps/stepFinra';
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
 import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
+import { StepCompliance } from './stepCompliance';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
@@ -17,6 +16,7 @@ import { StepEIN } from './stepEIN';
 import { StepEmploymentDetails } from './stepEmploymentDetails';
 import { StepEmploymentStatus } from './stepEmploymentStatus';
 import { StepExperience } from './stepExperience';
+import { StepFinraInstitution } from './stepFinra';
 import { StepFullName } from './stepFullName';
 import { StepIdentificationDocuments } from './stepIdentificationDocuments';
 import { StepNetWorthAndNetIncome } from './stepNetWorthAndNetIncome';
@@ -87,7 +87,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   netIncome: undefined,
   netWorth: undefined,
   employmentStatus: undefined,
-  employmentDetails: undefined,
+  employer: undefined,
   companyTickerSymbols: undefined,
   permanentAddress: undefined,
   identificationDocument: undefined,
@@ -101,6 +101,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   corporationNumberOfEmployees: undefined,
   corporationLegalName: undefined,
   ein: undefined,
+  domicile: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({

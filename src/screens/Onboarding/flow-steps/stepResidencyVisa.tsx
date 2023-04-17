@@ -1,16 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { COUNTRIES } from 'reinvest-app-common/src/constants/countries';
 import { VISAS_AS_OPTIONS } from 'reinvest-app-common/src/constants/visas';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Dropdown } from '../../../components/Dropdown';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { VisaType } from '../../../types/visaType';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -27,7 +30,13 @@ const schema = z.object({
 
 export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.RESIDENCY_VISA,
-  doesMeetConditionFields: fields => fields.residency === DomicileType.Visa,
+  willBePartOfTheFlow(fields) {
+    return fields.residency === DomicileType.Visa && !fields.isCompletedProfile;
+  },
+  doesMeetConditionFields(fields) {
+    return fields.residency === DomicileType.Visa && !fields.isCompletedProfile;
+  },
+
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { formState, handleSubmit, watch, setValue } = useForm<Fields>({
       mode: 'all',
@@ -37,10 +46,31 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields(fields);
-      moveToNextStep();
+    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+
+    const onSubmit: SubmitHandler<Fields> = async ({ birthCountry, citizenshipCountry, visaType }) => {
+      if (visaType && birthCountry && citizenshipCountry) {
+        await updateStoreFields({ domicile: { forVisa: { birthCountry, citizenshipCountry, visaType } } });
+        await completeProfileMutate({
+          input: {
+            domicile: {
+              type: DomicileType.Visa,
+              forVisa: {
+                visaType,
+                birthCountry,
+                citizenshipCountry,
+              },
+            },
+          },
+        });
+      }
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const birthCountry = watch('birthCountry');
     const citizenshipCountry = watch('citizenshipCountry');
@@ -48,7 +78,7 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
 
     return (
       <>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Please enter your US Visa details."
@@ -75,13 +105,13 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
             data={VISAS_AS_OPTIONS}
             onSelect={option => setValue('visaType', option.value as VisaType)}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!shouldButtonBeDisabled}
+            disabled={!shouldButtonBeDisabled || isLoading}
             onPress={handleSubmit(onSubmit)}
           >
             Continue

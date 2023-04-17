@@ -55,7 +55,7 @@ export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchView
       setError(undefined);
       getPredictions(searchValue);
     }
-  }, [searchValue]);
+  }, [getPredictions, searchValue]);
 
   const parseDetails = async (placeId: string) => {
     setLoading(true);
