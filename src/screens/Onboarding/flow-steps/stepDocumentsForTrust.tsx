@@ -10,7 +10,6 @@ import { FilePicker } from '../../../components/FilePicker';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -48,11 +47,11 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
             description={
               <StyledText
                 variant="paragraphLarge"
-                color={palette.pureWhite}
+                color="pureWhite"
               >
                 <StyledText
                   variant="paragraphEmp"
-                  color={palette.pureWhite}
+                  color="pureWhite"
                 >
                   Required documents:
                 </StyledText>{' '}

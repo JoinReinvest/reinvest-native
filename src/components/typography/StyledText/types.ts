@@ -1,7 +1,10 @@
 import { TextProps } from 'react-native';
 
+import { Theme } from '../../../constants/theme';
+
 export interface StyledTextProps extends TextProps {
-  color?: string;
+  color?: Theme;
+  opacity?: number;
   variant?: TextVariants;
 }
 

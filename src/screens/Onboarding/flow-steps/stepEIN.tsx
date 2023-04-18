@@ -14,7 +14,6 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { EIN_MASK } from '../../../constants/masks';
-import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -109,14 +108,14 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
           <View style={styles.row}>
             <StyledText
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
               onPress={openEinDialog}
             >
               EIN?
             </StyledText>
             <StyledText
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
               onPress={openIDoNotHaveEinDialog}
             >
               I do not have an EIN

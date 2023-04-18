@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable } from 'react-native';
 
-import { palette } from '../../constants/theme';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CardProps } from './types';
@@ -16,7 +15,7 @@ export const Card = <T extends string>({ id, title, value, description, selected
       onPress={handleCardPress}
     >
       <StyledText
-        color={palette.pureWhite}
+        color="pureWhite"
         variant="bodyText"
         style={[styles.cardTitle, selected && styles.selected]}
       >
@@ -24,7 +23,7 @@ export const Card = <T extends string>({ id, title, value, description, selected
       </StyledText>
       {description && (
         <StyledText
-          color={palette.darkerGray}
+          color="darkerGray"
           variant="paragraph"
           style={[styles.cardContent, selected && styles.selected]}
         >

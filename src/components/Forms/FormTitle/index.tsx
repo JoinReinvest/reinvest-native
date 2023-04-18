@@ -35,7 +35,7 @@ export const FormTitle = ({ headline, description, dark, link, informationMessag
       {...restProps}
     >
       <StyledText
-        color={dark ? palette.pureWhite : palette.pureBlack}
+        color={dark ? 'pureWhite' : 'pureBlack'}
         variant="h5"
         style={styles.headline}
       >
@@ -43,7 +43,7 @@ export const FormTitle = ({ headline, description, dark, link, informationMessag
       </StyledText>
       {description && (
         <StyledText
-          color={dark ? palette.pureWhite : palette.pureBlack}
+          color={dark ? 'pureWhite' : 'pureBlack'}
           variant="paragraphLarge"
           style={styles.description}
         >
@@ -52,7 +52,7 @@ export const FormTitle = ({ headline, description, dark, link, informationMessag
       )}
       {link && (
         <StyledText
-          color={dark ? palette.frostGreen : palette.pureBlack}
+          color={dark ? 'frostGreen' : 'pureBlack'}
           variant={'link'}
           onPress={onLinkPress}
         >
@@ -70,7 +70,7 @@ export const FormTitle = ({ headline, description, dark, link, informationMessag
           />
           <StyledText
             variant="paragraphSmall"
-            color={palette.frostGreen}
+            color="frostGreen"
           >
             {informationMessage}
           </StyledText>

@@ -4,7 +4,6 @@ import FastImage from 'react-native-fast-image';
 import { Box } from '../../../../components/Containers/Box/Box';
 import { StyledText } from '../../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../../constants/styles';
-import { palette } from '../../../../constants/theme';
 import Screens from '../../../../navigation/screens';
 import { EducationNavigationProp } from '../../../../screens/Education/types';
 import { styles } from './styles';
@@ -43,7 +42,7 @@ export const BlogCard = ({ data, slug, image, title, navigation }: BlogPost & Ed
         <Box />
         <StyledText
           variant="paragraph"
-          color={palette.dark3}
+          color="dark3"
         >
           {data}
         </StyledText>

@@ -11,7 +11,6 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
-import { palette } from '../../../constants/theme';
 import { useAuth } from '../../../providers/AuthProvider';
 import { styles } from '../../../screens/SignIn/flow-steps/styles';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -72,13 +71,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
         <View style={styles.row}>
           <StyledText
             variant="link"
-            color={palette.frostGreen}
+            color="frostGreen"
           >
             Resend Code
           </StyledText>
           <StyledText
             variant="link"
-            color={palette.frostGreen}
+            color="frostGreen"
           >
             Get Help
           </StyledText>

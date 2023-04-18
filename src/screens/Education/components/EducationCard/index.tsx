@@ -3,7 +3,6 @@ import { Box } from '../../../../components/Containers/Box/Box';
 import { Row } from '../../../../components/Containers/Row';
 import { Icon } from '../../../../components/Icon';
 import { StyledText } from '../../../../components/typography/StyledText';
-import { palette } from '../../../../constants/theme';
 import Screens from '../../../../navigation/screens';
 import { EducationNavigationProp } from '../../../../screens/Education/types';
 import { styles } from './styles';
@@ -32,7 +31,7 @@ export const EducationCard = ({
       >
         <StyledText
           variant="paragraphLarge"
-          color={palette.dark2}
+          color="dark2"
         >
           {subtitle}
         </StyledText>

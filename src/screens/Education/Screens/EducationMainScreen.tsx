@@ -7,7 +7,6 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import Screens from '../../../navigation/screens';
 import { BlogCard } from '../../Education/components/BlogCard';
 import { EducationCard } from '../../Education/components/EducationCard';
@@ -36,7 +35,7 @@ export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.
         >
           <StyledText
             variant="h3"
-            color={palette.pureWhite}
+            color="pureWhite"
           >
             Learn About Real Estate Investing
           </StyledText>

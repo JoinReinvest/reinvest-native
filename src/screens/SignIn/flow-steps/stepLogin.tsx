@@ -9,7 +9,6 @@ import { Button } from '../../../components/Button';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { ChallengeName, useAuth } from '../../../providers/AuthProvider';
@@ -89,7 +88,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       <StyledText
         onPress={startForgotPasswordFlow}
         variant="link"
-        color={palette.pureWhite}
+        color="pureWhite"
         style={styles.firstStepLink}
       >
         Forgot password?
@@ -97,7 +96,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
       <StyledText
         onPress={navigateToSignUp}
         variant="link"
-        color={palette.pureWhite}
+        color="pureWhite"
         style={styles.firstStepLink}
       >
         {`Don't have an account?`}

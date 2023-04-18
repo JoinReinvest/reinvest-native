@@ -21,10 +21,8 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
-import { hexToRgbA } from '../../../utils/hexToRgb';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -175,7 +173,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
             <StyledText
               variant="paragraphLarge"
               style={{ textAlign: 'center' }}
-              color={palette.pureWhite}
+              color="pureWhite"
             >
               Upload profile picture
             </StyledText>
@@ -183,7 +181,8 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
               <StyledText
                 variant="paragraphLarge"
                 style={{ textAlign: 'center' }}
-                color={hexToRgbA(palette.pureWhite, 0.5)}
+                opacity={0.5}
+                color="pureWhite"
               >
                 Customize your profile picture
               </StyledText>

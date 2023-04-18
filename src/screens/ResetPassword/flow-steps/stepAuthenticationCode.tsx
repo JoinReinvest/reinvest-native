@@ -13,7 +13,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { CODE_MASK } from '../../../constants/masks';
-import { palette } from '../../../constants/theme';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifires';
@@ -100,14 +99,14 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
             <StyledText
               onPress={resendCodeOnClick}
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={() => Alert.alert('Get Help')}
               variant="link"
-              color={palette.frostGreen}
+              color="frostGreen"
             >
               Get Help
             </StyledText>
