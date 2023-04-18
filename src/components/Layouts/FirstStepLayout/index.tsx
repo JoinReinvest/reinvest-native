@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { Keyboard, Pressable, StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { palette } from '../../../constants/theme';
@@ -30,7 +30,10 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
         style={StyleSheet.absoluteFillObject}
         colors={['transparent', hexToRgbA(palette.pureBlack, 0.6)]}
       />
-      <View style={[styles.scrollContainer, styles.fw]}>
+      <Pressable
+        onPress={Keyboard.dismiss}
+        style={[styles.scrollContainer, styles.fw]}
+      >
         <View style={styles.signet}>
           <Sygnet />
         </View>
@@ -49,7 +52,7 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
           </StyledText>
         </View>
         {children}
-      </View>
+      </Pressable>
     </MainWrapper>
   );
 };
