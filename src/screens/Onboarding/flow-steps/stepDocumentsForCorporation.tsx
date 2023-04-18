@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import { Asset } from 'react-native-image-picker';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
@@ -21,6 +21,12 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
 
   willBePartOfTheFlow: fields => {
     return fields.accountType === DraftAccountType.Corporate;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+
+    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Corporate;
   },
 
   Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

@@ -9,6 +9,7 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Loader } from '../../../components/Loader';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useAuth } from '../../../providers/AuthProvider';

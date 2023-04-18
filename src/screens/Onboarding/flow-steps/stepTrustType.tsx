@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TRUST_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
-import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { DraftAccountType, TrustCompanyType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
@@ -25,6 +25,11 @@ export const StepTrustType: StepParams<OnboardingFormFields> = {
     return fields.accountType === DraftAccountType.Trust;
   },
 
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+
+    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
+  },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const [selectedTrustType, setSelectedTrustType] = useState<TrustCompanyType | undefined>(storeFields.trustType);
@@ -59,10 +64,10 @@ export const StepTrustType: StepParams<OnboardingFormFields> = {
                 selected={value === selectedTrustType}
                 key={value}
                 id={value}
-                value={value as TrustCompanyType}
+                value={value}
                 title={title}
                 description={description}
-                onCardPress={setSelectedTrustType}
+                onCardPress={value => setSelectedTrustType(value as TrustCompanyType)}
               />
             ))}
           </View>
