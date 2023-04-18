@@ -60,10 +60,10 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
                 selected={value === selectedCorporationType}
                 key={value}
                 id={value}
-                value={value as CorporateCompanyType}
+                value={value}
                 title={title}
                 description={description}
-                onCardPress={setSelectedCorporationType}
+                onCardPress={value => setSelectedCorporationType(value as CorporateCompanyType)}
               />
             ))}
           </View>

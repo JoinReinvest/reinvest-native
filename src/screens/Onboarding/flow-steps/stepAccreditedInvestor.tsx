@@ -38,7 +38,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
   doesMeetConditionFields(fields) {
     const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
 
-    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile && !!fields.isAccreditedInvestor;
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
