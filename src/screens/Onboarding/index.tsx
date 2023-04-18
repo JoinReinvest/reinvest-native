@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
-import { ProfileDetails, Statement } from 'reinvest-app-common/src/types/graphql';
+import { AccreditedInvestorStatement, ProfileDetails, Statement } from 'reinvest-app-common/src/types/graphql';
 import { formatDateFromApi } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -31,6 +31,7 @@ const complianceMapper = {
   FINRAMember: 'isAssociatedWithFinra',
   TradingCompanyStakeholder: 'isAssociatedWithPubliclyTradedCompany',
   Politician: 'isSeniorPoliticalFigure',
+  AccreditedInvestor: 'isAccreditedInvestor',
 } as const;
 
 type ComplianceType = keyof typeof complianceMapper;
@@ -43,6 +44,7 @@ interface CompliancesReducer {
   };
   companyTickerSymbols?: { symbol: string }[];
   finraInstitution?: string;
+  isAccreditedInvestor?: boolean;
   seniorPoliticalFigure?: string;
 }
 
@@ -56,6 +58,10 @@ const parseStatementsToCompliance = (statements?: Statement[]) => {
 
           if (key === complianceMapper.Politician) {
             value.seniorPoliticalFigure = el.details?.[0] || '';
+          }
+
+          if (key === complianceMapper.AccreditedInvestor) {
+            value.isAccreditedInvestor = el.details?.[0] === AccreditedInvestorStatement.IAmAnAccreditedInvestor;
           }
 
           if (key === complianceMapper.FINRAMember) {
@@ -81,6 +87,7 @@ const parseStatementsToCompliance = (statements?: Statement[]) => {
           isAssociatedWithFinra: false,
           isAssociatedWithPubliclyTradedCompany: false,
           isSeniorPoliticalFigure: false,
+          isAccreditedInvestor: false,
         },
       },
     );

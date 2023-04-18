@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { PrivacyPolicyStatement, StatementType, TermsAndConditionsStatement } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -55,7 +56,18 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      await completeProfileMutate({ input: { name: fields } });
+      await completeProfileMutate({
+        input: {
+          name: fields,
+          statements: [
+            { type: StatementType.PrivacyPolicy, forPrivacyPolicy: { statement: PrivacyPolicyStatement.IHaveReadAndAgreeToTheReinvestPrivacyPolicy } },
+            {
+              type: StatementType.TermsAndConditions,
+              forTermsAndConditions: { statement: TermsAndConditionsStatement.IHaveReadAndAgreeToTheReinvestTermsAndConditions },
+            },
+          ],
+        },
+      });
       await updateStoreFields({ name: fields });
     };
 
