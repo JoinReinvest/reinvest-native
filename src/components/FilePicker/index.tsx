@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import DocumentPicker, { DocumentPickerResponse, isInProgress } from 'react-native-document-picker';
 import { Asset, ImagePickerResponse } from 'react-native-image-picker';
@@ -26,7 +26,7 @@ const permissionAlert = () =>
 
 export const FilePicker = ({ onSelect, label, type = 'single', dark = true, selectionLimit = 3, ...rest }: PropsWithChildren<FilePickerProps>) => {
   const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>([]);
-
+  const existingIds = useRef<Set<string | undefined>>(new Set([]));
   const [choosingMode, setChoosingMode] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +40,8 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
     }
 
     if (response.assets) {
-      onAssetSelect(response.assets);
+      const filteredResponse = response.assets.filter(asset => !existingIds.current?.has(asset.id));
+      onAssetSelect(filteredResponse);
     }
 
     setLoading(false);
@@ -48,6 +49,11 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
 
   const onAssetSelect = (assets: DocumentPickerResponse[] | Asset[] | undefined) => {
     if (assets) {
+      assets.forEach(asset => {
+        if ((asset as Asset).id) {
+          existingIds.current = new Set([...existingIds.current, (asset as Asset).id]);
+        }
+      });
       const uploaded = [...results, ...assets];
       setResults(uploaded);
       onSelect(uploaded);
@@ -62,8 +68,9 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
     setLoading(true);
     try {
       const files = type === 'single' ? await DocumentPicker.pick() : await DocumentPicker.pickMultiple();
-      setResults(files);
-      onSelect(files);
+      const batch = [...results, ...files];
+      setResults(batch);
+      onSelect(batch);
     } catch (err) {
       handleError(err);
     } finally {
@@ -76,6 +83,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
       try {
         await DocumentPicker.releaseSecureAccess([uri]);
         const filtered = results?.filter(file => file.uri !== uri);
+        existingIds.current.delete((results.find(el => el.uri === uri) as Asset)?.id);
         setResults(filtered);
         onSelect(filtered);
       } catch (e) {
@@ -102,7 +110,7 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
       return file.name;
     }
 
-    return file.fileName?.split('.').shift();
+    return file.fileName?.split('.').shift()?.substring(0, 30);
   };
 
   const maxLimitReached = results.length >= (type === 'single' ? 1 : selectionLimit);
