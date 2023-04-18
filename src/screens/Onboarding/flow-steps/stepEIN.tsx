@@ -3,7 +3,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccountType, TrustCompanyType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
@@ -31,8 +31,10 @@ const schema = z.object({
 export const StepEIN: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EIN,
 
-  willBePartOfTheFlow: ({ accountType }) => {
-    return accountType === DraftAccountType.Corporate || accountType === DraftAccountType.Trust;
+  willBePartOfTheFlow: ({ accountType, trustType }) => {
+    const isRevocableTrust = accountType === DraftAccountType.Trust && trustType === TrustCompanyType.Revocable;
+
+    return accountType === DraftAccountType.Corporate || isRevocableTrust;
   },
 
   doesMeetConditionFields: fields => {
@@ -97,7 +99,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
             control={control}
             fieldName="ein"
             inputProps={{
-              placeholder: '000-000000',
+              placeholder: '00-000000',
               dark: true,
               keyboardType: 'numeric',
               maxLength: 10, // xxx-xxxxxx
