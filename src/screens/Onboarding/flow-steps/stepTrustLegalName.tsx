@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
@@ -27,6 +28,12 @@ export const StepTrustLegalName: StepParams<OnboardingFormFields> = {
 
   willBePartOfTheFlow: ({ accountType }) => {
     return accountType === DraftAccountType.Trust;
+  },
+
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+
+    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

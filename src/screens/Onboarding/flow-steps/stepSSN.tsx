@@ -11,6 +11,7 @@ import zod from 'zod';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -57,7 +58,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
       defaultValues,
       resolver: zodResolver(schema),
     });
-    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+    const { error: profileDetailsError, isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
     const [isApiValue, setIsApiValue] = useState(/^[*]{3}-[*]{2}-\d{4}/.test(storeFields.ssn || ''));
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
@@ -77,12 +78,17 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
         return;
       }
 
-      await updateStoreFields({
-        ssn,
-        _isSocialSecurityNumberAlreadyAssigned: false,
-        _isSocialSecurityNumberBanned: false,
-      });
-      await completeProfileMutate({ input: { ssn: { ssn } } });
+      try {
+        await updateStoreFields({
+          ssn,
+          _isSocialSecurityNumberAlreadyAssigned: false,
+          _isSocialSecurityNumberBanned: false,
+        });
+        await completeProfileMutate({ input: { ssn: { ssn } } });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
     };
 
     useEffect(() => {
@@ -110,6 +116,8 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
             dark
             headline="What's your social security number"
           />
+          {profileDetailsError && <ErrorMessagesHandler error={profileDetailsError} />}
+
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -153,7 +161,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!isApiValue && (shouldButtonBeDisabled || isLoading)}
+            disabled={!isApiValue && shouldButtonBeDisabled}
             onPress={isApiValue ? () => moveToNextStep() : handleSubmit(onSubmit)}
           >
             Continue

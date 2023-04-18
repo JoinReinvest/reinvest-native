@@ -9,7 +9,7 @@ import { StyledTextProps } from './types';
 export const StyledText = ({ children, style, color = 'pureBlack', opacity, variant = 'label', ...rest }: PropsWithChildren<StyledTextProps>) => (
   <Text
     allowFontScaling={false}
-    style={[styles.text, styles[`${variant}`], { color: opacity !== undefined ? hexToRgbA(color, opacity) : palette[`${color}`] }, style]}
+    style={[styles.text, styles[`${variant}`], { color: opacity !== undefined ? hexToRgbA(palette[`${color}`], opacity) : palette[`${color}`] }, style]}
     {...rest}
   >
     {children}
