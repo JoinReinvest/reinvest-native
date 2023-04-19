@@ -5,8 +5,8 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CardProps } from './types';
 
-export const Card = <T extends string>({ id, title, value, description, selected = false, onCardPress }: CardProps<T>) => {
-  const handleCardPress = () => onCardPress?.(selected ? undefined : value);
+export const Card = <T extends object | string>({ id, title, value, description, selected = false, onCardPress }: CardProps<T>) => {
+  const handleCardPress = () => onCardPress?.(value);
 
   return (
     <Pressable

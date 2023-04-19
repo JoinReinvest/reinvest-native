@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { TRUST_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { DraftAccountType, TrustCompanyType } from 'reinvest-app-common/src/types/graphql';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
+import { DraftAccountType, TrustCompanyTypeEnum } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -21,23 +24,31 @@ import { styles } from './styles';
 export const StepTrustType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.TRUST_TYPE,
 
+  doesMeetConditionFields(fields) {
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
+
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+    const isTrustAccount = fields.accountType === DraftAccountType.Trust;
+
+    return hasProfileFields && isTrustAccount;
+  },
+
   willBePartOfTheFlow(fields) {
     return fields.accountType === DraftAccountType.Trust;
   },
 
-  doesMeetConditionFields(fields) {
-    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
-
-    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
-  },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedTrustType, setSelectedTrustType] = useState<TrustCompanyType | undefined>(storeFields.trustType);
+    const [selectedTrustType, setSelectedTrustType] = useState<TrustCompanyTypeEnum | undefined>(storeFields.trustType);
+    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const { openDialog } = useDialog();
 
     const handleContinue = async () => {
       await updateStoreFields({ trustType: selectedTrustType });
-      moveToNextStep();
+
+      if (storeFields.accountId && selectedTrustType) {
+        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyType: { type: selectedTrustType } } });
+      }
     };
 
     const openDisclaimer = () =>
@@ -48,26 +59,40 @@ export const StepTrustType: StepParams<OnboardingFormFields> = {
         />,
       );
 
+    const handleSelectTrustType = (selectedType: TrustCompanyTypeEnum) => setSelectedTrustType(selectedType);
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
+
     return (
       <>
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Which type of Trust do you have?"
           />
+          {error && (
+            <FormMessage
+              variant="error"
+              message={error.response.errors.map(err => err.message).join(', ')}
+            />
+          )}
           <View style={styles.cardsWrapper}>
             {TRUST_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
-              <Card
+              <Card<TrustCompanyTypeEnum>
                 selected={value === selectedTrustType}
                 key={value}
                 id={value}
-                value={value}
+                value={value as TrustCompanyTypeEnum}
                 title={title}
                 description={description}
-                onCardPress={value => setSelectedTrustType(value as TrustCompanyType)}
+                onCardPress={handleSelectTrustType}
               />
             ))}
           </View>
@@ -86,7 +111,7 @@ export const StepTrustType: StepParams<OnboardingFormFields> = {
         >
           <Button
             onPress={handleContinue}
-            disabled={!selectedTrustType}
+            disabled={!selectedTrustType || isLoading}
           >
             Continue
           </Button>
