@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
+import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
+import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
 import { FilePicker } from '../../../components/FilePicker';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -23,23 +28,70 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
     return fields.accountType === DraftAccountType.Trust;
   },
 
-  doesMeetConditionFields(fields) {
-    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
+  doesMeetConditionFields: fields => {
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
 
-    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+    const isTrustAccount = fields.accountType === DraftAccountType.Trust;
+    const hasTrustFields = allRequiredFieldsExists([
+      fields.trustType,
+      fields.trustLegalName,
+      fields.businessAddress,
+      fields.fiduciaryEntityInformation?.industry,
+      fields.fiduciaryEntityInformation?.annualRevenue,
+      fields.fiduciaryEntityInformation?.numberOfEmployees,
+    ]);
+
+    return isTrustAccount && hasProfileFields && hasTrustFields;
   },
 
-  Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
+    const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
+    const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
+    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
+
     const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
 
     const handleContinue = async () => {
-      const uris = selectedFiles.map(({ uri }) => uri ?? '');
-      await updateStoreFields({ documentsForTrust: uris });
+      if (!storeFields.accountId) {
+        return;
+      }
+
+      const selectedFilesUris = selectedFiles.map(({ uri }) => uri ?? '');
+      try {
+        const idScan = [];
+
+        if (selectedFilesUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+          const scans = await sendDocumentsToS3AndGetScanIdsMutate({
+            documentsFileLinks: documentsFileLinks as PutFileLink[],
+            identificationDocument: selectedFiles,
+          });
+          idScan.push(...scans);
+        }
+
+        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
+        await updateStoreFields({ documentsForTrust: idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] })) });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('-> e', e);
+      }
       moveToNextStep();
     };
 
-    const shouldButtonBeDisabled = selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT || selectedFiles.length > MAXIMUM_CORPORATION_FILES_COUNT;
+    const shouldButtonBeDisabled =
+      selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT ||
+      selectedFiles.length > MAXIMUM_CORPORATION_FILES_COUNT ||
+      isSendDocumentToS3AndGetScanIdsLoading ||
+      isCreateDocumentsFileLinksLoading ||
+      isLoading;
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     return (
       <>
@@ -65,6 +117,12 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
               </StyledText>
             }
           />
+          {error && (
+            <FormMessage
+              variant="error"
+              message={error.response.errors.map(err => err.message).join(', ')}
+            />
+          )}
           <FilePicker
             dark
             label="Upload Files"
