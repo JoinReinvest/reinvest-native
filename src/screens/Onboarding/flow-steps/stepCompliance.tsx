@@ -145,14 +145,17 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
             );
           })}
         </PaddedScrollView>
-        {isAnyOptionChosen && (
-          <View
-            key="buttons_section"
-            style={styles.buttonsSection}
+        <View
+          key="buttons_section"
+          style={styles.buttonsSection}
+        >
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isAnyOptionChosen}
           >
-            <Button onPress={handleSubmit(onSubmit)}>Continue</Button>
-          </View>
-        )}
+            Continue
+          </Button>
+        </View>
       </>
     );
   },

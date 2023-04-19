@@ -120,7 +120,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
           <Controller
             inputProps={{
               dark: true,
-              placeholder: 'Confirm Password',
+              placeholder: 'Repeat Password',
               returnKeyType: 'done',
             }}
             fieldName="passwordConfirmation"

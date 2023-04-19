@@ -68,54 +68,56 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
     }, [storeFields.authenticationCode, storeFields.email]);
 
     return (
-      <View style={[styles.wrapper, styles.fw, styles.flex, styles.hPadding]}>
-        {isLoading ? (
-          <View style={styles.flex}>
-            <FormTitle
-              dark
-              headline="Verifying Account Information"
-            />
-            <Box
-              justifyContent={'center'}
-              alignItems={'center'}
-              flex={1}
-            >
-              <Loader color={palette.pureWhite} />
-            </Box>
-          </View>
-        ) : (
-          <>
-            <StatusCircle
-              title={error ? error : 'Your login credentials were successfully created'}
-              variant={error ? 'error' : undefined}
-            >
-              {displayLoginLink && (
-                <Box mt="16">
-                  <StyledText
-                    variant="link"
-                    color="frostGreen"
-                    onPress={goToSignIn}
-                  >
-                    Go to sign in
-                  </StyledText>
-                </Box>
-              )}
-            </StatusCircle>
-            <View
-              key="buttons_section"
-              style={styles.buttonsSection}
-            >
-              <Button
-                isLoading={isLoading}
-                onPress={onPress}
-                disabled={isLoading || !!error}
+      <>
+        <View style={[styles.wrapper, styles.fw, styles.flex, styles.hPadding]}>
+          {isLoading ? (
+            <View style={styles.flex}>
+              <FormTitle
+                dark
+                headline="Verifying Account Information"
+              />
+              <Box
+                justifyContent={'center'}
+                alignItems={'center'}
+                flex={1}
               >
-                Continue
-              </Button>
+                <Loader color={palette.pureWhite} />
+              </Box>
             </View>
-          </>
-        )}
-      </View>
+          ) : (
+            <>
+              <StatusCircle
+                title={error ? error : 'Your login credentials were successfully created'}
+                variant={error ? 'error' : undefined}
+              >
+                {displayLoginLink && (
+                  <Box mt="16">
+                    <StyledText
+                      variant="link"
+                      color="frostGreen"
+                      onPress={goToSignIn}
+                    >
+                      Go to sign in
+                    </StyledText>
+                  </Box>
+                )}
+              </StatusCircle>
+            </>
+          )}
+        </View>
+        <View
+          key="buttons_section"
+          style={styles.buttonsSection}
+        >
+          <Button
+            isLoading={isLoading}
+            onPress={onPress}
+            disabled={isLoading || !!error}
+          >
+            Continue
+          </Button>
+        </View>
+      </>
     );
   },
 };

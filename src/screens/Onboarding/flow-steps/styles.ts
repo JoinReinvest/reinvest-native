@@ -38,4 +38,5 @@ export const styles = StyleSheet.create({
     flexBasis: '70%',
     marginLeft: -1,
   },
+  removeMargin: { marginBottom: 0 },
 });

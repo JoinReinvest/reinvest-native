@@ -55,7 +55,8 @@ export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchView
       setError(undefined);
       getPredictions(searchValue);
     }
-  }, [getPredictions, searchValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue]);
 
   const parseDetails = async (placeId: string) => {
     setLoading(true);

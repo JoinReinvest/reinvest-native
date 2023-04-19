@@ -47,7 +47,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const { formState, control, handleSubmit } = useForm<Fields>({
-      mode: 'onSubmit',
+      mode: 'onBlur',
       resolver: zodResolver(schema),
       defaultValues: { ...storeFields, dateOfBirth: storeFields.dateOfBirth || '' },
     });

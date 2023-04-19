@@ -10,10 +10,13 @@ import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { FilePicker } from '../../../components/FilePicker';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
+import { palette } from '../../../constants/theme';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -74,6 +77,27 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
       }
     }, [isSuccess, moveToNextStep]);
 
+    if (isLoading || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Box
+            flex={1}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Loader
+              size="xl"
+              color={palette.pureWhite}
+            />
+            <FormTitle
+              dark
+              headline={`Uploading Your Document${selectedFiles.length > 1 ? 's' : ''}`}
+            />
+          </Box>
+        </View>
+      );
+    }
+
     return (
       <>
         <View style={[styles.fw]}>
@@ -83,7 +107,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
           <FormTitle
             dark
             headline="Please upload your Driver’s License or Passport for further verification"
-            description="Add both sides of license or Identification pages from passport"
+            description="Valid identification includes Driver's license, Permanent Resident card or a non-expired Passport."
           />
           <FilePicker
             dark

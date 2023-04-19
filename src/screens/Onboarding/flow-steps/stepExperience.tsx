@@ -45,11 +45,6 @@ export const StepExperience: StepParams<OnboardingFormFields> = {
       }
     }, [isSuccess, moveToNextStep]);
 
-    const handleSkip = async () => {
-      await updateStoreFields({ experience: undefined });
-      moveToNextStep();
-    };
-
     return (
       <>
         <View style={[styles.fw]}>
@@ -82,12 +77,6 @@ export const StepExperience: StepParams<OnboardingFormFields> = {
             disabled={!selectedExperience || isLoading}
           >
             Continue
-          </Button>
-          <Button
-            variant="outlined"
-            onPress={handleSkip}
-          >
-            Skip
           </Button>
         </View>
       </>
