@@ -53,7 +53,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
   doesMeetConditionFields(fields) {
     const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
 
-    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile && !fields._isPhoneCompleted;
   },
 
   Component: ({ storeFields: { phone }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -103,7 +103,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
           <FormTitle
             dark
             headline="Enter your phone number"
-            description="We’ll text you a confirmation code within 10 minutes."
+            description="You are consenting to be contacted at this phone number for the purpose of receiving a verification code from Reinvest. Wireless and text message fees from your carrier may apply. See Privacy Policy below."
           />
           {phoneNumberError && (
             <FormMessage

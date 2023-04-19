@@ -5,6 +5,7 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/createDraftAccount';
 import { useGetIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/getIndividualDraftAccount';
 import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
+import { useGetPhoneCompleted } from 'reinvest-app-common/src/services/queries/getPhoneCompleted';
 import { DraftAccount, DraftAccountType, Employer, EmploymentStatus, IndividualDraftAccount } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -32,6 +33,8 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const [accountId, setAccountId] = useState<string>('');
 
     const { isSuccess, mutateAsync: createDraftAccount } = useCreateDraftAccount(getApiClient);
+    const { data: draftAccountList } = useGetListAccount(getApiClient);
+    const { data: phoneCompleted } = useGetPhoneCompleted(getApiClient);
 
     useEffect(() => {
       if (isSuccess) {
@@ -39,7 +42,15 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
       }
     }, [isSuccess, moveToNextStep]);
 
-    const { data: draftAccountList } = useGetListAccount(getApiClient);
+    useEffect(() => {
+      if (phoneCompleted) {
+        updateStoreFields({
+          ...storeFields,
+          _isPhoneCompleted: phoneCompleted,
+        });
+      }
+    }, [phoneCompleted, storeFields, updateStoreFields]);
+
     const { refetch: refetchIndividualDraft } = useGetIndividualDraftAccount(getApiClient, {
       accountId,
       config: { enabled: false },

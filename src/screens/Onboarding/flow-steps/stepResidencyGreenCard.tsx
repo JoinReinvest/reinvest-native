@@ -38,22 +38,24 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues: {
-        birthCountry: storeFields.birthCountry,
-        citizenshipCountry: storeFields.citizenshipCountry,
+        birthCountry: getLabel(storeFields.birthCountry),
+        citizenshipCountry: getLabel(storeFields.citizenshipCountry),
       },
     });
 
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields(fields);
+      const citizenshipCountry = getValue(fields.citizenshipCountry);
+      const birthCountry = getValue(fields.birthCountry);
+      await updateStoreFields({ citizenshipCountry, birthCountry });
 
-      if (fields.birthCountry && fields.citizenshipCountry) {
+      if (birthCountry && citizenshipCountry) {
         await completeProfileMutate({
           input: {
             domicile: {
               type: DomicileType.GreenCard,
-              forGreenCard: { birthCountry: fields.birthCountry, citizenshipCountry: fields.citizenshipCountry },
+              forGreenCard: { birthCountry, citizenshipCountry },
             },
           },
         });
@@ -82,14 +84,14 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
             value={citizenshipCountry}
             placeholder="Citizenship Country"
             data={COUNTRIES}
-            onSelect={value => setValue('citizenshipCountry', value.value.toString())}
+            onSelect={value => setValue('citizenshipCountry', value.label.toString())}
           />
           <Dropdown
             value={birthCountry}
             placeholder="Birth Country"
             dark
             data={COUNTRIES}
-            onSelect={option => setValue('birthCountry', option.value.toString())}
+            onSelect={option => setValue('birthCountry', option.label.toString())}
           />
         </PaddedScrollView>
         <View
@@ -107,3 +109,6 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
     );
   },
 };
+
+const getValue = (label?: string) => COUNTRIES?.find(el => el.label === label)?.value;
+const getLabel = (value?: string) => COUNTRIES?.find(el => el.value === value)?.label;

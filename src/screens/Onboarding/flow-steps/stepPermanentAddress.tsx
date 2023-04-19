@@ -30,7 +30,7 @@ const schema = formValidationRules.address;
 
 const placeholders = {
   addressLine1: 'Street Address or P.O. Box',
-  addressLine2: 'Apt, suite, unit, building, floor, etc',
+  addressLine2: 'Unit No. (Optional)',
   zip: 'Zip Code',
   state: 'State',
   city: 'City',
@@ -158,7 +158,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="zip"
-            inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric' }}
+            inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric', style: styles.removeMargin }}
           />
         </PaddedScrollView>
         <View

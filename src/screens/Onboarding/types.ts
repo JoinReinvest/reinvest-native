@@ -24,6 +24,7 @@ export interface OnboardingFormFields {
   _hasAuthenticatedPhoneNumber?: boolean;
   _isEditingCompanyMajorStakeholderApplicant?: boolean;
   _isEditingTrustTrusteeGrantorOrProtector?: boolean;
+  _isPhoneCompleted?: boolean;
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
   _isSocialSecurityNumberBanned?: boolean;
   _willHaveMajorStakeholderApplicants?: boolean;

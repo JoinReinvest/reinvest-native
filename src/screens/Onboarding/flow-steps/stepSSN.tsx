@@ -13,12 +13,14 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { SSN_MASK } from '../../../constants/masks';
+import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -105,6 +107,27 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
         />,
       );
     };
+
+    if (isLoading) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Box
+            flex={1}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Loader
+              size="xl"
+              color={palette.pureWhite}
+            />
+            <FormTitle
+              dark
+              headline="Validating your Social Security Number"
+            />
+          </Box>
+        </View>
+      );
+    }
 
     return (
       <>

@@ -18,7 +18,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CODE_MASK } from '../../../constants/masks';
 import { onBoardingDisclaimers, onBoardingModalHeadlines } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -67,8 +66,6 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
     const onSubmit: SubmitHandler<Fields> = async ({ phoneNumberAuthenticationCode }) => {
       try {
         if (!phoneNumberAuthenticationCode) return;
-
-        phoneNumberAuthenticationCode = phoneNumberAuthenticationCode.replace('-', '');
 
         await updateStoreFields({
           phoneNumberAuthenticationCode,
@@ -121,9 +118,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
             inputProps={{
               placeholder: 'Authentication Code',
               dark: true,
-              maxLength: 7, // xxx-xxx
-              mask: CODE_MASK,
-              autoCapitalize: 'characters',
+              maxLength: 6,
             }}
           />
           <View style={styles.row}>
