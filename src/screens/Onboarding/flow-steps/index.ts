@@ -36,7 +36,6 @@ import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
-  StepTrustLegalName,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -97,9 +96,7 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   isAuthorizedSignatoryEntity: undefined,
   seniorPoliticalFigure: undefined,
   corporationType: undefined,
-  corporationAnnualRevenue: undefined,
-  corporationIndustry: undefined,
-  corporationNumberOfEmployees: undefined,
+  fiduciaryEntityInformation: undefined,
   corporationLegalName: undefined,
   ein: undefined,
   domicile: undefined,

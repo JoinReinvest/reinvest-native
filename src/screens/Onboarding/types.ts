@@ -49,11 +49,7 @@ export interface OnboardingFormFields {
     // Are you or any of your immediate family a senior political figure?
     isSeniorPoliticalFigure?: boolean;
   };
-  corporationAnnualRevenue?: CorporationAnnualRevenue;
-  corporationIndustry?: Industry;
-
   corporationLegalName?: string;
-  corporationNumberOfEmployees?: CorporationNumberOfEmployees;
   corporationType?: CorporateCompanyType;
   documentsForCorporation?: string[];
   documentsForTrust?: string[];
@@ -68,6 +64,7 @@ export interface OnboardingFormFields {
   };
   employmentStatus?: EmploymentStatus;
   experience?: Experience | null;
+  fiduciaryEntityInformation?: FiduciaryEntityInformation;
   finraInstitution?: string;
   finraInstitutionName?: string;
   identificationDocument?: IdentificationDocuments;
@@ -131,4 +128,10 @@ export interface Domicile {
     citizenshipCountry: string;
     visaType: string;
   };
+}
+
+interface FiduciaryEntityInformation {
+  annualRevenue?: CorporationAnnualRevenue;
+  industry?: Industry;
+  numberOfEmployees?: CorporationNumberOfEmployees;
 }
