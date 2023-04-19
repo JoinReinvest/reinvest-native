@@ -36,7 +36,7 @@ import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
-  StepTrustType,
+  StepTrustLegalName,
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
