@@ -133,9 +133,8 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 fieldName="number"
                 inputProps={{
                   dark: true,
-                  maskedPlaceholder: '000-000-0000',
                   mask: PHONE_MASK,
-                  placeholder: 'Phone number',
+                  placeholder: '000-000-0000',
                   keyboardType: 'numeric',
                   maxLength: 12,
                 }}

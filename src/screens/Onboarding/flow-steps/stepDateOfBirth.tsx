@@ -93,11 +93,10 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
             control={control}
             fieldName="dateOfBirth"
             inputProps={{
-              placeholder: 'Date of Birth',
+              placeholder: 'MM/DD/YYYY',
               dark: true,
               keyboardType: 'numeric',
               mask: Masks.DATE_MMDDYYYY,
-              maskedPlaceholder: 'MM/DD/YYYY',
             }}
           />
           <Box
