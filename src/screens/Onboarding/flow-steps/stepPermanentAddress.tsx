@@ -24,7 +24,7 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-type Fields = Exclude<OnboardingFormFields['permanentAddress'], undefined>;
+type Fields = Exclude<OnboardingFormFields['address'], null>;
 
 const schema = formValidationRules.address;
 
@@ -56,9 +56,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
-    const defaultValues: Fields = storeFields.permanentAddress
-      ? { ...storeFields.permanentAddress, state: getValueFromOption(storeFields.permanentAddress.state || '') }
-      : initialValues;
+    const defaultValues: Fields = storeFields.address ? { ...storeFields.address, state: getValueFromOption(storeFields.address.state || '') } : initialValues;
 
     const { openDialog } = useDialog();
 
@@ -72,11 +70,12 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async permanentAddress => {
-      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === permanentAddress.state)?.value || '';
-      const { addressLine1, addressLine2, city, zip, state } = permanentAddress;
+    const onSubmit: SubmitHandler<Fields> = async address => {
+      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === address?.state)?.value || '';
 
-      await updateStoreFields({ permanentAddress });
+      const { addressLine1, addressLine2, city, zip, state } = address;
+
+      await updateStoreFields({ address });
 
       if (addressLine1 && city && state && zip) {
         await completeProfileMutate({ input: { address: { addressLine2, addressLine1, city, country: 'USA', state: selectedStateCode, zip } } });

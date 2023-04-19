@@ -65,16 +65,11 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
     const shouldButtonBeDisabled = !formState.isValid || isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async ({ ein }) => {
-      if (!ein) {
-        return;
-      }
-
-      ein = ein.replaceAll('-', '');
-      await updateStoreFields({ ein });
-
       if (!storeFields.accountId || !ein) {
         return;
       }
+
+      await updateStoreFields({ ein });
 
       switch (storeFields.accountType) {
         case DraftAccountType.Trust:

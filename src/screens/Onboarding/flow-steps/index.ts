@@ -90,7 +90,6 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   employmentStatus: undefined,
   employer: undefined,
   companyTickerSymbols: undefined,
-  permanentAddress: undefined,
   identificationDocument: undefined,
   _didDocumentIdentificationValidationSucceed: false,
   isAccreditedInvestor: undefined,

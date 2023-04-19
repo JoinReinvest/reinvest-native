@@ -77,7 +77,6 @@ export interface OnboardingFormFields {
   };
   netIncome?: string;
   netWorth?: string;
-  permanentAddress?: Address;
   phone?: {
     countryCode?: string;
     number?: string;

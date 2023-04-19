@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
@@ -8,6 +8,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
 import { ApplicantFormModal } from '../../../components/Modals/ModalContent/ApplicantForm';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { EMPTY_APPLICANT_FORM } from '../../../constants/applicants';
@@ -106,7 +107,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={[styles.fw]}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline={hasApplicants ? 'Your applicants.' : 'Other Trustees, Grantors and Protectors'}
@@ -133,7 +134,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
               ))}
             </Box>
           )}
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={[styles.buttonsSection, { flexDirection: hasApplicants ? 'column-reverse' : 'column' }]}
