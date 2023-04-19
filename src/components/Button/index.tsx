@@ -27,6 +27,8 @@ export const Button = ({
     return children;
   };
 
+  const labelWidth = !startIcon && !endIcon ? '90%' : startIcon && endIcon ? '70%' : '80%';
+
   return (
     <Pressable
       pointerEvents={!vessel ? 'auto' : 'none'}
@@ -38,7 +40,9 @@ export const Button = ({
         {startIcon}
         <StyledText
           variant={variant === 'combo' ? 'h5' : 'button'}
+          numberOfLines={1}
           style={[
+            { maxWidth: labelWidth },
             styles[`${variant}Label`],
             disabled && styles[`${variant}LabelDisabled`],
             (variant === 'outlined' || variant === 'draft') && dark && styles.darkLabel,
