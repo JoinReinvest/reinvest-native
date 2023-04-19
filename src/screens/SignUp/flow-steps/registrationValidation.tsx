@@ -44,7 +44,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
       }
     };
 
-    const goToSignIn = () => navigation.navigate(Screens.SignIn);
+    const goToSignIn = () => navigation.replace(Screens.SignIn);
 
     useEffect(() => {
       (async () => {
