@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import zod from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -38,15 +37,13 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.SOCIAL_SECURITY_NUMBER,
 
   willBePartOfTheFlow(fields) {
-    return fields.accountType === DraftAccountType.Individual;
+    return !!fields.accountType;
   },
 
   doesMeetConditionFields(fields) {
-    const isCreatingIndividualAccount = fields.accountType === DraftAccountType.Individual;
-
     const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
 
-    return isCreatingIndividualAccount && allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
+    return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

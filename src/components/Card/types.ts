@@ -1,6 +1,6 @@
 export interface CardProps<T> {
   id: string;
-  onCardPress: (value: T | undefined) => void;
+  onCardPress: (value: T) => void;
   title: string;
   value: T;
   description?: string;

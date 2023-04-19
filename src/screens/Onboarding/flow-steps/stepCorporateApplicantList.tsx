@@ -29,10 +29,13 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
     return accountType === DraftAccountType.Corporate;
   },
 
+  doesMeetConditionFields: fields => {
+    return fields.accountType === DraftAccountType.Corporate;
+  },
+
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { companyMajorStakeholderApplicants, corporationLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(corporationLegalName || '');
-
     const applicantsRef = useRef<Applicant[]>(companyMajorStakeholderApplicants ?? []);
 
     const { progressPercentage } = useOnboardingFormFlow();

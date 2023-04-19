@@ -1,12 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { DraftAccountType, TrustCompanyTypeEnum } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -30,39 +34,52 @@ const schema = z.object({
 export const StepEIN: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EIN,
 
-  willBePartOfTheFlow: ({ accountType, trustType }) => {
-    const isRevocableTrust = accountType === DraftAccountType.Trust && trustType === TrustCompanyTypeEnum.Revocable;
-
-    return accountType === DraftAccountType.Corporate || isRevocableTrust;
+  willBePartOfTheFlow: ({ accountType }) => {
+    return accountType === DraftAccountType.Corporate || accountType === DraftAccountType.Trust;
   },
 
   doesMeetConditionFields: fields => {
-    return fields.accountType !== DraftAccountType.Individual;
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
+
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+    const isAccountCorporateOrTrust = fields.accountType === DraftAccountType.Corporate || fields.accountType === DraftAccountType.Trust;
+    const hasTrustFields = allRequiredFieldsExists([fields.trustType, fields.trustLegalName]);
+    const isRevocableTrust = fields.trustType !== TrustCompanyTypeEnum.Irrevocable;
+
+    return isAccountCorporateOrTrust && hasProfileFields && hasTrustFields && isRevocableTrust && isAccountCorporateOrTrust;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const [isApiValue, setIsApiValue] = useState(/^[*]{2}-[*]{3}\d{4}/.test(storeFields.ein || ''));
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog } = useDialog();
-
+    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const defaultValues: Fields = {
       ein: storeFields.ein,
     };
-    const { formState, handleSubmit, control } = useForm<Fields>({
+    const { formState, handleSubmit, control, watch } = useForm<Fields>({
       mode: 'onBlur',
       defaultValues,
       resolver: zodResolver(schema),
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const shouldButtonBeDisabled = !formState.isValid || isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async ({ ein }) => {
-      if (!ein) {
+      if (!storeFields.accountId || !ein) {
         return;
       }
 
-      ein = ein.replaceAll('-', '');
       await updateStoreFields({ ein });
-      moveToNextStep();
+
+      switch (storeFields.accountType) {
+        case DraftAccountType.Trust:
+          await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { ein: { ein } } });
+          break;
+        case DraftAccountType.Corporate:
+          // TODO: Connect corporate api
+          break;
+      }
     };
 
     const openEinDialog = () => {
@@ -83,6 +100,22 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
       );
     };
 
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
+
+    useEffect(() => {
+      const { unsubscribe } = watch(({ ein }) => {
+        setIsApiValue(ein === storeFields?.ein);
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }, [storeFields?.ein, watch]);
+
     return (
       <>
         <View style={[styles.fw]}>
@@ -93,6 +126,12 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
             dark
             headline="Enter your EIN"
           />
+          {error && (
+            <FormMessage
+              variant="error"
+              message={error.response.errors.map(err => err.message).join(', ')}
+            />
+          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -127,8 +166,8 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}
+            disabled={!isApiValue && shouldButtonBeDisabled}
+            onPress={isApiValue ? moveToNextStep : handleSubmit(onSubmit)}
           >
             Continue
           </Button>

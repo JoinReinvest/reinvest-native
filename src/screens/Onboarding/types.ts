@@ -37,7 +37,7 @@ export interface OnboardingFormFields {
   authenticationCode?: string;
   birthCountry?: string;
 
-  businessAddress?: Address;
+  businessAddress?: Address | undefined;
   citizenshipCountry?: string;
   companyMajorStakeholderApplicants?: Applicant[];
   companyTickerSymbols?: CompanyTickerSymbol[];
@@ -49,14 +49,10 @@ export interface OnboardingFormFields {
     // Are you or any of your immediate family a senior political figure?
     isSeniorPoliticalFigure?: boolean;
   };
-  corporationAnnualRevenue?: CorporationAnnualRevenue;
-  corporationIndustry?: Industry;
-
   corporationLegalName?: string;
-  corporationNumberOfEmployees?: CorporationNumberOfEmployees;
   corporationType?: CorporateCompanyType;
-  documentsForCorporation?: string[];
-  documentsForTrust?: string[];
+  documentsForCorporation?: IdentificationDocuments | null;
+  documentsForTrust?: IdentificationDocuments;
   domicile?: Domicile;
   ein?: string;
   employer?: Employer;
@@ -68,6 +64,7 @@ export interface OnboardingFormFields {
   };
   employmentStatus?: EmploymentStatus;
   experience?: Experience | null;
+  fiduciaryEntityInformation?: FiduciaryEntityInformation;
   finraInstitution?: string;
   finraInstitutionName?: string;
   identificationDocument?: IdentificationDocuments;
@@ -80,7 +77,6 @@ export interface OnboardingFormFields {
   };
   netIncome?: string;
   netWorth?: string;
-  permanentAddress?: Address;
   phone?: {
     countryCode?: string;
     number?: string;
@@ -104,16 +100,17 @@ export type IdentificationDocument = { fileName: string; id: string };
 
 export type AssetWithPreloadedFiles = DocumentPickerResponse | Asset | IdentificationDocument;
 
-export type IdentificationDocuments = string | { fileName: string; id: string }[];
+export type IdentificationDocuments = { fileName: string; id: string }[];
 
 export interface Applicant {
-  dateOfBirth?: string | null;
-  domicile?: SimplifiedDomicileType;
-  firstName?: string;
-  identificationDocument?: string;
-  lastName?: string;
-  middleName?: string;
-  residentialAddress?: string;
+  dateOfBirth: string;
+  domicile: SimplifiedDomicileType;
+  firstName: string;
+  idScan: IdentificationDocuments;
+  lastName: string;
+  middleName: string;
+  residentialAddress: string;
+  id?: string;
   socialSecurityNumber?: string;
 }
 
@@ -131,4 +128,10 @@ export interface Domicile {
     citizenshipCountry: string;
     visaType: string;
   };
+}
+
+interface FiduciaryEntityInformation {
+  annualRevenue?: CorporationAnnualRevenue;
+  industry?: Industry;
+  numberOfEmployees?: CorporationNumberOfEmployees;
 }

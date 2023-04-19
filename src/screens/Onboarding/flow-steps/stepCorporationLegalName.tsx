@@ -30,7 +30,7 @@ export const StepCorporationLegalName: StepParams<OnboardingFormFields> = {
   },
 
   doesMeetConditionFields: fields => {
-    return fields.accountType !== DraftAccountType.Individual;
+    return fields.accountType === DraftAccountType.Corporate;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

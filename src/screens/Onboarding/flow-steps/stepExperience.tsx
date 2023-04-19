@@ -20,12 +20,12 @@ export const StepExperience: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EXPERIENCE,
 
   willBePartOfTheFlow(fields) {
-    return fields.accountType === DraftAccountType.Individual && !fields.isCompletedProfile;
+    return !fields.isCompletedProfile;
   },
   doesMeetConditionFields(fields) {
     const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn];
 
-    return fields.accountType === DraftAccountType.Individual && !fields.isCompletedProfile && allRequiredFieldsExists(requiredFields);
+    return !fields.isCompletedProfile && allRequiredFieldsExists(requiredFields);
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

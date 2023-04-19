@@ -1,17 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { Address, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
+import { Input } from '../../../components/Input';
+import { FilterDialog } from '../../../components/Modals/ModalContent/FilterDialog';
 import { SearchDialog } from '../../../components/Modals/ModalContent/PlacesModal';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
@@ -24,24 +27,25 @@ import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
-type Fields = Exclude<OnboardingFormFields['address'], null>;
+type Fields = Exclude<OnboardingFormFields['businessAddress'], undefined>;
 
 const schema = formValidationRules.address;
 
 const placeholders = {
   addressLine1: 'Street Address or P.O. Box',
-  addressLine2: 'Unit No. (Optional)',
+  addressLine2: 'Apt, suite, unit, building, floor, etc',
   zip: 'Zip Code',
   state: 'State',
   city: 'City',
 };
 
-const getValueFromOption = (id: string) => STATES_AS_SELECT_OPTION.find(({ value }) => value === id)?.label || id;
-export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
-  identifier: Identifiers.PERMANENT_ADDRESS,
+const getValueFromOption = (id: string) => STATES_AS_SELECT_OPTION.find(({ value }) => value === id)?.label;
+
+export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
+  identifier: Identifiers.BUSINESS_ADDRESS,
 
   willBePartOfTheFlow(fields) {
-    return fields.accountType === DraftAccountType.Individual;
+    return fields.accountType !== DraftAccountType.Individual;
   },
 
   doesMeetConditionFields(fields) {
@@ -56,29 +60,46 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
-    const defaultValues: Fields = storeFields.address ? { ...storeFields.address, state: getValueFromOption(storeFields.address.state || '') } : initialValues;
+    const defaultValues: Fields = storeFields.businessAddress
+      ? { ...storeFields.businessAddress, state: getValueFromOption(storeFields.businessAddress.state || '') }
+      : initialValues;
 
     const { openDialog } = useDialog();
 
     const { progressPercentage } = useOnboardingFormFlow();
-    const { handleSubmit, control, formState, watch, reset } = useForm<Fields>({
+    const { setValue, handleSubmit, control, formState, watch, reset } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues,
     });
-    const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
+    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
-    const onSubmit: SubmitHandler<Fields> = async address => {
-      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === address?.state)?.value || '';
+    const onSubmit: SubmitHandler<Fields> = async businessAddress => {
+      if (!storeFields.accountId) {
+        return;
+      }
 
-      const { addressLine1, addressLine2, city, zip, state } = address;
+      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === businessAddress.state)?.value || '';
+      const { addressLine1, addressLine2, city, zip, state } = businessAddress;
 
-      await updateStoreFields({ address });
+      if (!addressLine1 || !addressLine2 || !city || !state || !zip) {
+        return;
+      }
 
-      if (addressLine1 && city && state && zip) {
-        await completeProfileMutate({ input: { address: { addressLine2, addressLine1, city, country: 'USA', state: selectedStateCode, zip } } });
+      await updateStoreFields({ businessAddress });
+      switch (storeFields.accountType) {
+        case DraftAccountType.Trust:
+          await completeTrustDraftAccount({
+            accountId: storeFields.accountId,
+            input: { address: { addressLine1, addressLine2, city, state: selectedStateCode, zip, country: 'USA' } },
+          });
+          break;
+
+        case DraftAccountType.Corporate:
+          // TODO: Connect corporate api
+          break;
       }
     };
 
@@ -89,6 +110,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     }, [isSuccess, moveToNextStep]);
 
     const addressWatched = watch('addressLine1');
+    const stateWatched = watch('state');
 
     const fillFieldsFromPrediction = useCallback(
       (address: Address) => {
@@ -119,17 +141,37 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
       );
     };
 
+    const openPicker = () => {
+      openDialog(
+        <FilterDialog
+          options={STATES_AS_SELECT_OPTION}
+          fillDetailsCallback={value => setValue('state', value)}
+          value={stateWatched || ''}
+        />,
+        {},
+        'sheet',
+      );
+    };
+
+    const fiduciaryEntity = DraftAccountType.Corporate ? 'corporation' : 'trust';
+
     return (
       <>
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView keyboardShouldPersistTaps="never">
+        <PaddedScrollView keyboardShouldPersistTaps="always">
           <FormTitle
             dark
-            headline="What is your permanent address?"
+            headline={`Enter the business address for your ${fiduciaryEntity}`}
             informationMessage="US Residents Only"
           />
+          {error && (
+            <FormMessage
+              variant="error"
+              message={error.response.errors.map(err => err.message).join(', ')}
+            />
+          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -148,18 +190,28 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
             fieldName="city"
             inputProps={{ placeholder: placeholders.city, dark: true }}
           />
-          <Controller
-            type="dropdown"
-            onSubmit={handleSubmit(onSubmit)}
-            control={control}
-            fieldName="state"
-            dropdownProps={{ placeholder: placeholders.state, data: STATES_AS_SELECT_OPTION, dark: true }}
-          />
+          <Pressable onPress={() => openPicker()}>
+            <Input
+              placeholder="State"
+              pointerEvents={'none'}
+              disabled
+              editable={false}
+              dark
+              value={stateWatched || ''}
+              rightSection={
+                <Icon
+                  onPress={() => openPicker()}
+                  color={palette.pureWhite}
+                  icon="arrowDown"
+                />
+              }
+            ></Input>
+          </Pressable>
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
             fieldName="zip"
-            inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric', style: styles.removeMargin }}
+            inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric' }}
           />
         </PaddedScrollView>
         <View

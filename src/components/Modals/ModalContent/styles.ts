@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../../constants/common';
-import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../constants/styles';
+import { HEADER_HEIGHT, MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
 import { STATUS_BAR, yScale } from '../../../utils/scale';
 
@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     paddingTop: 24,
+    paddingBottom: HEADER_HEIGHT,
   },
   dark: {
     backgroundColor: palette.onboarding,

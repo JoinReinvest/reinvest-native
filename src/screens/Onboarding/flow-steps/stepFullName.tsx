@@ -54,7 +54,6 @@ export const StepFullName: StepParams<OnboardingFormFields> = {
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
-
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await completeProfileMutate({
         input: {

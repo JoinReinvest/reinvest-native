@@ -34,7 +34,10 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
     const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
 
     const handleContinue = async () => {
-      const uris = selectedFiles.map(({ uri }) => uri ?? '');
+      const uris = selectedFiles.map(({ uri }) => ({
+        fileName: uri || '',
+        id: uri || '',
+      }));
       await updateStoreFields({ documentsForCorporation: uris });
       moveToNextStep();
     };

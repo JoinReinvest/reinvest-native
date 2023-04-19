@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ScrollView, TextInput } from 'react-native';
+import { ScrollView, TextInput, View } from 'react-native';
 import { AddressAsOption } from 'reinvest-app-common/src/services/address/interfaces';
 import { Address } from 'reinvest-app-common/src/types/graphql';
 
@@ -9,6 +9,7 @@ import { useDialog } from '../../../providers/DialogProvider';
 import { addressService } from '../../../services/address.service';
 import { Box } from '../../Containers/Box/Box';
 import { FormMessage } from '../../Forms/FormMessage';
+import { Icon } from '../../Icon';
 import { Input } from '../../Input';
 import { InputProps } from '../../Input/types';
 import { Loader } from '../../Loader';
@@ -20,7 +21,7 @@ interface SearchViewProps extends InputProps {
   value?: string;
 }
 
-export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchViewProps) => {
+export const SearchDialog = ({ fillDetailsCallback, dark = true, value, ...rest }: SearchViewProps) => {
   const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState<string>(value || '');
   const [list, setList] = useState<AddressAsOption[]>([]);
@@ -67,45 +68,60 @@ export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchView
   };
 
   return (
-    <Box px="default">
-      <Input
-        dark
-        ref={inputRef}
-        onChangeText={setSearchValue}
-        value={searchValue}
-        {...rest}
-      />
-      {loading && (
-        <Box alignItems="center">
-          <Loader color={palette.pureWhite} />
-        </Box>
-      )}
-      {error && !loading && (
-        <FormMessage
-          message={error}
-          variant="error"
+    <View
+      pointerEvents={'box-none'}
+      style={[styles.sheetContentWrapper, dark && styles.dark]}
+    >
+      <Box px="default">
+        <Input
+          dark
+          ref={inputRef}
+          onChangeText={setSearchValue}
+          value={searchValue}
+          {...rest}
+          rightSection={
+            !!searchValue.length && (
+              <Icon
+                size={'s'}
+                color={palette.pureWhite}
+                icon={'hamburgerClose'}
+                onPress={() => setSearchValue('')}
+              />
+            )
+          }
         />
-      )}
-      {!!list.length && (
-        <ScrollView keyboardShouldPersistTaps={'handled'}>
-          {list.map((el, idx) => {
-            return (
-              <Box
-                style={[list.length > idx + 1 && styles.bottomBordered]}
-                py={'12'}
-                key={el.fullAddress}
-              >
-                <StyledText
-                  color="pureWhite"
-                  onPress={() => parseDetails(el.placeId)}
+        {loading && (
+          <Box alignItems="center">
+            <Loader color={palette.pureWhite} />
+          </Box>
+        )}
+        {error && !loading && (
+          <FormMessage
+            message={error}
+            variant="error"
+          />
+        )}
+        {!!list.length && (
+          <ScrollView keyboardShouldPersistTaps={'handled'}>
+            {list.map((el, idx) => {
+              return (
+                <Box
+                  style={[list.length > idx + 1 && styles.bottomBordered]}
+                  py={'12'}
+                  key={el.fullAddress}
                 >
-                  {el.fullAddress}
-                </StyledText>
-              </Box>
-            );
-          })}
-        </ScrollView>
-      )}
-    </Box>
+                  <StyledText
+                    color="pureWhite"
+                    onPress={() => parseDetails(el.placeId)}
+                  >
+                    {el.fullAddress}
+                  </StyledText>
+                </Box>
+              );
+            })}
+          </ScrollView>
+        )}
+      </Box>
+    </View>
   );
 };

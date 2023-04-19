@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { SelectOption, SelectOptions } from 'reinvest-app-common/src/types/select-option';
 
-import { HEADER_HEIGHT } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Box } from '../../Containers/Box/Box';
@@ -45,7 +44,7 @@ export const FilterDialog = ({ fillDetailsCallback, options, dark = true, value,
   return (
     <View
       pointerEvents={'box-none'}
-      style={[styles.sheetContentWrapper, dark && styles.dark, { paddingBottom: HEADER_HEIGHT }]}
+      style={[styles.sheetContentWrapper, dark && styles.dark]}
     >
       <Box px={'default'}>
         <Input

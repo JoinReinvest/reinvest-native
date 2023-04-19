@@ -15,8 +15,9 @@ import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { palette } from '../../../constants/theme';
+import { documentReducer } from '../../../utils/documentReducer';
 import { Identifiers } from '../identifiers';
-import { AssetWithPreloadedFiles, IdentificationDocument, OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -45,23 +46,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit = async () => {
-      const preloadedFiles = selectedFiles.reduce<{
-        forUpload: Exclude<AssetWithPreloadedFiles, IdentificationDocument>[];
-        uploaded: IdentificationDocument[];
-      }>(
-        (acc, file) => {
-          if ((file as IdentificationDocument).id) {
-            return { ...acc, uploaded: [...acc.uploaded, file] as IdentificationDocument[] };
-          }
-
-          return { ...acc, forUpload: [...acc.forUpload, file] };
-        },
-        {
-          uploaded: [],
-          forUpload: [],
-        },
-      );
-
+      const preloadedFiles = documentReducer(selectedFiles);
       const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
       try {
@@ -74,10 +59,17 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
             identificationDocument: preloadedFiles.forUpload,
           });
           idScan.push(...scans);
+          await completeProfileMutate({ input: { idScan } });
         }
 
-        await completeProfileMutate({ input: { idScan } });
         await updateStoreFields({ identificationDocument: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
+
+        /*
+         No files to upload
+         */
+        if (!selectedFilesUris.length) {
+          moveToNextStep();
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('-> e', e);

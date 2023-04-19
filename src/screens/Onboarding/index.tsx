@@ -19,7 +19,10 @@ export const Onboarding = () => {
       initialStoreFields={{
         ...onBoardingFormFieldsInitialState,
         ...getPreFiledValues(data?.details ? data?.details : undefined),
-        ...{ name: { firstName: data?.details?.firstName || '', lastName: data?.details?.lastName || '', middleName: data?.details?.middleName || '' } },
+
+        ...{
+          name: { firstName: data?.details?.firstName || '', lastName: data?.details?.lastName || '', middleName: data?.details?.middleName || '' },
+        },
       }}
     >
       <BlackLayout />
@@ -111,7 +114,7 @@ const getPreFiledValues = (details?: ProfileDetails) => {
       ssn: details?.ssn || undefined,
       ...parseStatementsToCompliance(details.statements as Statement[]),
       name: { firstName: details?.firstName || '', lastName: details?.lastName || '', middleName: details?.middleName || '' },
-      permanentAddress: details.address,
+      address: details.address,
     };
   }
 

@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
+import { CorporationAnnualRevenue, CorporationNumberOfEmployees } from 'reinvest-app-common/src/constants/corporation';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/createDraftAccount';
 import { useGetIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/getIndividualDraftAccount';
 import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
 import { useGetPhoneCompleted } from 'reinvest-app-common/src/services/queries/getPhoneCompleted';
-import { DraftAccount, DraftAccountType, Employer, EmploymentStatus, IndividualDraftAccount } from 'reinvest-app-common/src/types/graphql';
+import { useGetTrustDraftAccount } from 'reinvest-app-common/src/services/queries/getTrustDraftAccount';
+import {
+  Address,
+  DraftAccount,
+  DraftAccountType,
+  Employer,
+  EmploymentStatus,
+  IndividualDraftAccount,
+  TrustCompanyTypeEnum,
+} from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
@@ -19,7 +29,7 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
-import { OnboardingFormFields } from '../types';
+import { Applicant, IdentificationDocuments, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -35,6 +45,11 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const { isSuccess, mutateAsync: createDraftAccount } = useCreateDraftAccount(getApiClient);
     const { data: draftAccountList } = useGetListAccount(getApiClient);
     const { data: phoneCompleted } = useGetPhoneCompleted(getApiClient);
+
+    const { refetch: refetchTrustDraftAccount } = useGetTrustDraftAccount(getApiClient, {
+      accountId: accountId,
+      config: { enabled: false },
+    });
 
     useEffect(() => {
       if (isSuccess) {
@@ -74,22 +89,59 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         /*
         For each type of account we will need to map values to feed form
          */
-        if (existingDraft.type === DraftAccountType.Individual) {
-          const response = await refetchIndividualDraft();
-          draftAccountDetails = response.data;
 
-          await updateStoreFields({
-            accountType: existingDraft.type || undefined,
-            accountId: existingDraft?.id || undefined,
-            profilePicture: draftAccountDetails?.avatar?.url || '',
-            ...((draftAccountDetails?.details as Exclude<IndividualDraftAccount, null | undefined>) || {}),
-            employmentStatus: draftAccountDetails?.details?.employmentStatus?.status as EmploymentStatus,
-            employer: draftAccountDetails?.details?.employer as Employer,
-            netWorth: draftAccountDetails?.details?.netWorth?.range as string,
-            netIncome: draftAccountDetails?.details?.netIncome?.range as string,
-          });
-        } else {
-          await updateStoreFields({ accountType: existingDraft.type || undefined, accountId: existingDraft?.id || undefined });
+        switch (existingDraft.type) {
+          case DraftAccountType.Individual:
+            {
+              const response = await refetchIndividualDraft();
+              draftAccountDetails = response.data;
+              await updateStoreFields({
+                accountType: existingDraft.type || undefined,
+                accountId: existingDraft?.id || undefined,
+                profilePicture: draftAccountDetails?.avatar?.url || '',
+                ...((draftAccountDetails?.details as Exclude<IndividualDraftAccount, null | undefined>) || {}),
+                employmentStatus: draftAccountDetails?.details?.employmentStatus?.status as EmploymentStatus,
+                employer: draftAccountDetails?.details?.employer as Employer,
+                netWorth: draftAccountDetails?.details?.netWorth?.range as string,
+                netIncome: draftAccountDetails?.details?.netIncome?.range as string,
+              });
+            }
+            break;
+          case DraftAccountType.Trust:
+            {
+              const response = await refetchTrustDraftAccount();
+              const trustDraftAccountData = response.data;
+              await updateStoreFields({
+                ...storeFields,
+                accountType: existingDraft.type || undefined,
+                businessAddress: trustDraftAccountData?.details?.address as Address,
+                trustLegalName: trustDraftAccountData?.details?.companyName?.name as string,
+                trustType: trustDraftAccountData?.details?.companyType?.type as unknown as TrustCompanyTypeEnum,
+                ein: trustDraftAccountData?.details?.ein?.ein as string,
+                accountId: trustDraftAccountData?.id || '',
+                fiduciaryEntityInformation: {
+                  industry: trustDraftAccountData?.details?.industry?.value ?? '',
+                  numberOfEmployees: trustDraftAccountData?.details?.numberOfEmployees?.range as CorporationNumberOfEmployees,
+                  annualRevenue: trustDraftAccountData?.details?.annualRevenue?.range as CorporationAnnualRevenue,
+                },
+                documentsForTrust: (trustDraftAccountData?.details?.companyDocuments as IdentificationDocuments) ?? [],
+                trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(app => ({
+                  ...app?.name,
+                  socialSecurityNumber: app?.ssn,
+                  residentialAddress: 'Some address',
+                  domicile: app?.domicile?.type,
+                  dateOfBirth: app?.dateOfBirth?.dateOfBirth,
+                  idScan: app?.idScan,
+                  id: app?.id,
+                })) as Applicant[],
+              });
+            }
+            break;
+          default:
+            {
+              await updateStoreFields({ accountType: existingDraft.type || undefined, accountId: existingDraft?.id || undefined });
+            }
+            break;
         }
 
         return moveToNextStep();

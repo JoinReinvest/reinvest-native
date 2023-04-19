@@ -3,18 +3,15 @@ import { useRoute } from '@react-navigation/native';
 import React, { PropsWithChildren, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { DocumentPickerResponse } from 'react-native-document-picker';
+import { Asset } from 'react-native-image-picker';
 import { Masks } from 'react-native-mask-input';
 import { STAKEHOLDER_RESIDENCY_STATUS_OPTIONS } from 'reinvest-app-common/src/constants/residenty-status';
+import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
+import { SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
 
-import { Button } from '../../../components/Button';
-import { Box } from '../../../components/Containers/Box/Box';
-import { DarkScreenHeader } from '../../../components/CustomHeader';
-import { FilePicker } from '../../../components/FilePicker';
-import { FormTitle } from '../../../components/Forms/FormTitle';
-import { Icon } from '../../../components/Icon';
-import { PaddedScrollView } from '../../../components/PaddedScrollView';
-import { TermsFooter } from '../../../components/TermsFooter';
-import { Controller } from '../../../components/typography/Controller';
+import { getApiClient } from '../../../api/getApiClient';
+import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { isIOS } from '../../../constants/common';
 import { SSN_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
@@ -22,6 +19,16 @@ import { useLogInNavigation } from '../../../navigation/hooks';
 import { APPLICANT_WITHOUT_IDENTIFICATION } from '../../../screens/Onboarding/schemas';
 import { Applicant } from '../../../screens/Onboarding/types';
 import { ApplicantFormFields, mapDomicileLabelToDomicileType } from '../../../screens/Onboarding/utilities';
+import { documentReducer } from '../../../utils/documentReducer';
+import { Button } from '../../Button';
+import { Box } from '../../Containers/Box/Box';
+import { DarkScreenHeader } from '../../CustomHeader';
+import { FilePicker } from '../../FilePicker';
+import { FormTitle } from '../../Forms/FormTitle';
+import { Icon } from '../../Icon';
+import { PaddedScrollView } from '../../PaddedScrollView';
+import { TermsFooter } from '../../TermsFooter';
+import { Controller } from '../../typography/Controller';
 import { styles } from './styles';
 
 interface Props {
@@ -31,28 +38,57 @@ interface Props {
   applicantIndex?: number;
 }
 
-export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps, onClose, defaultValues }: PropsWithChildren<Props>) => {
+export const ApplicantFormModal = ({
+  applicantIndex,
+  onSubmit: onSubmitFormProps,
+  onClose,
+  defaultValues: { idScan, ...formValues },
+}: PropsWithChildren<Props>) => {
   const route = useRoute();
   const navigation = useLogInNavigation();
   const [currentStep, setCurrentStep] = useState(0);
-  const [identificationDocument, setIdentificationDocument] = useState('');
+  const [document, setDocument] = useState<(DocumentPickerResponse | Asset)[]>(idScan);
 
+  const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
+  const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
   const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
     mode: 'onBlur',
     resolver: zodResolver(APPLICANT_WITHOUT_IDENTIFICATION),
-    defaultValues,
+    defaultValues: formValues,
   });
 
-  const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+  const shouldApplicantFormButtonBeDisabled = !formState.isValid;
+
+  const shouldSubmitButtonBeDisabled =
+    !formState.isValid || formState.isSubmitting || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading;
 
   const onSubmit: SubmitHandler<ApplicantFormFields> = async fields => {
-    const applicant: Applicant = {
-      ...fields,
-      domicile: mapDomicileLabelToDomicileType(fields.domicile),
-      identificationDocument,
-    };
+    const preloadedFiles = documentReducer(document);
 
-    await onSubmitFormProps(applicant, applicantIndex);
+    const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+
+    try {
+      const idScan = [];
+
+      if (selectedFilesUris.length) {
+        const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+        const scans = await sendDocumentsToS3AndGetScanIdsMutate({
+          documentsFileLinks: documentsFileLinks as PutFileLink[],
+          identificationDocument: preloadedFiles.forUpload,
+        });
+        idScan.push(...scans);
+      }
+
+      const applicant: Applicant = {
+        ...fields,
+        domicile: mapDomicileLabelToDomicileType(fields.domicile) ?? SimplifiedDomicileType.Citizen,
+        idScan: idScan.length > 0 ? idScan : preloadedFiles.uploaded,
+      };
+      await onSubmitFormProps(applicant, applicantIndex);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('-> e', e);
+    }
   };
 
   const handleGoBack = () => {
@@ -70,7 +106,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
   const renderStep = () => {
     if (!currentStep) {
       return (
-        <>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter the following information for your applicant."
@@ -120,15 +156,15 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
               placeholder: 'Domicile',
               dark: true,
               data: STAKEHOLDER_RESIDENCY_STATUS_OPTIONS,
-              defaultValue: defaultValues?.domicile,
+              defaultValue: formValues?.domicile,
             }}
           />
-        </>
+        </PaddedScrollView>
       );
     }
 
     return (
-      <>
+      <PaddedScrollView>
         <FormTitle
           dark
           headline="Upload the ID of your applicant."
@@ -136,10 +172,11 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
         <FilePicker
           dark
           label="Upload Files"
-          onSelect={res => setIdentificationDocument(res[0]?.uri ?? '')}
+          onSelect={setDocument}
           type="single"
+          state={document}
         />
-      </>
+      </PaddedScrollView>
     );
   };
 
@@ -166,15 +203,17 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
         mt={isIOS ? '56' : '12'}
         style={{ flex: 1 }}
       >
-        <PaddedScrollView style={styles.fw}>{renderStep()}</PaddedScrollView>
+        {renderStep()}
       </Box>
-      <Button
-        disabled={currentStep === 0 ? shouldButtonBeDisabled : !identificationDocument}
-        variant="primary"
-        onPress={currentStep === 0 ? goToNextStep : handleSubmit(onSubmit)}
-      >
-        Continue
-      </Button>
+      <Box px={'default'}>
+        <Button
+          disabled={currentStep === 0 ? shouldApplicantFormButtonBeDisabled : shouldSubmitButtonBeDisabled}
+          variant="primary"
+          onPress={currentStep === 0 ? goToNextStep : handleSubmit(onSubmit)}
+        >
+          Continue
+        </Button>
+      </Box>
       <TermsFooter noPadding={!isIOS} />
     </>
   );
