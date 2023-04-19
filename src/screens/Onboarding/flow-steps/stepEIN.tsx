@@ -98,7 +98,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
             control={control}
             fieldName="ein"
             inputProps={{
-              placeholder: '00-000000',
+              placeholder: 'xxx-xxxxxx',
               dark: true,
               keyboardType: 'numeric',
               maxLength: 10, // xxx-xxxxxx
