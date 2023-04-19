@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { DocumentPickerResponse } from 'react-native-document-picker';
-import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
@@ -18,7 +16,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { palette } from '../../../constants/theme';
 import { Identifiers } from '../identifiers';
-import { OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, IdentificationDocument, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -36,9 +34,9 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
     );
   },
 
-  Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
+    const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.identificationDocument as AssetWithPreloadedFiles[]) || []);
 
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
 
@@ -47,7 +45,24 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit = async () => {
-      const selectedFilesUris = selectedFiles.map(({ uri }) => uri ?? '');
+      const preloadedFiles = selectedFiles.reduce<{
+        forUpload: Exclude<AssetWithPreloadedFiles, IdentificationDocument>[];
+        uploaded: IdentificationDocument[];
+      }>(
+        (acc, file) => {
+          if ((file as IdentificationDocument).id) {
+            return { ...acc, uploaded: [...acc.uploaded, file] as IdentificationDocument[] };
+          }
+
+          return { ...acc, forUpload: [...acc.forUpload, file] };
+        },
+        {
+          uploaded: [],
+          forUpload: [],
+        },
+      );
+
+      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
       try {
         const idScan = [];
@@ -56,13 +71,13 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
           const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
             documentsFileLinks: documentsFileLinks as PutFileLink[],
-            identificationDocument: selectedFiles,
+            identificationDocument: preloadedFiles.forUpload,
           });
           idScan.push(...scans);
         }
 
         await completeProfileMutate({ input: { idScan } });
-        await updateStoreFields({ identificationDocument: idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] })) });
+        await updateStoreFields({ identificationDocument: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('-> e', e);
@@ -115,6 +130,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
             onSelect={setSelectedFiles}
             type="multi"
             selectionLimit={5}
+            state={selectedFiles}
           />
         </PaddedScrollView>
         <View

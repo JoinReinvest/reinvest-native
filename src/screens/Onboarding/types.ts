@@ -1,3 +1,5 @@
+import { DocumentPickerResponse } from 'react-native-document-picker';
+import { Asset } from 'react-native-image-picker';
 import { CorporationAnnualRevenue, CorporationNumberOfEmployees } from 'reinvest-app-common/src/constants/corporation';
 import { Industry } from 'reinvest-app-common/src/constants/industries';
 import {
@@ -97,6 +99,10 @@ export interface OnboardingFormFields {
 export interface CompanyTickerSymbol {
   symbol: string;
 }
+
+export type IdentificationDocument = { fileName: string; id: string };
+
+export type AssetWithPreloadedFiles = DocumentPickerResponse | Asset | IdentificationDocument;
 
 export type IdentificationDocuments = string | { fileName: string; id: string }[];
 
