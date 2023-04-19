@@ -43,12 +43,6 @@ export const StepTrustLegalName: StepParams<OnboardingFormFields> = {
     return accountType === DraftAccountType.Trust;
   },
 
-  doesMeetConditionFields(fields) {
-    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName];
-
-    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
-  },
-
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const defaultValues: Fields = { trustLegalName: storeFields.trustLegalName || '' };

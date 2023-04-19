@@ -4,6 +4,7 @@ import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
 import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
+import { StepBusinessAddress } from './stepBusinessAddress';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepCompliance } from './stepCompliance';
 import { StepCorporateApplicantList } from './stepCorporateApplicantList';
@@ -58,10 +59,10 @@ export const FLOW_STEPS = [
   StepTrustLegalName,
   StepAuthorizedSignatoryEntity,
   StepEIN,
-  // businessAddress
-  StepCorporationInformation,
+  StepBusinessAddress,
   StepDocumentsForCorporation,
   StepDocumentsForTrust,
+  StepCorporationInformation,
   StepTrustApplicantList,
   StepCorporateApplicantList,
   StepEmploymentStatus,

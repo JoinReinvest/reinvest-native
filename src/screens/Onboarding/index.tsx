@@ -7,7 +7,7 @@ import { getApiClient } from '../../api/getApiClient';
 import { StyledText } from '../../components/typography/StyledText';
 import { BlackLayout } from './BlackLayout';
 import { onBoardingFormFieldsInitialState, OnboardingFormFlowProvider } from './flow-steps';
-import { Domicile, IdentificationDocuments } from './types';
+import { Documents, Domicile } from './types';
 
 export const Onboarding = () => {
   const { data, isLoading } = useGetUserProfile(getApiClient);
@@ -102,7 +102,7 @@ const getPreFiledValues = (details?: ProfileDetails) => {
   if (details) {
     return {
       experience: details.experience,
-      identificationDocument: (details?.idScan as IdentificationDocuments) || onBoardingFormFieldsInitialState.identificationDocument,
+      identificationDocument: (details?.idScan as Documents) || onBoardingFormFieldsInitialState.identificationDocument,
       dateOfBirth: details?.dateOfBirth ? formatDateFromApi(details?.dateOfBirth) : '',
       domicile: details?.domicile as Domicile,
       citizenshipCountry: details?.domicile?.citizenshipCountry || '',

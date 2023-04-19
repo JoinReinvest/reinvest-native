@@ -72,8 +72,17 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
       ein = ein.replaceAll('-', '');
       await updateStoreFields({ ein });
 
-      if (storeFields.accountId && ein) {
-        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { ein: { ein } } });
+      if (!storeFields.accountId || !ein) {
+        return;
+      }
+
+      switch (storeFields.accountType) {
+        case DraftAccountType.Trust:
+          await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { ein: { ein } } });
+          break;
+        case DraftAccountType.Corporate:
+          // TODO: Complete corporate draft account here
+          break;
       }
     };
 
