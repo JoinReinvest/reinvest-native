@@ -4,6 +4,7 @@ import DocumentPicker, { DocumentPickerResponse, isInProgress } from 'react-nati
 import { Asset, ImagePickerResponse } from 'react-native-image-picker';
 
 import { palette } from '../../constants/theme';
+import { IdentificationDocument } from '../../screens/Onboarding/types';
 import { Button } from '../Button';
 import { Box } from '../Containers/Box/Box';
 import { Icon } from '../Icon';
@@ -24,8 +25,8 @@ const permissionAlert = () =>
     },
   ]);
 
-export const FilePicker = ({ onSelect, label, type = 'single', dark = true, selectionLimit = 3, ...rest }: PropsWithChildren<FilePickerProps>) => {
-  const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>([]);
+export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark = true, selectionLimit = 3, ...rest }: PropsWithChildren<FilePickerProps>) => {
+  const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>([...state]);
   const existingIds = useRef<Set<string | undefined>>(new Set([]));
   const [choosingMode, setChoosingMode] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,6 +77,18 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
     } finally {
       setLoading(false);
     }
+  };
+
+  const deleteFile = ({ uri, id }: { id: string; uri: string }) => {
+    if (uri) {
+      return releaseFile(uri);
+    }
+
+    const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== id) || [...results];
+    setResults(filteredFiles);
+
+    // TODO add removing file from server
+    return console.log('ADD REMOVING ASSET FROM SERVER');
   };
 
   const releaseFile = useCallback(
@@ -186,8 +199,8 @@ export const FilePicker = ({ onSelect, label, type = 'single', dark = true, sele
                 color={dark ? palette.pureWhite : palette.pureBlack}
               />
             }
-            key={file.uri}
-            onPress={() => releaseFile(file.uri ? file.uri : '')}
+            key={file.uri || (file as IdentificationDocument).id}
+            onPress={() => deleteFile({ uri: file.uri ? file.uri : '', id: (file as IdentificationDocument).id })}
           >{`${getName(file)}`}</Button>
         ))}
     </Box>
