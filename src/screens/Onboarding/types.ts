@@ -8,8 +8,9 @@ import {
   Employer,
   EmploymentStatus,
   Experience,
+  SimplifiedDomicileType,
   StatementType,
-  TrustCompanyType,
+  TrustCompanyTypeEnum,
 } from 'reinvest-app-common/src/types/graphql';
 
 export interface OnboardingFormFields {
@@ -88,7 +89,7 @@ export interface OnboardingFormFields {
   statementTypes?: StatementType[];
   trustLegalName?: string;
   trustTrusteesGrantorsOrProtectors?: Applicant[];
-  trustType?: TrustCompanyType;
+  trustType?: TrustCompanyTypeEnum;
   visaType?: 'F-1' | 'H-1B' | 'L-1' | 'O-1' | 'G-4';
 }
 
@@ -100,7 +101,7 @@ export type IdentificationDocuments = string | { fileName: string; id: string }[
 
 export interface Applicant {
   dateOfBirth?: string | null;
-  domicile?: DomicileType;
+  domicile?: SimplifiedDomicileType;
   firstName?: string;
   identificationDocument?: string;
   lastName?: string;

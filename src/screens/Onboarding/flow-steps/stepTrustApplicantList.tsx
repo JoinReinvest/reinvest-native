@@ -121,7 +121,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
                   style={{ flexDirection: 'row', columnGap: 27, justifyContent: 'space-between' }}
                   key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
                 >
-                  <StyledText color={palette.pureWhite}>
+                  <StyledText color="pureWhite">
                     {applicant.firstName} {applicant.lastName}
                   </StyledText>
                   <Icon

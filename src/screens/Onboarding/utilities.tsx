@@ -1,32 +1,28 @@
-import { RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
-import { DomicileType } from 'reinvest-app-common/src/types/graphql';
+import { STAKEHOLDER_RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
+import { SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
 
 import { EMPTY_APPLICANT_FORM } from '../../constants/applicants';
 import { Applicant } from './types';
 
-type DomicileLabel = (typeof RESIDENCY_STATUS_LABELS)[number];
+type DomicileLabel = (typeof STAKEHOLDER_RESIDENCY_STATUS_LABELS)[number];
 
-export const mapDomicileTypeToDomicileLabel = (domicileType: DomicileType | undefined): DomicileLabel => {
+export const mapDomicileTypeToDomicileLabel = (domicileType: SimplifiedDomicileType | undefined): DomicileLabel | undefined => {
   switch (domicileType) {
-    case DomicileType.Citizen:
+    case SimplifiedDomicileType.Citizen:
       return 'US Citizen';
-    case DomicileType.GreenCard:
-      return 'Green Card';
-    case DomicileType.Visa:
-      return 'Visa';
+    case SimplifiedDomicileType.Resident:
+      return 'US Resident';
     default:
-      return 'US Citizen';
+      return undefined;
   }
 };
 
 export const mapDomicileLabelToDomicileType = (label: DomicileLabel | undefined) => {
   switch (label) {
     case 'US Citizen':
-      return DomicileType.Citizen;
-    case 'Visa':
-      return DomicileType.Visa;
-    case 'Green Card':
-      return DomicileType.GreenCard;
+      return SimplifiedDomicileType.Citizen;
+    case 'US Resident':
+      return SimplifiedDomicileType.Resident;
     default:
       return undefined;
   }

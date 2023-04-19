@@ -49,35 +49,24 @@ export const FLOW_STEPS = [
   StepSeniorPoliticalFigure,
   StepSSN,
   StepIdentificationDocuments,
-<<<<<<< HEAD
-=======
-  StepAuthorizedSignatoryEntity,
->>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
   StepPermanentAddress,
   StepAccreditedInvestor,
-  StepAuthorizedSignatoryEntity,
   StepExperience,
-<<<<<<< HEAD
-  StepTrustLegalName,
-  StepTrustType,
-=======
->>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
   StepCorporationType,
   StepTrustType,
   StepCorporationLegalName,
-<<<<<<< HEAD
-=======
   StepTrustLegalName,
->>>>>>> ae90e80 (RIA-767: Implement applicant list for trust)
+  StepAuthorizedSignatoryEntity,
   StepEIN,
+  // businessAddress
+  StepCorporationInformation,
   StepDocumentsForCorporation,
   StepDocumentsForTrust,
-  StepCorporationInformation,
+  StepTrustApplicantList,
+  StepCorporateApplicantList,
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
-  StepTrustApplicantList,
-  StepCorporateApplicantList,
   StepProfilePicture,
 ];
 

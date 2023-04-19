@@ -1,6 +1,7 @@
 import { PartialMimeTypeKeys } from 'reinvest-app-common/src/constants/mime-types';
-import { RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
-import { formValidationRules, generateFileSchema } from 'reinvest-app-common/src/form-schemas';
+import { STAKEHOLDER_RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
+import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
+import { generateFileSchema } from 'reinvest-app-common/src/form-schemas/files';
 import { z } from 'zod';
 
 import { dateOlderThanEighteenYearsSchema } from '../../utils/formValidationRules';
@@ -15,7 +16,7 @@ export const APPLICANT_WITHOUT_IDENTIFICATION = z.object({
   residentialAddress: z.string().min(1),
   socialSecurityNumber: z.string().min(1),
   dateOfBirth: dateOlderThanEighteenYearsSchema,
-  domicile: z.enum(RESIDENCY_STATUS_LABELS),
+  domicile: z.enum(STAKEHOLDER_RESIDENCY_STATUS_LABELS),
 });
 
 export const APPLICANT_IDENTIFICATION = z.object({

@@ -4,7 +4,7 @@ import React, { PropsWithChildren, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { Masks } from 'react-native-mask-input';
-import { RESIDENCY_STATUS_OPTIONS } from 'reinvest-app-common/src/constants/residenty-status';
+import { STAKEHOLDER_RESIDENCY_STATUS_OPTIONS } from 'reinvest-app-common/src/constants/residenty-status';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -119,7 +119,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
             dropdownProps={{
               placeholder: 'Domicile',
               dark: true,
-              data: RESIDENCY_STATUS_OPTIONS,
+              data: STAKEHOLDER_RESIDENCY_STATUS_OPTIONS,
               defaultValue: defaultValues?.domicile,
             }}
           />
