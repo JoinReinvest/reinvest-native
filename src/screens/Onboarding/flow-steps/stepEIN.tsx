@@ -3,7 +3,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DraftAccountType, TrustCompanyType } from 'reinvest-app-common/src/types/graphql';
+import { DraftAccountType, TrustCompanyTypeEnum } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
@@ -31,7 +31,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EIN,
 
   willBePartOfTheFlow: ({ accountType, trustType }) => {
-    const isRevocableTrust = accountType === DraftAccountType.Trust && trustType === TrustCompanyType.Revocable;
+    const isRevocableTrust = accountType === DraftAccountType.Trust && trustType === TrustCompanyTypeEnum.Revocable;
 
     return accountType === DraftAccountType.Corporate || isRevocableTrust;
   },

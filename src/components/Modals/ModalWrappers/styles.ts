@@ -15,6 +15,8 @@ export const styles = StyleSheet.create({
   closeIcon: {
     right: MAIN_WRAPPER_PADDING_HORIZONTAL,
     position: 'absolute',
+    zIndex: 10,
+    elevation: 10,
   },
   content: {
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,

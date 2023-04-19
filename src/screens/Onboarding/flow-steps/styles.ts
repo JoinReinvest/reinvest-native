@@ -21,6 +21,8 @@ export const styles = StyleSheet.create({
   buttonsSection: {
     width: '100%',
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   footer: {
     alignItems: 'center',

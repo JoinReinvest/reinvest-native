@@ -20,7 +20,8 @@ const blackScreenFormOptions = (props: LogoutProps<Screens.BlackForm>) => ({
   headerLeft: () => (
     <Icon
       color={palette.pureWhite}
-      icon="arrowLeft"
+      icon="down"
+      style={{ transform: [{ rotate: '90deg' }] }}
       onPress={props.navigation.goBack}
     />
   ),

@@ -36,7 +36,12 @@ export const ScreenHeader = ({
       return headerLeft?.(headerProps);
     }
 
-    return <DefaultLeftHeaderColumn dark={dark} />;
+    return (
+      <DefaultLeftHeaderColumn
+        dark={dark}
+        {...headerProps}
+      />
+    );
   }, [dark, headerLeft, headerProps]);
 
   return (

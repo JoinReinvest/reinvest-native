@@ -6,6 +6,7 @@ import { StepAccreditedInvestor } from './stepAccreditedInvestor';
 import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepCompliance } from './stepCompliance';
+import { StepCorporateApplicantList } from './stepCorporateApplicantList';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
 import { StepCorporationType } from './stepCorporationType';
@@ -29,6 +30,7 @@ import { StepResidencyStatus } from './stepResidencyStatus';
 import { StepResidencyVisa } from './stepResidencyVisa';
 import { StepSeniorPoliticalFigure } from './stepSeniorPoliticalFigure';
 import { StepSSN } from './stepSSN';
+import { StepTrustApplicantList } from './stepTrustApplicantList';
 import { StepTrustLegalName } from './stepTrustLegalName';
 import { StepTrustType } from './stepTrustType';
 
@@ -49,20 +51,23 @@ export const FLOW_STEPS = [
   StepIdentificationDocuments,
   StepPermanentAddress,
   StepAccreditedInvestor,
-  StepAuthorizedSignatoryEntity,
   StepExperience,
-  StepTrustLegalName,
-  StepTrustType,
   StepCorporationType,
+  StepTrustType,
   StepCorporationLegalName,
+  StepTrustLegalName,
+  StepAuthorizedSignatoryEntity,
   StepEIN,
+  // businessAddress
   StepCorporationInformation,
+  StepDocumentsForCorporation,
+  StepDocumentsForTrust,
+  StepTrustApplicantList,
+  StepCorporateApplicantList,
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
   StepProfilePicture,
-  StepDocumentsForCorporation,
-  StepDocumentsForTrust,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
