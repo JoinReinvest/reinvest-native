@@ -123,7 +123,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView keyboardShouldPersistTaps="always">
+        <PaddedScrollView keyboardShouldPersistTaps="never">
           <FormTitle
             dark
             headline="What is your permanent address?"
