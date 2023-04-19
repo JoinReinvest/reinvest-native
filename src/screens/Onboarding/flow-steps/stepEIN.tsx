@@ -1,12 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { DraftAccountType, TrustCompanyTypeEnum } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
+import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -30,20 +34,25 @@ const schema = z.object({
 export const StepEIN: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.EIN,
 
-  willBePartOfTheFlow: ({ accountType, trustType }) => {
-    const isRevocableTrust = accountType === DraftAccountType.Trust && trustType === TrustCompanyTypeEnum.Revocable;
-
-    return accountType === DraftAccountType.Corporate || isRevocableTrust;
+  willBePartOfTheFlow: ({ accountType }) => {
+    return accountType === DraftAccountType.Corporate || accountType === DraftAccountType.Trust;
   },
 
   doesMeetConditionFields: fields => {
-    return fields.accountType !== DraftAccountType.Individual;
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
+
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+    const isAccountCorporateOrTrust = fields.accountType === DraftAccountType.Corporate || fields.accountType === DraftAccountType.Trust;
+    const hasTrustFields = allRequiredFieldsExists([fields.trustType, fields.trustLegalName]);
+    const isRevocableTrust = fields.trustType !== TrustCompanyTypeEnum.Irrevocable;
+
+    return isAccountCorporateOrTrust && hasProfileFields && hasTrustFields && isRevocableTrust && isAccountCorporateOrTrust;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog } = useDialog();
-
+    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const defaultValues: Fields = {
       ein: storeFields.ein,
     };
@@ -53,7 +62,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
       resolver: zodResolver(schema),
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const shouldButtonBeDisabled = !formState.isValid || isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async ({ ein }) => {
       if (!ein) {
@@ -62,7 +71,10 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
 
       ein = ein.replaceAll('-', '');
       await updateStoreFields({ ein });
-      moveToNextStep();
+
+      if (storeFields.accountId && ein) {
+        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { ein: { ein } } });
+      }
     };
 
     const openEinDialog = () => {
@@ -83,6 +95,12 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
       );
     };
 
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
+
     return (
       <>
         <View style={[styles.fw]}>
@@ -93,6 +111,12 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
             dark
             headline="Enter your EIN"
           />
+          {error && (
+            <FormMessage
+              variant="error"
+              message={error.response.errors.map(err => err.message).join(', ')}
+            />
+          )}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
