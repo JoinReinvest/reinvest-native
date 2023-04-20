@@ -24,6 +24,7 @@ import { Controller } from '../../../components/typography/Controller';
 import { INDUSTRIES_LABELS } from '../../../constants/industries';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { mapToIndustryLabel } from '../utilities';
 import { styles } from './styles';
 
 type Fields = Required<Pick<OnboardingFormFields, 'fiduciaryEntityInformation'>>;
@@ -56,7 +57,8 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const defaultValues: Fields = {
-      fiduciaryEntityInformation: storeFields.fiduciaryEntityInformation || {},
+      fiduciaryEntityInformation:
+        { ...storeFields.fiduciaryEntityInformation, industry: mapToIndustryLabel(storeFields.fiduciaryEntityInformation?.industry) } || {},
     };
     const { formState, handleSubmit, control } = useForm<Fields>({
       mode: 'all',
@@ -72,19 +74,28 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
       await updateStoreFields({ fiduciaryEntityInformation });
 
       if (
-        storeFields.accountId &&
-        fiduciaryEntityInformation.annualRevenue &&
-        fiduciaryEntityInformation.numberOfEmployees &&
-        fiduciaryEntityInformation.industry
+        !storeFields.accountId ||
+        !fiduciaryEntityInformation.annualRevenue ||
+        !fiduciaryEntityInformation.numberOfEmployees ||
+        !fiduciaryEntityInformation.industry
       ) {
-        await completeTrustDraftAccount({
-          accountId: storeFields.accountId,
-          input: {
-            annualRevenue: { range: fiduciaryEntityInformation.annualRevenue },
-            industry: { value: fiduciaryEntityInformation.industry },
-            numberOfEmployees: { range: fiduciaryEntityInformation.numberOfEmployees },
-          },
-        });
+        return;
+      }
+
+      switch (storeFields.accountType) {
+        case DraftAccountType.Trust:
+          await completeTrustDraftAccount({
+            accountId: storeFields.accountId,
+            input: {
+              annualRevenue: { range: fiduciaryEntityInformation.annualRevenue },
+              industry: { value: fiduciaryEntityInformation.industry },
+              numberOfEmployees: { range: fiduciaryEntityInformation.numberOfEmployees },
+            },
+          });
+          break;
+        case DraftAccountType.Corporate:
+          // TODO: Connect corporate api
+          break;
       }
     };
 

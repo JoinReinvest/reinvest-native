@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
@@ -13,6 +13,7 @@ import { Button } from '../../../components/Button';
 import { FilePicker } from '../../../components/FilePicker';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
@@ -98,7 +99,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Upload the following documents to verify your trust."
@@ -130,7 +131,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
             type="multi"
             selectionLimit={MAXIMUM_CORPORATION_FILES_COUNT}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}

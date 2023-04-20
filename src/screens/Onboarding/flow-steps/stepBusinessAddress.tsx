@@ -87,7 +87,6 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
       }
 
       await updateStoreFields({ businessAddress });
-
       switch (storeFields.accountType) {
         case DraftAccountType.Trust:
           await completeTrustDraftAccount({
@@ -97,7 +96,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
           break;
 
         case DraftAccountType.Corporate:
-          // TODO: Complete corporate draft account here
+          // TODO: Connect corporate api
           break;
       }
     };

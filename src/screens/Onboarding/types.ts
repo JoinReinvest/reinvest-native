@@ -37,7 +37,7 @@ export interface OnboardingFormFields {
   authenticationCode?: string;
   birthCountry?: string;
 
-  businessAddress?: Address;
+  businessAddress?: Address | undefined;
   citizenshipCountry?: string;
   companyMajorStakeholderApplicants?: Applicant[];
   companyTickerSymbols?: CompanyTickerSymbol[];
@@ -51,8 +51,8 @@ export interface OnboardingFormFields {
   };
   corporationLegalName?: string;
   corporationType?: CorporateCompanyType;
-  documentsForCorporation?: Documents;
-  documentsForTrust?: Documents;
+  documentsForCorporation?: IdentificationDocuments;
+  documentsForTrust?: IdentificationDocuments;
   domicile?: Domicile;
   ein?: string;
   employer?: Employer;
@@ -67,7 +67,7 @@ export interface OnboardingFormFields {
   fiduciaryEntityInformation?: FiduciaryEntityInformation;
   finraInstitution?: string;
   finraInstitutionName?: string;
-  identificationDocument?: Documents;
+  identificationDocument?: IdentificationDocuments;
   isAccreditedInvestor?: boolean;
   isAuthorizedSignatoryEntity?: boolean;
   name?: {
@@ -101,8 +101,6 @@ export type IdentificationDocument = { fileName: string; id: string };
 export type AssetWithPreloadedFiles = DocumentPickerResponse | Asset | IdentificationDocument;
 
 export type IdentificationDocuments = string | { fileName: string; id: string }[];
-
-export type Documents = string[] | { fileName: string; id: string }[];
 
 export interface Applicant {
   dateOfBirth?: string | null;

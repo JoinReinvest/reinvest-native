@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import zod from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';

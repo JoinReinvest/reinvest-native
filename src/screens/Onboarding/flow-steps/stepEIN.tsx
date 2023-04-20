@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
@@ -50,13 +50,14 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const [isApiValue, setIsApiValue] = useState(/^[*]{2}-[*]{3}\d{4}/.test(storeFields.ein || ''));
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog } = useDialog();
     const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const defaultValues: Fields = {
       ein: storeFields.ein,
     };
-    const { formState, handleSubmit, control } = useForm<Fields>({
+    const { formState, handleSubmit, control, watch } = useForm<Fields>({
       mode: 'onBlur',
       defaultValues,
       resolver: zodResolver(schema),
@@ -76,7 +77,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
           await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { ein: { ein } } });
           break;
         case DraftAccountType.Corporate:
-          // TODO: Complete corporate draft account here
+          // TODO: Connect corporate api
           break;
       }
     };
@@ -104,6 +105,16 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
         moveToNextStep();
       }
     }, [isSuccess, moveToNextStep]);
+
+    useEffect(() => {
+      const { unsubscribe } = watch(({ ein }) => {
+        setIsApiValue(ein === storeFields?.ein);
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }, [storeFields?.ein, watch]);
 
     return (
       <>
@@ -155,8 +166,8 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={shouldButtonBeDisabled}
-            onPress={handleSubmit(onSubmit)}
+            disabled={!isApiValue && shouldButtonBeDisabled}
+            onPress={isApiValue ? moveToNextStep : handleSubmit(onSubmit)}
           >
             Continue
           </Button>

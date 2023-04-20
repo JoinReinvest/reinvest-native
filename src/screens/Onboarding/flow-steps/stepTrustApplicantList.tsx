@@ -1,8 +1,11 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
+import { DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
+import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -32,7 +35,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { trustTrusteesGrantorsOrProtectors, trustLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(trustLegalName || '');
-
+    const { mutateAsync: completeTrustDraftAccount } = useCompleteTrustDraftAccount(getApiClient);
     const applicantsRef = useRef<Applicant[]>(trustTrusteesGrantorsOrProtectors ?? []);
 
     const { progressPercentage } = useOnboardingFormFlow();
@@ -45,11 +48,50 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
       _index: index,
     }));
 
+    const uploadApplicant = async (applicant: Applicant) => {
+      if (!storeFields.accountId) {
+        return;
+      }
+
+      const stakeholders = [
+        {
+          id: applicant.id,
+          name: {
+            firstName: applicant.firstName,
+            lastName: applicant.lastName,
+            middleName: applicant.middleName,
+          },
+          dateOfBirth: {
+            dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
+          },
+          address: {
+            addressLine1: 'Address line 1',
+            addressLine2: 'Address line 2',
+            city: 'Test city',
+            zip: '11111',
+            country: 'USA',
+            state: 'California',
+          },
+          idScan: applicant.idScan as DocumentFileLinkInput[],
+          ssn: {
+            // when ssn is anonymized don't send it to api
+            ssn: applicant.socialSecurityNumber?.includes('*') ? undefined : applicant.socialSecurityNumber,
+          },
+          domicile: {
+            type: applicant.domicile || SimplifiedDomicileType.Citizen,
+          },
+        },
+      ];
+      await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { stakeholders } });
+    };
+
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
+      // add as new applicant if doesn't have index
       if (applicantIndex === undefined) {
         applicantsRef.current = [...applicantsRef.current, submittedApplicant];
       }
 
+      // update existing one otherwise,
       if (applicantIndex !== undefined && applicantIndex >= 0) {
         const updatedApplicants = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
 
@@ -59,6 +101,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
       await updateStoreFields({
         trustTrusteesGrantorsOrProtectors: applicantsRef.current,
       });
+      await uploadApplicant(submittedApplicant);
       closeDialog();
     };
 
@@ -77,9 +120,6 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
     };
 
     const onContinue = async () => {
-      await updateStoreFields({
-        trustTrusteesGrantorsOrProtectors: applicantsRef.current,
-      });
       moveToNextStep();
     };
 
