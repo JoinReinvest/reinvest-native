@@ -29,7 +29,7 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
-import { Applicant, OnboardingFormFields } from '../types';
+import { Applicant, IdentificationDocuments, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -48,7 +48,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
     const { refetch: refetchTrustDraftAccount } = useGetTrustDraftAccount(getApiClient, {
       accountId: accountId,
-      config: { enabled: !!accountId && selectedAccountType === DraftAccountType.Trust },
+      config: { enabled: false },
     });
 
     useEffect(() => {
@@ -124,12 +124,14 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                   numberOfEmployees: trustDraftAccountData?.details?.numberOfEmployees?.range as CorporationNumberOfEmployees,
                   annualRevenue: trustDraftAccountData?.details?.annualRevenue?.range as CorporationAnnualRevenue,
                 },
+                documentsForTrust: (trustDraftAccountData?.details?.companyDocuments as IdentificationDocuments) ?? [],
                 trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(app => ({
                   ...app?.name,
                   socialSecurityNumber: app?.ssn,
                   residentialAddress: 'Some address',
                   domicile: app?.domicile?.type,
                   dateOfBirth: app?.dateOfBirth?.dateOfBirth,
+                  idScan: app?.idScan,
                 })) as Applicant[],
               });
             }

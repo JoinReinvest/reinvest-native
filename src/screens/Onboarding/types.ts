@@ -51,7 +51,7 @@ export interface OnboardingFormFields {
   };
   corporationLegalName?: string;
   corporationType?: CorporateCompanyType;
-  documentsForCorporation?: IdentificationDocuments;
+  documentsForCorporation?: IdentificationDocuments | null;
   documentsForTrust?: IdentificationDocuments;
   domicile?: Domicile;
   ein?: string;
@@ -100,7 +100,7 @@ export type IdentificationDocument = { fileName: string; id: string };
 
 export type AssetWithPreloadedFiles = DocumentPickerResponse | Asset | IdentificationDocument;
 
-export type IdentificationDocuments = string | { fileName: string; id: string }[];
+export type IdentificationDocuments = { fileName: string; id: string }[];
 
 export interface Applicant {
   dateOfBirth?: string | null;

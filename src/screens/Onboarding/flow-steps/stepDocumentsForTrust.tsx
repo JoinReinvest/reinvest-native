@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { DocumentPickerResponse } from 'react-native-document-picker';
-import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
@@ -16,9 +14,10 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
+import { documentReducer } from '../../../utils/documentReducer';
 import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
-import { OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -51,15 +50,16 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
     const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
     const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
-
-    const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
+    const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.documentsForTrust as AssetWithPreloadedFiles[]) || []);
 
     const handleContinue = async () => {
       if (!storeFields.accountId) {
         return;
       }
 
-      const selectedFilesUris = selectedFiles.map(({ uri }) => uri ?? '');
+      const preloadedFiles = documentReducer(selectedFiles);
+      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+
       try {
         const idScan = [];
 
@@ -70,10 +70,17 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
             identificationDocument: selectedFiles,
           });
           idScan.push(...scans);
+          await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
         }
 
-        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
-        await updateStoreFields({ documentsForTrust: idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] })) });
+        await updateStoreFields({ documentsForTrust: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
+
+        /*
+         No files to upload
+         */
+        if (!selectedFilesUris.length) {
+          moveToNextStep();
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('-> e', e);
@@ -125,6 +132,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
             />
           )}
           <FilePicker
+            state={selectedFiles}
             dark
             label="Upload Files"
             onSelect={setSelectedFiles}

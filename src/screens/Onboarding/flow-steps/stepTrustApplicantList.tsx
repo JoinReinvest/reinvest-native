@@ -73,10 +73,12 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
             state: 'California',
           },
           idScan: applicant.idScan as DocumentFileLinkInput[],
-          ssn: {
-            // when ssn is anonymized don't send it to api
-            ssn: applicant.socialSecurityNumber?.includes('*') ? undefined : applicant.socialSecurityNumber,
-          },
+          // when ssn is anonymized we need to send null
+          ssn: !/^[*]{3}-[*]{2}-\d{4}/.test(applicant?.socialSecurityNumber || '')
+            ? {
+                ssn: applicant.socialSecurityNumber,
+              }
+            : undefined,
           domicile: {
             type: applicant.domicile || SimplifiedDomicileType.Citizen,
           },

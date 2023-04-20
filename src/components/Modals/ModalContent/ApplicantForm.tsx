@@ -12,15 +12,6 @@ import { SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
-import { Button } from '../../../components/Button';
-import { Box } from '../../../components/Containers/Box/Box';
-import { DarkScreenHeader } from '../../../components/CustomHeader';
-import { FilePicker } from '../../../components/FilePicker';
-import { FormTitle } from '../../../components/Forms/FormTitle';
-import { Icon } from '../../../components/Icon';
-import { PaddedScrollView } from '../../../components/PaddedScrollView';
-import { TermsFooter } from '../../../components/TermsFooter';
-import { Controller } from '../../../components/typography/Controller';
 import { isIOS } from '../../../constants/common';
 import { SSN_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
@@ -28,6 +19,16 @@ import { useLogInNavigation } from '../../../navigation/hooks';
 import { APPLICANT_WITHOUT_IDENTIFICATION } from '../../../screens/Onboarding/schemas';
 import { Applicant } from '../../../screens/Onboarding/types';
 import { ApplicantFormFields, mapDomicileLabelToDomicileType } from '../../../screens/Onboarding/utilities';
+import { documentReducer } from '../../../utils/documentReducer';
+import { Button } from '../../Button';
+import { Box } from '../../Containers/Box/Box';
+import { DarkScreenHeader } from '../../CustomHeader';
+import { FilePicker } from '../../FilePicker';
+import { FormTitle } from '../../Forms/FormTitle';
+import { Icon } from '../../Icon';
+import { PaddedScrollView } from '../../PaddedScrollView';
+import { TermsFooter } from '../../TermsFooter';
+import { Controller } from '../../typography/Controller';
 import { styles } from './styles';
 
 interface Props {
@@ -37,18 +38,23 @@ interface Props {
   applicantIndex?: number;
 }
 
-export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps, onClose, defaultValues }: PropsWithChildren<Props>) => {
+export const ApplicantFormModal = ({
+  applicantIndex,
+  onSubmit: onSubmitFormProps,
+  onClose,
+  defaultValues: { idScan, ...formValues },
+}: PropsWithChildren<Props>) => {
   const route = useRoute();
   const navigation = useLogInNavigation();
   const [currentStep, setCurrentStep] = useState(0);
-  const [document, setDocument] = useState<(DocumentPickerResponse | Asset)[]>([]);
+  const [document, setDocument] = useState<(DocumentPickerResponse | Asset)[]>(idScan);
 
   const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
   const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
   const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
     mode: 'onBlur',
     resolver: zodResolver(APPLICANT_WITHOUT_IDENTIFICATION),
-    defaultValues,
+    defaultValues: formValues,
   });
 
   const shouldApplicantFormButtonBeDisabled = !formState.isValid;
@@ -57,7 +63,9 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
     !formState.isValid || formState.isSubmitting || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading;
 
   const onSubmit: SubmitHandler<ApplicantFormFields> = async fields => {
-    const selectedFilesUris = document.map(({ uri }) => uri ?? '');
+    const preloadedFiles = documentReducer(document);
+
+    const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
     try {
       const idScan = [];
@@ -66,7 +74,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
         const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
         const scans = await sendDocumentsToS3AndGetScanIdsMutate({
           documentsFileLinks: documentsFileLinks as PutFileLink[],
-          identificationDocument: document,
+          identificationDocument: preloadedFiles.forUpload,
         });
         idScan.push(...scans);
       }
@@ -148,7 +156,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
               placeholder: 'Domicile',
               dark: true,
               data: STAKEHOLDER_RESIDENCY_STATUS_OPTIONS,
-              defaultValue: defaultValues?.domicile,
+              defaultValue: formValues?.domicile,
             }}
           />
         </>
@@ -166,6 +174,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit: onSubmitFormProps
           label="Upload Files"
           onSelect={setDocument}
           type="single"
+          state={document}
         />
       </>
     );
