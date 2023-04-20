@@ -17,7 +17,7 @@ export const MainModalWrapper = ({
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.mainWrapper, dark && styles.dark, { paddingTop: top }, styles.content]}>
+    <View style={[styles.mainWrapper, dark && styles.dark, { paddingTop: top }]}>
       {dialogContent || children}
       {closeIcon && (
         <Icon

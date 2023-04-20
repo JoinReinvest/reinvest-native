@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useMemo } from 'react';
 import { Pressable, View, ViewStyle } from 'react-native';
 
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { xScale, yScale } from '../../../utils/scale';
@@ -17,7 +18,7 @@ function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
     paddingBottom: getSize(props.pb || props.p),
     paddingLeft: getSize(props.pl || props.p),
     paddingVertical: yScale(getSize(props.py)),
-    paddingHorizontal: xScale(getSize(props.px)),
+    paddingHorizontal: props.px === 'default' ? MAIN_WRAPPER_PADDING_HORIZONTAL : xScale(getSize(props.px)),
     margin: getSize(props.m),
     marginRight: getSize(props.mr),
     marginTop: getSize(props.mt),

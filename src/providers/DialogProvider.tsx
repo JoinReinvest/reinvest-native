@@ -2,6 +2,7 @@ import React, { createContext, PropsWithChildren, ReactNode, useContext, useMemo
 import { Modal } from 'react-native';
 
 import { MainModalWrapper } from '../components/Modals/ModalWrappers/MainModalWrapper';
+import { SheetModalWrapper } from '../components/Modals/ModalWrappers/SheetModalWrapper';
 
 type AnimationType = 'slide' | 'none' | 'fade';
 
@@ -13,7 +14,7 @@ interface Options {
 interface DialogContextInterface {
   closeDialog: () => void;
   isDialogOpen: boolean;
-  openDialog: (content: ReactNode, options?: Partial<Options>) => void;
+  openDialog: (content: ReactNode, options?: Partial<Options>, type?: ModalTypes) => void;
 }
 
 export const DialogContext = createContext<DialogContextInterface>({
@@ -24,7 +25,10 @@ export const DialogContext = createContext<DialogContextInterface>({
 
 const modals = {
   main: MainModalWrapper,
+  sheet: SheetModalWrapper,
 };
+
+type ModalTypes = keyof typeof modals;
 
 export interface DialogProviderProps {
   animationType?: AnimationType;
@@ -39,12 +43,20 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
   const [dialogContent, setDialogContent] = useState<ReactNode>(null);
   const [closeIconVisible, setCloseIconVisible] = useState<boolean>(true);
   const [animationType, setAnimationType] = useState<AnimationType>('slide');
+  const [modalType, setModalType] = useState<ModalTypes>(type);
 
-  const closeDialog = () => setDialogContent(false);
+  const closeDialog = () => {
+    setDialogContent(false);
+    setModalType('main');
+  };
 
   const ctx = useMemo(() => {
     return {
-      openDialog: (content: ReactNode, options?: Partial<Options>) => {
+      openDialog: (content: ReactNode, options?: Partial<Options>, type?: ModalTypes) => {
+        if (type) {
+          setModalType(type);
+        }
+
         setDialogContent(content);
         setCloseIconVisible(options?.closeIcon ?? true);
         setAnimationType(options?.animationType ?? 'slide');
@@ -54,7 +66,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
     };
   }, [dialogContent]);
 
-  const Wrapper = modals[`${type}`];
+  const Wrapper = modals[`${modalType}`];
 
   return (
     <DialogContext.Provider
@@ -66,6 +78,7 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
         <Modal
           animationType={animationType}
           visible={!!dialogContent}
+          transparent
         >
           <Wrapper
             closeIcon={closeIconVisible}

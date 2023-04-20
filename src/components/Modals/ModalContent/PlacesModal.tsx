@@ -67,7 +67,7 @@ export const SearchDialog = ({ fillDetailsCallback, value, ...rest }: SearchView
   };
 
   return (
-    <Box pt={'48'}>
+    <Box px="default">
       <Input
         dark
         ref={inputRef}

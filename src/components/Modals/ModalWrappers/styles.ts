@@ -21,4 +21,5 @@ export const styles = StyleSheet.create({
   content: {
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
   },
+  fh: { height: '100%' },
 });

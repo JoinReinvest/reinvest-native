@@ -81,6 +81,7 @@ export const icons = {
 };
 
 export const sizes = {
+  s: 24,
   m: 32,
   l: 40,
   xl: 48,

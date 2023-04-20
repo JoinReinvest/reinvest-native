@@ -72,9 +72,11 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           _hasAuthenticatedPhoneNumber: true,
         });
 
-        const { countryCode, number } = storeFields.phone!;
-        await verifyPhoneNumber({ phoneNumber: number || '', countryCode: countryCode || '', authCode: phoneNumberAuthenticationCode });
-        moveToNextStep();
+        if (storeFields.phone) {
+          const { countryCode, number } = storeFields.phone;
+          await verifyPhoneNumber({ phoneNumber: number || '', countryCode: countryCode || '', authCode: phoneNumberAuthenticationCode });
+          moveToNextStep();
+        }
       } catch (err) {
         setError((err as Error).message);
       }

@@ -30,6 +30,7 @@ export const Input = forwardRef<TextInput, InputProps>(
       onBlur,
       style,
       predefined,
+      pointerEvents = 'auto',
       ...props
     },
     ref,
@@ -131,6 +132,7 @@ export const Input = forwardRef<TextInput, InputProps>(
         <Pressable
           onPress={onPressFocusHandler}
           style={[styles.wrapper, wrapperStyle]}
+          pointerEvents={pointerEvents}
         >
           <View
             style={[
