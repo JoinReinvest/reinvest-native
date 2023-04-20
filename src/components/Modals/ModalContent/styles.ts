@@ -11,9 +11,7 @@ export const styles = StyleSheet.create({
     marginBottom: yScale(24),
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
   },
-  disclaimersContent: {
-    paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
-  },
+
   bottomBordered: { borderBottomWidth: 1, borderBottomColor: palette.dark2 },
 
   headerWrapper: {
@@ -26,5 +24,16 @@ export const styles = StyleSheet.create({
   },
   fw: {
     width: '100%',
+  },
+  sheetContentWrapper: {
+    flexGrow: 1,
+    backgroundColor: palette.pureWhite,
+    width: '100%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    paddingTop: 24,
+  },
+  dark: {
+    backgroundColor: palette.onboarding,
   },
 });

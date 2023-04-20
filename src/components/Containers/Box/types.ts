@@ -26,7 +26,7 @@ export type PaddingProps = {
   pl?: SizesEnum;
   pr?: SizesEnum;
   pt?: SizesEnum;
-  px?: SizesEnum;
+  px?: SizesEnum | 'default';
   py?: SizesEnum;
 };
 export type MarginProps = {

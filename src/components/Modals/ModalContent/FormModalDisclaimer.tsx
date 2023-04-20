@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { PaddedScrollView } from '../../PaddedScrollView';
 import { StyledText } from '../../typography/StyledText';
 import { styles } from './styles';
 
@@ -31,9 +32,9 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
           {headline}
         </StyledText>
       </View>
-      <ScrollView
+      <PaddedScrollView
         indicatorStyle="white"
-        contentContainerStyle={[styles.disclaimersContent, { paddingBottom: bottom }]}
+        contentContainerStyle={[{ paddingBottom: bottom }]}
       >
         <StyledText
           variant="paragraphLarge"
@@ -41,7 +42,7 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
         >
           {content}
         </StyledText>
-      </ScrollView>
+      </PaddedScrollView>
       {children}
     </>
   );

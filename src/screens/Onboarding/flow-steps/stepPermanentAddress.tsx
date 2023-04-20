@@ -105,6 +105,8 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
           placeholder={placeholders.addressLine1}
           fillDetailsCallback={fillFieldsFromPrediction}
         />,
+        {},
+        'sheet',
       );
     }, [addressWatched, fillFieldsFromPrediction, openDialog]);
 
