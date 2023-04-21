@@ -106,7 +106,7 @@ export const ApplicantFormModal = ({
   const renderStep = () => {
     if (!currentStep) {
       return (
-        <>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Enter the following information for your applicant."
@@ -159,12 +159,12 @@ export const ApplicantFormModal = ({
               defaultValue: formValues?.domicile,
             }}
           />
-        </>
+        </PaddedScrollView>
       );
     }
 
     return (
-      <>
+      <PaddedScrollView>
         <FormTitle
           dark
           headline="Upload the ID of your applicant."
@@ -176,7 +176,7 @@ export const ApplicantFormModal = ({
           type="single"
           state={document}
         />
-      </>
+      </PaddedScrollView>
     );
   };
 
@@ -203,15 +203,17 @@ export const ApplicantFormModal = ({
         mt={isIOS ? '56' : '12'}
         style={{ flex: 1 }}
       >
-        <PaddedScrollView style={styles.fw}>{renderStep()}</PaddedScrollView>
+        {renderStep()}
       </Box>
-      <Button
-        disabled={currentStep === 0 ? shouldApplicantFormButtonBeDisabled : shuoldSubmitButtonBeDisabled}
-        variant="primary"
-        onPress={currentStep === 0 ? goToNextStep : handleSubmit(onSubmit)}
-      >
-        Continue
-      </Button>
+      <Box px={'default'}>
+        <Button
+          disabled={currentStep === 0 ? shouldApplicantFormButtonBeDisabled : shuoldSubmitButtonBeDisabled}
+          variant="primary"
+          onPress={currentStep === 0 ? goToNextStep : handleSubmit(onSubmit)}
+        >
+          Continue
+        </Button>
+      </Box>
       <TermsFooter noPadding={!isIOS} />
     </>
   );

@@ -37,6 +37,7 @@ import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
+  //profile steps
   StepFullName,
   StepPhoneNumber,
   StepPhoneAuthentication,
@@ -53,21 +54,30 @@ export const FLOW_STEPS = [
   StepPermanentAddress,
   StepAccreditedInvestor,
   StepExperience,
-  StepCorporationType,
-  StepTrustType,
-  StepCorporationLegalName,
-  StepTrustLegalName,
-  StepAuthorizedSignatoryEntity,
-  StepEIN,
-  StepBusinessAddress,
-  StepDocumentsForCorporation,
-  StepDocumentsForTrust,
-  StepCorporationInformation,
-  StepTrustApplicantList,
-  StepCorporateApplicantList,
+  // individual steps
   StepEmploymentStatus,
   StepEmploymentDetails,
   StepNetWorthAndNetIncome,
+  // corporation  steps
+  StepCorporationType,
+  StepCorporationLegalName,
+  // trust steps
+  StepTrustType,
+  StepTrustLegalName,
+  //trust and corporation steps
+  StepAuthorizedSignatoryEntity,
+  StepEIN,
+  StepBusinessAddress,
+  StepCorporationInformation,
+  // trust documents
+  StepDocumentsForTrust,
+  // corporation documents
+  StepDocumentsForCorporation,
+  // trust applicants
+  StepTrustApplicantList,
+  //corporation applicants
+  StepCorporateApplicantList,
+  // last step
   StepProfilePicture,
 ];
 
