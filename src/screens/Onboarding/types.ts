@@ -103,14 +103,14 @@ export type AssetWithPreloadedFiles = DocumentPickerResponse | Asset | Identific
 export type IdentificationDocuments = { fileName: string; id: string }[];
 
 export interface Applicant {
-  dateOfBirth: string;
-  domicile: SimplifiedDomicileType;
-  firstName: string;
-  idScan: IdentificationDocuments;
-  lastName: string;
-  middleName: string;
-  residentialAddress: string;
+  dateOfBirth?: string;
+  domicile?: SimplifiedDomicileType;
+  firstName?: string;
   id?: string;
+  idScan?: IdentificationDocuments;
+  lastName?: string;
+  middleName?: string;
+  residentialAddress?: Address;
   socialSecurityNumber?: string;
 }
 

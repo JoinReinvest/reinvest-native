@@ -128,7 +128,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(app => ({
                   ...app?.name,
                   socialSecurityNumber: app?.ssn,
-                  residentialAddress: 'Some address',
+                  residentialAddress: app?.address,
                   domicile: app?.domicile?.type,
                   dateOfBirth: app?.dateOfBirth?.dateOfBirth,
                   idScan: app?.idScan,

@@ -64,14 +64,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           dateOfBirth: {
             dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
           },
-          address: {
-            addressLine1: 'Address line 1',
-            addressLine2: 'Address line 2',
-            city: 'Test city',
-            zip: '11111',
-            country: 'USA',
-            state: 'California',
-          },
+          address: { ...applicant.residentialAddress, country: 'USA' },
           idScan: applicant.idScan as DocumentFileLinkInput[],
           // when ssn is anonymized we need to send null
           ssn: !/^[*]{3}-[*]{2}-\d{4}/.test(applicant?.socialSecurityNumber || '')
@@ -136,6 +129,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           <ApplicantFormModal
             defaultValues={defaultValues}
             applicantIndex={applicant._index}
+            applicantId={applicant.id}
             onSubmit={updateApplicants}
             onClose={closeDialog}
           />,
@@ -190,13 +184,15 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           >
             {hasApplicants ? 'Continue' : 'Skip'}
           </Button>
-          <Button
-            disabled={applicantsRef.current.length >= MAX_APPLICANTS_COUNT}
-            variant={hasApplicants ? 'outlined' : 'primary'}
-            onPress={onAddNewApplicant}
-          >
-            Add Applicant
-          </Button>
+          {applicantsRef.current.length <= MAX_APPLICANTS_COUNT && (
+            <Button
+              disabled={false}
+              variant={hasApplicants ? 'outlined' : 'primary'}
+              onPress={onAddNewApplicant}
+            >
+              Add Applicant
+            </Button>
+          )}
         </View>
       </>
     );
