@@ -12,7 +12,7 @@ export const EMPTY_APPLICANT_FORM: ApplicantFormFields = {
     state: '',
     city: '',
     zip: '',
-    country: 'US',
+    country: 'USA',
   },
   domicile: undefined,
 };

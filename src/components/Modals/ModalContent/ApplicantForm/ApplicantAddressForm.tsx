@@ -12,6 +12,7 @@ import { FormTitle } from '../../../../components/Forms/FormTitle';
 import { Icon } from '../../../../components/Icon';
 import { PaddedScrollView } from '../../../../components/PaddedScrollView';
 import { Controller } from '../../../../components/typography/Controller';
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../../constants/styles';
 import { palette } from '../../../../constants/theme';
 import { formValidationRules } from '../../../../utils/formValidationRules';
 import { SearchDialog } from '../PlacesModal';
@@ -65,7 +66,7 @@ export const ApplicantAddressForm = ({ isVisible, isSearchDialogOpen, onSearchIc
   return (
     <View
       pointerEvents={isVisible ? 'auto' : 'none'}
-      style={[styles.fw, !isVisible ? { height: 0, opacity: 0 } : { height: '100%', opacity: 1 }]}
+      style={[!isVisible ? { height: 0, opacity: 0 } : { height: '100%', opacity: 1 }]}
     >
       <PaddedScrollView
         pointerEvents={isSearchDialogOpen ? 'auto' : 'none'}
@@ -78,7 +79,7 @@ export const ApplicantAddressForm = ({ isVisible, isSearchDialogOpen, onSearchIc
         />
       </PaddedScrollView>
       <PaddedScrollView
-        style={[isSearchDialogOpen && { height: 0, opacity: 0 }]}
+        style={[isSearchDialogOpen && { height: 0, opacity: 0 }, { paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }]}
         contentContainerStyle={{ height: '100%' }}
       >
         <FormTitle
@@ -118,13 +119,15 @@ export const ApplicantAddressForm = ({ isVisible, isSearchDialogOpen, onSearchIc
           inputProps={{ placeholder: placeholders.zip, dark: true, maxLength: 5, keyboardType: 'numeric', style: styles.removeMargin }}
         />
       </PaddedScrollView>
-      <Button
-        disabled={shouldButtonBeDisabled}
-        variant="primary"
-        onPress={handleSubmit(onSubmit)}
-      >
-        Continue
-      </Button>
+      <View style={{ paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }}>
+        <Button
+          disabled={shouldButtonBeDisabled}
+          variant="primary"
+          onPress={handleSubmit(onSubmit)}
+        >
+          Continue
+        </Button>
+      </View>
     </View>
   );
 };

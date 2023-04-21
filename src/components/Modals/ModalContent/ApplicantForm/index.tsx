@@ -20,10 +20,11 @@ interface Props {
   defaultValues: ApplicantFormFields;
   onClose: () => void;
   onSubmit: (applicant: Applicant, applicantIndex: number | undefined) => Promise<void>;
+  applicantId?: string;
   applicantIndex?: number;
 }
 
-export const ApplicantFormModal = ({ applicantIndex, onSubmit, onClose, defaultValues }: PropsWithChildren<Props>) => {
+export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onClose, defaultValues }: PropsWithChildren<Props>) => {
   const route = useRoute();
   const navigation = useLogInNavigation();
   const [currentStep, setCurrentStep] = useState(0);
@@ -49,7 +50,7 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit, onClose, defaultV
   const goToNextStep = () => setCurrentStep(prevStep => prevStep + 1);
 
   const onContinue = async (fields: Applicant) => {
-    applicantRef.current = { ...applicantRef.current, ...fields };
+    applicantRef.current = { ...applicantRef.current, ...fields, id: applicantId };
 
     if (currentStep === 2) {
       await onSubmit(applicantRef.current, applicantIndex);
@@ -83,24 +84,22 @@ export const ApplicantFormModal = ({ applicantIndex, onSubmit, onClose, defaultV
         mt={isIOS ? '56' : '12'}
         style={{ flex: 1 }}
       >
-        <>
-          <ApplicantGeneralForm
-            onContinue={onContinue}
-            isVisible={currentStep === 0}
-            defaultValues={defaultValues}
-          />
-          <ApplicantAddressForm
-            isVisible={currentStep === 1}
-            isSearchDialogOpen={isSearchDialogOpen}
-            onSearchIconPress={() => setIsSearchDialogOpen(true)}
-            onContinue={onContinue}
-            defaultValues={defaultValues}
-          />
-          <ApplicantDocumentsForm
-            isVisible={currentStep === 2}
-            onContinue={onContinue}
-          />
-        </>
+        <ApplicantGeneralForm
+          onContinue={onContinue}
+          isVisible={currentStep === 0}
+          defaultValues={defaultValues}
+        />
+        <ApplicantAddressForm
+          isVisible={currentStep === 1}
+          isSearchDialogOpen={isSearchDialogOpen}
+          onSearchIconPress={() => setIsSearchDialogOpen(true)}
+          onContinue={onContinue}
+          defaultValues={defaultValues}
+        />
+        <ApplicantDocumentsForm
+          isVisible={currentStep === 2}
+          onContinue={onContinue}
+        />
       </Box>
       <TermsFooter noPadding={!isIOS} />
     </>

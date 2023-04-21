@@ -11,6 +11,7 @@ import { FormTitle } from '../../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../../components/PaddedScrollView';
 import { Controller } from '../../../../components/typography/Controller';
 import { SSN_MASK } from '../../../../constants/masks';
+import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../../constants/styles';
 import { ApplicantFormFields, mapDomicileLabelToDomicileType } from '../../../../screens/Onboarding/utilities';
 import { dateOlderThanEighteenYearsSchema, formValidationRules } from '../../../../utils/formValidationRules';
 import { styles } from '../styles';
@@ -43,7 +44,7 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
       pointerEvents={isVisible ? 'auto' : 'none'}
       style={[styles.fw, !isVisible ? { height: 0, opacity: 0 } : { height: '100%', opacity: 1 }]}
     >
-      <PaddedScrollView style={styles.fw}>
+      <PaddedScrollView>
         <FormTitle
           dark
           headline="Enter the following information for your applicant."
@@ -91,13 +92,15 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
           }}
         />
       </PaddedScrollView>
-      <Button
-        disabled={shouldButtonBeDisabled}
-        variant="primary"
-        onPress={handleSubmit(onSubmit)}
-      >
-        Continue
-      </Button>
+      <View style={{ paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }}>
+        <Button
+          disabled={shouldButtonBeDisabled}
+          variant="primary"
+          onPress={handleSubmit(onSubmit)}
+        >
+          Continue
+        </Button>
+      </View>
     </View>
   );
 };

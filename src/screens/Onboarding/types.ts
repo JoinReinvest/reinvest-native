@@ -106,7 +106,8 @@ export interface Applicant {
   dateOfBirth?: string | null;
   domicile?: SimplifiedDomicileType;
   firstName?: string;
-  identificationDocument?: string;
+  id?: string | undefined;
+  idScan?: IdentificationDocuments;
   lastName?: string;
   middleName?: string;
   residentialAddress?: Address;
