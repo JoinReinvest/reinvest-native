@@ -36,4 +36,5 @@ export const styles = StyleSheet.create({
   dark: {
     backgroundColor: palette.onboarding,
   },
+  removeMargin: { marginBottom: 0 },
 });

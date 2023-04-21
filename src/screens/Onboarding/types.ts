@@ -113,7 +113,7 @@ export interface Applicant {
   identificationDocument?: string;
   lastName?: string;
   middleName?: string;
-  residentialAddress?: string;
+  residentialAddress?: Address;
   socialSecurityNumber?: string;
 }
 
