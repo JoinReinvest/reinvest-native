@@ -5,6 +5,13 @@ export const EMPTY_APPLICANT_FORM: ApplicantFormFields = {
   lastName: '',
   dateOfBirth: '',
   socialSecurityNumber: '',
-  residentialAddress: '',
+  residentialAddress: {
+    addressLine1: '',
+    addressLine2: '',
+    state: '',
+    city: '',
+    zip: '',
+    country: 'US',
+  },
   domicile: undefined,
 };
