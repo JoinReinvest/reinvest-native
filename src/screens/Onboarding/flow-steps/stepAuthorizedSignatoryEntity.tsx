@@ -80,7 +80,7 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
           />
           <RadioButtonGroup
             selectedValue={selectedValue}
-            onSelect={val => setValue('isAuthorizedSignatoryEntity', val === 'yes' ? true : false)}
+            onSelect={val => setValue('isAuthorizedSignatoryEntity', val === 'yes')}
             options={BOOLEAN_OPTIONS}
           />
         </PaddedScrollView>

@@ -56,11 +56,13 @@ export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onCl
     if (currentStep === 2) {
       await onSubmit({ ...applicantRef.current, domicile: mapDomicileLabelToDomicileType(applicantRef.current.domicile) }, applicantIndex);
 
-      return;
+      return onClose();
     }
 
     return goToNextStep();
   };
+
+  const dismissSearch = () => setIsSearchDialogOpen(false);
 
   return (
     <>
@@ -95,11 +97,13 @@ export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onCl
           isSearchDialogOpen={isSearchDialogOpen}
           onSearchIconPress={() => setIsSearchDialogOpen(true)}
           onContinue={onContinue}
+          dismissSearchDialog={dismissSearch}
           defaultValues={defaultValues}
         />
         <ApplicantDocumentsForm
           isVisible={currentStep === 2}
           onContinue={onContinue}
+          defaultValues={defaultValues}
         />
       </Box>
       <TermsFooter noPadding={!isIOS} />

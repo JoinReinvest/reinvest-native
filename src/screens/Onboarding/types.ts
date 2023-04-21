@@ -4,7 +4,8 @@ import { CorporationAnnualRevenue, CorporationNumberOfEmployees } from 'reinvest
 import { Industry } from 'reinvest-app-common/src/constants/industries';
 import {
   Address,
-  CorporateCompanyType,
+  CompanyTypeEnum,
+  CorporateCompanyTypeEnum,
   DomicileType,
   DraftAccountType,
   Employer,
@@ -50,7 +51,7 @@ export interface OnboardingFormFields {
     isSeniorPoliticalFigure?: boolean;
   };
   corporationLegalName?: string;
-  corporationType?: CorporateCompanyType;
+  corporationType?: CompanyTypeEnum | CorporateCompanyTypeEnum;
   documentsForCorporation?: IdentificationDocuments | null;
   documentsForTrust?: IdentificationDocuments;
   domicile?: Domicile;

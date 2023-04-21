@@ -45,6 +45,8 @@ export const mapToIndustryLabel = (value: string | undefined): (typeof INDUSTRIE
   return foundIndustry?.label as (typeof INDUSTRIES_LABELS)[number];
 };
 
+const checkIfLocalDate = (dateString: string) => /^\d{2}\/\d{2}\/\d{4}/i.test(dateString);
+
 export type ApplicantFormFields = Omit<Applicant, 'domicile'> & { domicile?: DomicileLabel };
 
 type GetDefaultValuesForApplicantWithoutIdentification = (applicants: Applicant[], currentApplicantIndex: number | undefined) => ApplicantFormFields;
@@ -61,7 +63,7 @@ export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValues
       return {
         ...applicant,
         domicile: mapDomicileTypeToDomicileLabel(applicant.domicile),
-        dateOfBirth: applicant.dateOfBirth ? formatDateFromApi(applicant.dateOfBirth) : '',
+        dateOfBirth: applicant.dateOfBirth ? (checkIfLocalDate(applicant.dateOfBirth) ? applicant.dateOfBirth : formatDateFromApi(applicant.dateOfBirth)) : '',
       };
     }
   }

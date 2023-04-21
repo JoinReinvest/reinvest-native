@@ -25,6 +25,9 @@ export const styles = StyleSheet.create({
   fw: {
     width: '100%',
   },
+  fh: {
+    height: '100%',
+  },
   sheetContentWrapper: {
     flexGrow: 1,
     backgroundColor: palette.pureWhite,

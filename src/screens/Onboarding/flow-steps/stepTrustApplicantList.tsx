@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
+import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
-import { DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
+import { AddressInput, DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
 import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -31,9 +32,13 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
   willBePartOfTheFlow: ({ accountType }) => {
     return accountType === DraftAccountType.Trust;
   },
+  doesMeetConditionFields(fields) {
+    const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
 
+    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
+  },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { trustTrusteesGrantorsOrProtectors, trustLegalName } = storeFields;
+    const { trustTrusteesGrantorsOrProtectors, trustLegalName, accountType } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(trustLegalName || '');
     const { mutateAsync: completeTrustDraftAccount } = useCompleteTrustDraftAccount(getApiClient);
     const applicantsRef = useRef<Applicant[]>(trustTrusteesGrantorsOrProtectors ?? []);
@@ -64,7 +69,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           dateOfBirth: {
             dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
           },
-          address: { ...applicant.residentialAddress, country: 'USA' },
+          address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
           idScan: applicant.idScan as DocumentFileLinkInput[],
           // when ssn is anonymized we need to send null
           ssn: !/^[*]{3}-[*]{2}-\d{4}/.test(applicant?.socialSecurityNumber || '')

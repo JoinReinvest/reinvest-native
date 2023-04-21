@@ -6,11 +6,12 @@ import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/qu
 
 import { getApiClient } from '../../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
-import { Button } from '../../../../components/Button';
-import { FilePicker } from '../../../../components/FilePicker';
-import { FormTitle } from '../../../../components/Forms/FormTitle';
-import { PaddedScrollView } from '../../../../components/PaddedScrollView';
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../../constants/styles';
+import { documentReducer } from '../../../../utils/documentReducer';
+import { Button } from '../../../Button';
+import { FilePicker } from '../../../FilePicker';
+import { FormTitle } from '../../../Forms/FormTitle';
+import { PaddedScrollView } from '../../../PaddedScrollView';
 import { styles } from '../styles';
 import { ApplicantFormStepProps } from './types';
 
@@ -22,7 +23,8 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
   const shouldButtonBeDisabled = !document || isSendDocumentToS3AndGetScanIdsLoading || isCreateDocumentsFileLinksLoading;
 
   const handleContinue = async () => {
-    const selectedFilesUris = document.map(({ uri }) => uri ?? '');
+    const preloadedFiles = documentReducer(document);
+    const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
     try {
       const idScan = [];
@@ -36,7 +38,7 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
         idScan.push(...scans);
       }
 
-      onContinue({ idScan });
+      onContinue({ idScan: [...preloadedFiles.uploaded, ...idScan] });
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log('-> e', e);
@@ -58,6 +60,7 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
           label="Upload Files"
           onSelect={setDocument}
           type="single"
+          state={document}
         />
       </PaddedScrollView>
       <View style={{ paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }}>
