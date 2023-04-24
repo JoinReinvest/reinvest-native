@@ -14,9 +14,9 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
+import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'authenticationCode'>;
 

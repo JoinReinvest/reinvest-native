@@ -46,6 +46,7 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
         citizenshipCountry: getLabel(storeFields.citizenshipCountry),
       },
     });
+    const { openDialog } = useDialog();
 
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
@@ -74,8 +75,6 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
 
     const birthCountry = watch('birthCountry');
     const citizenshipCountry = watch('citizenshipCountry');
-
-    const { openDialog } = useDialog();
 
     const openPicker = (variant: keyof Fields) => {
       openDialog(

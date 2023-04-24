@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
@@ -12,6 +12,8 @@ import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
+import { Input } from '../../../components/Input';
+import { FilterDialog } from '../../../components/Modals/ModalContent/FilterDialog';
 import { SearchDialog } from '../../../components/Modals/ModalContent/PlacesModal';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
@@ -61,7 +63,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     const { openDialog } = useDialog();
 
     const { progressPercentage } = useOnboardingFormFlow();
-    const { handleSubmit, control, formState, watch, reset } = useForm<Fields>({
+    const { handleSubmit, setValue, control, formState, watch, reset } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
       defaultValues,
@@ -89,6 +91,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     }, [isSuccess, moveToNextStep]);
 
     const addressWatched = watch('addressLine1');
+    const stateWatched = watch('state');
 
     const fillFieldsFromPrediction = useCallback(
       (address: Address) => {
@@ -108,6 +111,18 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
         'sheet',
       );
     }, [addressWatched, fillFieldsFromPrediction, openDialog]);
+
+    const openPicker = () => {
+      openDialog(
+        <FilterDialog
+          options={STATES_AS_SELECT_OPTION}
+          fillDetailsCallback={value => setValue('state', value)}
+          value={stateWatched || ''}
+        />,
+        {},
+        'sheet',
+      );
+    };
 
     const getRightComponent = () => {
       return (
@@ -148,13 +163,22 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
             fieldName="city"
             inputProps={{ placeholder: placeholders.city, dark: true }}
           />
-          <Controller
-            type="dropdown"
-            onSubmit={handleSubmit(onSubmit)}
-            control={control}
-            fieldName="state"
-            dropdownProps={{ placeholder: placeholders.state, data: STATES_AS_SELECT_OPTION, dark: true }}
-          />
+          <Pressable onPress={() => openPicker()}>
+            <Input
+              placeholder="State"
+              pointerEvents={'none'}
+              editable={false}
+              dark
+              value={stateWatched || ''}
+              rightSection={
+                <Icon
+                  onPress={() => openPicker()}
+                  color={palette.pureWhite}
+                  icon="arrowDown"
+                />
+              }
+            ></Input>
+          </Pressable>
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}

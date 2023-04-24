@@ -115,6 +115,7 @@ const getPreFiledValues = (details?: ProfileDetails) => {
       ...parseStatementsToCompliance(details.statements as Statement[]),
       name: { firstName: details?.firstName || '', lastName: details?.lastName || '', middleName: details?.middleName || '' },
       address: details.address,
+      visaType: details.domicile?.visaType,
     };
   }
 
