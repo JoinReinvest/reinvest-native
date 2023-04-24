@@ -143,7 +143,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
             control={control}
             fieldName="ssn"
             inputProps={{
-              placeholder: 'xxx-xx-xxxx',
+              placeholder: '000-00-0000',
               dark: true,
               keyboardType: 'numeric',
               maxLength: 11, // xxx-xx-xxxx
