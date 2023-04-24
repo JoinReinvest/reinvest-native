@@ -12,7 +12,6 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CODE_MASK } from '../../../constants/masks';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifires';
@@ -91,8 +90,7 @@ export const StepAuthenticationCode: StepParams<ResetPasswordFormFields> = {
               dark: true,
               placeholder: 'Authentication Code',
               keyboardType: 'numeric',
-              maxLength: 7,
-              mask: CODE_MASK,
+              maxLength: 6,
             }}
           />
           <View style={styles.row}>

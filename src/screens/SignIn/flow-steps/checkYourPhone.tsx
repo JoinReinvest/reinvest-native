@@ -10,7 +10,6 @@ import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CODE_MASK } from '../../../constants/masks';
 import { useAuth } from '../../../providers/AuthProvider';
 import { styles } from '../../../screens/SignIn/flow-steps/styles';
 import { formValidationRules } from '../../../utils/formValidationRules';
@@ -64,8 +63,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
             placeholder: 'Authentication Code',
             dark: true,
             keyboardType: 'numeric',
-            maxLength: 7, // xxx-xxx
-            mask: CODE_MASK,
+            maxLength: 6,
           }}
         />
         <View style={styles.row}>
