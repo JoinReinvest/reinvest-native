@@ -6,8 +6,6 @@ import zod from 'zod';
 import { STATE_NAMES } from '../constants/states';
 
 const requiredError = 'This field is required';
-const maskedCodeRegex = /^(\d){3}-(\d){3}$/;
-const referralCodeRegex = /^([a-zA-Z0-9]){3}-([a-zA-Z0-9]){3}$/;
 const phoneWithoutCallingCodeRegex = /^(\d){3}-(\d){3}-(\d{3}|\d{4})$/;
 const standardRequiredString = zod.string().min(1, requiredError);
 
@@ -23,11 +21,8 @@ export const formValidationRules = {
     // eslint-disable-next-line security/detect-unsafe-regex
     zip: zod.string().regex(/^\d{5}(?:-\d{4})?$/, { message: 'Invalid zip code' }),
   }),
-  referralCode: zod.string().regex(referralCodeRegex, { message: 'Invalid referral code' }),
-  authenticationCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid authentication code' }),
   numberAuthenticationCode: zod.string({ required_error: requiredError }).regex(/^([A-Z0-9]){6}$/i, { message: 'Invalid number authentication code' }),
   date: zod.string({ required_error: requiredError }).regex(/^(\d{2})\/(\d{2})\/(\d{4})$/, { message: 'Invalid date format' }),
-  resetPasswordCode: zod.string({ required_error: requiredError }).regex(maskedCodeRegex, { message: 'Invalid reset password code' }),
   phone: zod.string({ required_error: requiredError }).regex(phoneWithoutCallingCodeRegex, {
     message: 'Invalid phone number',
   }),

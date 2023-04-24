@@ -93,7 +93,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
       const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === businessAddress.state)?.value || '';
       const { addressLine1, addressLine2, city, zip, state } = businessAddress;
 
-      if (!addressLine1 || !addressLine2 || !city || !state || !zip) {
+      if (!addressLine1 || !city || !state || !zip) {
         return;
       }
 

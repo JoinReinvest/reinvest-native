@@ -48,9 +48,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       fields.accountType,
     ];
 
-    const individualAccountFields = [fields.netIncome, fields.netWorth];
-
-    return (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(profileFields)) || allRequiredFieldsExists(individualAccountFields);
+    return allRequiredFieldsExists(profileFields);
   },
 
   Component: ({ storeFields, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
