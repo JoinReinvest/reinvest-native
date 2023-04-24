@@ -52,8 +52,9 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     const individualFields = [fields.ssn];
 
     return (
-      (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields)) ||
-      (fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields))
+      !fields.isCompletedProfile &&
+      ((fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields)) ||
+        (fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields)))
     );
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {

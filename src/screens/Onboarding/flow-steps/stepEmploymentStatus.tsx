@@ -38,7 +38,7 @@ export const StepEmploymentStatus: StepParams<OnboardingFormFields> = {
     const hasProfileFields = allRequiredFieldsExists(profileFields);
     const isAccountIndividual = fields.accountType === DraftAccountType.Individual;
 
-    return (isAccountIndividual && hasProfileFields) || isAccountIndividual;
+    return ((isAccountIndividual && hasProfileFields) || isAccountIndividual) && !fields.isCompletedProfile;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

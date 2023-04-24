@@ -40,7 +40,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
     const isAccountIndividual = fields.accountType === DraftAccountType.Individual;
     const hasProfileFields = allRequiredFieldsExists(profileFields);
 
-    return isAccountIndividual && hasProfileFields;
+    return isAccountIndividual && hasProfileFields && !fields.isCompletedProfile;
   },
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {

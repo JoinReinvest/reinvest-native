@@ -39,7 +39,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
     const isEmployed = fields.employmentStatus === EmploymentStatus.Employed;
     const meetsBaseRequirements = isAccountIndividual && isEmployed;
 
-    return meetsBaseRequirements || meetsBaseRequirements;
+    return (meetsBaseRequirements || meetsBaseRequirements) && !fields.isCompletedProfile;
   },
 
   doesMeetConditionFields(fields) {

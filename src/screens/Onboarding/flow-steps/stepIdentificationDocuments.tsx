@@ -31,6 +31,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
 
     return (
       allRequiredFieldsExists(requiredFields) &&
+      !fields.isCompletedProfile &&
       ((fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(individualFields)) || fields.accountType !== DraftAccountType.Individual)
     );
   },
@@ -47,6 +48,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
 
     const onSubmit = async () => {
       const preloadedFiles = documentReducer(selectedFiles);
+
       const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
       try {
