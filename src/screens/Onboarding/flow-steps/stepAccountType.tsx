@@ -156,6 +156,11 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 accountId: corporateDraftAccount?.id || '',
                 corporationLegalName: corporateDraftAccount?.details?.companyName?.name || '',
                 documentsForCorporation: (corporateDraftAccount?.details?.companyDocuments as IdentificationDocuments) ?? [],
+                fiduciaryEntityInformation: {
+                  industry: corporateDraftAccount?.details?.industry?.value ?? '',
+                  numberOfEmployees: corporateDraftAccount?.details?.numberOfEmployees?.range as CorporationNumberOfEmployees,
+                  annualRevenue: corporateDraftAccount?.details?.annualRevenue?.range as CorporationAnnualRevenue,
+                },
                 companyMajorStakeholderApplicants: corporateDraftAccount?.details?.stakeholders?.map(app => ({
                   ...app?.name,
                   socialSecurityNumber: app?.ssn,
