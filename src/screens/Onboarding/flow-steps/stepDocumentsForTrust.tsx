@@ -8,8 +8,8 @@ import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FilePicker } from '../../../components/FilePicker';
-import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
@@ -67,7 +67,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
           const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
             documentsFileLinks: documentsFileLinks as PutFileLink[],
-            identificationDocument: selectedFiles,
+            identificationDocument: preloadedFiles.forUpload,
           });
           idScan.push(...scans);
           await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
@@ -125,12 +125,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
               </StyledText>
             }
           />
-          {error && (
-            <FormMessage
-              variant="error"
-              message={error.response.errors.map(err => err.message).join(', ')}
-            />
-          )}
+          {error && <ErrorMessagesHandler error={error} />}
           <FilePicker
             state={selectedFiles}
             dark

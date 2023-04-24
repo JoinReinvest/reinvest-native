@@ -11,13 +11,14 @@ import {
 import { INDUESTRIES_AS_OPTIONS } from 'reinvest-app-common/src/constants/industries';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
-import { FormMessage } from '../../../components/Forms/FormMessage';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
@@ -48,14 +49,23 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
     const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
 
     const hasProfileFields = allRequiredFieldsExists(profileFields);
-    const isTrustAccount = fields.accountType === DraftAccountType.Trust;
-    const hasTrustFields = allRequiredFieldsExists([fields.trustType, fields.trustLegalName, fields.businessAddress]);
+    const hasCorporateAndTrustFields = allRequiredFieldsExists([fields.businessAddress]);
+    const hasTrustFields = allRequiredFieldsExists([fields.trustType, fields.trustLegalName]) && fields.accountType === DraftAccountType.Trust;
+    const hasCorporateFields =
+      allRequiredFieldsExists([fields.corporationType, fields.corporationLegalName, fields.ein]) && fields.accountType === DraftAccountType.Corporate;
 
-    return isTrustAccount && hasProfileFields && hasTrustFields;
+    return hasProfileFields && hasCorporateAndTrustFields && (hasTrustFields || hasCorporateFields);
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
+    const { mutateAsync: mutateTrust, isSuccess: trustSuccess, error: trustError, isLoading: trustLoading } = useCompleteTrustDraftAccount(getApiClient);
+
+    const {
+      mutateAsync: mutateCorporate,
+      isSuccess: corporateSuccess,
+      error: corporateError,
+      isLoading: corporateLoading,
+    } = useCompleteCorporateDraftAccount(getApiClient);
     const defaultValues: Fields = {
       fiduciaryEntityInformation:
         { ...storeFields.fiduciaryEntityInformation, industry: mapToIndustryLabel(storeFields.fiduciaryEntityInformation?.industry) } || {},
@@ -66,44 +76,40 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
       defaultValues: defaultValues,
     });
 
-    const shouldButtonBeDisabled = !formState.isValid || isLoading;
+    const shouldButtonBeDisabled = !formState.isValid || corporateLoading || trustLoading;
 
     const onSubmit: SubmitHandler<Fields> = async ({ fiduciaryEntityInformation }) => {
       fiduciaryEntityInformation.industry = INDUESTRIES_AS_OPTIONS.find(industry => industry.label === fiduciaryEntityInformation.industry)?.value;
-
       await updateStoreFields({ fiduciaryEntityInformation });
+      const { accountType, accountId } = storeFields;
 
-      if (
-        !storeFields.accountId ||
-        !fiduciaryEntityInformation.annualRevenue ||
-        !fiduciaryEntityInformation.numberOfEmployees ||
-        !fiduciaryEntityInformation.industry
-      ) {
-        return;
-      }
+      if (accountId && fiduciaryEntityInformation.annualRevenue && fiduciaryEntityInformation.numberOfEmployees && fiduciaryEntityInformation.industry) {
+        const variables = {
+          accountId,
+          input: {
+            annualRevenue: { range: fiduciaryEntityInformation.annualRevenue },
+            industry: { value: fiduciaryEntityInformation.industry },
+            numberOfEmployees: { range: fiduciaryEntityInformation.numberOfEmployees },
+          },
+        };
 
-      switch (storeFields.accountType) {
-        case DraftAccountType.Trust:
-          await completeTrustDraftAccount({
-            accountId: storeFields.accountId,
-            input: {
-              annualRevenue: { range: fiduciaryEntityInformation.annualRevenue },
-              industry: { value: fiduciaryEntityInformation.industry },
-              numberOfEmployees: { range: fiduciaryEntityInformation.numberOfEmployees },
-            },
-          });
-          break;
-        case DraftAccountType.Corporate:
-          // TODO: Connect corporate api
-          break;
+        if (accountType === DraftAccountType.Trust) {
+          await mutateTrust(variables);
+        }
+
+        if (accountType === DraftAccountType.Corporate) {
+          await mutateCorporate(variables);
+        }
       }
     };
 
     useEffect(() => {
-      if (isSuccess) {
+      if (trustSuccess || corporateSuccess) {
         moveToNextStep();
       }
-    }, [isSuccess, moveToNextStep]);
+    }, [trustSuccess, corporateSuccess, moveToNextStep]);
+
+    const error = trustError || corporateError;
 
     return (
       <>
@@ -114,12 +120,7 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
               storeFields.accountType === DraftAccountType.Corporate ? 'corporation' : 'trust'
             }.`}
           />
-          {error && (
-            <FormMessage
-              variant="error"
-              message={error.response.errors.map(err => err.message).join(', ')}
-            />
-          )}
+          {error && <ErrorMessagesHandler error={error} />}
           <Controller
             type="dropdown"
             onSubmit={handleSubmit(onSubmit)}

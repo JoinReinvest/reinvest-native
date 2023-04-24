@@ -4,6 +4,7 @@ import { ACCOUNT_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/acco
 import { CorporationAnnualRevenue, CorporationNumberOfEmployees } from 'reinvest-app-common/src/constants/corporation';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/createDraftAccount';
+import { useGetCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/getCorporateDraftAccount';
 import { useGetIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/getIndividualDraftAccount';
 import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
 import { useGetPhoneCompleted } from 'reinvest-app-common/src/services/queries/getPhoneCompleted';
@@ -71,6 +72,11 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
       config: { enabled: false },
     });
 
+    const { refetch: refetchCorporateDraft } = useGetCorporateDraftAccount(getApiClient, {
+      accountId: accountId,
+      config: { enabled: false },
+    });
+
     const selectType = (type: DraftAccountType | undefined) => {
       if (draftAccountList) {
         const specificTypeDraftID = draftAccountList.find(el => (el as DraftAccount).type === type)?.id || '';
@@ -126,6 +132,31 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                 },
                 documentsForTrust: (trustDraftAccountData?.details?.companyDocuments as IdentificationDocuments) ?? [],
                 trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(app => ({
+                  ...app?.name,
+                  socialSecurityNumber: app?.ssn,
+                  residentialAddress: app?.address,
+                  domicile: app?.domicile?.type,
+                  dateOfBirth: app?.dateOfBirth?.dateOfBirth,
+                  idScan: app?.idScan,
+                  id: app?.id,
+                })) as Applicant[],
+              });
+            }
+            break;
+          case DraftAccountType.Corporate:
+            {
+              const response = await refetchCorporateDraft();
+              const corporateDraftAccount = response.data;
+              await updateStoreFields({
+                ...storeFields,
+                accountType: existingDraft.type || undefined,
+                businessAddress: corporateDraftAccount?.details?.address as Address,
+                corporationType: corporateDraftAccount?.details?.companyType?.type || undefined,
+                ein: corporateDraftAccount?.details?.ein?.ein as string,
+                accountId: corporateDraftAccount?.id || '',
+                corporationLegalName: corporateDraftAccount?.details?.companyName?.name || '',
+                documentsForCorporation: (corporateDraftAccount?.details?.companyDocuments as IdentificationDocuments) ?? [],
+                companyMajorStakeholderApplicants: corporateDraftAccount?.details?.stakeholders?.map(app => ({
                   ...app?.name,
                   socialSecurityNumber: app?.ssn,
                   residentialAddress: app?.address,

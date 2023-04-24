@@ -1,8 +1,11 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
+import { AddressInput, DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
+import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -37,6 +40,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
     const { companyMajorStakeholderApplicants, corporationLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(corporationLegalName || '');
     const applicantsRef = useRef<Applicant[]>(companyMajorStakeholderApplicants ?? []);
+    const { mutateAsync: mutateCorporate } = useCompleteCorporateDraftAccount(getApiClient);
 
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog, closeDialog } = useDialog();
@@ -48,20 +52,52 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
       _index: index,
     }));
 
+    const uploadApplicant = async (applicant: Applicant) => {
+      if (!storeFields.accountId) {
+        return;
+      }
+
+      const stakeholders = [
+        {
+          id: applicant.id,
+          name: {
+            firstName: applicant.firstName,
+            lastName: applicant.lastName,
+            middleName: applicant.middleName,
+          },
+          dateOfBirth: {
+            dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
+          },
+          address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
+          idScan: applicant.idScan as DocumentFileLinkInput[],
+          // when ssn is anonymized we need to send null
+          ssn: !/^[*]{3}-[*]{2}-\d{4}/.test(applicant?.socialSecurityNumber || '')
+            ? {
+                ssn: applicant.socialSecurityNumber,
+              }
+            : undefined,
+          domicile: {
+            type: applicant.domicile || SimplifiedDomicileType.Citizen,
+          },
+        },
+      ];
+      await mutateCorporate({ accountId: storeFields.accountId, input: { stakeholders } });
+    };
+
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
       if (applicantIndex === undefined) {
         applicantsRef.current = [...applicantsRef.current, submittedApplicant];
       }
 
       if (applicantIndex !== undefined && applicantIndex >= 0) {
-        const updatedApplicants = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
-
-        applicantsRef.current = updatedApplicants;
+        applicantsRef.current = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
       }
 
-      await updateStoreFields({
-        companyMajorStakeholderApplicants: applicantsRef.current,
-      });
+      if (typeof applicantIndex === 'number') {
+        submittedApplicant.id = indexedStakeholderApplicants[applicantIndex]?.id;
+      }
+
+      await uploadApplicant(submittedApplicant);
       closeDialog();
     };
 

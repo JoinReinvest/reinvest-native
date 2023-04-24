@@ -18,10 +18,11 @@ import { styles } from './styles';
 
 interface SearchViewProps extends InputProps {
   fillDetailsCallback: (option: Address) => void;
+  shouldDismissModal?: boolean;
   value?: string;
 }
 
-export const SearchDialog = ({ fillDetailsCallback, dark = true, value, ...rest }: SearchViewProps) => {
+export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, dark = true, value, ...rest }: SearchViewProps) => {
   const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState<string>(value || '');
   const [list, setList] = useState<AddressAsOption[]>([]);
@@ -64,7 +65,7 @@ export const SearchDialog = ({ fillDetailsCallback, dark = true, value, ...rest 
     const details = await addressService.getAddressFromPlaceId(placeId);
     fillDetailsCallback(details);
     setLoading(false);
-    closeDialog();
+    shouldDismissModal && closeDialog();
   };
 
   return (

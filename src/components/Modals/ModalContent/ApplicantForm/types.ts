@@ -7,6 +7,7 @@ export interface ApplicantFormStepProps {
 }
 
 export interface ApplicantAddressFormProps extends ApplicantFormStepProps {
+  dismissSearchDialog: () => void;
   isSearchDialogOpen: boolean;
   onSearchIconPress: () => void;
 }

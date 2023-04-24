@@ -5,12 +5,13 @@ import { Pressable, View } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { Address, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
-import { FormMessage } from '../../../components/Forms/FormMessage';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
 import { Input } from '../../../components/Input';
@@ -53,11 +54,9 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
 
     const individualFields = [fields.ssn];
 
-    return (
-      (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields)) ||
-      (fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields))
-    );
+    return fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields);
   },
+
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
     const defaultValues: Fields = storeFields.businessAddress
@@ -72,9 +71,19 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
       resolver: zodResolver(schema),
       defaultValues,
     });
-    const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
-
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
+    const {
+      error: trustUpdateError,
+      mutateAsync: completeTrustDraftAccount,
+      isSuccess: trustUpdateSuccess,
+      isLoading: isLoadingTrust,
+    } = useCompleteTrustDraftAccount(getApiClient);
+    const {
+      mutateAsync: completeCorporateDraftAccount,
+      isSuccess: corporateUpdateSuccess,
+      error: corporateUpdateError,
+      isLoading: isLoadingCorporate,
+    } = useCompleteCorporateDraftAccount(getApiClient);
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || isLoadingCorporate || isLoadingTrust;
 
     const onSubmit: SubmitHandler<Fields> = async businessAddress => {
       if (!storeFields.accountId) {
@@ -88,26 +97,27 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
         return;
       }
 
-      await updateStoreFields({ businessAddress });
-      switch (storeFields.accountType) {
-        case DraftAccountType.Trust:
-          await completeTrustDraftAccount({
-            accountId: storeFields.accountId,
-            input: { address: { addressLine1, addressLine2, city, state: selectedStateCode, zip, country: 'USA' } },
-          });
-          break;
+      const variables = {
+        accountId: storeFields.accountId,
+        input: { address: { addressLine1, addressLine2, city, state: selectedStateCode, zip, country: 'USA' } },
+      };
 
-        case DraftAccountType.Corporate:
-          // TODO: Connect corporate api
-          break;
+      await updateStoreFields({ businessAddress });
+
+      if (storeFields.accountType === DraftAccountType.Trust) {
+        await completeTrustDraftAccount(variables);
+      }
+
+      if (storeFields.accountType === DraftAccountType.Corporate) {
+        await completeCorporateDraftAccount(variables);
       }
     };
 
     useEffect(() => {
-      if (isSuccess) {
+      if (trustUpdateSuccess || corporateUpdateSuccess) {
         moveToNextStep();
       }
-    }, [isSuccess, moveToNextStep]);
+    }, [corporateUpdateSuccess, trustUpdateSuccess, moveToNextStep]);
 
     const addressWatched = watch('addressLine1');
     const stateWatched = watch('state');
@@ -154,6 +164,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
     };
 
     const fiduciaryEntity = DraftAccountType.Corporate ? 'corporation' : 'trust';
+    const error = trustUpdateError || corporateUpdateError;
 
     return (
       <>
@@ -166,12 +177,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
             headline={`Enter the business address for your ${fiduciaryEntity}`}
             informationMessage="US Residents Only"
           />
-          {error && (
-            <FormMessage
-              variant="error"
-              message={error.response.errors.map(err => err.message).join(', ')}
-            />
-          )}
+          {error && <ErrorMessagesHandler error={error} />}
           <Controller
             onSubmit={handleSubmit(onSubmit)}
             control={control}
@@ -194,7 +200,6 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
             <Input
               placeholder="State"
               pointerEvents={'none'}
-              disabled
               editable={false}
               dark
               value={stateWatched || ''}
@@ -219,7 +224,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
           style={[styles.buttonsSection]}
         >
           <Button
-            disabled={shouldButtonBeDisabled || isLoading}
+            disabled={shouldButtonBeDisabled}
             isLoading={false}
             onPress={handleSubmit(onSubmit)}
           >

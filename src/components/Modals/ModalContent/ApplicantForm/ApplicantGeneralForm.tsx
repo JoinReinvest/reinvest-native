@@ -6,14 +6,14 @@ import { Masks } from 'react-native-mask-input';
 import { STAKEHOLDER_RESIDENCY_STATUS_LABELS, STAKEHOLDER_RESIDENCY_STATUS_OPTIONS } from 'reinvest-app-common/src/constants/residenty-status';
 import { z } from 'zod';
 
-import { Button } from '../../../../components/Button';
-import { FormTitle } from '../../../../components/Forms/FormTitle';
-import { PaddedScrollView } from '../../../../components/PaddedScrollView';
-import { Controller } from '../../../../components/typography/Controller';
 import { SSN_MASK } from '../../../../constants/masks';
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../../constants/styles';
-import { ApplicantFormFields, mapDomicileLabelToDomicileType } from '../../../../screens/Onboarding/utilities';
+import { ApplicantFormFields } from '../../../../screens/Onboarding/utilities';
 import { dateOlderThanEighteenYearsSchema, formValidationRules } from '../../../../utils/formValidationRules';
+import { Button } from '../../../Button';
+import { FormTitle } from '../../../Forms/FormTitle';
+import { PaddedScrollView } from '../../../PaddedScrollView';
+import { Controller } from '../../../typography/Controller';
 import { styles } from '../styles';
 import { ApplicantFormStepProps } from './types';
 
@@ -27,7 +27,7 @@ export const schema = z.object({
 });
 
 export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: ApplicantFormStepProps) => {
-  const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
+  const { control, formState, handleSubmit, setFocus } = useForm<ApplicantFormFields>({
     mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues,
@@ -36,7 +36,7 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
   const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
   const onSubmit: SubmitHandler<ApplicantFormFields> = fields => {
-    onContinue({ ...fields, domicile: mapDomicileLabelToDomicileType(fields.domicile) });
+    onContinue({ ...fields, domicile: fields.domicile });
   };
 
   return (

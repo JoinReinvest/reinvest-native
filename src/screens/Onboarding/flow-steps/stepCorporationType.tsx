@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { CORPORATION_TYPES_AS_OPTIONS } from 'reinvest-app-common/src/constants/account-types';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { CorporateCompanyType, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
+import { CorporateCompanyTypeEnum, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -21,20 +24,37 @@ import { styles } from './styles';
 export const StepCorporationType: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.CORPORATION_TYPE,
   doesMeetConditionFields(fields) {
-    const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn];
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
 
-    return fields.accountType === DraftAccountType.Corporate && !fields.isCompletedProfile && allRequiredFieldsExists(requiredFields);
+    const hasProfileFields = allRequiredFieldsExists(profileFields);
+    const isCorporateAccount = fields.accountType === DraftAccountType.Corporate;
+
+    return hasProfileFields && isCorporateAccount;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedCorporationType, setSelectedCorporationType] = useState<CorporateCompanyType | undefined>(storeFields.corporationType);
+    const [selectedCorporationType, setSelectedCorporationType] = useState<CorporateCompanyTypeEnum | undefined>(
+      storeFields.corporationType as CorporateCompanyTypeEnum,
+    );
     const { openDialog } = useDialog();
+    const { mutateAsync: completeCorporateDraftAccount, isSuccess, error, isLoading } = useCompleteCorporateDraftAccount(getApiClient);
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
       updateStoreFields({ corporationType: selectedCorporationType });
+
+      if (storeFields.accountId && selectedCorporationType) {
+        await completeCorporateDraftAccount({ accountId: storeFields.accountId, input: { companyType: { type: selectedCorporationType } } });
+      }
+
       moveToNextStep();
     };
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     const openDisclaimer = () =>
       openDialog(
@@ -54,6 +74,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
             dark
             headline="What type of Corporation do you have?"
           />
+          {error && <ErrorMessagesHandler error={error} />}
           <View style={styles.cardsWrapper}>
             {CORPORATION_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
               <Card
@@ -63,7 +84,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
                 value={value}
                 title={title}
                 description={description}
-                onCardPress={value => setSelectedCorporationType(value as CorporateCompanyType)}
+                onCardPress={value => setSelectedCorporationType(value as CorporateCompanyTypeEnum)}
               />
             ))}
           </View>
@@ -82,7 +103,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
         >
           <Button
             onPress={handleContinue}
-            disabled={!selectedCorporationType}
+            disabled={!selectedCorporationType || isLoading}
           >
             Continue
           </Button>

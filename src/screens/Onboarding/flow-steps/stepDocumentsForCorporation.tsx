@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { DocumentPickerResponse } from 'react-native-document-picker';
-import { Asset } from 'react-native-image-picker';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
+import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
+import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FilePicker } from '../../../components/FilePicker';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
+import { documentReducer } from '../../../utils/documentReducer';
 import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
-import { OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -29,27 +34,69 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
     return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Corporate;
   },
 
-  Component: ({ updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ updateStoreFields, moveToNextStep, storeFields }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const [selectedFiles, setSelectedFiles] = useState<(DocumentPickerResponse | Asset)[]>([]);
-
+    const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.documentsForCorporation as AssetWithPreloadedFiles[]) || []);
+    const { isLoading: creatingFileLinks, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
+    const { isLoading: uploadingToS3, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
+    const { isLoading: updatingAccount, isSuccess, error, mutateAsync: updateCorporate } = useCompleteCorporateDraftAccount(getApiClient);
     const handleContinue = async () => {
-      const uris = selectedFiles.map(({ uri }) => ({
-        fileName: uri || '',
-        id: uri || '',
-      }));
-      await updateStoreFields({ documentsForCorporation: uris });
+      if (!storeFields.accountId) {
+        return;
+      }
+
+      const preloadedFiles = documentReducer(selectedFiles);
+      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+
+      try {
+        const idScan = [];
+
+        if (selectedFilesUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+          const scans = await sendDocumentsToS3AndGetScanIdsMutate({
+            documentsFileLinks: documentsFileLinks as PutFileLink[],
+            identificationDocument: preloadedFiles.forUpload,
+          });
+          idScan.push(...scans);
+          await updateCorporate({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
+        }
+
+        await updateStoreFields({
+          documentsForCorporation: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))],
+        });
+
+        /*
+         No files to upload
+         */
+        if (!selectedFilesUris.length) {
+          moveToNextStep();
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('-> e', e);
+      }
       moveToNextStep();
     };
 
-    const shouldButtonBeDisabled = selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT || selectedFiles.length > MAXIMUM_CORPORATION_FILES_COUNT;
+    const shouldButtonBeDisabled =
+      selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT ||
+      selectedFiles.length > MAXIMUM_CORPORATION_FILES_COUNT ||
+      uploadingToS3 ||
+      creatingFileLinks ||
+      updatingAccount;
+
+    useEffect(() => {
+      if (isSuccess) {
+        moveToNextStep();
+      }
+    }, [isSuccess, moveToNextStep]);
 
     return (
       <>
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <ScrollView style={styles.fw}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Upload the following documents to verify your organization"
@@ -68,14 +115,16 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
               </StyledText>
             }
           />
+          {error && <ErrorMessagesHandler error={error} />}
           <FilePicker
             dark
             label="Upload Files"
             onSelect={setSelectedFiles}
             type="multi"
             selectionLimit={MAXIMUM_CORPORATION_FILES_COUNT}
+            state={selectedFiles}
           />
-        </ScrollView>
+        </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
