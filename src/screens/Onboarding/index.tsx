@@ -19,7 +19,7 @@ export const Onboarding = () => {
       initialStoreFields={{
         ...onBoardingFormFieldsInitialState,
         ...getPreFiledValues(data?.details ? data?.details : undefined),
-
+        isCompletedProfile: data?.isCompleted || false,
         ...{
           name: { firstName: data?.details?.firstName || '', lastName: data?.details?.lastName || '', middleName: data?.details?.middleName || '' },
         },

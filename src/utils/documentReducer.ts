@@ -1,3 +1,5 @@
+import { Asset } from 'react-native-image-picker';
+
 import { AssetWithPreloadedFiles, IdentificationDocument } from '../screens/Onboarding/types';
 
 export const documentReducer = (files: AssetWithPreloadedFiles[]) =>
@@ -6,7 +8,7 @@ export const documentReducer = (files: AssetWithPreloadedFiles[]) =>
     uploaded: IdentificationDocument[];
   }>(
     (acc, file) => {
-      if ((file as IdentificationDocument).id) {
+      if ((file as IdentificationDocument).id && !(file as Asset).fileSize) {
         return { ...acc, uploaded: [...acc.uploaded, file] as IdentificationDocument[] };
       }
 
