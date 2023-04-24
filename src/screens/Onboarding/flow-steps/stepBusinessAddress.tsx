@@ -53,10 +53,7 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
 
     const individualFields = [fields.ssn];
 
-    return (
-      (fields.accountType === DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields)) ||
-      (fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields))
-    );
+    return fields.accountType !== DraftAccountType.Individual && allRequiredFieldsExists(requiredFields) && allRequiredFieldsExists(individualFields);
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
     const initialValues: Fields = { addressLine1: '', addressLine2: '', city: '', state: '', zip: '', country: 'USA' };
