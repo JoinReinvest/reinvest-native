@@ -13,7 +13,6 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { CODE_MASK } from '../../../constants/masks';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
@@ -89,9 +88,8 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
             inputProps={{
               dark: true,
               placeholder: 'Authentication Code',
-              maxLength: 7,
+              maxLength: 6,
               keyboardType: 'number-pad',
-              mask: CODE_MASK,
               returnKeyType: 'done',
             }}
           />
