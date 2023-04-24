@@ -8,12 +8,15 @@ import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FilePicker } from '../../../components/FilePicker';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
 import { documentReducer } from '../../../utils/documentReducer';
 import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
@@ -100,6 +103,27 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
         moveToNextStep();
       }
     }, [isSuccess, moveToNextStep]);
+
+    if (isLoading || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading) {
+      return (
+        <View style={{ flex: 1 }}>
+          <Box
+            flex={1}
+            justifyContent={'center'}
+            alignItems={'center'}
+          >
+            <Loader
+              size="xl"
+              color={palette.pureWhite}
+            />
+            <FormTitle
+              dark
+              headline={`Uploading Your Document${selectedFiles.length > 1 ? 's' : ''}`}
+            />
+          </Box>
+        </View>
+      );
+    }
 
     return (
       <>
