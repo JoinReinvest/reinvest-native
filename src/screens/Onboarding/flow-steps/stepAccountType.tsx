@@ -178,9 +178,9 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         return moveToNextStep();
       }
 
-      await createDraftAccount({ type: selectedAccountType as DraftAccountType });
+      const response = await createDraftAccount({ type: selectedAccountType as DraftAccountType });
 
-      await updateStoreFields({ accountType: selectedAccountType });
+      await updateStoreFields({ accountType: selectedAccountType, accountId: response?.id ?? '' });
       moveToNextStep();
     };
 
