@@ -12,7 +12,6 @@ import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
-import { REFERRAL_CODE_MASK } from '../../../constants/masks';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
@@ -80,8 +79,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
               placeholder: 'Referral code',
               dark: true,
               autoCapitalize: 'none',
-              maxLength: 7,
-              mask: REFERRAL_CODE_MASK, // xxx-xxx
+              maxLength: 6,
               returnKeyType: 'done',
               autoComplete: 'off',
             }}
