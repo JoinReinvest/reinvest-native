@@ -45,7 +45,7 @@ export const mapToIndustryLabel = (value: string | undefined): (typeof INDUSTRIE
   return foundIndustry?.label as (typeof INDUSTRIES_LABELS)[number];
 };
 
-export type ApplicantFormFields = Omit<Applicant, 'id' | 'domicile'> & { domicile?: DomicileLabel };
+export type ApplicantFormFields = Omit<Applicant, 'domicile'> & { domicile?: DomicileLabel };
 
 type GetDefaultValuesForApplicantWithoutIdentification = (applicants: Applicant[], currentApplicantIndex: number | undefined) => ApplicantFormFields;
 
