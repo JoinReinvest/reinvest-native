@@ -46,7 +46,11 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
     const { formState, handleSubmit, watch, setValue } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
-      defaultValues: storeFields,
+      defaultValues: {
+        citizenshipCountry: getLabel(storeFields.citizenshipCountry),
+        birthCountry: getLabel(storeFields.birthCountry),
+        visaType: storeFields.visaType,
+      },
     });
 
     const { openDialog } = useDialog();
@@ -56,16 +60,19 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async ({ birthCountry, citizenshipCountry, visaType }) => {
-      if (visaType && birthCountry && citizenshipCountry) {
-        await updateStoreFields({ domicile: { forVisa: { birthCountry, citizenshipCountry, visaType } } });
+      const citizenshipCountryValue = getValue(citizenshipCountry);
+      const birthCountryValue = getValue(birthCountry);
+
+      if (visaType && citizenshipCountryValue && birthCountryValue) {
+        await updateStoreFields({ domicile: { forVisa: { birthCountry: birthCountryValue, citizenshipCountry: citizenshipCountryValue, visaType } } });
         await completeProfileMutate({
           input: {
             domicile: {
               type: DomicileType.Visa,
               forVisa: {
                 visaType,
-                birthCountry,
-                citizenshipCountry,
+                birthCountry: birthCountryValue,
+                citizenshipCountry: citizenshipCountryValue,
               },
             },
           },
@@ -150,7 +157,7 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!shouldButtonBeDisabled || isLoading}
+            disabled={shouldButtonBeDisabled || isLoading}
             onPress={handleSubmit(onSubmit)}
           >
             Continue
@@ -160,3 +167,6 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
     );
   },
 };
+
+const getValue = (label?: string) => COUNTRIES?.find(el => el.label === label)?.value;
+const getLabel = (value?: string) => COUNTRIES?.find(el => el.value === value)?.label;
