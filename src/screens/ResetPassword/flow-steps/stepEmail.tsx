@@ -70,6 +70,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
             inputProps={{
               placeholder: 'Email Address',
               dark: true,
+              keyboardType: 'email-address',
             }}
           />
         </PaddedScrollView>
