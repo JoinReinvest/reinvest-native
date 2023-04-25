@@ -116,10 +116,6 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       }
 
       if (accountId && avatarId) {
-        if (!storeFields.isCompletedProfile) {
-          await completeProfileMutate({ input: { verifyAndFinish: true } });
-        }
-
         const avatar = { id: avatarId };
 
         let draftAccount = null;
@@ -140,7 +136,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
         }
 
         if (draftAccount?.isCompleted) {
-          await openAccountMutate({ draftAccountId: accountId });
+          await completeProfileAndOpenAccount();
         }
       }
     };
@@ -159,10 +155,14 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       setSelectedImageUri(uri);
     };
 
-    const onSkip = async () => {
+    const completeProfileAndOpenAccount = async () => {
       if (accountId) {
         if (!storeFields.isCompletedProfile) {
-          await completeProfileMutate({ input: { verifyAndFinish: true } });
+          const response = await completeProfileMutate({ input: { verifyAndFinish: true } });
+
+          if (response?.isCompleted) {
+            await updateStoreFields({ isCompletedProfile: true });
+          }
         }
 
         await openAccountMutate({ draftAccountId: accountId });
@@ -244,7 +244,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           <Button
             variant="outlined"
             disabled={shouldButtonBeDisabled}
-            onPress={onSkip}
+            onPress={completeProfileAndOpenAccount}
           >
             Skip
           </Button>
