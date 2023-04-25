@@ -127,6 +127,14 @@ export const Input = forwardRef<TextInput, InputProps>(
       return null;
     }, [value]);
 
+    const renderPlaceholder = () => {
+      if (!placeholder || focused) {
+        return maskedPlaceholder;
+      }
+
+      return '';
+    };
+
     return (
       <>
         <Pressable
@@ -186,7 +194,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   stateHandler(true);
                 }}
                 onBlur={onBlurHandler}
-                placeholder={focused ? maskedPlaceholder : undefined}
+                placeholder={renderPlaceholder()}
                 {...props}
                 ref={inputRef}
                 value={value}
