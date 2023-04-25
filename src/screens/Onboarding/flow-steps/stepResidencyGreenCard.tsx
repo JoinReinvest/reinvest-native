@@ -15,11 +15,13 @@ import { Icon } from '../../../components/Icon';
 import { Input } from '../../../components/Input';
 import { FilterDialog } from '../../../components/Modals/ModalContent/FilterDialog';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'birthCountry' | 'citizenshipCountry'>;
@@ -38,6 +40,7 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
     return fields.residency === DomicileType.GreenCard && !fields.isCompletedProfile;
   },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
@@ -90,6 +93,9 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark
