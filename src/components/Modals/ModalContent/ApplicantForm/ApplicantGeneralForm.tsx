@@ -21,7 +21,7 @@ export const schema = z.object({
   firstName: formValidationRules.firstName,
   middleName: formValidationRules.middleName,
   lastName: formValidationRules.lastName,
-  socialSecurityNumber: z.string().min(1),
+  socialSecurityNumber: formValidationRules.socialSecurityNumber,
   dateOfBirth: dateOlderThanEighteenYearsSchema,
   domicile: z.enum(STAKEHOLDER_RESIDENCY_STATUS_LABELS),
 });
@@ -77,7 +77,7 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
           onSubmit={handleSubmit(onSubmit)}
           control={control}
           fieldName="socialSecurityNumber"
-          inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', dark: true, mask: SSN_MASK }}
+          inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', dark: true, mask: SSN_MASK, keyboardType: 'numeric' }}
         />
         <Controller
           type="dropdown"

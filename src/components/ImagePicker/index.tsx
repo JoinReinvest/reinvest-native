@@ -12,7 +12,16 @@ export const baseOptions: BaseImagePickerOptions = {
   includeExtra: true,
 };
 
-export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1, setLoading, preAction, ...rest }: PropsWithChildren<ImagePickerProps>) => {
+export const ImagePicker = ({
+  type,
+  onSelect,
+  children,
+  selectionImageLimit = 1,
+  setLoading,
+  preAction,
+  pickerOptions,
+  ...rest
+}: PropsWithChildren<ImagePickerProps>) => {
   const onButtonPress = async () => {
     preAction?.();
     setLoading?.(true);
@@ -28,6 +37,7 @@ export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1,
         {
           ...baseOptions,
           saveToPhotos: true,
+          ...pickerOptions,
         },
         onSelect,
       );
@@ -38,6 +48,7 @@ export const ImagePicker = ({ type, onSelect, children, selectionImageLimit = 1,
         {
           ...baseOptions,
           selectionLimit: selectionImageLimit,
+          ...pickerOptions,
         },
         onSelect,
       );

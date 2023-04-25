@@ -36,7 +36,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
 
   doesMeetConditionFields: fields => {
-    return allRequiredFieldsExists([fields.accountType, fields.phone]);
+    return allRequiredFieldsExists([fields.accountType, fields.phone]) && !fields._isPhoneCompleted;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
@@ -75,6 +75,9 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
         if (storeFields.phone) {
           const { countryCode, number } = storeFields.phone;
           await verifyPhoneNumber({ phoneNumber: number || '', countryCode: countryCode || '', authCode: phoneNumberAuthenticationCode });
+
+          await updateStoreFields({ _isPhoneCompleted: true });
+
           moveToNextStep();
         }
       } catch (err) {

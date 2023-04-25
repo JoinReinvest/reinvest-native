@@ -34,7 +34,7 @@ const schema = formValidationRules.address;
 
 const placeholders = {
   addressLine1: 'Street Address or P.O. Box',
-  addressLine2: 'Apt, suite, unit, building, floor, etc',
+  addressLine2: 'Unit No. (Optional)',
   zip: 'Zip Code',
   state: 'State',
   city: 'City',

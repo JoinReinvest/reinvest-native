@@ -18,7 +18,7 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { documentReducer } from '../../../utils/documentReducer';
-import { MAXIMUM_CORPORATION_FILES_COUNT, MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
+import { MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
 import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -92,11 +92,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
     };
 
     const shouldButtonBeDisabled =
-      selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT ||
-      selectedFiles.length > MAXIMUM_CORPORATION_FILES_COUNT ||
-      isSendDocumentToS3AndGetScanIdsLoading ||
-      isCreateDocumentsFileLinksLoading ||
-      isLoading;
+      selectedFiles.length < MINIMUM_CORPORATION_FILES_COUNT || isSendDocumentToS3AndGetScanIdsLoading || isCreateDocumentsFileLinksLoading || isLoading;
 
     useEffect(() => {
       if (isSuccess) {
@@ -156,7 +152,6 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
             label="Upload Files"
             onSelect={setSelectedFiles}
             type="multi"
-            selectionLimit={MAXIMUM_CORPORATION_FILES_COUNT}
           />
         </PaddedScrollView>
         <View

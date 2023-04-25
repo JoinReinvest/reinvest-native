@@ -17,6 +17,8 @@ const AvatarSizesSuffixes: { [key in AvatarSize]: TextVariants } = {
   s: 'avatarInitialsSmall',
 };
 
+const pickerOptions = { maxWidth: 600, maxHeight: 600 };
+
 export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Individual, isEditable = false, onPress, onImageSelect }: AvatarProps) => {
   const [firstName, lastName] = username.split(' ');
   const initials = lastName ? `${firstName?.[0]}${lastName[0]}` : firstName?.[0];
@@ -50,6 +52,7 @@ export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Indivi
           style={[styles.edit]}
           type="library"
           onSelect={handleImageSelect}
+          pickerOptions={pickerOptions}
         >
           <Icon icon="edit" />
         </ImagePicker>

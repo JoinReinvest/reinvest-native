@@ -6,10 +6,10 @@ import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-f
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/completeIndividualDraftAccount';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
+import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { useCreateAvatarFileLink } from 'reinvest-app-common/src/services/queries/createAvatarFileLink';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 import { useOpenAccount } from 'reinvest-app-common/src/services/queries/openAccount';
-import { useRemoveDraftAccount } from 'reinvest-app-common/src/services/queries/removeDraftAccount';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
@@ -18,6 +18,7 @@ import { sendFilesToS3Bucket } from '../../../api/sendFilesToS3Bucket';
 import { Avatar } from '../../../components/Avatar';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -65,55 +66,84 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       },
     });
 
-    const { isLoading: isCompleteProfileDetailsLoading, mutateAsync: completeProfileMutate } = useCompleteProfileDetails(getApiClient);
-    const { isLoading: isCreateAvatarLinkLoading, mutateAsync: createAvatarLinkMutate } = useCreateAvatarFileLink(getApiClient);
-    const { isLoading: isIndividualDraftAccountLoading, mutateAsync: completeIndividualDraftAccountMutate } = useCompleteIndividualDraftAccount(getApiClient);
-    const { isLoading: isRemoveDraftAccountLoading, mutateAsync: removeDraftAccountMutate } = useRemoveDraftAccount(getApiClient);
-    const { isLoading: isOpenAccountLoading, mutateAsync: openAccountMutate, isSuccess: isOpenAccountSuccess } = useOpenAccount(getApiClient);
+    const navigation = useLogInNavigation();
+    const { refetch } = useGetUserProfile(getApiClient);
 
-    const shouldButtonBeDisabled =
-      !formState.isValid ||
-      formState.isSubmitting ||
-      isCompleteProfileDetailsLoading ||
-      isCompleteProfileDetailsLoading ||
-      isOpenAccountLoading ||
-      isIndividualDraftAccountLoading ||
-      isRemoveDraftAccountLoading ||
-      isCreateAvatarLinkLoading;
+    const {
+      isLoading: isCompleteProfileDetailsLoading,
+      mutateAsync: completeProfileMutate,
+      error: completeProfileError,
+    } = useCompleteProfileDetails(getApiClient);
+    const { isLoading: isCreateAvatarLinkLoading, mutateAsync: createAvatarLinkMutate, error: createAvatarError } = useCreateAvatarFileLink(getApiClient);
+    const {
+      isLoading: isIndividualDraftAccountLoading,
+      mutateAsync: completeIndividualDraftAccountMutate,
+      error: completeIndividualError,
+    } = useCompleteIndividualDraftAccount(getApiClient);
+    const {
+      isLoading: isOpenAccountLoading,
+      mutateAsync: openAccountMutate,
+      isSuccess: isOpenAccountSuccess,
+      error: openAccountError,
+    } = useOpenAccount(getApiClient);
+    const {
+      mutateAsync: completeTrustDraftAccount,
+      error: completeDraftAccountError,
+      isLoading: completeDraftLoading,
+    } = useCompleteTrustDraftAccount(getApiClient);
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
+    const {
+      mutateAsync: completeCorporateDraftAccount,
+      error: completeCorporateDraftAccountError,
+      isLoading: corporateLoading,
+    } = useCompleteTrustDraftAccount(getApiClient);
+
+    const onSubmit: SubmitHandler<Fields> = async ({ profilePicture }) => {
       await updateStoreFields({
-        profilePicture: fields.profilePicture,
+        profilePicture,
       });
-      const avatarLink = await createAvatarLinkMutate({});
 
-      if (fields.profilePicture) {
-        if (avatarLink?.url && avatarLink.id) {
-          await sendFilesToS3Bucket([{ file: { uri: fields.profilePicture }, url: avatarLink.url, id: avatarLink.id }]);
+      const hasFile = !!profilePicture && selectedImageUri;
+      let avatarId = '';
 
-          const avatarId = avatarLink.id;
+      if (hasFile) {
+        const avatarLink = await createAvatarLinkMutate({});
 
-          if (accountId && avatarId) {
-            if (!storeFields.isCompletedProfile) {
-              await completeProfileMutate({ input: { verifyAndFinish: true } });
-            }
+        if (avatarLink?.url && avatarLink.id && profilePicture) {
+          await sendFilesToS3Bucket([{ file: { uri: selectedImageUri }, url: avatarLink.url, id: avatarLink.id }]);
+          avatarId = avatarLink.id;
+        }
+      }
 
-            const avatar = { id: avatarLink.id };
-            const individualDraftAccount = await completeIndividualDraftAccountMutate({
-              accountId,
-              input: { avatar },
-            });
+      if (accountId && avatarId) {
+        if (!storeFields.isCompletedProfile) {
+          await completeProfileMutate({ input: { verifyAndFinish: true } });
+        }
 
-            if (individualDraftAccount?.isCompleted) {
-              await openAccountMutate({ draftAccountId: accountId });
-              await removeDraftAccountMutate({ draftAccountId: accountId });
-            }
-          }
+        const avatar = { id: avatarId };
+
+        let draftAccount = null;
+
+        if (storeFields.accountType === DraftAccountType.Individual) {
+          draftAccount = await completeIndividualDraftAccountMutate({
+            accountId,
+            input: { avatar },
+          });
+        }
+
+        if (storeFields.accountType === DraftAccountType.Trust) {
+          draftAccount = await completeTrustDraftAccount({ accountId, input: { avatar } });
+        }
+
+        if (storeFields.accountType === DraftAccountType.Corporate) {
+          draftAccount = await completeCorporateDraftAccount({ accountId, input: { avatar } });
+        }
+
+        if (draftAccount?.isCompleted) {
+          await openAccountMutate({ draftAccountId: accountId });
         }
       }
     };
-    const navigation = useLogInNavigation();
-    const { refetch } = useGetUserProfile(getApiClient);
 
     useEffect(() => {
       if (isOpenAccountSuccess) {
@@ -135,17 +165,30 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           await completeProfileMutate({ input: { verifyAndFinish: true } });
         }
 
-        const individualDraftAccount = await completeIndividualDraftAccountMutate({
-          accountId,
-          input: {},
-        });
-
-        if (individualDraftAccount?.isCompleted) {
-          await openAccountMutate({ draftAccountId: accountId });
-          await removeDraftAccountMutate({ draftAccountId: accountId });
-        }
+        await openAccountMutate({ draftAccountId: accountId });
       }
     };
+
+    const error =
+      completeCorporateDraftAccountError ||
+      completeDraftAccountError ||
+      completeProfileError ||
+      createAvatarError ||
+      completeProfileError ||
+      completeIndividualError ||
+      completeCorporateDraftAccountError ||
+      openAccountError;
+
+    const shouldButtonBeDisabled =
+      !formState.isValid ||
+      formState.isSubmitting ||
+      isCompleteProfileDetailsLoading ||
+      isCompleteProfileDetailsLoading ||
+      isOpenAccountLoading ||
+      isIndividualDraftAccountLoading ||
+      isCreateAvatarLinkLoading ||
+      completeDraftLoading ||
+      corporateLoading;
 
     return (
       <>
@@ -159,6 +202,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
             justifyContent: 'center',
           }}
         >
+          {error && <ErrorMessagesHandler error={error} />}
           <Avatar
             uri={selectedImageUri}
             size="xl"
