@@ -21,7 +21,7 @@ export const Settings = () => {
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
       {/*For testing purposes - this option is removed for staging right now*/}
-      {API_URL === 'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com' && (
+      {API_URL !== 'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com' && (
         <Button
           title="start onboarding"
           onPress={() => navigation.navigate(Screens.Onboarding)}

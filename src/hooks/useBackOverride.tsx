@@ -1,16 +1,20 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { ParamListBase, useFocusEffect } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCallback } from 'react';
 import { BackHandler } from 'react-native';
 import { ContextState } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { useBackOverrideBase } from './useBackOverrideBase';
 
-export const useStepBackOverride = <T extends object>(useCurrentFormContext: () => ContextState<T>) => {
+export const useStepBackOverride = <T extends object, K extends ParamListBase>(
+  useCurrentFormContext: () => ContextState<T>,
+  navigation: NativeStackNavigationProp<K>,
+) => {
   const {
     meta: { previousStepIdentifier },
     moveToPreviousValidStep,
   } = useCurrentFormContext();
-  useBackOverrideBase(useCurrentFormContext);
+  useBackOverrideBase(useCurrentFormContext, navigation);
 
   useFocusEffect(
     useCallback(() => {

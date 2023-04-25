@@ -22,6 +22,7 @@ import { SSN_MASK } from '../../../constants/masks';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -58,7 +59,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
       resolver: zodResolver(schema),
     });
     const { error: profileDetailsError, isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
-    const [isApiValue, setIsApiValue] = useState(/^[*]{3}-[*]{2}-\d{4}/.test(storeFields.ssn || ''));
+    const [isApiValue, setIsApiValue] = useState(apiSSN.test(storeFields.ssn || ''));
 
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
