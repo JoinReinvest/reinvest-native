@@ -90,7 +90,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
       );
     };
 
-    const selectedValue = watchedAccreditedInvestor ? (watchedAccreditedInvestor ? 'yes' : 'false') : undefined;
+    const selectedValue = watchedAccreditedInvestor !== undefined ? (watchedAccreditedInvestor ? 'yes' : 'no') : undefined;
 
     return (
       <>
