@@ -32,7 +32,9 @@ export const FilterDialog = ({ fillDetailsCallback, options, dark = true, value,
     if (!searchValue) {
       return options;
     } else {
-      return options?.filter(option => option.label.includes(searchValue));
+      return options?.filter(option => {
+        return option.label.toLowerCase().includes(searchValue.toLowerCase());
+      });
     }
   }, [options, searchValue]);
 

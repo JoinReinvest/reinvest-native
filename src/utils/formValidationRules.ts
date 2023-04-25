@@ -28,8 +28,7 @@ export const formValidationRules = {
   }),
 };
 
-export const MAXIMUM_CORPORATION_FILES_COUNT = 10;
-export const MINIMUM_CORPORATION_FILES_COUNT = 5;
+export const MINIMUM_CORPORATION_FILES_COUNT = 1;
 
 export const dateOlderThanEighteenYearsSchema = formValidationRules.date.superRefine((value, context) => {
   dayjs.extend(customParseFormat);

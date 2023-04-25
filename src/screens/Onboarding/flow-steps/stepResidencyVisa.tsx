@@ -55,8 +55,6 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
 
     const { openDialog } = useDialog();
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
-
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async ({ birthCountry, citizenshipCountry, visaType }) => {
@@ -89,6 +87,8 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
     const birthCountry = watch('birthCountry');
     const citizenshipCountry = watch('citizenshipCountry');
     const visa = watch('visaType');
+
+    const shouldButtonBeDisabled = !(birthCountry && citizenshipCountry && visa) && (!formState.isValid || formState.isSubmitting);
 
     const openPicker = (variant: keyof Fields) => {
       openDialog(
