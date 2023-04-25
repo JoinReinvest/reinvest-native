@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
 import { useCompleteIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/completeIndividualDraftAccount';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
@@ -96,7 +97,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       mutateAsync: completeCorporateDraftAccount,
       error: completeCorporateDraftAccountError,
       isLoading: corporateLoading,
-    } = useCompleteTrustDraftAccount(getApiClient);
+    } = useCompleteCorporateDraftAccount(getApiClient);
 
     const onSubmit: SubmitHandler<Fields> = async ({ profilePicture }) => {
       await updateStoreFields({
@@ -179,9 +180,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       completeCorporateDraftAccountError ||
       openAccountError;
 
-    const shouldButtonBeDisabled =
-      !formState.isValid ||
-      formState.isSubmitting ||
+    const isLoading =
       isCompleteProfileDetailsLoading ||
       isCompleteProfileDetailsLoading ||
       isOpenAccountLoading ||
@@ -189,6 +188,8 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       isCreateAvatarLinkLoading ||
       completeDraftLoading ||
       corporateLoading;
+
+    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || isLoading;
 
     return (
       <>
@@ -243,7 +244,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           </Button>
           <Button
             variant="outlined"
-            disabled={shouldButtonBeDisabled}
+            disabled={isLoading}
             onPress={completeProfileAndOpenAccount}
           >
             Skip
