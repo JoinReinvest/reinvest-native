@@ -11,6 +11,7 @@ import { styles } from './styles';
 import { AvatarProps, AvatarSize } from './types';
 
 const AvatarSizesSuffixes: { [key in AvatarSize]: TextVariants } = {
+  '2xl': 'avatarInitialsDoubleExtraLarge',
   xl: 'avatarInitialsExtraLarge',
   l: 'avatarInitialsLarge',
   m: 'avatarInitialsMedium',

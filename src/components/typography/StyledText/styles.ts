@@ -86,8 +86,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.GTAmericaExtendedRegular,
     letterSpacing: -0.5,
   },
-  avatarInitialsExtraLarge: {
+  avatarInitialsDoubleExtraLarge: {
     fontSize: 42,
+  },
+  avatarInitialsExtraLarge: {
+    fontSize: 20,
   },
   avatarInitialsLarge: {
     fontSize: 32,
