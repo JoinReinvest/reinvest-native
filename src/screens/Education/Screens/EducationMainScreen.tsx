@@ -8,10 +8,10 @@ import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { StyledText } from '../../../components/typography/StyledText';
 import Screens from '../../../navigation/screens';
-import { BlogCard } from '../../Education/components/BlogCard';
-import { EducationCard } from '../../Education/components/EducationCard';
-import { educationCards } from '../../Education/constants';
-import { EducationStackProps } from '../../Education/types';
+import { BlogCard } from '../components/BlogCard';
+import { EducationCard } from '../components/EducationCard';
+import { educationCards } from '../constants';
+import { EducationStackProps } from '../types';
 import { styles } from './styles';
 
 export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.EducationMainScreen>) => {

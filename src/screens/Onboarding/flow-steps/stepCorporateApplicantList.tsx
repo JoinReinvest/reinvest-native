@@ -19,6 +19,7 @@ import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { MAX_APPLICANTS_COUNT } from '../../../utils/formValidationRules';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
+import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
 import { Applicant, IndexedSchema, OnboardingFormFields } from '../types';
 import { getDefaultValuesForApplicantWithoutIdentification } from '../utilities';
@@ -71,7 +72,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
           address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
           idScan: applicant.idScan as DocumentFileLinkInput[],
           // when ssn is anonymized we need to send null
-          ssn: !/^[*]{3}-[*]{2}-\d{4}/.test(applicant?.socialSecurityNumber || '')
+          ssn: !apiSSN.test(applicant?.socialSecurityNumber || '')
             ? {
                 ssn: applicant.socialSecurityNumber,
               }

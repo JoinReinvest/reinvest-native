@@ -21,6 +21,7 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { EIN_MASK } from '../../../constants/masks';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { apiEIN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -52,7 +53,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const [isApiValue, setIsApiValue] = useState(/^[*]{2}-[*]{3}\d{4}/.test(storeFields.ein || ''));
+    const [isApiValue, setIsApiValue] = useState(apiEIN.test(storeFields.ein || ''));
     const { progressPercentage } = useOnboardingFormFlow();
     const { openDialog } = useDialog();
     const {

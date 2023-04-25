@@ -1,6 +1,6 @@
 import { Dimensions, Platform, StatusBar } from 'react-native';
 
-import { isIOS } from './../constants/common';
+import { isIOS } from '../constants/common';
 
 const { width, height } = Dimensions.get('window');
 
