@@ -1,5 +1,5 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -11,7 +11,6 @@ import { InviteScreen } from '../../screens/Invite';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
-import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
@@ -35,18 +34,10 @@ const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Invite 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
 
-  const navigation = useLogInNavigation();
-
   useLayoutEffect(() => {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (data?.isCompleted) {
-      navigation.navigate(Screens.BottomNavigator, { screen: Screens.EducationStack });
-    }
-  }, [data, navigation]);
 
   if (!data)
     return (
@@ -61,7 +52,7 @@ export const LogInNavigator: React.FC = () => {
     );
 
   return (
-    <LogInStack.Navigator>
+    <LogInStack.Navigator initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
       <LogInStack.Screen
         name={Screens.Onboarding}
         options={stackOptions[Screens.Onboarding]}
