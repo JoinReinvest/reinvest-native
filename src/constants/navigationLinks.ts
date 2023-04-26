@@ -1,7 +1,15 @@
 import { Icons } from '../components/Icon/types';
 
+export enum NavigationIdentifiers {
+  ADD_BENEFICIARY = 'ADD_BENEFICIARY',
+  ADD_ACCOUNT = 'ADD_ACCOUNT',
+  INVITE = 'INVITE',
+  HELP = 'HELP',
+  SIGN_OUT = 'SIGN_OUT',
+}
+
 interface Link {
-  key: string;
+  identifier: NavigationIdentifiers;
   label: string;
   startIcon: Icons;
   showChevron?: boolean;
@@ -9,27 +17,27 @@ interface Link {
 
 export const SETTINGS_NAVIGATION_LINKS: Link[] = [
   {
-    key: 'addBeneficiary',
+    identifier: NavigationIdentifiers.ADD_BENEFICIARY,
     startIcon: 'addBeneficiary',
     label: 'Add Beneficiary',
   },
   {
-    key: 'addAccount',
+    identifier: NavigationIdentifiers.ADD_ACCOUNT,
     startIcon: 'addUser',
     label: 'Add Another Account',
   },
   {
-    key: 'invite',
+    identifier: NavigationIdentifiers.INVITE,
     startIcon: 'friendsAndFamily',
     label: 'Invite Friends & Family',
   },
   {
-    key: 'help',
+    identifier: NavigationIdentifiers.HELP,
     startIcon: 'helpAndSupport',
     label: 'Help & Support',
   },
   {
-    key: 'signOut',
+    identifier: NavigationIdentifiers.SIGN_OUT,
     startIcon: 'signOut',
     label: 'Sign Out',
     showChevron: false,

@@ -1,5 +1,5 @@
 import { API_URL } from '@env';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert, Button, Linking, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
@@ -10,7 +10,7 @@ import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
 import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
-import { SETTINGS_NAVIGATION_LINKS } from '../../constants/navigationLinks';
+import { NavigationIdentifiers, SETTINGS_NAVIGATION_LINKS } from '../../constants/navigationLinks';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { useAuth } from '../../providers/AuthProvider';
@@ -21,22 +21,16 @@ export const Settings = () => {
   const navigation = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
 
-  const handleNavigation = (key: string) => {
-    switch (key) {
-      case 'addBeneficiary':
-        return () => Alert.alert('Add Beneficiary Flow');
-      case 'addAccount':
-        return () => Alert.alert('Add Account Flow');
-      case 'invite':
-        return () => navigation.navigate(Screens.Invite);
-      case 'help':
-        return () => Linking.openURL('mailto:support@reinvestcommunity.com');
-      case 'signOut':
-        return () => actions.signOut();
-      default:
-        return undefined;
-    }
-  };
+  const navigationHandlers: { [key in NavigationIdentifiers]: () => void } = useMemo(
+    () => ({
+      ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
+      ADD_ACCOUNT: () => Alert.alert('Add Account Flow'),
+      INVITE: () => navigation.navigate(Screens.Invite),
+      HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
+      SIGN_OUT: () => actions.signOut(),
+    }),
+    [actions, navigation],
+  );
 
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
@@ -70,14 +64,14 @@ export const Settings = () => {
         </>
       )}
       <View style={[styles.fw, styles.linksContainer]}>
-        {SETTINGS_NAVIGATION_LINKS.map(({ label, key, ...link }, index) => (
+        {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
           <View
             style={styles.fw}
-            key={key}
+            key={identifier}
           >
             <NavigationButton
               {...link}
-              onPress={handleNavigation(key)}
+              onPress={navigationHandlers[identifier]}
             >
               {label}
             </NavigationButton>
