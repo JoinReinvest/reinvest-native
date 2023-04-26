@@ -206,7 +206,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           {error && <ErrorMessagesHandler error={error} />}
           <Avatar
             uri={selectedImageUri}
-            size="xl"
+            size="2xl"
             username={`${name?.firstName} ${name?.lastName}`}
             variant={accountType}
             isEditable

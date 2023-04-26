@@ -24,6 +24,7 @@ export type TextVariants =
   | 'link'
   | 'bodyText'
   | 'button'
+  | 'avatarInitialsDoubleExtraLarge'
   | 'avatarInitialsExtraLarge'
   | 'avatarInitialsLarge'
   | 'avatarInitialsMedium'

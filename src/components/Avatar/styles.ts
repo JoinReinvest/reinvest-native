@@ -15,13 +15,17 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     borderRadius: 100,
   },
-  xl: {
+  '2xl': {
     height: 100,
     width: 100,
   },
-  l: {
+  xl: {
     height: 72,
     width: 72,
+  },
+  l: {
+    height: 60,
+    width: 60,
   },
   m: {
     height: 44,
