@@ -4,6 +4,7 @@ import { yScale } from '../../../utils/scale';
 
 export const styles = StyleSheet.create({
   imageBackground: {
+    position: 'relative',
     height: yScale(240),
     width: '100%',
     justifyContent: 'flex-end',
