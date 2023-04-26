@@ -1,4 +1,5 @@
 import { Add } from './Add';
+import { AddBeneficiary } from './AddBeneficiary';
 import { AddUser } from './AddUser';
 import { Alert } from './Alert';
 import { ArrowDown } from './ArrowDown';
@@ -16,8 +17,10 @@ import { Edit } from './Edit';
 import { EyeHide } from './EyeHide';
 import { EyeVisible } from './EyeVisible';
 import { File } from './File';
+import { FriendsAndFamily } from './FriendsAndFamily';
 import { HamburgerClose } from './HamburgerClose';
 import { HamburgerOpen } from './HamburgerOpen';
+import { HelpAndSupport } from './HelpAndSupport';
 import { Info } from './Info';
 import { Link } from './Link';
 import { Loading } from './Loading';
@@ -33,15 +36,16 @@ import { Percent } from './Percent';
 import { Refresh } from './Refresh';
 import { Search } from './Search';
 import { Share } from './Share';
+import { SignOut } from './SignOut';
 import { Sygnet } from './Sygnet';
 import { Tick } from './Tick';
 import { Trash } from './Trash';
 import { Trophy } from './Trophy';
 import { Up } from './Up';
 import { Upload } from './Upload';
-
 export {
   Add,
+  AddBeneficiary,
   AddUser,
   Alert,
   ArrowDown,
@@ -59,8 +63,10 @@ export {
   EyeHide,
   EyeVisible,
   File,
+  FriendsAndFamily,
   HamburgerClose,
   HamburgerOpen,
+  HelpAndSupport,
   Info,
   Link,
   Loading,
@@ -76,6 +82,7 @@ export {
   Refresh,
   Search,
   Share,
+  SignOut,
   Sygnet,
   Tick,
   Trash,

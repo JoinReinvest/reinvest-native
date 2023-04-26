@@ -1,5 +1,6 @@
 import {
   Add,
+  AddBeneficiary,
   AddUser,
   Alert,
   ArrowDown,
@@ -17,8 +18,10 @@ import {
   EyeHide,
   EyeVisible,
   File,
+  FriendsAndFamily,
   HamburgerClose,
   HamburgerOpen,
+  HelpAndSupport,
   Info,
   Link,
   Loading,
@@ -32,6 +35,7 @@ import {
   Refresh,
   Search,
   Share,
+  SignOut,
   Tick,
   Trash,
   Trophy,
@@ -78,6 +82,10 @@ export const icons = {
   notificationBell: NotificationBell,
   notification: Notification,
   checkboxUnchecked: CheckboxUnchecked,
+  friendsAndFamily: FriendsAndFamily,
+  signOut: SignOut,
+  helpAndSupport: HelpAndSupport,
+  addBeneficiary: AddBeneficiary,
 };
 
 export const sizes = {
