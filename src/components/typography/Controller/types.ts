@@ -11,5 +11,6 @@ export interface ControllerProps extends Partial<Omit<ControllerPropsBase, 'cont
   onSubmit: () => Promise<void> | void;
   dropdownProps?: Partial<DropdownProps>;
   inputProps?: Partial<InputProps>;
+  trimmed?: boolean;
   type?: InputType;
 }

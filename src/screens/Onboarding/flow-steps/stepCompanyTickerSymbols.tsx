@@ -136,6 +136,7 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
                 dark: true,
                 placeholder: 'Ticker Symbol',
               }}
+              trimmed
             />
           ))}
           <Button

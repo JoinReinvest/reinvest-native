@@ -82,6 +82,7 @@ export const StepSeniorPoliticalFigure: StepParams<OnboardingFormFields> = {
             control={control}
             fieldName="seniorPoliticalFigure"
             inputProps={{ placeholder: '220 characters', dark: true }}
+            trimmed
           />
         </PaddedScrollView>
         <View
