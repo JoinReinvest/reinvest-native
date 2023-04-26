@@ -43,7 +43,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const { openDialog } = useDialog();
     const [accountId, setAccountId] = useState<string>('');
 
-    const { isSuccess, mutateAsync: createDraftAccount } = useCreateDraftAccount(getApiClient);
+    const { isSuccess, mutateAsync: createDraftAccount, isLoading } = useCreateDraftAccount(getApiClient);
     const { data: draftAccountList } = useGetListAccount(getApiClient);
     const { data: phoneCompleted } = useGetPhoneCompleted(getApiClient);
 
@@ -235,7 +235,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         >
           <Button
             onPress={handleContinue}
-            disabled={!selectedAccountType}
+            disabled={!selectedAccountType || isLoading}
           >
             Continue
           </Button>
