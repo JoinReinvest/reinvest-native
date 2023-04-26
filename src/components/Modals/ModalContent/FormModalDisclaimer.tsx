@@ -17,9 +17,10 @@ export const mockedContent =
 interface Props {
   headline: string;
   content?: string;
+  dark?: boolean;
 }
 
-export const FormModalDisclaimer = ({ headline, content = mockedContent, children }: PropsWithChildren<Props>) => {
+export const FormModalDisclaimer = ({ dark = true, headline, content = mockedContent, children }: PropsWithChildren<Props>) => {
   const { bottom } = useSafeAreaInsets();
 
   return (
@@ -27,7 +28,7 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
       <View style={styles.header}>
         <StyledText
           variant="h5"
-          color="pureWhite"
+          color={dark ? 'pureWhite' : 'pureBlack'}
         >
           {headline}
         </StyledText>
@@ -38,7 +39,7 @@ export const FormModalDisclaimer = ({ headline, content = mockedContent, childre
       >
         <StyledText
           variant="paragraphLarge"
-          color="pureWhite"
+          color={dark ? 'pureWhite' : 'pureBlack'}
         >
           {content}
         </StyledText>
