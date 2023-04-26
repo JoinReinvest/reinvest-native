@@ -21,11 +21,13 @@ import { Button } from '../../../components/Button';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { Controller } from '../../../components/typography/Controller';
 import { INDUSTRIES_LABELS } from '../../../constants/industries';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { mapToIndustryLabel } from '../utilities';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Required<Pick<OnboardingFormFields, 'fiduciaryEntityInformation'>>;
@@ -58,6 +60,7 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const { mutateAsync: mutateTrust, isSuccess: trustSuccess, error: trustError, isLoading: trustLoading } = useCompleteTrustDraftAccount(getApiClient);
 
     const {
@@ -113,6 +116,9 @@ export const StepCorporationInformation: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark

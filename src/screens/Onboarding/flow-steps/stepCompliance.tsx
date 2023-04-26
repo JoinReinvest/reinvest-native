@@ -10,9 +10,11 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { RadioButton } from '../../../components/RadioButton';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = OnboardingFormFields['compliances'] & {
@@ -73,6 +75,7 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const { handleSubmit, setValue, getValues, control, watch } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
@@ -115,6 +118,9 @@ export const StepCompliance: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark

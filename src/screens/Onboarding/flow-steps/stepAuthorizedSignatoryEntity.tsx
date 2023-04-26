@@ -10,10 +10,12 @@ import { z } from 'zod';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { BOOLEAN_OPTIONS } from '../../../constants/booleanOptions';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 interface Fields {
@@ -51,6 +53,7 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const storedValue = storeFields.isAuthorizedSignatoryEntity;
     const defaultValues: Fields = { isAuthorizedSignatoryEntity: storedValue };
 
@@ -73,6 +76,9 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark

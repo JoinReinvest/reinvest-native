@@ -13,9 +13,11 @@ import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 type Fields = Pick<OnboardingFormFields, 'residency'>;
@@ -33,6 +35,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
     return allRequiredFieldsExists(requiredFields) && !fields.isCompletedProfile;
   },
   Component: ({ storeFields, moveToNextStep, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const defaultValues: Fields = { residency: storeFields.residency };
 
     const { handleSubmit, setValue, watch } = useForm<Fields>({
@@ -64,6 +67,9 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark

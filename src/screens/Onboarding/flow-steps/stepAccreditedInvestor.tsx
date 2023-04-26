@@ -13,11 +13,13 @@ import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { BOOLEAN_OPTIONS } from '../../../constants/booleanOptions';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
+import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 interface Fields {
@@ -42,6 +44,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+    const { progressPercentage } = useOnboardingFormFlow();
     const storedValue = storeFields.isAccreditedInvestor;
     const defaultValues: Fields = { isAccreditedInvestor: storedValue };
     const { handleSubmit, setValue, watch } = useForm<Fields>({
@@ -94,6 +97,9 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
 
     return (
       <>
+        <View style={[styles.fw]}>
+          <ProgressBar value={progressPercentage} />
+        </View>
         <PaddedScrollView>
           <FormTitle
             dark
