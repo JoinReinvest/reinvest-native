@@ -29,4 +29,5 @@ export type TextVariants =
   | 'avatarInitialsLarge'
   | 'avatarInitialsMedium'
   | 'avatarInitialsSmall'
-  | 'today';
+  | 'today'
+  | 'tableHeading';
