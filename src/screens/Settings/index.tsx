@@ -1,6 +1,6 @@
 import { API_URL } from '@env';
-import React from 'react';
-import { Button } from 'react-native';
+import React, { useMemo } from 'react';
+import { Alert, Button, Linking, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -8,15 +8,29 @@ import { Avatar } from '../../components/Avatar';
 import { Box } from '../../components/Containers/Box/Box';
 import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
+import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
+import { NavigationIdentifiers, SETTINGS_NAVIGATION_LINKS } from '../../constants/navigationLinks';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { useAuth } from '../../providers/AuthProvider';
+import { styles } from './styles';
 
 export const Settings = () => {
   const { actions, user } = useAuth();
   const navigation = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
+
+  const navigationHandlers: { [key in NavigationIdentifiers]: () => void } = useMemo(
+    () => ({
+      ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
+      ADD_ACCOUNT: () => Alert.alert('Add Account Flow'),
+      INVITE: () => navigation.navigate(Screens.Invite),
+      HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
+      SIGN_OUT: () => actions.signOut(),
+    }),
+    [actions, navigation],
+  );
 
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
@@ -49,14 +63,22 @@ export const Settings = () => {
           })}
         </>
       )}
-      <Button
-        title="Invite friend"
-        onPress={() => navigation.navigate(Screens.Invite)}
-      />
-      <Button
-        title="signout"
-        onPress={() => actions.signOut()}
-      />
+      <View style={[styles.fw, styles.linksContainer]}>
+        {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
+          <View
+            style={styles.fw}
+            key={identifier}
+          >
+            <NavigationButton
+              {...link}
+              onPress={navigationHandlers[identifier]}
+            >
+              {label}
+            </NavigationButton>
+            {index === 1 && <View style={styles.separator} />}
+          </View>
+        ))}
+      </View>
       <Box mt={'48'}>
         <StyledText variant="h6">Logged as</StyledText>
         <StyledText variant="paragraphSmall">{user?.getUsername()}</StyledText>
