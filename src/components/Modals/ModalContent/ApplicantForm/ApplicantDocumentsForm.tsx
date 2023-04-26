@@ -20,7 +20,7 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
   const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
   const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
 
-  const shouldButtonBeDisabled = !document || isSendDocumentToS3AndGetScanIdsLoading || isCreateDocumentsFileLinksLoading;
+  const shouldButtonBeDisabled = !document.length || isSendDocumentToS3AndGetScanIdsLoading || isCreateDocumentsFileLinksLoading;
 
   const handleContinue = async () => {
     const preloadedFiles = documentReducer(document);
@@ -59,8 +59,9 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
           dark
           label="Upload Files"
           onSelect={setDocument}
-          type="single"
+          type="multi"
           state={document}
+          selectionLimit={5}
         />
       </PaddedScrollView>
       <View style={{ paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }}>
