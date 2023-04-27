@@ -72,11 +72,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const confirmSignIn = async (authenticationCode: string) => {
-    const confirmedUser: CognitoUser = await Auth.confirmSignIn(user, authenticationCode, ChallengeName.SMS_MFA);
-    setUser(confirmedUser);
-    setLoggedIn(true);
+    setLoading(true);
+    try {
+      const confirmedUser: CognitoUser = await Auth.confirmSignIn(user, authenticationCode, ChallengeName.SMS_MFA);
+      setUser(confirmedUser);
+      setLoggedIn(true);
 
-    return confirmedUser;
+      return confirmedUser;
+    } catch (e) {
+      const err = e as Error;
+
+      return new Error(err?.message || 'Unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signUp = async (signUpParams: SignUpParams) => {
