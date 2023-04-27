@@ -41,4 +41,5 @@ export const styles = StyleSheet.create({
     marginLeft: -1,
   },
   removeMargin: { marginBottom: 0 },
+  stakeholderRow: { columnGap: 27, justifyContent: 'space-between', alignItems: 'center' },
 });

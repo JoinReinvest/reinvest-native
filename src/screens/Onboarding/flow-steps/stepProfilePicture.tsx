@@ -36,6 +36,9 @@ const schema = z.object({
   profilePicture: z.string().optional(),
 });
 
+const getInitials = (value: string) => {
+  return `${value.charAt(0)}${value.split(' ')[1]?.charAt(0)}`.toUpperCase();
+};
 export const StepProfilePicture: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PROFILE_PICTURE,
 
@@ -59,7 +62,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     const [selectedImageUri, setSelectedImageUri] = useState<string | undefined>(profilePicture);
 
     const { progressPercentage } = useOnboardingFormFlow();
-    const { formState, handleSubmit, setValue } = useForm<Fields>({
+    const { handleSubmit, setValue } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
@@ -189,7 +192,12 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       completeDraftLoading ||
       corporateLoading;
 
-    const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting || isLoading;
+    const shouldButtonBeDisabled = !selectedImageUri?.length || isLoading;
+
+    const initials =
+      accountType === DraftAccountType.Individual
+        ? `${name?.firstName.charAt(0)}${name?.lastName.charAt(0)}`.toUpperCase()
+        : getInitials(storeFields.corporationLegalName || storeFields.trustLegalName || '');
 
     return (
       <>
@@ -207,7 +215,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           <Avatar
             uri={selectedImageUri}
             size="2xl"
-            username={`${name?.firstName} ${name?.lastName}`}
+            initials={initials}
             variant={accountType}
             isEditable
             onImageSelect={handleSelectProfilePicture}

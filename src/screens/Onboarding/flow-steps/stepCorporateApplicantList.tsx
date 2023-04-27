@@ -8,6 +8,7 @@ import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { Row } from '../../../components/Containers/Row';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
 import { ApplicantFormModal } from '../../../components/Modals/ModalContent/ApplicantForm';
@@ -161,8 +162,8 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
           {hasApplicants && (
             <Box mb="20">
               {indexedStakeholderApplicants.map(applicant => (
-                <View
-                  style={{ flexDirection: 'row', columnGap: 27, justifyContent: 'space-between' }}
+                <Row
+                  style={styles.stakeholderRow}
                   key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
                 >
                   <StyledText color="pureWhite">
@@ -173,7 +174,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
                     color={palette.pureWhite}
                     onPress={() => onEditApplicant(applicant)}
                   />
-                </View>
+                </Row>
               ))}
             </Box>
           )}

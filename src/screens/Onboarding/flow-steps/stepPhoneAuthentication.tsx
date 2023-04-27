@@ -86,8 +86,10 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
     };
 
     const resendCodeOnClick = async () => {
-      const { countryCode, number } = storeFields.phone!;
-      await setPhoneNumberMutate({ countryCode: countryCode || '', phoneNumber: number || '' });
+      if (storeFields.phone) {
+        const { countryCode, number } = storeFields.phone;
+        await setPhoneNumberMutate({ countryCode: countryCode || '', phoneNumber: number || '' });
+      }
     };
 
     const showGetHelp = () => {

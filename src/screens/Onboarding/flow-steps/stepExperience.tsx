@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { EXPERIENCES_AS_OPTIONS } from 'reinvest-app-common/src/constants/experiences';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
-import { DraftAccountType, Experience } from 'reinvest-app-common/src/types/graphql';
+import { Experience } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';

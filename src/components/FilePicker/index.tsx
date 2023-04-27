@@ -88,6 +88,7 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
     setResults(filteredFiles);
 
     // TODO add removing file from server
+    // eslint-disable-next-line no-console
     return console.log('ADD REMOVING ASSET FROM SERVER');
   };
 

@@ -4,7 +4,7 @@ import { AccountType, DraftAccountType } from 'reinvest-app-common/src/types/gra
 export type AvatarSize = '2xl' | 'xl' | 'l' | 'm' | 's';
 
 export interface AvatarProps extends Pick<TouchableOpacityProps, 'onPress'> {
-  username: string;
+  initials: string;
   isEditable?: boolean;
   onImageSelect?: (uri: string | undefined) => void;
   size?: AvatarSize;
