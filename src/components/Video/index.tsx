@@ -8,6 +8,7 @@ export const Video = () => {
 
   return (
     <VideoRN
+      preventsDisplaySleepDuringVideoPlayback={false}
       source={require('../../assets/welcomeScreen.mp4')}
       ref={videoRef}
       resizeMode="cover"
