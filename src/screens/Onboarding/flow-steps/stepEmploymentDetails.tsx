@@ -39,7 +39,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
     const isEmployed = fields.employmentStatus === EmploymentStatus.Employed;
     const meetsBaseRequirements = isAccountIndividual && isEmployed;
 
-    return (meetsBaseRequirements || meetsBaseRequirements) && !fields.isCompletedProfile;
+    return meetsBaseRequirements || meetsBaseRequirements;
   },
 
   doesMeetConditionFields(fields) {
@@ -145,12 +145,6 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
             onPress={handleSubmit(onSubmit)}
           >
             Continue
-          </Button>
-          <Button
-            variant="outlined"
-            onPress={moveToNextStep}
-          >
-            Skip
           </Button>
         </View>
       </>

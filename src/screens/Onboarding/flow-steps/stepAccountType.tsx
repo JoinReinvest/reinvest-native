@@ -29,8 +29,9 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
+import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { Identifiers } from '../identifiers';
-import { Applicant, IdentificationDocuments, OnboardingFormFields } from '../types';
+import { IdentificationDocuments, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -131,15 +132,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                   annualRevenue: trustDraftAccountData?.details?.annualRevenue?.range as CorporationAnnualRevenue,
                 },
                 documentsForTrust: (trustDraftAccountData?.details?.companyDocuments as IdentificationDocuments) ?? [],
-                trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(app => ({
-                  ...app?.name,
-                  socialSecurityNumber: app?.ssn,
-                  residentialAddress: app?.address,
-                  domicile: app?.domicile?.type,
-                  dateOfBirth: app?.dateOfBirth?.dateOfBirth,
-                  idScan: app?.idScan,
-                  id: app?.id,
-                })) as Applicant[],
+                trustTrusteesGrantorsOrProtectors: trustDraftAccountData?.details?.stakeholders?.map(apiStakeholderToApplicant),
               });
             }
             break;
@@ -161,15 +154,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
                   numberOfEmployees: corporateDraftAccount?.details?.numberOfEmployees?.range as CorporationNumberOfEmployees,
                   annualRevenue: corporateDraftAccount?.details?.annualRevenue?.range as CorporationAnnualRevenue,
                 },
-                companyMajorStakeholderApplicants: corporateDraftAccount?.details?.stakeholders?.map(app => ({
-                  ...app?.name,
-                  socialSecurityNumber: app?.ssn,
-                  residentialAddress: app?.address,
-                  domicile: app?.domicile?.type,
-                  dateOfBirth: app?.dateOfBirth?.dateOfBirth,
-                  idScan: app?.idScan,
-                  id: app?.id,
-                })) as Applicant[],
+                companyMajorStakeholderApplicants: corporateDraftAccount?.details?.stakeholders?.map(apiStakeholderToApplicant),
               });
             }
             break;

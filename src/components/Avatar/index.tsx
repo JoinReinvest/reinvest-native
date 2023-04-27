@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
+import Image from 'react-native-fast-image';
 import { ImagePickerResponse } from 'react-native-image-picker';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
@@ -18,7 +19,7 @@ const AvatarSizesSuffixes: { [key in AvatarSize]: TextVariants } = {
   s: 'avatarInitialsSmall',
 };
 
-const pickerOptions = { maxWidth: 600, maxHeight: 600 };
+const pickerOptions = { maxWidth: 400, maxHeight: 400 };
 
 export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Individual, isEditable = false, onPress, onImageSelect }: AvatarProps) => {
   const [firstName, lastName] = username.split(' ');
