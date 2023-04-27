@@ -5,7 +5,7 @@ import { Box } from '../../../../components/Containers/Box/Box';
 import { StyledText } from '../../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../../constants/styles';
 import Screens from '../../../../navigation/screens';
-import { EducationNavigationProp } from '../../../../screens/Education/types';
+import { EducationNavigationProp } from '../../types';
 import { styles } from './styles';
 import { BlogPost } from './types';
 

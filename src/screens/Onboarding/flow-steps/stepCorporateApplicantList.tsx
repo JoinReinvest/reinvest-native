@@ -18,6 +18,7 @@ import { EMPTY_APPLICANT_FORM } from '../../../constants/applicants';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { MAX_APPLICANTS_COUNT } from '../../../utils/formValidationRules';
+import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
@@ -82,7 +83,11 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
           },
         },
       ];
-      await mutateCorporate({ accountId: storeFields.accountId, input: { stakeholders } });
+      const response = await mutateCorporate({ accountId: storeFields.accountId, input: { stakeholders } });
+      const currentStakeholders = response?.details?.stakeholders?.map(apiStakeholderToApplicant);
+      applicantsRef.current = currentStakeholders || [];
+
+      return updateStoreFields({ companyMajorStakeholderApplicants: currentStakeholders });
     };
 
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {

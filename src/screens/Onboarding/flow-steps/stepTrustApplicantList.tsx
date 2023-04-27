@@ -19,6 +19,7 @@ import { EMPTY_APPLICANT_FORM } from '../../../constants/applicants';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { MAX_APPLICANTS_COUNT } from '../../../utils/formValidationRules';
+import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
@@ -39,7 +40,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
     return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
   },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { trustTrusteesGrantorsOrProtectors, trustLegalName, accountType } = storeFields;
+    const { trustTrusteesGrantorsOrProtectors, trustLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(trustLegalName || '');
     const { mutateAsync: completeTrustDraftAccount } = useCompleteTrustDraftAccount(getApiClient);
     const applicantsRef = useRef<Applicant[]>(trustTrusteesGrantorsOrProtectors ?? []);
@@ -83,11 +84,15 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           },
         },
       ];
-      await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { stakeholders } });
+      const response = await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { stakeholders } });
+      const currentStakeholders = response?.details?.stakeholders?.map(apiStakeholderToApplicant);
+      applicantsRef.current = currentStakeholders || [];
+
+      return updateStoreFields({ trustTrusteesGrantorsOrProtectors: currentStakeholders });
     };
 
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
-      // add as new applicant if doesn't have index
+      // add as new applicant if it doesn't have index
       if (applicantIndex === undefined) {
         applicantsRef.current = [...applicantsRef.current, submittedApplicant];
       }
