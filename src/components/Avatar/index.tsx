@@ -20,10 +20,7 @@ const AvatarSizesSuffixes: { [key in AvatarSize]: TextVariants } = {
 
 const pickerOptions = { maxWidth: 600, maxHeight: 600 };
 
-export const Avatar = ({ uri, username, size = 'm', variant = AccountType.Individual, isEditable = false, onPress, onImageSelect }: AvatarProps) => {
-  const [firstName, lastName] = username.split(' ');
-  const initials = lastName ? `${firstName?.[0]}${lastName[0]}` : firstName?.[0];
-
+export const Avatar = ({ uri, initials, size = 'm', variant = AccountType.Individual, isEditable = false, onPress, onImageSelect }: AvatarProps) => {
   const handleImageSelect = (response: ImagePickerResponse) => {
     const selectedImage = response.assets?.[0]?.uri;
 

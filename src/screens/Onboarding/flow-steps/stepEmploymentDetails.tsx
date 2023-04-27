@@ -146,12 +146,6 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
           >
             Continue
           </Button>
-          <Button
-            variant="outlined"
-            onPress={moveToNextStep}
-          >
-            Skip
-          </Button>
         </View>
       </>
     );

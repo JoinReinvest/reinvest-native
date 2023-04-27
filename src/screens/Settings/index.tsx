@@ -54,10 +54,10 @@ export const Settings = () => {
                 <Box mr={'8'}>
                   <Avatar
                     uri={account?.avatar?.url || ''}
-                    username={account?.label || ''}
+                    initials={account?.avatar?.initials || ''}
                   ></Avatar>
                 </Box>
-                <StyledText>{account?.type}</StyledText>
+                <StyledText>{account?.label || account?.type}</StyledText>
               </Row>
             );
           })}

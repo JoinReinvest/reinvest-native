@@ -27,7 +27,7 @@ export const schema = z.object({
 });
 
 export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: ApplicantFormStepProps) => {
-  const { control, formState, handleSubmit, setFocus } = useForm<ApplicantFormFields>({
+  const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
     mode: 'onBlur',
     resolver: zodResolver(schema),
     defaultValues,
