@@ -39,7 +39,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
     return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
   },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
-    const { trustTrusteesGrantorsOrProtectors, trustLegalName, accountType } = storeFields;
+    const { trustTrusteesGrantorsOrProtectors, trustLegalName } = storeFields;
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator(trustLegalName || '');
     const { mutateAsync: completeTrustDraftAccount } = useCompleteTrustDraftAccount(getApiClient);
     const applicantsRef = useRef<Applicant[]>(trustTrusteesGrantorsOrProtectors ?? []);
