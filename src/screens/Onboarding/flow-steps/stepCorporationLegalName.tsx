@@ -90,6 +90,7 @@ export const StepCorporationLegalName: StepParams<OnboardingFormFields> = {
               placeholder: 'Corporate Legal Name',
               dark: true,
             }}
+            trimmed
           />
         </PaddedScrollView>
         <View style={styles.buttonsSection}>

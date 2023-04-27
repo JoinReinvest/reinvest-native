@@ -93,6 +93,7 @@ export const StepTrustLegalName: StepParams<OnboardingFormFields> = {
               placeholder: 'Trust Legal Name',
               dark: true,
             }}
+            trimmed
           />
         </PaddedScrollView>
         <View

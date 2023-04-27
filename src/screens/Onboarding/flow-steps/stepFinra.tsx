@@ -81,6 +81,7 @@ export const StepFinraInstitution: StepParams<OnboardingFormFields> = {
             fieldName="finraInstitution"
             onSubmit={handleSubmit(onSubmit)}
             inputProps={{ placeholder: 'FINRA Institute Name', dark: true }}
+            trimmed
           />
         </PaddedScrollView>
         <View

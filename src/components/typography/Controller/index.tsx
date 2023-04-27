@@ -19,7 +19,7 @@ const getComponent = (type: InputType) => {
   }
 };
 
-export const Controller = ({ type = 'input', control, fieldName, onSubmit, inputProps, dropdownProps, ...props }: ControllerProps) => {
+export const Controller = ({ type = 'input', control, fieldName, onSubmit, trimmed, inputProps, dropdownProps, ...props }: ControllerProps) => {
   const Comp = getComponent(type);
 
   return (
@@ -36,7 +36,7 @@ export const Controller = ({ type = 'input', control, fieldName, onSubmit, input
             onSubmit={onSubmit}
             value={value}
             ref={ref}
-            onChangeText={onChange}
+            onChangeText={value => (trimmed ? onChange(value.trimStart()) : onChange(value))}
             secureTextEntry={/password/gim.test(fieldName)}
             autoCapitalize={/email/gim.test(fieldName) ? 'none' : undefined}
             {...(type === 'dropdown'
