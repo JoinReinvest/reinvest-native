@@ -77,7 +77,7 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
           onSubmit={handleSubmit(onSubmit)}
           control={control}
           fieldName="socialSecurityNumber"
-          inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', dark: true, mask: SSN_MASK, keyboardType: 'numeric' }}
+          inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', maxLength: 11, dark: true, mask: SSN_MASK, keyboardType: 'numeric' }}
         />
         <Controller
           type="dropdown"
