@@ -17,6 +17,7 @@ export const Button = ({
   disabled,
   isPill,
   dark,
+  style,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
@@ -32,7 +33,7 @@ export const Button = ({
   return (
     <Pressable
       pointerEvents={!vessel ? 'auto' : 'none'}
-      style={[styles.button, styles[`${variant}`], disabled && styles[`${variant}Disabled`]]}
+      style={[styles.button, styles[`${variant}`], disabled && styles[`${variant}Disabled`], style]}
       disabled={disabled}
       {...rest}
     >

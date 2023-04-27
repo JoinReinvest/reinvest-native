@@ -18,6 +18,7 @@ import { EyeHide } from './EyeHide';
 import { EyeVisible } from './EyeVisible';
 import { File } from './File';
 import { FriendsAndFamily } from './FriendsAndFamily';
+import { Gift } from './Gift';
 import { HamburgerClose } from './HamburgerClose';
 import { HamburgerOpen } from './HamburgerOpen';
 import { HelpAndSupport } from './HelpAndSupport';
@@ -64,6 +65,7 @@ export {
   EyeVisible,
   File,
   FriendsAndFamily,
+  Gift,
   HamburgerClose,
   HamburgerOpen,
   HelpAndSupport,

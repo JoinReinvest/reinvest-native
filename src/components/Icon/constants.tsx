@@ -19,6 +19,7 @@ import {
   EyeVisible,
   File,
   FriendsAndFamily,
+  Gift,
   HamburgerClose,
   HamburgerOpen,
   HelpAndSupport,
@@ -86,6 +87,7 @@ export const icons = {
   signOut: SignOut,
   helpAndSupport: HelpAndSupport,
   addBeneficiary: AddBeneficiary,
+  gift: Gift,
 };
 
 export const sizes = {

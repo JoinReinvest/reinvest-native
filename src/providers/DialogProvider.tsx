@@ -9,6 +9,8 @@ type AnimationType = 'slide' | 'none' | 'fade';
 interface Options {
   animationType: AnimationType;
   closeIcon: boolean;
+  header: JSX.Element | null;
+  showLogo: boolean;
 }
 
 interface DialogContextInterface {
@@ -44,6 +46,8 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
   const [closeIconVisible, setCloseIconVisible] = useState<boolean>(true);
   const [animationType, setAnimationType] = useState<AnimationType>('slide');
   const [modalType, setModalType] = useState<ModalTypes>(type);
+  const [header, setHeader] = useState<JSX.Element | null>(null);
+  const [showLogo, setShowLogo] = useState<boolean>(false);
 
   const closeDialog = () => {
     setDialogContent(false);
@@ -60,6 +64,8 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
         setDialogContent(content);
         setCloseIconVisible(options?.closeIcon ?? true);
         setAnimationType(options?.animationType ?? 'slide');
+        setShowLogo(!!options?.showLogo);
+        setHeader(options?.header ?? null);
       },
       closeDialog,
       isDialogOpen: !!dialogContent,
@@ -79,10 +85,13 @@ export const DialogProvider = ({ children, type = 'main', ...props }: PropsWithC
           animationType={animationType}
           visible={!!dialogContent}
           transparent
+          style={{ backgroundColor: 'transparent' }}
         >
           <Wrapper
             closeIcon={closeIconVisible}
             dialogContent={dialogContent}
+            showLogo={showLogo}
+            header={header}
             {...props}
           />
         </Modal>

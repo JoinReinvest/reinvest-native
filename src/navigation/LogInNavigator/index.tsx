@@ -1,5 +1,6 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -7,6 +8,7 @@ import { Box } from '../../components/Containers/Box/Box';
 import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
+import { DialogProvider } from '../../providers/DialogProvider';
 import { InviteScreen } from '../../screens/Invite';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
@@ -66,27 +68,30 @@ export const LogInNavigator: React.FC = () => {
     );
 
   return (
-    <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
-      <LogInStack.Screen
-        options={{ headerShown: false }}
+    <SafeAreaProvider>
+      <DialogProvider dark={false}>
+        <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
+          <LogInStack.Screen
+            options={{ headerShown: false }}
         name={Screens.BottomNavigator}
-        component={BottomTabsNavigator}
-      />
-      <LogInStack.Screen
-        name={Screens.Onboarding}
-        options={stackOptions[Screens.Onboarding]}
-        component={Onboarding}
-      />
-      <LogInStack.Screen
-        options={stackOptions[Screens.Settings]}
-        name={Screens.Settings}
-        component={Settings}
-      />
-      <LogInStack.Screen
-        options={stackOptions[Screens.Invite]}
-        name={Screens.Invite}
-        component={InviteScreen}
-      />
-    </LogInStack.Navigator>
+            component={BottomTabsNavigator}
+          />
+          <LogInStack.Screenname={Screens.Onboarding}
+            options={stackOptions[Screens.Onboarding]}
+            component={Onboarding}
+          />
+          <LogInStack.Screen
+            options={stackOptions[Screens.Settings]}
+            name={Screens.Settings}
+            component={Settings}
+          />
+          <LogInStack.Screen
+            options={stackOptions[Screens.Invite]}
+            name={Screens.Invite}
+            component={InviteScreen}
+          />
+        </LogInStack.Navigator>
+      </DialogProvider>
+    </SafeAreaProvider>
   );
 };

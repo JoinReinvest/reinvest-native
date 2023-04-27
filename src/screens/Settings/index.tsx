@@ -7,6 +7,8 @@ import { Avatar } from '../../components/Avatar';
 import { Box } from '../../components/Containers/Box/Box';
 import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
+import { InviteModal } from '../../components/Modals/ModalContent/InviteModal';
+import { HeaderWithLogo } from '../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
 import { isStaging } from '../../constants/dev';
@@ -14,9 +16,11 @@ import { NavigationIdentifiers, SETTINGS_NAVIGATION_LINKS } from '../../constant
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { useAuth } from '../../providers/AuthProvider';
+import { useDialog } from '../../providers/DialogProvider';
 import { styles } from './styles';
 
 export const Settings = () => {
+  const { openDialog } = useDialog();
   const { actions, user } = useAuth();
   const navigation = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
@@ -25,11 +29,16 @@ export const Settings = () => {
     () => ({
       ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
       ADD_ACCOUNT: () => navigation.navigate(Screens.Onboarding),
-      INVITE: () => navigation.navigate(Screens.Invite),
+      INVITE: () =>
+        openDialog(<InviteModal />, {
+          showLogo: true,
+          header: <HeaderWithLogo />,
+          closeIcon: false,
+        }),
       HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
       SIGN_OUT: () => actions.signOut(),
     }),
-    [actions, navigation],
+    [actions, openDialog, navigation],
   );
 
   return (
