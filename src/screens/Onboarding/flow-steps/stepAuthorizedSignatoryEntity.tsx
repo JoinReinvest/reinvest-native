@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
@@ -9,10 +9,12 @@ import { z } from 'zod';
 
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { FormModalError } from '../../../components/Modals/ModalContent/FormModalError';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { BOOLEAN_OPTIONS } from '../../../constants/booleanOptions';
+import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -46,16 +48,19 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
     ];
 
     const hasProfileFields = allRequiredFieldsExists(profileFields);
-    const isAccountCorporateOrTrust = fields.accountType === DraftAccountType.Corporate || fields.accountType === DraftAccountType.Trust;
-    const hasTrustFields = allRequiredFieldsExists([fields.trustType, fields.trustLegalName]);
+    const trustFieldsValid =
+      fields.accountType === DraftAccountType.Trust && allRequiredFieldsExists([fields.trustType, fields.trustLegalName]) && hasProfileFields;
+    const corporateFieldsValid =
+      fields.accountType === DraftAccountType.Corporate && allRequiredFieldsExists([fields.corporationType, fields.corporationLegalName]) && hasProfileFields;
 
-    return (isAccountCorporateOrTrust && hasProfileFields && hasTrustFields) || isAccountCorporateOrTrust;
+    return trustFieldsValid || corporateFieldsValid;
   },
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields: { accountType, isAuthorizedSignatoryEntity }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const storedValue = storeFields.isAuthorizedSignatoryEntity;
-    const defaultValues: Fields = { isAuthorizedSignatoryEntity: storedValue };
+    const defaultValues: Fields = { isAuthorizedSignatoryEntity };
+
+    const { openDialog } = useDialog();
 
     const { handleSubmit, setValue, watch } = useForm<Fields>({
       mode: 'all',
@@ -65,14 +70,31 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
 
     const shouldButtonBeDisabled = watch('isAuthorizedSignatoryEntity') !== undefined;
 
-    const onSubmit: SubmitHandler<Fields> = async fields => {
-      await updateStoreFields({ isAuthorizedSignatoryEntity: fields.isAuthorizedSignatoryEntity });
+    const openDenialDialog = useCallback(() => {
+      const account = accountType === DraftAccountType.Trust ? 'Trust' : 'Corporate';
+      const title = `You are unable to create a ${account} Account`;
+      const message = `You need to be an authorized signatory and beneficiary owner of a corporation to have a ${account} account on REINVEST.`;
+      openDialog(
+        <FormModalError
+          title={title}
+          message={message}
+        />,
+      );
+    }, [openDialog, accountType]);
+
+    const onSubmit: SubmitHandler<Fields> = async ({ isAuthorizedSignatoryEntity }) => {
+      await updateStoreFields({ isAuthorizedSignatoryEntity });
+
+      if (!isAuthorizedSignatoryEntity) {
+        return openDenialDialog();
+      }
+
       moveToNextStep();
     };
 
     const watchedAuthorizedSignatoryEntity = watch('isAuthorizedSignatoryEntity');
 
-    const selectedValue = watchedAuthorizedSignatoryEntity ? (watchedAuthorizedSignatoryEntity ? 'yes' : 'false') : undefined;
+    const selectedValue = watchedAuthorizedSignatoryEntity ? (watchedAuthorizedSignatoryEntity ? 'yes' : 'no') : undefined;
 
     return (
       <>
