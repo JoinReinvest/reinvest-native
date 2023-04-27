@@ -1,6 +1,6 @@
 import { ParamListBase } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ContextState } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
@@ -20,9 +20,9 @@ export const useBackOverrideBase = <T extends object, K extends ParamListBase>(
   } = useCurrentFormContext();
   const { data } = useGetUserProfile(getApiClient);
 
-  const navigateFromFormWithProfileCompleted = () => {
+  const navigateFromFormWithProfileCompleted = useCallback(() => {
     (navigation as NativeStackNavigationProp<LogInStackParamList>).navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
-  };
+  }, [navigation]);
 
   useEffect(() => {
     if (isFirstStep) {
@@ -54,5 +54,5 @@ export const useBackOverrideBase = <T extends object, K extends ParamListBase>(
         ),
       });
     }
-  }, [isFirstStep, moveToPreviousValidStep, navigation]);
+  }, [data?.isCompleted, isFirstStep, moveToPreviousValidStep, navigateFromFormWithProfileCompleted, navigation]);
 };

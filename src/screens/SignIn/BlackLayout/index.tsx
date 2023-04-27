@@ -7,7 +7,6 @@ import { useStepBackOverride } from '../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import { LogOutStackParamList } from '../../../navigation/LogOutNavigator/types';
-import { useResetPasswordFormFlow } from '../../ResetPassword/flow-steps';
 import { ResetPasswordFormFields } from '../../ResetPassword/types';
 import { useLoginFormFlow } from '../flow-steps';
 
@@ -17,7 +16,7 @@ interface Props {
 export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   const { CurrentStepView } = useLoginFormFlow();
   const navigation = useLogOutNavigation();
-  useStepBackOverride<ResetPasswordFormFields, LogOutStackParamList>(useResetPasswordFormFlow, navigation);
+  useStepBackOverride<ResetPasswordFormFields, LogOutStackParamList>(useLoginFormFlow, navigation);
   useKeyboardAware();
 
   return (
