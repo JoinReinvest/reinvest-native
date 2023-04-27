@@ -9,6 +9,7 @@ import { ReitIcon } from '../../components/Icon/icons/TabNavigtionIcons/ReitIcon
 import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
 import Screens from '../../navigation/screens';
+import { DialogProvider } from '../../providers/DialogProvider';
 import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
@@ -49,51 +50,53 @@ export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <Tab.Navigator
-      initialRouteName={Screens.EducationStack}
-      backBehavior="none"
-      screenOptions={{
-        tabBarStyle: {
-          height: 56 + bottom,
-          paddingBottom: bottom || 8,
-          paddingTop: 12,
-        },
-        tabBarActiveTintColor: palette.pureBlack,
-        tabBarInactiveTintColor: palette.dark3,
-        tabBarLabelStyle: { marginTop: -12 },
-        tabBarLabel: ({ focused, children }) => getLabel(focused, children),
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen
-        name={Screens.Dashboard}
-        component={Dashboard}
-        options={() => ({
-          ...stackOptions[Screens.Dashboard],
-        })}
-      />
-      <Tab.Screen
-        name={Screens.REIT}
-        component={ReitScreen}
-        options={() => ({
-          ...stackOptions[Screens.REIT],
-        })}
-      />
-      <Tab.Screen
-        name={Screens.EducationStack}
-        component={EducationStack}
-        options={() => ({
-          ...stackOptions[Screens.EducationStack],
-        })}
-      />
-      <Tab.Screen
-        name={Screens.Notifications}
-        component={Notifications}
-        options={() => ({
-          ...stackOptions[Screens.Notifications],
-          tabBarBadge: 3,
-        })}
-      />
-    </Tab.Navigator>
+    <DialogProvider>
+      <Tab.Navigator
+        initialRouteName={Screens.EducationStack}
+        backBehavior="none"
+        screenOptions={{
+          tabBarStyle: {
+            height: 56 + bottom,
+            paddingBottom: bottom || 8,
+            paddingTop: 12,
+          },
+          tabBarActiveTintColor: palette.pureBlack,
+          tabBarInactiveTintColor: palette.dark3,
+          tabBarLabelStyle: { marginTop: -12 },
+          tabBarLabel: ({ focused, children }) => getLabel(focused, children),
+          headerShown: false,
+        }}
+      >
+        <Tab.Screen
+          name={Screens.Dashboard}
+          component={Dashboard}
+          options={() => ({
+            ...stackOptions[Screens.Dashboard],
+          })}
+        />
+        <Tab.Screen
+          name={Screens.REIT}
+          component={ReitScreen}
+          options={() => ({
+            ...stackOptions[Screens.REIT],
+          })}
+        />
+        <Tab.Screen
+          name={Screens.EducationStack}
+          component={EducationStack}
+          options={() => ({
+            ...stackOptions[Screens.EducationStack],
+          })}
+        />
+        <Tab.Screen
+          name={Screens.Notifications}
+          component={Notifications}
+          options={() => ({
+            ...stackOptions[Screens.Notifications],
+            tabBarBadge: 3,
+          })}
+        />
+      </Tab.Navigator>
+    </DialogProvider>
   );
 };

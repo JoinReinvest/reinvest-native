@@ -104,6 +104,12 @@ const styles = StyleSheet.create({
   today: {
     fontSize: 10,
   },
+  tableHeading: {
+    fontFamily: Fonts.GTAmericaRegular,
+    fontSize: 20,
+    lineHeight: 20 * 1.1,
+    letterSpacing: -0.5,
+  },
 });
 
 export default styles;
