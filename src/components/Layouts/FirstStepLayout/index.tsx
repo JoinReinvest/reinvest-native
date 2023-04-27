@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Keyboard, Pressable, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { palette } from '../../../constants/theme';
@@ -8,6 +8,7 @@ import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { Sygnet } from '../../Icon/icons';
 import { MainWrapper } from '../../MainWrapper';
+import { PaddedScrollView } from '../../PaddedScrollView';
 import { StyledText } from '../../typography/StyledText';
 import { Video } from '../../Video';
 
@@ -17,7 +18,7 @@ interface FirstStepLayoutProps {
 }
 
 export const FirstStepLayout = ({ headline, description, children }: PropsWithChildren<FirstStepLayoutProps>) => {
-  useKeyboardAware(true, 32);
+  useKeyboardAware(true, 24);
 
   return (
     <MainWrapper
@@ -30,9 +31,9 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
         style={StyleSheet.absoluteFillObject}
         colors={['transparent', hexToRgbA(palette.pureBlack, 0.6)]}
       />
-      <Pressable
-        onPress={Keyboard.dismiss}
-        style={[styles.scrollContainer, styles.fw]}
+      <PaddedScrollView
+        keyboardShouldPersistTaps={'handled'}
+        contentContainerStyle={[styles.scrollContainer, styles.fw]}
       >
         <View style={styles.signet}>
           <Sygnet />
@@ -52,7 +53,7 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
           </StyledText>
         </View>
         {children}
-      </Pressable>
+      </PaddedScrollView>
     </MainWrapper>
   );
 };

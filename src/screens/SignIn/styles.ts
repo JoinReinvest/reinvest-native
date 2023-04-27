@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import { isIOS } from '../../constants/common';
-import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../constants/styles';
 import { palette } from '../../constants/theme';
 import { Fonts } from '../../types/fonts';
 import { DEVICE_HEIGHT, STATUS_BAR, xScale } from '../../utils/scale';
@@ -28,7 +27,6 @@ export const styles = StyleSheet.create({
     height: isIOS ? '100%' : DEVICE_HEIGHT - STATUS_BAR,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
     paddingBottom: 36,
   },
   fw: {
