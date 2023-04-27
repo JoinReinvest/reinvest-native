@@ -1,6 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
-import { isIOS } from '../../constants/common';
 import { INPUT_HEIGHT, INPUT_PADDING_HORIZONTAL } from '../../constants/styles';
 import { palette } from '../../constants/theme';
 import { Fonts } from '../../types/fonts';
@@ -35,7 +34,6 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   input: {
-    paddingHorizontal: INPUT_PADDING_HORIZONTAL,
     height: INPUT_HEIGHT,
     borderWidth: 1,
     borderColor: palette.darkerGray,
@@ -46,7 +44,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
     width: '100%',
   },
   removedHorizontalPadding: {
@@ -61,19 +58,24 @@ export const styles = StyleSheet.create({
   },
   mainSection: {
     flex: 1,
-    paddingHorizontal: 8,
     alignSelf: 'flex-end',
   },
   nativeInput: {
     width: '100%',
     color: palette.pureBlack,
     alignSelf: 'flex-end',
-    paddingHorizontal: 0,
-    paddingVertical: 0,
     textAlignVertical: 'bottom',
     fontSize: 15,
     fontWeight: '400',
     fontFamily: Fonts.GTAmericaExtendedRegular,
+    height: '100%',
+    ...Platform.select({
+      android: { textAlignVertical: 'bottom', paddingBottom: 8 },
+      ios: {
+        paddingTop: 14,
+      },
+    }),
+    paddingHorizontal: INPUT_PADDING_HORIZONTAL,
   },
   darkInput: {
     color: palette.pureWhite,
@@ -81,7 +83,10 @@ export const styles = StyleSheet.create({
   placeholder: {
     position: 'absolute',
     left: INPUT_PADDING_HORIZONTAL,
-    top: isIOS ? -16 : -8,
+    top: -4,
+  },
+  placeholderWithLeftSection: {
+    left: INPUT_PADDING_HORIZONTAL / 4,
   },
   placeholderText: {
     color: palette.dark3,
@@ -100,7 +105,25 @@ export const styles = StyleSheet.create({
 
   nativeInputDisabled: { color: palette.darkerGray },
   rightSegmentDisabled: { opacity: 0.7 },
-  rightAlignment: {
+  predefined: {
     textAlign: 'right',
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingHorizontal: 8,
+    textAlignVertical: 'center',
+  },
+  rightSegment: {
+    position: 'absolute',
+    /*
+     * Icons had their own safe area which need to be calculated in
+     */
+    right: INPUT_PADDING_HORIZONTAL / 2,
+  },
+  paddingWithLeftSection: {
+    paddingLeft: INPUT_PADDING_HORIZONTAL / 4,
+  },
+  narrowInput: {
+    alignSelf: 'flex-start',
+    width: '90%',
   },
 });

@@ -70,7 +70,7 @@ export const Input = forwardRef<TextInput, InputProps>(
     const animatedStyle = useAnimatedStyle(() => ({
       transform: [
         {
-          translateY: withTiming(interpolate(sharedValue.value, [0, 1], [10, 0]), { duration: 200 }),
+          translateY: withTiming(interpolate(sharedValue.value, [0, 1], [18, 6]), { duration: 200 }),
         },
         {
           translateX: withTiming(interpolate(sharedValue.value, [0, 1], [0, (-placeholderWidth / 2) * 0.2]), { duration: 200 }),
@@ -153,7 +153,7 @@ export const Input = forwardRef<TextInput, InputProps>(
               {placeholder && (
                 <Animated.View
                   onLayout={calculateSizeHandler}
-                  style={[styles.placeholder, animatedStyle]}
+                  style={[styles.placeholder, !!leftSection && styles.placeholderWithLeftSection, animatedStyle]}
                 >
                   <StyledText
                     numberOfLines={1}
@@ -172,12 +172,14 @@ export const Input = forwardRef<TextInput, InputProps>(
                 numberOfLines={numberOfLines}
                 style={[
                   styles.nativeInput,
+                  !!leftSection && styles.paddingWithLeftSection,
                   dark && styles.darkInput,
                   !placeholder && styles.centerText,
                   nativeInputStyle,
                   disabled && styles.nativeInputDisabled,
-                  predefined && styles.rightAlignment,
+                  predefined && styles.predefined,
                   style,
+                  (secureTextEntry || !!rightSection) && !predefined && styles.narrowInput,
                 ]}
                 placeholderTextColor={dark ? palette.dark3 : undefined}
                 onFocus={() => {
@@ -191,7 +193,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                 onSubmitEditing={onSubmit}
               />
             </View>
-            {rightSegment}
+            <View style={[!predefined && styles.rightSegment]}>{rightSegment}</View>
           </View>
         </Pressable>
         {error && (

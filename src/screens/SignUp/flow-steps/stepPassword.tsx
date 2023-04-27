@@ -16,9 +16,9 @@ import { Controller } from '../../../components/typography/Controller';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { styles } from '../flow-steps/styles';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
+import { styles } from './styles';
 
 interface Fields extends Pick<RegisterFormFields, 'password'> {
   passwordConfirmation: string;
@@ -94,7 +94,7 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView keyboardShouldPersistTaps={'handled'}>
           <FormTitle
             dark
             headline="Sign Up to REINVEST"
