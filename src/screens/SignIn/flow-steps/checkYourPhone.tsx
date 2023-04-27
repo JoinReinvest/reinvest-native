@@ -8,6 +8,7 @@ import zod, { Schema } from 'zod';
 import { Button } from '../../../components/Button';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useAuth } from '../../../providers/AuthProvider';
@@ -16,56 +17,59 @@ import { formValidationRules } from '../../../utils/formValidationRules';
 import { LoginFormFields } from '../../SignIn/types';
 import { Identifiers } from '../identifiers';
 
+export type Fields = Pick<LoginFormFields, 'authenticationCode'>;
+
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
 
   Component: ({ storeFields }: StepComponentProps<LoginFormFields>) => {
     const { actions, loading } = useAuth();
-    const schema: Schema<LoginFormFields> = zod.object({
-      email: formValidationRules.email,
-      password: formValidationRules.password,
+    const schema: Schema<Fields> = zod.object({
       authenticationCode: formValidationRules.authenticationCode,
     });
     const [error, setError] = useState('');
 
-    const { handleSubmit, control } = useForm<LoginFormFields>({
+    const { formState, handleSubmit, control } = useForm<LoginFormFields>({
       defaultValues: storeFields,
       resolver: zodResolver(schema),
     });
 
-    const onSubmit: SubmitHandler<LoginFormFields> = async fields => {
+    const onSubmit: SubmitHandler<Fields> = async fields => {
       try {
-        fields.authenticationCode = fields.authenticationCode.replace('-', '');
         await actions.confirmSignIn(fields.authenticationCode);
       } catch (err) {
         setError((err as Error).message);
       }
     };
 
+    const shouldButtonBeDisabled = !formState.isValid || loading;
+
     return (
-      <View>
-        <FormTitle
-          dark
-          headline="Check Your Phone"
-          description="Enter the SMS authentication code sent to your phone (xxx) xxxx-xx84."
-        />
-        {error && (
-          <FormMessage
-            message={error}
-            variant="error"
+      <>
+        <PaddedScrollView style={{ width: '100%' }}>
+          <FormTitle
+            dark
+            headline="Check Your Phone"
+            description="Enter the SMS authentication code sent to your phone (xxx) xxxx-xx84."
           />
-        )}
-        <Controller
-          onSubmit={handleSubmit(onSubmit)}
-          control={control}
-          fieldName="authenticationCode"
-          inputProps={{
-            placeholder: 'Authentication Code',
-            dark: true,
-            keyboardType: 'numeric',
-            maxLength: 6,
-          }}
-        />
+          {error && (
+            <FormMessage
+              message={error}
+              variant="error"
+            />
+          )}
+          <Controller
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="authenticationCode"
+            inputProps={{
+              placeholder: 'Authentication Code',
+              dark: true,
+              keyboardType: 'numeric',
+              maxLength: 6,
+            }}
+          />
+        </PaddedScrollView>
         <View style={styles.row}>
           <StyledText
             variant="link"
@@ -81,12 +85,12 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
           </StyledText>
         </View>
         <Button
-          disabled={loading}
+          disabled={shouldButtonBeDisabled}
           onPress={handleSubmit(onSubmit)}
         >
           Continue
         </Button>
-      </View>
+      </>
     );
   },
 };
