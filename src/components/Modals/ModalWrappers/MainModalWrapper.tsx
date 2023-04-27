@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Box } from '../../../components/Containers/Box/Box';
 import { Sygnet } from '../../../components/Icon/icons';
+import { isIOS } from '../../../constants/common';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { xScale, yScale } from '../../../utils/scale';
@@ -30,7 +31,7 @@ export const MainModalWrapper = ({
   const { top } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.mainWrapper, dark && styles.dark, { paddingTop: top }]}>
+    <View style={[styles.mainWrapper, dark && styles.dark]}>
       {showLogo && (
         <View style={{ position: 'absolute', height: yScale(459), width: yScale(459), opacity: 0.4, bottom: yScale(-29), left: xScale(53) }}>
           <Sygnet />
@@ -39,7 +40,7 @@ export const MainModalWrapper = ({
       {!!header && (
         <Box
           px="24"
-          mt="24"
+          style={{ paddingTop: isIOS ? top + 24 : 24 }}
         >
           {header}
         </Box>

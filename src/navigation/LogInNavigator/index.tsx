@@ -9,7 +9,6 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
-import { InviteScreen } from '../../screens/Invite';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
@@ -19,15 +18,12 @@ import { LogInStackParamList } from './types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
-const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Invite | Screens.Settings>, NativeStackNavigationOptions> = {
+const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Settings>, NativeStackNavigationOptions> = {
   [Screens.Onboarding]: {
     title: 'logo',
     header: DarkScreenHeader,
   },
-  [Screens.Invite]: {
-    title: 'Invite a friend',
-    header: ScreenHeader,
-  },
+
   [Screens.Settings]: {
     title: 'Settings',
     header: ScreenHeader,
@@ -84,11 +80,6 @@ export const LogInNavigator: React.FC = () => {
             options={stackOptions[Screens.Settings]}
             name={Screens.Settings}
             component={Settings}
-          />
-          <LogInStack.Screen
-            options={stackOptions[Screens.Invite]}
-            name={Screens.Invite}
-            component={InviteScreen}
           />
         </LogInStack.Navigator>
       </DialogProvider>

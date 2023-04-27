@@ -8,7 +8,7 @@ export const HeaderWithLogo = () => {
   const { closeDialog } = useDialog();
 
   return (
-    <View style={{ width: '100%', height: 50, zIndex: 10, elevation: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
       <LogoWithSygnet />
       <Icon
         icon="hamburgerClose"

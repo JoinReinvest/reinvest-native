@@ -11,6 +11,7 @@ import { Calendar } from './Calendar';
 import { Checkbox } from './Checkbox';
 import { CheckboxUnchecked } from './CheckboxUnchecked';
 import { CircleAlert } from './CircleAlert';
+import { Copy } from './Copy';
 import { Disabled } from './Disabled';
 import { Down } from './Down';
 import { Edit } from './Edit';
@@ -58,6 +59,7 @@ export {
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
+  Copy,
   Disabled,
   Down,
   Edit,

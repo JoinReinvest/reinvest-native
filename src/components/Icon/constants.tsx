@@ -12,6 +12,7 @@ import {
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
+  Copy,
   Disabled,
   Down,
   Edit,
@@ -88,9 +89,11 @@ export const icons = {
   helpAndSupport: HelpAndSupport,
   addBeneficiary: AddBeneficiary,
   gift: Gift,
+  copy: Copy,
 };
 
 export const sizes = {
+  xs: 21,
   s: 24,
   m: 32,
   l: 40,

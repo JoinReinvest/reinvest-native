@@ -78,9 +78,6 @@ export const InviteModal = () => {
             </Box>
             <View style={styles.inputRow}>
               <Input
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                caretHidden
-                pointerEvents="none"
                 dataDetectorTypes={'link'}
                 value={`${url}`}
                 onChangeText={setUrl}
@@ -90,8 +87,14 @@ export const InviteModal = () => {
                 nativeInputStyle={{ alignSelf: 'center' }}
                 style={{ textAlignVertical: 'top', alignSelf: 'center' }}
               />
-              <Button style={{ width: 48, height: 48 }}>
-                <Icon icon="share" />
+              <Button
+                style={styles.inputButton}
+                onPress={share}
+              >
+                <Icon
+                  icon="copy"
+                  size="xs"
+                />
               </Button>
             </View>
             <StyledText

@@ -9,7 +9,6 @@ export type LogInStackParamList = {
   [Screens.Onboarding]: undefined;
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;
-  [Screens.Invite]: undefined;
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;

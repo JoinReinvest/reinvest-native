@@ -14,7 +14,6 @@ enum Screens {
   WebViewContent = 'WebViewContent',
   Onboarding = 'Onboarding',
   ResetPassword = 'ResetPassword',
-  Invite = 'Invite',
 }
 
 export default Screens;

@@ -35,4 +35,9 @@ export const styles = StyleSheet.create({
     columnGap: 8,
     marginBottom: yScale(12),
   },
+
+  inputButton: {
+    height: 48,
+    width: 48,
+  },
 });
