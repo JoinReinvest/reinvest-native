@@ -18,7 +18,7 @@ import { AuthProvider } from './providers/AuthProvider';
     tracesSampleRate: 1.0,
   });
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {

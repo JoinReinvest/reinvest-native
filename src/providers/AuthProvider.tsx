@@ -2,6 +2,7 @@ import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
 import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cognito-identity-js';
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { queryClient } from '../App';
 import AuthService from '../services/amplify.service';
 
 export enum ChallengeName {
@@ -109,6 +110,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     try {
       await Auth.signOut();
+      await queryClient.invalidateQueries({ queryKey: ['getProfile'] });
       setLoggedIn(false);
       setUser(null);
     } catch (e: unknown) {
