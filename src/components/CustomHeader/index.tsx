@@ -1,9 +1,10 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
-import { View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { palette } from '../../constants/theme';
+import { gradients, palette } from '../../constants/theme';
 import DefaultLeftHeaderColumn from '../CustomHeader/DefaultLeftHeaderColumn';
 import { Logo } from '../Icon/icons';
 import { StyledText } from '../typography/StyledText';
@@ -26,8 +27,10 @@ export const ScreenHeader = ({
   navigation,
   dark,
   options: { title, headerRight, headerLeft },
+  showGradient = true,
 }: NativeStackHeaderProps & {
   dark?: boolean;
+  showGradient?: boolean;
   title?: string | 'logo';
 }) => {
   const headerProps = useMemo(() => ({ canGoBack: navigation.canGoBack(), tintColor: '' }), [navigation]);
@@ -46,6 +49,12 @@ export const ScreenHeader = ({
 
   return (
     <CustomHeader dark={dark}>
+      {showGradient && (
+        <LinearGradient
+          colors={gradients.headerGradient}
+          style={{ ...StyleSheet.absoluteFillObject }}
+        />
+      )}
       <View style={[styles.innerWrapper]}>
         <View style={styles.sideSegment}>{renderHeaderLeft()}</View>
         {title === 'logo' ? (
@@ -70,6 +79,7 @@ export const DarkScreenHeader = (props: NativeStackHeaderProps) => {
   return (
     <ScreenHeader
       dark
+      showGradient={false}
       {...props}
     />
   );
