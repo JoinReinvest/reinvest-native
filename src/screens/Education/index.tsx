@@ -52,7 +52,7 @@ export const EducationStack = () => {
                 navigation.navigate(Screens.Settings);
               }}
               uri={data?.[0]?.avatar?.url || ''}
-              username={data?.[0]?.avatar?.initials || ''}
+              initials={data?.[0]?.avatar?.initials || ''}
             />
           ),
         })}

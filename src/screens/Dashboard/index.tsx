@@ -6,6 +6,7 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormModalDisclaimer';
 import { Table } from '../../components/Table';
 import { StyledText } from '../../components/typography/StyledText';
+import { isStaging } from '../../constants/dev';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
@@ -54,26 +55,28 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper style={{ paddingTop: top }}>
       <StyledText variant="h6">DashBoard</StyledText>
-      {__DEV__ && (
-        <StyledText
-          variant="link"
-          onPress={() => navigation.navigate(Screens.Onboarding)}
-        >
-          Start Onboarding
-        </StyledText>
+      {!isStaging && (
+        <>
+          <StyledText
+            variant="link"
+            onPress={() => navigation.navigate(Screens.Onboarding)}
+          >
+            Start Onboarding
+          </StyledText>
+          <Table
+            heading="$522.94" // TODO: Replace with values from API:
+            subheading="Position Total (Equity)"
+            items={mapTableIdentifiersToTableItems(EQUITY_TABLE_ITEMS)}
+          />
+          <Box mt="8">
+            <Table
+              heading="$432.56" // TODO: Replace with values from API:
+              subheading="Net Returns"
+              items={mapTableIdentifiersToTableItems(NET_RETURNS_TABLE_ITEMS)}
+            />
+          </Box>
+        </>
       )}
-      <Table
-        heading="$522.94" // TODO: Replace with values from API:
-        subheading="Position Total (Equity)"
-        items={mapTableIdentifiersToTableItems(EQUITY_TABLE_ITEMS)}
-      />
-      <Box mt="8">
-        <Table
-          heading="$432.56" // TODO: Replace with values from API:
-          subheading="Net Returns"
-          items={mapTableIdentifiersToTableItems(NET_RETURNS_TABLE_ITEMS)}
-        />
-      </Box>
     </MainWrapper>
   );
 };

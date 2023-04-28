@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import { TextInput } from 'react-native';
 
-import { isIOS } from '../../constants/common';
 import { Input } from '../Input';
 import { styles } from './styles';
 import { TextAreaProps } from './types';
@@ -12,8 +11,8 @@ export const TextArea = forwardRef<TextInput, TextAreaProps>(({ numberOfLines = 
       value={value}
       multiline
       numberOfLines={numberOfLines}
-      style={[styles.inputWrapper, !isIOS && styles.inputWrapperOnAndroid, style]}
-      inputStyle={[styles.inputStyle, isIOS && styles.inputStyleOnIOS, inputStyle]}
+      style={[styles.inputWrapper, style]}
+      inputStyle={[styles.inputStyle, inputStyle]}
       wrapperStyle={[styles.wrapper]}
       ref={ref}
       {...rest}

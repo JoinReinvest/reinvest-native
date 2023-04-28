@@ -1,5 +1,5 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -11,6 +11,7 @@ import { InviteScreen } from '../../screens/Invite';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
+import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
@@ -33,11 +34,24 @@ const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Invite 
 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
+  const navigation = useLogInNavigation();
 
   useLayoutEffect(() => {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      if (data.isCompleted) {
+        navigation.reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
+      }
+
+      if (!data.isCompleted) {
+        navigation.reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
+      }
+    }
+  }, [data, navigation]);
 
   if (!data)
     return (
@@ -52,16 +66,16 @@ export const LogInNavigator: React.FC = () => {
     );
 
   return (
-    <LogInStack.Navigator initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
-      <LogInStack.Screen
-        name={Screens.Onboarding}
-        options={stackOptions[Screens.Onboarding]}
-        component={Onboarding}
-      />
+    <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
       <LogInStack.Screen
         options={{ headerShown: false }}
         name={Screens.BottomNavigator}
         component={BottomTabsNavigator}
+      />
+      <LogInStack.Screen
+        name={Screens.Onboarding}
+        options={stackOptions[Screens.Onboarding]}
+        component={Onboarding}
       />
       <LogInStack.Screen
         options={stackOptions[Screens.Settings]}
