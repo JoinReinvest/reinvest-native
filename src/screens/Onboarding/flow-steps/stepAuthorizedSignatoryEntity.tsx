@@ -36,24 +36,14 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
   },
 
   doesMeetConditionFields: fields => {
-    const profileFields = [
-      fields.name?.firstName,
-      fields.name?.lastName,
-      fields.dateOfBirth,
-      fields.residency,
-      fields.ssn,
-      fields.address,
-      fields.experience,
-      fields.employmentStatus,
-    ];
+    const profileFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency, fields.ssn, fields.address, fields.experience];
 
     const hasProfileFields = allRequiredFieldsExists(profileFields);
-    const trustFieldsValid =
-      fields.accountType === DraftAccountType.Trust && allRequiredFieldsExists([fields.trustType, fields.trustLegalName]) && hasProfileFields;
+    const trustFieldsValid = fields.accountType === DraftAccountType.Trust && allRequiredFieldsExists([fields.trustType, fields.trustLegalName]);
     const corporateFieldsValid =
-      fields.accountType === DraftAccountType.Corporate && allRequiredFieldsExists([fields.corporationType, fields.corporationLegalName]) && hasProfileFields;
+      fields.accountType === DraftAccountType.Corporate && allRequiredFieldsExists([fields.corporationType, fields.corporationLegalName]);
 
-    return trustFieldsValid || corporateFieldsValid;
+    return (trustFieldsValid || corporateFieldsValid) && hasProfileFields;
   },
 
   Component: ({ storeFields: { accountType, isAuthorizedSignatoryEntity }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {

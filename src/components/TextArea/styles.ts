@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -7,17 +7,16 @@ export const styles = StyleSheet.create({
   inputWrapper: {
     height: '100%',
     textAlignVertical: 'top',
-    paddingHorizontal: 0,
     color: '#fff',
+    paddingTop: 18,
   },
   inputStyle: {
     height: '100%',
-    paddingTop: 12,
-  },
-  inputWrapperOnAndroid: {
-    paddingTop: 10,
-  },
-  inputStyleOnIOS: {
-    paddingTop: 18,
+    ...Platform.select({
+      ios: {
+        paddingBottom: 8,
+      },
+    }),
+    overflow: 'hidden',
   },
 });
