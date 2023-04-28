@@ -81,11 +81,8 @@ export const InviteModal = () => {
                 dataDetectorTypes={'link'}
                 value={`${url}`}
                 onChangeText={setUrl}
-                predefined
-                numberOfLines={1}
                 wrapperStyle={{ maxWidth: DEVICE_WIDTH - 100, marginBottom: 0, alignSelf: 'center' }}
-                nativeInputStyle={{ alignSelf: 'center' }}
-                style={{ textAlignVertical: 'top', alignSelf: 'center' }}
+                style={{ paddingBottom: 0, paddingTop: 0 }}
               />
               <Button
                 style={styles.inputButton}
