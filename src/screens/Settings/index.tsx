@@ -69,7 +69,7 @@ export const Settings = () => {
                   <Avatar
                     uri={account?.avatar?.url || ''}
                     initials={account?.avatar?.initials || ''}
-                  ></Avatar>
+                  />
                 </Box>
                 <StyledText>{account?.label || account?.type}</StyledText>
               </Row>

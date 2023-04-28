@@ -34,7 +34,7 @@ export const MainModalWrapper = ({
     <View style={[styles.mainWrapper, dark && styles.dark]}>
       {showLogo && (
         <View style={{ position: 'absolute', height: yScale(459), width: yScale(459), opacity: 0.4, bottom: yScale(-29), left: xScale(53) }}>
-          <Sygnet />
+          <Sygnet color={palette.lightGray} />
         </View>
       )}
       {!!header && (

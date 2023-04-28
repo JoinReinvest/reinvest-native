@@ -69,10 +69,11 @@ export const LogInNavigator: React.FC = () => {
         <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
           <LogInStack.Screen
             options={{ headerShown: false }}
-        name={Screens.BottomNavigator}
+            name={Screens.BottomNavigator}
             component={BottomTabsNavigator}
           />
-          <LogInStack.Screenname={Screens.Onboarding}
+          <LogInStack.Screen
+            name={Screens.Onboarding}
             options={stackOptions[Screens.Onboarding]}
             component={Onboarding}
           />
