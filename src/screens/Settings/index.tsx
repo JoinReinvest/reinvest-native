@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Alert, Button as NativeButton, Linking, View } from 'react-native';
+import { Alert, Button as NativeButton, Linking, Pressable, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
@@ -7,6 +7,7 @@ import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary } from '../../components/AccountSummary';
 import { Button } from '../../components/Button';
 import { Box } from '../../components/Containers/Box/Box';
+import { Icon } from '../../components/Icon';
 import { MainWrapper } from '../../components/MainWrapper';
 import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
@@ -52,16 +53,19 @@ export const Settings = () => {
       {!isStaging && (
         <>
           {account && (
-            <AccountSummary
-              accountId={account.id ?? ''}
-              avatarSize="xl"
-              accountType={account.type as DraftAccountType}
-              avatarUri={account.avatar?.url ?? undefined}
-              label={account.label ?? ''}
-              initials={account.avatar?.initials ?? ''}
-              nameTextVariant="tableHeading"
-              accountLabelTextVariant="paragraph"
-            />
+            <Pressable onPress={() => Alert.alert('Switch Account')}>
+              <AccountSummary
+                endIcon={<Icon icon="arrowDown" />}
+                accountId={account.id ?? ''}
+                avatarSize="xl"
+                accountType={account.type as DraftAccountType}
+                avatarUri={account.avatar?.url ?? undefined}
+                label={account.label ?? ''}
+                initials={account.avatar?.initials ?? ''}
+                nameTextVariant="tableHeading"
+                accountLabelTextVariant="paragraph"
+              />
+            </Pressable>
           )}
           <Box
             fw
