@@ -196,9 +196,8 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           >
             {hasApplicants ? 'Continue' : 'Skip'}
           </Button>
-          {applicantsRef.current.length <= MAX_APPLICANTS_COUNT && (
+          {applicantsRef.current.length < MAX_APPLICANTS_COUNT && (
             <Button
-              disabled={false}
               variant={hasApplicants ? 'outlined' : 'primary'}
               onPress={onAddNewApplicant}
             >
