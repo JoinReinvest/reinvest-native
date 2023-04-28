@@ -189,13 +189,14 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
           >
             {hasApplicants ? 'Continue' : 'Skip'}
           </Button>
-          <Button
-            disabled={applicantsRef.current.length >= MAX_APPLICANTS_COUNT}
-            variant={hasApplicants ? 'outlined' : 'primary'}
-            onPress={onAddNewApplicant}
-          >
-            Add Applicant
-          </Button>
+          {applicantsRef.current.length < MAX_APPLICANTS_COUNT && (
+            <Button
+              variant={hasApplicants ? 'outlined' : 'primary'}
+              onPress={onAddNewApplicant}
+            >
+              Add Applicant
+            </Button>
+          )}
         </View>
       </>
     );
