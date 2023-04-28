@@ -1,4 +1,3 @@
-import { API_URL } from '@env';
 import React, { useMemo } from 'react';
 import { Alert, Button, Linking, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
@@ -10,6 +9,7 @@ import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
 import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
+import { isStaging } from '../../constants/dev';
 import { NavigationIdentifiers, SETTINGS_NAVIGATION_LINKS } from '../../constants/navigationLinks';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
@@ -24,7 +24,7 @@ export const Settings = () => {
   const navigationHandlers: { [key in NavigationIdentifiers]: () => void } = useMemo(
     () => ({
       ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
-      ADD_ACCOUNT: () => Alert.alert('Add Account Flow'),
+      ADD_ACCOUNT: () => navigation.navigate(Screens.Onboarding),
       INVITE: () => navigation.navigate(Screens.Invite),
       HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
       SIGN_OUT: () => actions.signOut(),
@@ -34,12 +34,17 @@ export const Settings = () => {
 
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
-      {/*For testing purposes - this option is removed for staging right now*/}
-      {API_URL !== 'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com' && (
-        <Button
-          title="start onboarding"
-          onPress={() => navigation.navigate(Screens.Onboarding)}
-        />
+      {isStaging && (
+        <>
+          <Button
+            title="start onboarding"
+            onPress={navigationHandlers.ADD_ACCOUNT}
+          />
+          <Button
+            title="start onboarding"
+            onPress={navigationHandlers.SIGN_OUT}
+          />
+        </>
       )}
       {!!accounts?.length && (
         <>
@@ -63,22 +68,24 @@ export const Settings = () => {
           })}
         </>
       )}
-      <View style={[styles.fw, styles.linksContainer]}>
-        {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
-          <View
-            style={styles.fw}
-            key={identifier}
-          >
-            <NavigationButton
-              {...link}
-              onPress={navigationHandlers[identifier]}
+      {!isStaging && (
+        <View style={[styles.fw, styles.linksContainer]}>
+          {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
+            <View
+              style={styles.fw}
+              key={identifier}
             >
-              {label}
-            </NavigationButton>
-            {index === 1 && <View style={styles.separator} />}
-          </View>
-        ))}
-      </View>
+              <NavigationButton
+                {...link}
+                onPress={navigationHandlers[identifier]}
+              >
+                {label}
+              </NavigationButton>
+              {index === 1 && <View style={styles.separator} />}
+            </View>
+          ))}
+        </View>
+      )}
       <Box mt={'48'}>
         <StyledText variant="h6">Logged as</StyledText>
         <StyledText variant="paragraphSmall">{user?.getUsername()}</StyledText>
