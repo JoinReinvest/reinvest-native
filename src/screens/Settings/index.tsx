@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import { Alert, Button, Linking, View } from 'react-native';
+import { Alert, Button as NativeButton, Linking, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
-import { Avatar } from '../../components/Avatar';
+import { AccountSummary } from '../../components/AccountSummary';
+import { Button } from '../../components/Button';
 import { Box } from '../../components/Containers/Box/Box';
-import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
 import { NavigationButton } from '../../components/NavigationButton';
 import { StyledText } from '../../components/typography/StyledText';
@@ -32,59 +33,60 @@ export const Settings = () => {
     [actions, navigation],
   );
 
+  const account = accounts?.[0] ?? null;
+
   return (
     <MainWrapper style={{ alignItems: 'flex-start' }}>
       {isStaging && (
         <>
-          <Button
+          <NativeButton
             title="start onboarding"
             onPress={navigationHandlers.ADD_ACCOUNT}
           />
-          <Button
+          <NativeButton
             title="start onboarding"
             onPress={navigationHandlers.SIGN_OUT}
           />
         </>
       )}
-      {!!accounts?.length && (
-        <>
-          <StyledText variant={'h3'}>Accounts</StyledText>
-          {accounts.map(account => {
-            return (
-              <Row
-                key={account?.id}
-                alignItems={'center'}
-                py={'12'}
-              >
-                <Box mr={'8'}>
-                  <Avatar
-                    uri={account?.avatar?.url || ''}
-                    initials={account?.avatar?.initials || ''}
-                  ></Avatar>
-                </Box>
-                <StyledText>{account?.label || account?.type}</StyledText>
-              </Row>
-            );
-          })}
-        </>
-      )}
       {!isStaging && (
-        <View style={[styles.fw, styles.linksContainer]}>
-          {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
-            <View
-              style={styles.fw}
-              key={identifier}
-            >
-              <NavigationButton
-                {...link}
-                onPress={navigationHandlers[identifier]}
+        <>
+          {account && (
+            <AccountSummary
+              accountId={account.id ?? ''}
+              avatarSize="xl"
+              accountType={account.type as DraftAccountType}
+              avatarUri={account.avatar?.url ?? undefined}
+              label={account.label ?? ''}
+              initials={account.avatar?.initials ?? ''}
+              nameTextVariant="tableHeading"
+              accountLabelTextVariant="paragraph"
+            />
+          )}
+          <Box
+            fw
+            mt="4"
+            mb="24"
+          >
+            <Button>Manage Account</Button>
+          </Box>
+          <View style={[styles.fw, styles.linksContainer]}>
+            {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
+              <View
+                style={styles.fw}
+                key={identifier}
               >
-                {label}
-              </NavigationButton>
-              {index === 1 && <View style={styles.separator} />}
-            </View>
-          ))}
-        </View>
+                <NavigationButton
+                  {...link}
+                  onPress={navigationHandlers[identifier]}
+                >
+                  {label}
+                </NavigationButton>
+                {index === 1 && <View style={styles.separator} />}
+              </View>
+            ))}
+          </View>
+        </>
       )}
       <Box mt={'48'}>
         <StyledText variant="h6">Logged as</StyledText>

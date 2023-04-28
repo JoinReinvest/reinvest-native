@@ -11,11 +11,11 @@ export interface AccountSummaryProps {
   accountId: string;
   accountType: DraftAccountType | AccountType;
   avatarUri: string | undefined;
-  firstName: string;
+  initials: string;
+  label: string;
   accountLabelTextVariant?: TextVariants;
   avatarSize?: AvatarSize;
   endIcon?: ReactNode;
-  lastName?: string;
   nameTextVariant?: TextVariants;
   selected?: boolean;
 }
@@ -30,19 +30,17 @@ const AccountTypeLabels: { [key in DraftAccountType | AccountType]: string } = {
 export const AccountSummary = ({
   accountType,
   avatarUri,
-  firstName,
-  lastName,
+  label,
+  initials,
   endIcon,
   avatarSize = 'xl',
   nameTextVariant = 'h6',
   accountLabelTextVariant = 'paragraphLarge',
 }: AccountSummaryProps) => {
-  const username = `${firstName} ${lastName ? lastName : ''}`;
-
   return (
     <View style={[styles.container]}>
       <Avatar
-        username={username}
+        initials={initials}
         variant={accountType}
         uri={avatarUri}
         size={avatarSize}
@@ -53,12 +51,12 @@ export const AccountSummary = ({
             color="pureBlack"
             variant={nameTextVariant}
           >
-            {username}
+            {label}
           </StyledText>
           {endIcon && endIcon}
         </View>
         <StyledText
-          color="dark1"
+          color="dark3"
           variant={accountLabelTextVariant}
         >
           {AccountTypeLabels[`${accountType}`]}
