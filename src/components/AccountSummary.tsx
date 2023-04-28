@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AccountType, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, DraftAccountType, GetAvatarLink } from 'reinvest-app-common/src/types/graphql';
 
 import { Avatar } from './Avatar';
 import { AvatarSize } from './Avatar/types';
@@ -8,13 +8,14 @@ import { StyledText } from './typography/StyledText';
 import { TextVariants } from './typography/StyledText/types';
 
 export interface AccountSummaryProps {
-  accountId: string;
-  accountType: DraftAccountType | AccountType;
-  avatarUri: string | undefined;
-  firstName: string;
+  id: string;
+  label: string;
+  type: DraftAccountType | AccountType;
   accountLabelTextVariant?: TextVariants;
+  avatar?: GetAvatarLink;
   avatarSize?: AvatarSize;
   endIcon?: ReactNode;
+  firstName?: string;
   lastName?: string;
   nameTextVariant?: TextVariants;
   selected?: boolean;
@@ -28,8 +29,9 @@ const AccountTypeLabels: { [key in DraftAccountType | AccountType]: string } = {
 };
 
 export const AccountSummary = ({
-  accountType,
-  avatarUri,
+  type,
+  label,
+  avatar,
   firstName,
   lastName,
   endIcon,
@@ -37,14 +39,12 @@ export const AccountSummary = ({
   nameTextVariant = 'h6',
   accountLabelTextVariant = 'paragraphLarge',
 }: AccountSummaryProps) => {
-  const username = `${firstName} ${lastName ? lastName : ''}`;
-
   return (
     <View style={[styles.container]}>
       <Avatar
-        username={username}
-        variant={accountType}
-        uri={avatarUri}
+        initials={avatar?.initials || ''}
+        variant={type}
+        uri={avatar?.url as string}
         size={avatarSize}
       />
       <View>
@@ -53,7 +53,7 @@ export const AccountSummary = ({
             color="pureBlack"
             variant={nameTextVariant}
           >
-            {username}
+            {label || `${firstName} |${lastName}`}
           </StyledText>
           {endIcon && endIcon}
         </View>
@@ -61,7 +61,7 @@ export const AccountSummary = ({
           color="dark1"
           variant={accountLabelTextVariant}
         >
-          {AccountTypeLabels[`${accountType}`]}
+          {AccountTypeLabels[`${type}`]}
         </StyledText>
       </View>
     </View>

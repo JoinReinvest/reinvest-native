@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Share, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetInvitationLink } from 'reinvest-app-common/src/services/queries/getInvitationLink';
 
 import { getApiClient } from '../../../../api/getApiClient';
@@ -17,6 +18,7 @@ import { styles } from './styles';
 export const InviteModal = () => {
   const { data, isSuccess } = useGetInvitationLink(getApiClient);
   const { closeDialog } = useDialog();
+  const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
   const [url, setUrl] = useState<undefined | string>('');
 
@@ -38,7 +40,7 @@ export const InviteModal = () => {
   };
 
   return (
-    <View style={[styles.center, styles.container]}>
+    <View style={[styles.center, styles.container, { paddingBottom: bottom }]}>
       <View style={styles.center}>
         <Box style={styles.iconContainer}>
           <Icon

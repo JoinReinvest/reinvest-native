@@ -16,7 +16,10 @@ export const ManageAccountMainScreen = () => {
   const navigate = (identifier: NavigationIdentifiers, heading: string) => navigation.navigate(Screens.ManageAccount, { identifier, heading });
 
   return (
-    <PaddedScrollView style={styles.container}>
+    <PaddedScrollView
+      style={[styles.container]}
+      safeInset
+    >
       <Box
         mt="24"
         fw

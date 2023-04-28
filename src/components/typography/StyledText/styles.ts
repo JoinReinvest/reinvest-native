@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   bonusHeading: {
-    fontFamily: Fonts.GTAmericaRegular,
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 15,
     lineHeight: 18 * 1.1,
   },

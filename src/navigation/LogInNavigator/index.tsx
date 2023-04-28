@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -75,36 +76,38 @@ export const LogInNavigator: React.FC = () => {
     );
 
   return (
-    <SafeAreaProvider>
-      <DialogProvider dark={false}>
-        <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
-          <LogInStack.Screen
-            options={{ headerShown: false }}
-            name={Screens.BottomNavigator}
-            component={BottomTabsNavigator}
-          />
-          <LogInStack.Screen
-            name={Screens.Onboarding}
-            options={stackOptions[Screens.Onboarding]}
-            component={Onboarding}
-          />
-          <LogInStack.Screen
-            options={stackOptions[Screens.Settings]}
-            name={Screens.Settings}
-            component={Settings}
-          />
-        </LogInStack.Navigator>
-      </DialogProvider>
-      <LogInStack.Screen
-        options={stackOptions[Screens.ManageAccountMainScreen]}
-        name={Screens.ManageAccountMainScreen}
-        component={ManageAccountMainScreen}
-      />
-      <LogInStack.Screen
-        options={stackOptions[Screens.ManageAccount]}
-        name={Screens.ManageAccount}
-        component={ManageAccountScreen}
-      />
-    </SafeAreaProvider>
+    <BottomSheetModalProvider>
+      <SafeAreaProvider>
+        <DialogProvider dark={false}>
+          <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
+            <LogInStack.Screen
+              options={{ headerShown: false }}
+              name={Screens.BottomNavigator}
+              component={BottomTabsNavigator}
+            />
+            <LogInStack.Screen
+              name={Screens.Onboarding}
+              options={stackOptions[Screens.Onboarding]}
+              component={Onboarding}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.Settings]}
+              name={Screens.Settings}
+              component={Settings}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.ManageAccountMainScreen]}
+              name={Screens.ManageAccountMainScreen}
+              component={ManageAccountMainScreen}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.ManageAccount]}
+              name={Screens.ManageAccount}
+              component={ManageAccountScreen}
+            />
+          </LogInStack.Navigator>
+        </DialogProvider>
+      </SafeAreaProvider>
+    </BottomSheetModalProvider>
   );
 };

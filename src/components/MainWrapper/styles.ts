@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../constants/styles';
 import { palette } from '../../constants/theme';
+import { hexToRgbA } from '../../utils/hexToRgb';
 
 export const styles = StyleSheet.create({
   staticWrapper: {
@@ -27,5 +28,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   flex: { flex: 1 },
-  loaderWrapper: { justifyContent: 'center', alignItems: 'center', flex: 1 },
+  loaderWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: hexToRgbA(palette.pureWhite, 0.5),
+  },
+  darkLoader: {
+    backgroundColor: hexToRgbA(palette.pureBlack, 0.5),
+  },
 });

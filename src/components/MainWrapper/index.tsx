@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import { ScrollView, StatusBar, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
+import { Loader } from '../Loader';
 import { styles } from './styles';
 import { MainWrapperProps } from './types';
 
@@ -15,15 +16,17 @@ export const MainWrapper = ({
   style,
   noPadding,
   isLoading,
+  bottomSafe = false,
 }: PropsWithChildren<MainWrapperProps>) => {
+  const { bottom } = useSafeAreaInsets();
   const LoaderComp = isLoading && (
-    <View style={[styles.loaderWrapper]}>
-      <Loader color={palette.deepGreen} />
+    <View style={[styles.loaderWrapper, dark && styles.darkLoader]}>
+      <Loader color={dark ? palette.pureWhite : palette.deepGreen} />
     </View>
   );
 
   return (
-    <View style={[!dark ? styles.light : styles.dark, styles.flex]}>
+    <View style={[!dark ? styles.light : styles.dark, styles.flex, bottomSafe && { paddingBottom: bottom }]}>
       <StatusBar
         hidden={false}
         backgroundColor="transparent"

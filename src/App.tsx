@@ -2,6 +2,8 @@ import { SENTRY_DNS } from '@env';
 import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 
 import { RootNavigator } from './navigation/RootNavigator';
@@ -29,9 +31,13 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RootNavigator />
-      </AuthProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <AuthProvider>
+            <RootNavigator />
+          </AuthProvider>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 };
