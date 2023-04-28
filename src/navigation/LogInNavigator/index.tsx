@@ -9,6 +9,8 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
+import { ManageAccountMainScreen } from '../../screens/ManageAccount';
+import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
@@ -18,15 +20,24 @@ import { LogInStackParamList } from './types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
-const stackOptions: Record<Extract<Screens, Screens.Onboarding | Screens.Settings>, NativeStackNavigationOptions> = {
+const stackOptions: Record<
+  Extract<Screens, Screens.Onboarding | Screens.Settings | Screens.ManageAccount | Screens.ManageAccountMainScreen>,
+  NativeStackNavigationOptions
+> = {
   [Screens.Onboarding]: {
     title: 'logo',
     header: DarkScreenHeader,
   },
-
   [Screens.Settings]: {
-    title: 'Settings',
     header: ScreenHeader,
+  },
+  [Screens.ManageAccountMainScreen]: {
+    title: 'Manage Account',
+    header: ScreenHeader,
+  },
+  [Screens.ManageAccount]: {
+    title: 'Manage Account',
+    headerShown: false,
   },
 };
 
@@ -84,6 +95,16 @@ export const LogInNavigator: React.FC = () => {
           />
         </LogInStack.Navigator>
       </DialogProvider>
+      <LogInStack.Screen
+        options={stackOptions[Screens.ManageAccountMainScreen]}
+        name={Screens.ManageAccountMainScreen}
+        component={ManageAccountMainScreen}
+      />
+      <LogInStack.Screen
+        options={stackOptions[Screens.ManageAccount]}
+        name={Screens.ManageAccount}
+        component={ManageAccountScreen}
+      />
     </SafeAreaProvider>
   );
 };

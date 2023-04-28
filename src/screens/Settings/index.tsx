@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { Alert, Button, Linking, View } from 'react-native';
+import { Alert, Button as NativeButton, Linking, View } from 'react-native';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Avatar } from '../../components/Avatar';
+import { Button } from '../../components/Button';
 import { Box } from '../../components/Containers/Box/Box';
 import { Row } from '../../components/Containers/Row';
 import { MainWrapper } from '../../components/MainWrapper';
@@ -25,7 +26,7 @@ export const Settings = () => {
   const navigation = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
 
-  const navigationHandlers: { [key in NavigationIdentifiers]: () => void } = useMemo(
+  const navigationHandlers: Partial<{ [key in NavigationIdentifiers]: () => void }> = useMemo(
     () => ({
       ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
       ADD_ACCOUNT: () => navigation.navigate(Screens.Onboarding),
@@ -45,11 +46,11 @@ export const Settings = () => {
     <MainWrapper style={{ alignItems: 'flex-start' }}>
       {isStaging && (
         <>
-          <Button
+          <NativeButton
             title="start onboarding"
             onPress={navigationHandlers.ADD_ACCOUNT}
           />
-          <Button
+          <NativeButton
             title="start onboarding"
             onPress={navigationHandlers.SIGN_OUT}
           />
@@ -78,22 +79,30 @@ export const Settings = () => {
         </>
       )}
       {!isStaging && (
-        <View style={[styles.fw, styles.linksContainer]}>
-          {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
-            <View
-              style={styles.fw}
-              key={identifier}
-            >
-              <NavigationButton
-                {...link}
-                onPress={navigationHandlers[identifier]}
+        <>
+          <Box
+            fw
+            my="24"
+          >
+            <Button onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)}>Manage Account</Button>
+          </Box>
+          <View style={[styles.fw, styles.linksContainer]}>
+            {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
+              <View
+                style={styles.fw}
+                key={identifier}
               >
-                {label}
-              </NavigationButton>
-              {index === 1 && <View style={styles.separator} />}
-            </View>
-          ))}
-        </View>
+                <NavigationButton
+                  {...link}
+                  onPress={navigationHandlers[identifier]}
+                >
+                  {label}
+                </NavigationButton>
+                {index === 1 && <View style={styles.separator} />}
+              </View>
+            ))}
+          </View>
+        </>
       )}
       <Box mt={'48'}>
         <StyledText variant="h6">Logged as</StyledText>
