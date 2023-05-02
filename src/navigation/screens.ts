@@ -14,6 +14,8 @@ enum Screens {
   WebViewContent = 'WebViewContent',
   Onboarding = 'Onboarding',
   ResetPassword = 'ResetPassword',
+  ManageAccountMainScreen = 'ManageAccountMainScreen',
+  ManageAccount = 'ManageAccount',
 }
 
 export default Screens;

@@ -26,6 +26,7 @@ export const palette = {
 
 export const gradients = {
   gradientsLight: ['#D6E5E0', '#FFFFFF'],
+  headerGradient: ['#C4C4C4', '#FFF'],
   gradientsDark: ['#D6E5E0', '#11270B'],
 };
 
