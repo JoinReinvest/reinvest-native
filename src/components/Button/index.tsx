@@ -22,7 +22,12 @@ export const Button = ({
 }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
     if (!disabled && isLoading) {
-      return <Loader color={variant === 'primary' ? palette.deepGreen : palette.frostGreen} />;
+      return (
+        <Loader
+          align={'center'}
+          color={variant === 'primary' ? palette.deepGreen : palette.frostGreen}
+        />
+      );
     }
 
     return children;

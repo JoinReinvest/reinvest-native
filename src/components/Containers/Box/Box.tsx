@@ -15,7 +15,7 @@ function generateSpacings<T extends SpacingProps>(props: T): ViewStyle {
     padding: getSize(props.p),
     paddingRight: getSize(props.pr || props.p),
     paddingTop: getSize(props.pt || props.p),
-    paddingBottom: getSize(props.pb || props.p),
+    paddingBottom: typeof props.pb === 'number' ? props.pb : getSize(props.pb || props.p),
     paddingLeft: getSize(props.pl || props.p),
     paddingVertical: yScale(getSize(props.py)),
     paddingHorizontal: props.px === 'default' ? MAIN_WRAPPER_PADDING_HORIZONTAL : xScale(getSize(props.px)),

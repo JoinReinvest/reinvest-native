@@ -1,22 +1,21 @@
-import { View } from 'react-native';
-
 import { AccountSummary } from '../AccountSummary';
+import { Row } from '../Containers/Row';
 import { RadioButton } from '../RadioButton';
 import { styles } from './styles';
 import { SwitchAccountItemProps } from './types';
 
-export const SwitchAccountItem = ({ accountId, selected = false, onPress, ...rest }: SwitchAccountItemProps) => {
+export const SwitchAccountItem = ({ id, selected = false, onPress, ...rest }: SwitchAccountItemProps) => {
   return (
-    <View style={styles.switchAccountContainer}>
+    <Row style={styles.switchAccountContainer}>
       <AccountSummary
-        accountId={accountId}
+        id={id}
         {...rest}
       />
       <RadioButton
         checked={selected}
         onPress={onPress}
-        value={accountId}
+        value={id}
       />
-    </View>
+    </Row>
   );
 };

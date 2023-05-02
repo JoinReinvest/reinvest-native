@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
 import { Theme } from '../../../constants/theme';
 
@@ -22,7 +22,7 @@ export { sizes };
 
 export type PaddingProps = {
   p?: SizesEnum;
-  pb?: SizesEnum;
+  pb?: SizesEnum | number;
   pl?: SizesEnum;
   pr?: SizesEnum;
   pt?: SizesEnum;
@@ -62,4 +62,5 @@ export type BoxProps = {
   style?: StyleProp<ViewStyle>;
 } & SpacingProps &
   FlexPosition &
-  Sizes;
+  Sizes &
+  Partial<ViewProps>;
