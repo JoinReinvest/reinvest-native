@@ -12,6 +12,7 @@ import {
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
+  Copy,
   Disabled,
   Down,
   Edit,
@@ -19,6 +20,7 @@ import {
   EyeVisible,
   File,
   FriendsAndFamily,
+  Gift,
   HamburgerClose,
   HamburgerOpen,
   HelpAndSupport,
@@ -86,9 +88,12 @@ export const icons = {
   signOut: SignOut,
   helpAndSupport: HelpAndSupport,
   addBeneficiary: AddBeneficiary,
+  gift: Gift,
+  copy: Copy,
 };
 
 export const sizes = {
+  xs: 21,
   s: 24,
   m: 32,
   l: 40,

@@ -11,6 +11,7 @@ import { Calendar } from './Calendar';
 import { Checkbox } from './Checkbox';
 import { CheckboxUnchecked } from './CheckboxUnchecked';
 import { CircleAlert } from './CircleAlert';
+import { Copy } from './Copy';
 import { Disabled } from './Disabled';
 import { Down } from './Down';
 import { Edit } from './Edit';
@@ -18,6 +19,7 @@ import { EyeHide } from './EyeHide';
 import { EyeVisible } from './EyeVisible';
 import { File } from './File';
 import { FriendsAndFamily } from './FriendsAndFamily';
+import { Gift } from './Gift';
 import { HamburgerClose } from './HamburgerClose';
 import { HamburgerOpen } from './HamburgerOpen';
 import { HelpAndSupport } from './HelpAndSupport';
@@ -57,6 +59,7 @@ export {
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
+  Copy,
   Disabled,
   Down,
   Edit,
@@ -64,6 +67,7 @@ export {
   EyeVisible,
   File,
   FriendsAndFamily,
+  Gift,
   HamburgerClose,
   HamburgerOpen,
   HelpAndSupport,

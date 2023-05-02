@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
       android: { includeFontPadding: false, textAlignVertical: 'center' },
     }),
   },
+  subheading: {
+    fontFamily: Fonts.GTAmericaExtendedRegular,
+    fontSize: 15,
+    lineHeight: 18 * 1.1,
+  },
   h1: {
     fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 54,
@@ -28,7 +33,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   h4: {
-    fontFamily: Fonts.GTAmericaRegular,
+    fontFamily: Fonts.GTAmericaExtendedRegular,
     fontSize: 24,
     lineHeight: 24 * 1.1,
     letterSpacing: -0.5,

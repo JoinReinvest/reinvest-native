@@ -11,5 +11,5 @@ export interface IconProps extends SvgProps {
   icon: Icons;
   color?: ThemeValues;
   onPress?: () => void;
-  size?: 's' | 'm' | 'l' | 'xl';
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl';
 }
