@@ -1,7 +1,13 @@
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
+import { getApiClient } from '../../api/getApiClient';
+import { Avatar } from '../../components/Avatar';
+import { Box } from '../../components/Containers/Box/Box';
+import { ScreenHeader } from '../../components/CustomHeader';
+import { Sygnet } from '../../components/Icon/icons';
 import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/DashboardIcon';
 import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
 import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
@@ -21,6 +27,15 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
   [Screens.Dashboard]: {
     title: 'Dashboard',
     tabBarIcon: ({ focused }) => <DashboardIcon focused={focused} />,
+    headerLeft: () => (
+      <Box
+        m="8"
+        width={32}
+        height={32}
+      >
+        <Sygnet color={palette.pureBlack} />
+      </Box>
+    ),
   },
   [Screens.REIT]: {
     title: 'Community REIT',
@@ -47,10 +62,11 @@ const getLabel = (focused: boolean, children: string) => (
 
 export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
+  const { data } = useGetAccountsOverview(getApiClient);
 
   return (
     <Tab.Navigator
-      initialRouteName={Screens.EducationStack}
+      initialRouteName={Screens.Dashboard}
       backBehavior="none"
       screenOptions={{
         tabBarStyle: {
@@ -68,8 +84,19 @@ export const BottomTabsNavigator: React.FC = () => {
       <Tab.Screen
         name={Screens.Dashboard}
         component={Dashboard}
-        options={() => ({
+        options={({ navigation }) => ({
           ...stackOptions[Screens.Dashboard],
+          headerRight: () => (
+            <Avatar
+              onPress={() => {
+                navigation.navigate(Screens.Settings);
+              }}
+              uri={data?.[0]?.avatar?.url || ''}
+              initials={data?.[0]?.avatar?.initials || ''}
+            />
+          ),
+          headerShown: true,
+          header: ScreenHeader,
         })}
       />
       <Tab.Screen
