@@ -6,14 +6,15 @@ import { privacyPolicy, termsAndConditions } from '../../constants/strings';
 import { useDialog } from '../../providers/DialogProvider';
 import { yScale } from '../../utils/scale';
 import { FormModalDisclaimer } from '../Modals/ModalContent/FormModalDisclaimer';
-import { styles } from '../TermsFooter/styles';
 import { StyledText } from '../typography/StyledText';
+import { styles } from './styles';
 
 export interface TermsFooterProps {
+  dark?: boolean;
   noPadding?: boolean;
 }
 
-export const TermsFooter = ({ noPadding = false }: TermsFooterProps) => {
+export const TermsFooter = ({ noPadding = false, dark }: TermsFooterProps) => {
   const { bottom } = useSafeAreaInsets();
   const { openDialog } = useDialog();
 
@@ -43,7 +44,7 @@ export const TermsFooter = ({ noPadding = false }: TermsFooterProps) => {
       style={[styles.wrapper, { paddingBottom }]}
     >
       <StyledText
-        color="pureWhite"
+        color={dark ? 'pureWhite' : 'dark3'}
         variant="paragraphSmall"
         style={{ textAlign: 'center' }}
       >
@@ -51,21 +52,21 @@ export const TermsFooter = ({ noPadding = false }: TermsFooterProps) => {
       </StyledText>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center' }}>
         <StyledText
-          color="frostGreen"
+          color={dark ? 'frostGreen' : 'dark3'}
           onPress={showTerms}
           variant="link"
         >
           Terms of Conditions
         </StyledText>
         <StyledText
-          color="pureWhite"
+          color={dark ? 'pureWhite' : 'dark3'}
           variant="paragraphSmall"
         >
           {' '}
           and{' '}
         </StyledText>
         <StyledText
-          color="frostGreen"
+          color={dark ? 'frostGreen' : 'dark3'}
           variant="link"
           onPress={showPP}
         >

@@ -106,7 +106,10 @@ export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onCl
           defaultValues={defaultValues}
         />
       </Box>
-      <TermsFooter noPadding={!isIOS} />
+      <TermsFooter
+        noPadding={!isIOS}
+        dark
+      />
     </>
   );
 };

@@ -24,7 +24,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
       noPadding
     >
       <CurrentStepView />
-      {shouldShowFooter && <TermsFooter />}
+      {shouldShowFooter && <TermsFooter dark />}
     </MainWrapper>
   );
 };

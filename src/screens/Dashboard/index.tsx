@@ -1,5 +1,4 @@
 import React from 'react';
-import { Alert } from 'react-native';
 
 import { AccountOverview } from '../../components/AccountOverview';
 import { Button } from '../../components/Button';
@@ -77,7 +76,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
         />
         <Chart />
         <Box py={'16'}>
-          <Button onPress={() => Alert.alert('invest')}>Invest</Button>
+          <Button onPress={() => navigation.navigate(Screens.Investing)}>Invest</Button>
         </Box>
         <Table
           heading="$522.94" // TODO: Replace with values from API:

@@ -10,6 +10,7 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
+import { Investing } from '../../screens/Investing';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { Onboarding } from '../../screens/Onboarding';
@@ -22,12 +23,16 @@ import { LogInStackParamList } from './types';
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
 const stackOptions: Record<
-  Extract<Screens, Screens.Onboarding | Screens.Settings | Screens.ManageAccount | Screens.ManageAccountMainScreen>,
+  Extract<Screens, Screens.Onboarding | Screens.Settings | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing>,
   NativeStackNavigationOptions
 > = {
   [Screens.Onboarding]: {
     title: 'logo',
     header: DarkScreenHeader,
+  },
+  [Screens.Investing]: {
+    title: 'logo',
+    header: ScreenHeader,
   },
   [Screens.Settings]: {
     header: ScreenHeader,
@@ -89,6 +94,11 @@ export const LogInNavigator: React.FC = () => {
               name={Screens.Onboarding}
               options={stackOptions[Screens.Onboarding]}
               component={Onboarding}
+            />
+            <LogInStack.Screen
+              name={Screens.Investing}
+              options={stackOptions[Screens.Investing]}
+              component={Investing}
             />
             <LogInStack.Screen
               options={stackOptions[Screens.Settings]}

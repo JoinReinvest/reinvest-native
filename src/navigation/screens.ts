@@ -16,6 +16,7 @@ enum Screens {
   ResetPassword = 'ResetPassword',
   ManageAccountMainScreen = 'ManageAccountMainScreen',
   ManageAccount = 'ManageAccount',
+  Investing = 'Investing',
 }
 
 export default Screens;
