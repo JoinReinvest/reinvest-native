@@ -58,7 +58,7 @@ export const LogInNavigator: React.FC = () => {
       }
 
       if (!data.isCompleted) {
-        navigation.reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
+        navigation.reset({ index: 0, routes: [{ name: Screens.Dashboard }] });
       }
     }
   }, [data, navigation]);

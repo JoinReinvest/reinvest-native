@@ -11,6 +11,7 @@ import { Calendar } from './Calendar';
 import { Checkbox } from './Checkbox';
 import { CheckboxUnchecked } from './CheckboxUnchecked';
 import { CircleAlert } from './CircleAlert';
+import { CircleChevron } from './CircleChevron';
 import { Copy } from './Copy';
 import { Disabled } from './Disabled';
 import { Down } from './Down';
@@ -45,6 +46,7 @@ import { Trash } from './Trash';
 import { Trophy } from './Trophy';
 import { Up } from './Up';
 import { Upload } from './Upload';
+
 export {
   Add,
   AddBeneficiary,
@@ -59,6 +61,7 @@ export {
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
+  CircleChevron,
   Copy,
   Disabled,
   Down,

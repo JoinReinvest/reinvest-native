@@ -1,3 +1,4 @@
+import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
@@ -28,7 +29,7 @@ export const ScreenHeader = ({
   dark,
   options: { title, headerRight, headerLeft },
   showGradient = true,
-}: NativeStackHeaderProps & {
+}: (NativeStackHeaderProps | BottomTabHeaderProps) & {
   dark?: boolean;
   showGradient?: boolean;
   title?: string | 'logo';
