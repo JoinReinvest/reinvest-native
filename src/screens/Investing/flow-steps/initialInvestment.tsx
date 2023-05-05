@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 
+import { InvestingAmountTable } from '../ components/InvestingAmountTable';
 import { Button } from '../../../components/Button';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -14,10 +15,12 @@ import { styles } from './styles';
 export const InitialInvestment: StepParams<InvestFormFields> = {
   identifier: Identifiers.INITIAL_INVESTMENT,
 
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
     const { progressPercentage } = useInvestFlow();
+    const [amount, setAmount] = useState<string | undefined>(storeFields.investAmount);
 
     const handleContinue = async () => {
+      await updateStoreFields({ investAmount: amount });
       moveToNextStep();
     };
 
@@ -30,8 +33,13 @@ export const InitialInvestment: StepParams<InvestFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView keyboardShouldPersistTaps={'handled'}>
           <FormTitle headline="Make your initial one-time investment" />
+          <InvestingAmountTable
+            amount={amount}
+            bankAccount={'*** *** *** *** 00000 '}
+            setAmount={setAmount}
+          />
         </PaddedScrollView>
         <View
           key="buttons_section"
@@ -46,7 +54,7 @@ export const InitialInvestment: StepParams<InvestFormFields> = {
           </Button>
           <Button
             onPress={handleContinue}
-            // disabled={false || isLoading}
+            disabled={!amount?.length}
           >
             Continue
           </Button>

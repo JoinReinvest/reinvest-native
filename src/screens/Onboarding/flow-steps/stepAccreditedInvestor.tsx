@@ -87,6 +87,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
     const handleOpenDialog = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline={'What is an accredited investor?'}
           content="CONTENT"
         />,

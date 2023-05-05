@@ -102,6 +102,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
     const openEinDialog = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="EIN?"
           content="CONTENT"
         />,
@@ -111,6 +112,7 @@ export const StepEIN: StepParams<OnboardingFormFields> = {
     const openIDoNotHaveEinDialog = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="I do not have an ein"
           content="CONTENT"
         />,

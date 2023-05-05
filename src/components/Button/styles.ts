@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     borderColor: palette.lightGray,
   },
   outlinedLabel: {
-    color: palette.frostGreen,
+    color: palette.pureBlack,
   },
   outlinedLabelDisabled: {
     color: palette.darkerGray,

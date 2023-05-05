@@ -100,6 +100,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
     const openRequiredModal = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="Required Why?"
           content="CONTENT"
         />,

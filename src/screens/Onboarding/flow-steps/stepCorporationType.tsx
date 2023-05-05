@@ -59,6 +59,7 @@ export const StepCorporationType: StepParams<OnboardingFormFields> = {
     const openDisclaimer = () =>
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="Account types"
           content={onBoardingDisclaimers.notSureWhichBestForYou}
         />,

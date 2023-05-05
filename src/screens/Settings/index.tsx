@@ -66,7 +66,6 @@ export const Settings = () => {
   const showTerms = () => {
     openDialog(
       <FormModalDisclaimer
-        dark={false}
         headline="Terms and Conditions"
         content={termsAndConditions}
       />,
@@ -76,7 +75,6 @@ export const Settings = () => {
   const showPP = () => {
     openDialog(
       <FormModalDisclaimer
-        dark={false}
         headline="Privacy Policy"
         content={privacyPolicy}
       />,

@@ -1,3 +1,3 @@
 export interface InvestFormFields {
-  investAmount?: number;
+  investAmount?: string;
 }

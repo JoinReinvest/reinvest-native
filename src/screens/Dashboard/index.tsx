@@ -52,7 +52,6 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
     const { label, info } = TABLE_ITEMS[identifier];
     openDialog(
       <FormModalDisclaimer
-        dark={false}
         headline={label}
         content={info}
       />,

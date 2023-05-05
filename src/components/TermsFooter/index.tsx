@@ -21,6 +21,7 @@ export const TermsFooter = ({ noPadding = false, dark }: TermsFooterProps) => {
   const showTerms = () => {
     openDialog(
       <FormModalDisclaimer
+        dark={dark}
         headline="Terms and Conditions"
         content={termsAndConditions}
       />,
@@ -30,6 +31,7 @@ export const TermsFooter = ({ noPadding = false, dark }: TermsFooterProps) => {
   const showPP = () => {
     openDialog(
       <FormModalDisclaimer
+        dark={dark}
         headline="Privacy Policy"
         content={privacyPolicy}
       />,

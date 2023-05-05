@@ -72,6 +72,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
     const handleOpenDialog = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="Required. Why?"
           content="CONTENT"
         />,
