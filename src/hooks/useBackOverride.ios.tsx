@@ -7,6 +7,7 @@ import { useBackOverrideBase } from './useBackOverrideBase';
 export const useStepBackOverride = <T extends object, K extends ParamListBase>(
   useCurrentFormContext: () => ContextState<T>,
   navigation: NativeStackNavigationProp<K>,
+  dark?: boolean,
 ) => {
-  useBackOverrideBase(useCurrentFormContext, navigation);
+  useBackOverrideBase(useCurrentFormContext, navigation, dark);
 };

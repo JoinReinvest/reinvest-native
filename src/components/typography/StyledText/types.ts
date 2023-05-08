@@ -1,10 +1,12 @@
-import { TextProps } from 'react-native';
+import { TextProps, TextStyle } from 'react-native';
 
 import { Theme } from '../../../constants/theme';
 
+type TextAlign = TextStyle['textAlign'];
 export interface StyledTextProps extends TextProps {
   color?: Theme;
   opacity?: number;
+  textAlign?: TextAlign;
   variant?: TextVariants;
 }
 

@@ -88,6 +88,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const showDisclaimer = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline="We need your phone number"
           content={onBoardingDisclaimers.requiredWhy}
         />,

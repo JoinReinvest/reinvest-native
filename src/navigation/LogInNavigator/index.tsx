@@ -10,6 +10,7 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
+import { Investing } from '../../screens/Investing';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { Onboarding } from '../../screens/Onboarding';
@@ -22,19 +23,18 @@ import { LogInStackParamList } from './types';
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
 const stackOptions: Record<
-  Extract<Screens, Screens.Onboarding | Screens.Settings | Screens.ManageAccount | Screens.ManageAccountMainScreen>,
+  Extract<Screens, Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing>,
   NativeStackNavigationOptions
 > = {
   [Screens.Onboarding]: {
     title: 'logo',
     header: DarkScreenHeader,
   },
-  [Screens.Settings]: {
-    header: ScreenHeader,
+  [Screens.Investing]: {
+    title: 'logo',
   },
   [Screens.ManageAccountMainScreen]: {
     title: 'Manage Account',
-    header: ScreenHeader,
   },
   [Screens.ManageAccount]: {
     title: 'Manage Account',
@@ -90,16 +90,22 @@ export const LogInNavigator: React.FC = () => {
               options={stackOptions[Screens.Onboarding]}
               component={Onboarding}
             />
-            <LogInStack.Screen
-              options={stackOptions[Screens.Settings]}
-              name={Screens.Settings}
-              component={Settings}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.ManageAccountMainScreen]}
-              name={Screens.ManageAccountMainScreen}
-              component={ManageAccountMainScreen}
-            />
+            <LogInStack.Group screenOptions={{ header: ScreenHeader }}>
+              <LogInStack.Screen
+                name={Screens.Settings}
+                component={Settings}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.ManageAccountMainScreen]}
+                name={Screens.ManageAccountMainScreen}
+                component={ManageAccountMainScreen}
+              />
+              <LogInStack.Screen
+                name={Screens.Investing}
+                options={stackOptions[Screens.Investing]}
+                component={Investing}
+              />
+            </LogInStack.Group>
             <LogInStack.Screen
               options={stackOptions[Screens.ManageAccount]}
               name={Screens.ManageAccount}

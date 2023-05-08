@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 import { palette } from '../../constants/theme';
-import { xScale } from '../../utils/scale';
+import { xScale, yScale } from '../../utils/scale';
 
 export const styles = StyleSheet.create({
   button: {
     height: 48,
     width: '100%',
     justifyContent: 'center',
+    marginTop: yScale(12),
   },
   labelWrapper: {
     flexDirection: 'row',
@@ -76,7 +77,7 @@ export const styles = StyleSheet.create({
     borderColor: palette.lightGray,
   },
   outlinedLabel: {
-    color: palette.frostGreen,
+    color: palette.pureBlack,
   },
   outlinedLabelDisabled: {
     color: palette.darkerGray,

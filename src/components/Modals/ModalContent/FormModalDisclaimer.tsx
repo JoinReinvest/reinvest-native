@@ -20,7 +20,7 @@ interface Props {
   dark?: boolean;
 }
 
-export const FormModalDisclaimer = ({ dark = true, headline, content = mockedContent, children }: PropsWithChildren<Props>) => {
+export const FormModalDisclaimer = ({ dark, headline, content = mockedContent, children }: PropsWithChildren<Props>) => {
   const { bottom } = useSafeAreaInsets();
 
   return (

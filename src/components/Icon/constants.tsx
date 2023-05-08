@@ -35,6 +35,7 @@ import {
   Notification,
   NotificationBell,
   Percent,
+  RecurringBig,
   Refresh,
   Search,
   Share,
@@ -92,6 +93,7 @@ export const icons = {
   addBeneficiary: AddBeneficiary,
   gift: Gift,
   copy: Copy,
+  recurringBig: RecurringBig,
 };
 
 export const sizes = {
@@ -100,4 +102,5 @@ export const sizes = {
   m: 32,
   l: 40,
   xl: 48,
+  xxl: 96,
 };

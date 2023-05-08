@@ -95,6 +95,7 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
     const showGetHelp = () => {
       openDialog(
         <FormModalDisclaimer
+          dark
           headline={onBoardingModalHeadlines.getHelpPhoneNumber}
           content={onBoardingDisclaimers.phoneNumberAuthenticationCodeGetHelp}
         />,

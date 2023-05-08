@@ -1,5 +1,5 @@
 export interface Props {
-  title: string;
   dark?: boolean;
+  title?: string;
   variant?: 'success' | 'error';
 }

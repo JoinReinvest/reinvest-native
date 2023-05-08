@@ -39,5 +39,6 @@ export const styles = StyleSheet.create({
   inputButton: {
     height: 48,
     width: 48,
+    marginTop: 0,
   },
 });

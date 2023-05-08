@@ -7,27 +7,24 @@ import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInStackParamList } from '../../../navigation/LogInNavigator/types';
 import { DialogProvider } from '../../../providers/DialogProvider';
-import { useOnboardingFormFlow } from '../flow-steps';
-import { OnboardingFormFields } from '../types';
+import { useInvestFlow } from '../flow-steps';
+import { InvestFormFields } from '../types';
 
 interface Props {
   shouldShowFooter?: boolean;
 }
-export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
-  const { CurrentStepView } = useOnboardingFormFlow();
+export const InvestmentLayout = ({ shouldShowFooter = true }: Props) => {
+  const { CurrentStepView } = useInvestFlow();
   const navigation = useLogInNavigation();
 
-  useStepBackOverride<OnboardingFormFields, LogInStackParamList>(useOnboardingFormFlow, navigation);
+  useStepBackOverride<InvestFormFields, LogInStackParamList>(useInvestFlow, navigation, false);
   useKeyboardAware();
 
   return (
-    <DialogProvider dark>
-      <MainWrapper
-        dark
-        noPadding
-      >
+    <DialogProvider>
+      <MainWrapper noPadding>
         <CurrentStepView />
-        {shouldShowFooter && <TermsFooter dark />}
+        {shouldShowFooter && <TermsFooter />}
       </MainWrapper>
     </DialogProvider>
   );

@@ -26,7 +26,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
     >
       <StatusBar barStyle="light-content" />
       <CurrentStepView />
-      {shouldShowFooter && <TermsFooter />}
+      {shouldShowFooter && <TermsFooter dark />}
     </MainWrapper>
   );
 };

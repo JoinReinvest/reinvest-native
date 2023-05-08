@@ -36,6 +36,7 @@ import { MoreMenu } from './MoreMenu';
 import { Notification } from './Notification';
 import { NotificationBell } from './NotificationBell';
 import { Percent } from './Percent';
+import { RecurringBig } from './RecurringBig';
 import { Refresh } from './Refresh';
 import { Search } from './Search';
 import { Share } from './Share';
@@ -86,6 +87,7 @@ export {
   Notification,
   NotificationBell,
   Percent,
+  RecurringBig,
   Refresh,
   Search,
   Share,

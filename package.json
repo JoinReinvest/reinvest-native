@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "yarn eslint ./src",
     "lint:fix": "yarn lint --fix",
-    "check-types": "tsc --pretty",
+    "check-types": "tsc",
     "start": "react-native start",
     "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock && yarn",
     "nuke": "bash scripts/react-native-nuke.sh"
