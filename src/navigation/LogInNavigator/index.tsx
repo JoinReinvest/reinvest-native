@@ -2,6 +2,7 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -15,6 +16,7 @@ import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
+import { currentAccount, useAtom } from '../../store/atoms';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
 import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
@@ -44,6 +46,8 @@ const stackOptions: Record<
 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
+  const { data: accounts, isLoading: accountLoading } = useGetAccountsOverview(getApiClient);
+  const [account, setAccount] = useAtom(currentAccount);
   const navigation = useLogInNavigation();
 
   useLayoutEffect(() => {
@@ -62,6 +66,13 @@ export const LogInNavigator: React.FC = () => {
       }
     }
   }, [data, navigation]);
+
+  useEffect(() => {
+    if (!account.id && !accountLoading) {
+      const defaultAccount = { ...accounts?.[0] };
+      setAccount(defaultAccount);
+    }
+  }, [account, accountLoading, accounts, setAccount]);
 
   if (!data)
     return (

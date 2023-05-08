@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Alert, Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
@@ -25,6 +26,7 @@ import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { useAuth } from '../../providers/AuthProvider';
 import { useDialog } from '../../providers/DialogProvider';
+import { currentAccount, RESET, useAtom } from '../../store/atoms';
 import { NAVBAR_HEIGHT, yScale } from '../../utils/scale';
 import { styles } from './styles';
 
@@ -35,9 +37,8 @@ export const Settings = () => {
   const bottomSheetRef = useRef<BottomSheetHandle>(null);
   const { openDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
-  // TODO set globally
-  const [selectedAccount, setSelectedAccount] = useState(accounts?.[0]);
   const [signOutLoading, setSignOutLoading] = useState(false);
+  const [account, setAccountAtom] = useAtom(currentAccount);
 
   const navigationHandlers: Partial<{ [key in NavigationIdentifiers]: () => void }> = useMemo(
     () => ({
@@ -52,14 +53,16 @@ export const Settings = () => {
       HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
       SIGN_OUT: () => {
         setSignOutLoading(true);
+        setAccountAtom(RESET);
         actions.signOut();
       },
     }),
-    [actions, openDialog, navigation],
+    [navigation, openDialog, setAccountAtom, actions],
   );
 
   const handleSelectAccount = (value: string) => {
-    setSelectedAccount(accounts?.find(account => account?.id === value) ?? accounts?.[0]);
+    const account = accounts?.find(account => account?.id === value) ?? accounts?.[0];
+    setAccountAtom(account as AccountOverview);
     bottomSheetRef.current?.dismiss();
   };
 
@@ -99,7 +102,7 @@ export const Settings = () => {
             fw
           >
             <AccountSummary
-              {...(selectedAccount as AccountSummaryProps)}
+              {...(account as AccountSummaryProps)}
               endIcon={
                 <Icon
                   icon={'arrowDown'}
@@ -108,6 +111,7 @@ export const Settings = () => {
                   }}
                 />
               }
+              isLoading={signOutLoading}
             />
             <Button
               style={styles.manageAccountButton}
@@ -167,7 +171,7 @@ export const Settings = () => {
           pb={Math.max(NAVBAR_HEIGHT, bottom, yScale(16))}
         >
           <SwitchAccountsList
-            value={selectedAccount?.id || ''}
+            value={account?.id || ''}
             avatarSize={'l'}
             onSelect={handleSelectAccount}
             accounts={accounts as AccountSummaryProps[]}

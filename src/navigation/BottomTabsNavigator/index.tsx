@@ -1,9 +1,7 @@
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
-import { getApiClient } from '../../api/getApiClient';
 import { Avatar } from '../../components/Avatar';
 import { Box } from '../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../components/CustomHeader';
@@ -19,6 +17,8 @@ import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
+import { currentAccount, useAtom } from '../../store/atoms';
+import { useLogInNavigation } from '../hooks';
 import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
@@ -62,7 +62,6 @@ const getLabel = (focused: boolean, children: string) => (
 
 export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
-  const { data } = useGetAccountsOverview(getApiClient);
 
   return (
     <Tab.Navigator
@@ -84,17 +83,10 @@ export const BottomTabsNavigator: React.FC = () => {
       <Tab.Screen
         name={Screens.Dashboard}
         component={Dashboard}
-        options={({ navigation }) => ({
+        options={() => ({
           ...stackOptions[Screens.Dashboard],
-          headerRight: () => (
-            <Avatar
-              onPress={() => {
-                navigation.navigate(Screens.Settings);
-              }}
-              uri={data?.[0]?.avatar?.url || ''}
-              initials={data?.[0]?.avatar?.initials || ''}
-            />
-          ),
+
+          headerRight: () => <HeaderAvatar />,
           headerShown: true,
           header: ScreenHeader,
         })}
@@ -122,5 +114,20 @@ export const BottomTabsNavigator: React.FC = () => {
         })}
       />
     </Tab.Navigator>
+  );
+};
+
+export const HeaderAvatar = () => {
+  const { navigate } = useLogInNavigation();
+  const [account] = useAtom(currentAccount);
+
+  return (
+    <Avatar
+      onPress={() => {
+        navigate(Screens.Settings);
+      }}
+      uri={account?.avatar?.url || ''}
+      initials={account?.avatar?.initials || ''}
+    />
   );
 };
