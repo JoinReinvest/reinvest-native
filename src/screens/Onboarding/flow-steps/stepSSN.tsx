@@ -23,6 +23,7 @@ import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
 import { apiSSN } from '../../../utils/regexes';
+import { maskSocialSecurityNumber } from '../../../utils/social-security-number';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -80,7 +81,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
 
       try {
         await updateStoreFields({
-          ssn,
+          ssn: maskSocialSecurityNumber(ssn),
           _isSocialSecurityNumberAlreadyAssigned: false,
           _isSocialSecurityNumberBanned: false,
         });
