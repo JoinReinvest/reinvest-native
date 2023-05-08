@@ -9,6 +9,7 @@ export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;
   [Screens.Onboarding]: undefined;
   [Screens.Investing]: undefined;
+  [Screens.AddBeneficiary]: undefined;
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;
   [Screens.ManageAccountMainScreen]: undefined;

@@ -2,9 +2,9 @@ import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-nav
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Avatar } from '../../components/Avatar';
 import { Box } from '../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../components/CustomHeader';
+import { HeaderAvatar } from '../../components/HeaderAvatar';
 import { Sygnet } from '../../components/Icon/icons';
 import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/DashboardIcon';
 import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
@@ -17,8 +17,6 @@ import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
-import { currentAccount, useAtom } from '../../store/atoms';
-import { useLogInNavigation } from '../hooks';
 import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
@@ -86,7 +84,7 @@ export const BottomTabsNavigator: React.FC = () => {
         options={() => ({
           ...stackOptions[Screens.Dashboard],
 
-          headerRight: () => <HeaderAvatar />,
+          headerRight: HeaderAvatar,
           headerShown: true,
           header: ScreenHeader,
         })}
@@ -114,20 +112,5 @@ export const BottomTabsNavigator: React.FC = () => {
         })}
       />
     </Tab.Navigator>
-  );
-};
-
-export const HeaderAvatar = () => {
-  const { navigate } = useLogInNavigation();
-  const [account] = useAtom(currentAccount);
-
-  return (
-    <Avatar
-      onPress={() => {
-        navigate(Screens.Settings);
-      }}
-      uri={account?.avatar?.url || ''}
-      initials={account?.avatar?.initials || ''}
-    />
   );
 };
