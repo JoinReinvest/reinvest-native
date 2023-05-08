@@ -7,6 +7,7 @@ import { useCreateDraftAccount } from 'reinvest-app-common/src/services/queries/
 import { useGetCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/getCorporateDraftAccount';
 import { useGetIndividualDraftAccount } from 'reinvest-app-common/src/services/queries/getIndividualDraftAccount';
 import { useGetListAccount } from 'reinvest-app-common/src/services/queries/getListAccount';
+import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
 import { useGetPhoneCompleted } from 'reinvest-app-common/src/services/queries/getPhoneCompleted';
 import { useGetTrustDraftAccount } from 'reinvest-app-common/src/services/queries/getTrustDraftAccount';
 import {
@@ -18,16 +19,19 @@ import {
   IndividualDraftAccount,
   TrustCompanyTypeEnum,
 } from 'reinvest-app-common/src/types/graphql';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Card } from '../../../components/Card';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers } from '../../../constants/strings';
+import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { Identifiers } from '../identifiers';
@@ -47,8 +51,19 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
     const { isSuccess, mutateAsync: createDraftAccount, isLoading } = useCreateDraftAccount(getApiClient);
     const { data: draftAccountList } = useGetListAccount(getApiClient);
     const { data: phoneCompleted } = useGetPhoneCompleted(getApiClient);
+    const { data: listAccountTypesUserCanOpen, isLoading: isListAccountTypesUserCanOpenLoading } = useGetListAccountTypesUserCanOpen(getApiClient);
 
     const { refetch: refetchTrustDraftAccount } = useGetTrustDraftAccount(getApiClient, {
+      accountId: accountId,
+      config: { enabled: false },
+    });
+
+    const { refetch: refetchIndividualDraft } = useGetIndividualDraftAccount(getApiClient, {
+      accountId,
+      config: { enabled: false },
+    });
+
+    const { refetch: refetchCorporateDraft } = useGetCorporateDraftAccount(getApiClient, {
       accountId: accountId,
       config: { enabled: false },
     });
@@ -67,16 +82,6 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         });
       }
     }, [phoneCompleted, storeFields, updateStoreFields]);
-
-    const { refetch: refetchIndividualDraft } = useGetIndividualDraftAccount(getApiClient, {
-      accountId,
-      config: { enabled: false },
-    });
-
-    const { refetch: refetchCorporateDraft } = useGetCorporateDraftAccount(getApiClient, {
-      accountId: accountId,
-      config: { enabled: false },
-    });
 
     const selectType = (type: DraftAccountType | undefined) => {
       if (draftAccountList) {
@@ -183,6 +188,19 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         />,
       );
 
+    const accountsAvailableToOpen = ACCOUNT_TYPES_AS_OPTIONS.filter(accountType => listAccountTypesUserCanOpen?.includes(accountType.value as AccountType));
+
+    if (isListAccountTypesUserCanOpenLoading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Loader
+            size="xl"
+            color={palette.pureWhite}
+          />
+        </View>
+      );
+    }
+
     return (
       <>
         <View style={[styles.fw]}>
@@ -194,7 +212,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             headline="Which type of account would you like to open?"
           />
           <View style={styles.cardsWrapper}>
-            {ACCOUNT_TYPES_AS_OPTIONS.map(({ title, value, description }) => (
+            {accountsAvailableToOpen.map(({ title, value, description }) => (
               <Card<DraftAccountType>
                 selected={value === selectedAccountType}
                 key={value}

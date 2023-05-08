@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
-import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
-=======
-import React, { useRef, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
+import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
->>>>>>> f328b22 (RIA-937: Remove add beneficiary account link when user has 3 beneficiary accounts)
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
@@ -75,6 +68,12 @@ export const Settings = () => {
 
   const showAddBeneficiaryLink = listAccountTypesUserCanOpen?.includes(AccountType.Beneficiary);
 
+  const signOut = () => {
+    setSignOutLoading(true);
+    setAccountAtom(RESET);
+    actions.signOut();
+  };
+
   return (
     <MainWrapper
       bottomSafe
@@ -84,7 +83,7 @@ export const Settings = () => {
       <PaddedScrollView>
         {isStaging && (
           <>
-            <Button onPress={() => navigation.navigate(Screens.Onboarding)}>start onboarding</Button>
+            <Button onPress={() => navigate(Screens.Onboarding)}>start onboarding</Button>
           </>
         )}
         {!!accounts?.length && (
@@ -147,10 +146,7 @@ export const Settings = () => {
               startIcon="signOut"
               label="Sign Out"
               showChevron={false}
-              onPress={() => {
-                setSignOutLoading(true);
-                actions.signOut();
-              }}
+              onPress={signOut}
             />
           </View>
         )}
