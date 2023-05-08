@@ -37,7 +37,6 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     return (
       <MainWrapper>
         <Loader size={'xxl'} />
-
         <StyledText>We are verifying your investment.</StyledText>
       </MainWrapper>
     );

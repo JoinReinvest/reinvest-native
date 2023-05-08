@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Alert, Linking, View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
@@ -32,7 +32,7 @@ import { styles } from './styles';
 
 export const Settings = () => {
   const { actions } = useAuth();
-  const navigation = useLogInNavigation();
+  const { navigate } = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
   const bottomSheetRef = useRef<BottomSheetHandle>(null);
   const { openDialog } = useDialog();
@@ -42,8 +42,8 @@ export const Settings = () => {
 
   const navigationHandlers: Partial<{ [key in NavigationIdentifiers]: () => void }> = useMemo(
     () => ({
-      ADD_BENEFICIARY: () => Alert.alert('Add Beneficiary Flow'),
-      ADD_ACCOUNT: () => navigation.navigate(Screens.Onboarding),
+      ADD_BENEFICIARY: () => navigate(Screens.AddBeneficiary),
+      ADD_ACCOUNT: () => navigate(Screens.Onboarding),
       INVITE: () =>
         openDialog(<InviteModal />, {
           showLogo: true,
@@ -57,7 +57,7 @@ export const Settings = () => {
         actions.signOut();
       },
     }),
-    [navigation, openDialog, setAccountAtom, actions],
+    [navigate, openDialog, setAccountAtom, actions],
   );
 
   const handleSelectAccount = (value: string) => {
@@ -115,7 +115,7 @@ export const Settings = () => {
             />
             <Button
               style={styles.manageAccountButton}
-              onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)}
+              onPress={() => navigate(Screens.ManageAccountMainScreen)}
             >
               Manage Account
             </Button>

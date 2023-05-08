@@ -11,6 +11,7 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
+import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { Investing } from '../../screens/Investing';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
@@ -25,7 +26,7 @@ import { LogInStackParamList } from './types';
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
 const stackOptions: Record<
-  Extract<Screens, Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing>,
+  Extract<Screens, Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary>,
   NativeStackNavigationOptions
 > = {
   [Screens.Onboarding]: {
@@ -41,6 +42,9 @@ const stackOptions: Record<
   [Screens.ManageAccount]: {
     title: 'Manage Account',
     headerShown: false,
+  },
+  [Screens.AddBeneficiary]: {
+    title: 'Add Beneficiary',
   },
 };
 
@@ -62,7 +66,7 @@ export const LogInNavigator: React.FC = () => {
       }
 
       if (!data.isCompleted) {
-        navigation.reset({ index: 0, routes: [{ name: Screens.Dashboard }] });
+        navigation.reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
       }
     }
   }, [data, navigation]);
@@ -115,6 +119,11 @@ export const LogInNavigator: React.FC = () => {
                 name={Screens.Investing}
                 options={stackOptions[Screens.Investing]}
                 component={Investing}
+              />
+              <LogInStack.Screen
+                name={Screens.AddBeneficiary}
+                options={stackOptions[Screens.AddBeneficiary]}
+                component={AddBeneficiary}
               />
             </LogInStack.Group>
             <LogInStack.Screen

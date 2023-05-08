@@ -12,7 +12,11 @@ const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {
   return (
     <View style={styles.wrapper}>
       {canGoBack() && (
-        <TouchableOpacity onPress={() => goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            goBack();
+          }}
+        >
           <Icon
             icon="down"
             style={{ transform: [{ rotate: '90deg' }] }}

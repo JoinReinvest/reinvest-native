@@ -17,6 +17,7 @@ enum Screens {
   ManageAccountMainScreen = 'ManageAccountMainScreen',
   ManageAccount = 'ManageAccount',
   Investing = 'Investing',
+  AddBeneficiary = 'AddBeneficiary',
 }
 
 export default Screens;
