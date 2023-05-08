@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { AccountType, DraftAccountType, GetAvatarLink } from 'reinvest-app-common/src/types/graphql';
 
@@ -16,6 +16,7 @@ export interface AccountSummaryProps {
   avatarSize?: AvatarSize;
   endIcon?: ReactNode;
   firstName?: string;
+  isLoading?: boolean;
   lastName?: string;
   nameTextVariant?: TextVariants;
   selected?: boolean;
@@ -38,7 +39,16 @@ export const AccountSummary = ({
   avatarSize = 'xl',
   nameTextVariant = 'h6',
   accountLabelTextVariant = 'paragraphLarge',
+  isLoading,
 }: AccountSummaryProps) => {
+  const getLabel = useMemo(() => {
+    if (!label && (firstName || lastName)) {
+      return `${firstName} | ${lastName}`;
+    }
+
+    return label ? label : '';
+  }, [label, firstName, lastName]);
+
   return (
     <View style={[styles.container]}>
       <Avatar
@@ -46,6 +56,7 @@ export const AccountSummary = ({
         variant={type}
         uri={avatar?.url as string}
         size={avatarSize}
+        isLoading={isLoading}
       />
       <View>
         <View style={[styles.nameContainer]}>
@@ -53,7 +64,7 @@ export const AccountSummary = ({
             color="pureBlack"
             variant={nameTextVariant}
           >
-            {label || `${firstName} |${lastName}`}
+            {getLabel}
           </StyledText>
           {endIcon && endIcon}
         </View>
