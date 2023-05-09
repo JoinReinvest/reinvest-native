@@ -34,7 +34,7 @@ const stackOptions: Record<
     header: DarkScreenHeader,
   },
   [Screens.Investing]: {
-    title: 'logo',
+    title: 'Investing',
   },
   [Screens.ManageAccountMainScreen]: {
     title: 'Manage Account',

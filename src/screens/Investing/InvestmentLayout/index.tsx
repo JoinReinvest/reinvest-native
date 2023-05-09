@@ -22,7 +22,10 @@ export const InvestmentLayout = ({ shouldShowFooter = true }: Props) => {
 
   return (
     <DialogProvider>
-      <MainWrapper noPadding>
+      <MainWrapper
+        noPadding
+        bottomSafe
+      >
         <CurrentStepView />
         {shouldShowFooter && <TermsFooter />}
       </MainWrapper>

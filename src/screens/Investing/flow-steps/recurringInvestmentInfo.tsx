@@ -10,15 +10,18 @@ import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
-export const RecurringInvestment: StepParams<InvestFormFields> = {
+export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INVESTMENT,
 
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
     const handleContinue = async () => {
+      await updateStoreFields({ isRecurringInvestment: true });
       moveToNextStep();
     };
 
-    const handleSkip = () => {
+    const handleSkip = async () => {
+      await updateStoreFields({ isRecurringInvestment: false });
+
       moveToNextStep();
     };
 

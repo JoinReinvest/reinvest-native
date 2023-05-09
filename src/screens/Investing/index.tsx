@@ -1,16 +1,20 @@
 import React from 'react';
 
-import { InvestFormFlowProvider, onBoardingFormFieldsInitialState } from './flow-steps';
+import { currentAccount, useAtom } from '../../store/atoms';
+import { InvestFormFlowProvider, investingFormFieldsInitialState } from './flow-steps';
 import { InvestmentLayout } from './InvestmentLayout';
 
 export const Investing = () => {
+  const [account] = useAtom(currentAccount);
+
   return (
     <InvestFormFlowProvider
       initialStoreFields={{
-        ...onBoardingFormFieldsInitialState,
+        ...investingFormFieldsInitialState,
+        accountId: account?.id || '',
       }}
     >
-      <InvestmentLayout />
+      <InvestmentLayout shouldShowFooter={false} />
     </InvestFormFlowProvider>
   );
 };

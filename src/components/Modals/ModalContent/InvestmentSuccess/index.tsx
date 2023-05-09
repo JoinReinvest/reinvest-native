@@ -9,6 +9,7 @@ import { useDialog } from '../../../../providers/DialogProvider';
 import { Button } from '../../../Button';
 import { Box } from '../../../Containers/Box/Box';
 import { Row } from '../../../Containers/Row';
+import { FormDisclaimer } from '../../../FormDisclaimer';
 import { Icon } from '../../../Icon';
 import { PaddedScrollView } from '../../../PaddedScrollView';
 import { StyledText } from '../../../typography/StyledText';
@@ -47,15 +48,7 @@ export const InvestSuccess = () => {
           amount={`1000`}
           date={`March 1, 2023`}
         />
-        <Row>
-          <Icon icon="circleAlert" />
-          <StyledText
-            color="dark2"
-            variant="paragraph"
-          >
-            Please expect funds to be drawn from your bank account within 3 days.
-          </StyledText>
-        </Row>
+        <FormDisclaimer>Please expect funds to be drawn from your bank account within 3 days.</FormDisclaimer>
       </PaddedScrollView>
       <Box
         fw
