@@ -3,7 +3,8 @@ import React, { memo, PropsWithChildren } from 'react';
 import { Box } from './Box/Box';
 import type { BoxProps } from './Box/types';
 
-export const Row = memo(({ children, reverse, ...props }: PropsWithChildren<BoxProps & { reverse?: boolean }>) => {
+export type RowProps = PropsWithChildren<BoxProps & { reverse?: boolean }>;
+export const Row = memo(({ children, reverse, ...props }: RowProps) => {
   return (
     <Box
       {...props}

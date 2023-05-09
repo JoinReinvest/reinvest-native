@@ -16,3 +16,10 @@ export const onBoardingDisclaimers = {
 export const onBoardingModalHeadlines = {
   getHelpPhoneNumber: 'Phone number Authentication code',
 };
+
+export const InvestingDisclaimers = {
+  whatIsAutomaticDividendReinvesting: {
+    headline: 'Dividend reinvesting',
+    content: 'lorem ipsum ',
+  },
+};

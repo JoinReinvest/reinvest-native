@@ -5,17 +5,17 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CardProps } from './types';
 
-export const Card = <T extends object | string>({ id, title, value, description, selected = false, onCardPress }: CardProps<T>) => {
+export const Card = <T extends object | string>({ id, title, value, description, selected = false, onCardPress, dark = true, compact }: CardProps<T>) => {
   const handleCardPress = () => onCardPress?.(value);
 
   return (
     <Pressable
       id={`${id}`}
-      style={[styles.cardWrapper, selected && styles.selected]}
+      style={[styles.cardWrapper, selected && styles.selected, compact && styles.compact]}
       onPress={handleCardPress}
     >
       <StyledText
-        color="pureWhite"
+        color={dark ? 'pureWhite' : 'pureBlack'}
         variant="bodyText"
         style={[styles.cardTitle, selected && styles.selected]}
       >

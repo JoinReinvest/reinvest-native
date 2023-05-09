@@ -9,6 +9,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: yScale(24),
     borderWidth: 1,
+  },
+  compact: {
+    paddingVertical: yScale(16),
+  },
+  darkWrapper: {
     borderColor: palette.darkerGray,
   },
   cardTitle: {
