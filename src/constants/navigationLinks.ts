@@ -1,11 +1,6 @@
 import { Link } from '../types/link';
 
 export enum NavigationIdentifiers {
-  ADD_BENEFICIARY = 'ADD_BENEFICIARY',
-  ADD_ACCOUNT = 'ADD_ACCOUNT',
-  INVITE = 'INVITE',
-  HELP = 'HELP',
-  SIGN_OUT = 'SIGN_OUT',
   INVESTMENT_HISTORY = 'INVESTMENT_HISTORY',
   RECURRING_INVESTMENT = 'RECURRING_INVESTMENT',
   AUTOMATIC_DIVIDEND_REINVESTING = 'AUTOMATIC_DIVIDEND_REINVESTING',
@@ -19,35 +14,6 @@ export enum NavigationIdentifiers {
   PROFILE_PICTURE = 'PROFILE_PICTURE',
   ADDRESS = 'ADDRESS',
 }
-
-export const SETTINGS_NAVIGATION_LINKS: Link[] = [
-  {
-    identifier: NavigationIdentifiers.ADD_BENEFICIARY,
-    startIcon: 'addBeneficiary',
-    label: 'Add Beneficiary',
-  },
-  {
-    identifier: NavigationIdentifiers.ADD_ACCOUNT,
-    startIcon: 'addUser',
-    label: 'Add Another Account',
-  },
-  {
-    identifier: NavigationIdentifiers.INVITE,
-    startIcon: 'friendsAndFamily',
-    label: 'Invite Friends & Family',
-  },
-  {
-    identifier: NavigationIdentifiers.HELP,
-    startIcon: 'helpAndSupport',
-    label: 'Help & Support',
-  },
-  {
-    identifier: NavigationIdentifiers.SIGN_OUT,
-    startIcon: 'signOut',
-    label: 'Sign Out',
-    showChevron: false,
-  },
-];
 
 export const MANAGE_ACCOUNT_INVESTING: Link[] = [
   {

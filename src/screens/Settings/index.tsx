@@ -1,8 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
 import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
@@ -20,7 +22,6 @@ import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { SwitchAccountsList } from '../../components/SwtichAccounts';
 import { StyledText } from '../../components/typography/StyledText';
 import { isStaging } from '../../constants/dev';
-import { NavigationIdentifiers, SETTINGS_NAVIGATION_LINKS } from '../../constants/navigationLinks';
 import { privacyPolicy, termsAndConditions } from '../../constants/strings';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
@@ -34,31 +35,12 @@ export const Settings = () => {
   const { actions } = useAuth();
   const { navigate } = useLogInNavigation();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
+  const { data: listAccountTypesUserCanOpen } = useGetListAccountTypesUserCanOpen(getApiClient);
   const bottomSheetRef = useRef<BottomSheetHandle>(null);
   const { openDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [account, setAccountAtom] = useAtom(currentAccount);
-
-  const navigationHandlers: Partial<{ [key in NavigationIdentifiers]: () => void }> = useMemo(
-    () => ({
-      ADD_BENEFICIARY: () => navigate(Screens.AddBeneficiary),
-      ADD_ACCOUNT: () => navigate(Screens.Onboarding),
-      INVITE: () =>
-        openDialog(<InviteModal />, {
-          showLogo: true,
-          header: <HeaderWithLogo />,
-          closeIcon: false,
-        }),
-      HELP: () => Linking.openURL('mailto:support@reinvestcommunity.com'),
-      SIGN_OUT: () => {
-        setSignOutLoading(true);
-        setAccountAtom(RESET);
-        actions.signOut();
-      },
-    }),
-    [navigate, openDialog, setAccountAtom, actions],
-  );
 
   const handleSelectAccount = (value: string) => {
     const account = accounts?.find(account => account?.id === value) ?? accounts?.[0];
@@ -84,6 +66,14 @@ export const Settings = () => {
     );
   };
 
+  const showAddBeneficiaryLink = listAccountTypesUserCanOpen?.includes(AccountType.Beneficiary);
+
+  const signOut = () => {
+    setSignOutLoading(true);
+    setAccountAtom(RESET);
+    actions.signOut();
+  };
+
   return (
     <MainWrapper
       bottomSafe
@@ -93,7 +83,7 @@ export const Settings = () => {
       <PaddedScrollView>
         {isStaging && (
           <>
-            <Button onPress={navigationHandlers.ADD_ACCOUNT}>start onboarding</Button>
+            <Button onPress={() => navigate(Screens.Onboarding)}>start onboarding</Button>
           </>
         )}
         {!!accounts?.length && (
@@ -123,20 +113,41 @@ export const Settings = () => {
         )}
         {!isStaging && (
           <View style={[styles.fw, styles.linksContainer]}>
-            {SETTINGS_NAVIGATION_LINKS.map(({ label, identifier, ...link }, index) => (
-              <View
-                style={styles.fw}
-                key={identifier}
-              >
-                <NavigationButton
-                  {...link}
-                  onPress={navigationHandlers[identifier]}
-                >
-                  {label}
-                </NavigationButton>
-                {index === 1 && <View style={styles.separator} />}
-              </View>
-            ))}
+            {showAddBeneficiaryLink && (
+              <NavigationButton
+                startIcon="addBeneficiary"
+                label="Add Beneficiary"
+                onPress={() => navigate(Screens.AddBeneficiary)}
+              />
+            )}
+            <NavigationButton
+              startIcon="addUser"
+              label="Add Another Account"
+              onPress={() => navigate(Screens.Onboarding)}
+            />
+            <View style={styles.separator} />
+            <NavigationButton
+              startIcon="friendsAndFamily"
+              label="Invite Friends & Family"
+              onPress={() =>
+                openDialog(<InviteModal />, {
+                  showLogo: true,
+                  header: <HeaderWithLogo />,
+                  closeIcon: false,
+                })
+              }
+            />
+            <NavigationButton
+              startIcon="helpAndSupport"
+              label="Help & Support"
+              onPress={() => Linking.openURL('mailto:support@reinvestcommunity.com')}
+            />
+            <NavigationButton
+              startIcon="signOut"
+              label="Sign Out"
+              showChevron={false}
+              onPress={signOut}
+            />
           </View>
         )}
       </PaddedScrollView>
