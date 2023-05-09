@@ -4,6 +4,7 @@ import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-f
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { Identifiers } from '../identifiers';
 import { RegisterFormFields } from '../types';
@@ -23,7 +24,9 @@ export const StepReferralCodeApplied: StepParams<RegisterFormFields> = {
     return (
       <View style={[styles.wrapper, styles.fw, styles.flex]}>
         <StatusCircle title="Referral code applied" />
-        <Button onPress={moveToNextStep}>Continue</Button>
+        <Box fw>
+          <Button onPress={moveToNextStep}>Continue</Button>
+        </Box>
       </View>
     );
   },
