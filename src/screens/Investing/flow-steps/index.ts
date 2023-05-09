@@ -1,6 +1,7 @@
 import { createFormFlow } from 'reinvest-app-common/src/services/form-flow';
 
 import { InvestFormFields } from '../types';
+import { Agreements } from './agreements';
 import { InitialInvestment } from './initialInvestment';
 import { RecurringDates } from './recurringDates';
 import { RecurringDepositSchedule } from './recurringDepositSchedule';
@@ -18,6 +19,7 @@ export const FLOW_STEPS = [
   RecurringDates,
   RecurringDepositSchedule,
   RecurringDividendReinvesting,
+  Agreements,
   VerifyInvestment,
 ];
 

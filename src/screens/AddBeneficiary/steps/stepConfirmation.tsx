@@ -20,10 +20,10 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
     return allRequiredFieldsExists(requiredFields);
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Component: ({ storeFields }: StepComponentProps<BeneficiaryCreationFormFields>) => {
     const { navigate } = useLogInNavigation();
     const onSubmit = () => {
-      console.info(storeFields);
       navigate(Screens.Investing);
     };
 
