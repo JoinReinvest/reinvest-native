@@ -19,7 +19,12 @@ export const ManageAccountScreen = ({ navigation, route }: NativeStackScreenProp
         route={route}
         navigation={navigation}
       />
-      <MainWrapper>{SCREENS_CONTENT[identifier]}</MainWrapper>
+      <MainWrapper
+        bottomSafe
+        noPadding
+      >
+        {SCREENS_CONTENT[identifier]}
+      </MainWrapper>
     </>
   );
 };

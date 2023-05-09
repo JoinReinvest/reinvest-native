@@ -3,7 +3,7 @@ import { Link } from '../types/link';
 export enum NavigationIdentifiers {
   INVESTMENT_HISTORY = 'INVESTMENT_HISTORY',
   RECURRING_INVESTMENT = 'RECURRING_INVESTMENT',
-  AUTOMATIC_DIVIDEND_REINVESTING = 'AUTOMATIC_DIVIDEND_REINVESTING',
+  DIVIDEND_REINVESTING = 'DIVIDEND_REINVESTING',
   WITHDRAW_FUNDS = 'WITHDRAW_FUNDS',
   BANK_ACCOUNT = 'BANK_ACCOUNT',
   ACCOUNT_ACTIVITY = 'ACCOUNT_ACTIVITY',
@@ -25,7 +25,7 @@ export const MANAGE_ACCOUNT_INVESTING: Link[] = [
     label: 'Recurring Investment',
   },
   {
-    identifier: NavigationIdentifiers.AUTOMATIC_DIVIDEND_REINVESTING,
+    identifier: NavigationIdentifiers.DIVIDEND_REINVESTING,
     label: 'Automatic Dividend Reinvesting',
   },
   {
