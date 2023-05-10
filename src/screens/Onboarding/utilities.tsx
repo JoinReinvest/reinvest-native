@@ -1,7 +1,7 @@
 import { INDUESTRIES_AS_OPTIONS } from 'reinvest-app-common/src/constants/industries';
 import { STAKEHOLDER_RESIDENCY_STATUS_LABELS } from 'reinvest-app-common/src/constants/residenty-status';
 import { SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
-import { formatDateFromApi } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { EMPTY_APPLICANT_FORM } from '../../constants/applicants';
 import { INDUSTRIES_LABELS } from '../../constants/industries';
@@ -51,6 +51,13 @@ export type ApplicantFormFields = Omit<Applicant, 'domicile'> & { domicile?: Dom
 
 type GetDefaultValuesForApplicantWithoutIdentification = (applicants: Applicant[], currentApplicantIndex: number | undefined) => ApplicantFormFields;
 
+const parseDateOfBirthFromApplicant = (dateOfBirth?: string) => {
+  if (dateOfBirth) {
+    return checkIfLocalDate(dateOfBirth) ? dateOfBirth : formatDate(dateOfBirth, 'DEFAULT', { currentFormat: 'API' });
+  }
+
+  return '';
+};
 export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValuesForApplicantWithoutIdentification = (applicants, currentApplicantIndex) => {
   const hasApplicants = !!applicants.length;
   const hasAnIndex = currentApplicantIndex !== undefined;
@@ -63,7 +70,7 @@ export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValues
       return {
         ...applicant,
         domicile: mapDomicileTypeToDomicileLabel(applicant.domicile),
-        dateOfBirth: applicant.dateOfBirth ? (checkIfLocalDate(applicant.dateOfBirth) ? applicant.dateOfBirth : formatDateFromApi(applicant.dateOfBirth)) : '',
+        dateOfBirth: parseDateOfBirthFromApplicant(applicant.dateOfBirth),
       };
     }
   }
