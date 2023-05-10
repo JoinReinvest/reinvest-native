@@ -3,7 +3,17 @@ import { ErrorResponse } from 'reinvest-app-common/src/services/queries/interfac
 
 import { FormMessage } from './Forms/FormMessage';
 
-export const ErrorMessagesHandler = ({ error }: { error: ErrorResponse }) => {
+export const ErrorMessagesHandler = ({ error }: { error: ErrorResponse | string }) => {
+  if (typeof error === 'string') {
+    return (
+      <FormMessage
+        variant="error"
+        message={error || 'Internal error'}
+        key={error}
+      />
+    );
+  }
+
   return (
     <>
       {getMessages(error).map(message => (

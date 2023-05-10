@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
 import { AddressInput, DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
-import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
@@ -69,7 +69,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
             middleName: applicant.middleName,
           },
           dateOfBirth: {
-            dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
+            dateOfBirth: applicant.dateOfBirth ? formatDate(applicant.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : '',
           },
           address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
           idScan: applicant.idScan as DocumentFileLinkInput[],

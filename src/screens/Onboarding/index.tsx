@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 import { AccreditedInvestorStatement, ProfileDetails, Statement } from 'reinvest-app-common/src/types/graphql';
-import { formatDateFromApi } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../api/getApiClient';
 import { StyledText } from '../../components/typography/StyledText';
@@ -53,7 +53,7 @@ interface CompliancesReducer {
 
 const parseStatementsToCompliance = (statements?: Statement[]) => {
   if (statements) {
-    const values = statements?.reduce?.(
+    return statements?.reduce?.(
       (acc, el) => {
         if (el?.type && el.type in complianceMapper) {
           const key = complianceMapper[el.type as ComplianceType];
@@ -94,8 +94,6 @@ const parseStatementsToCompliance = (statements?: Statement[]) => {
         },
       },
     );
-
-    return values;
   }
 
   return { compliances: onBoardingFormFieldsInitialState.compliances };
@@ -106,7 +104,7 @@ const getPreFiledValues = (details?: ProfileDetails) => {
     return {
       experience: details.experience,
       identificationDocument: (details?.idScan as IdentificationDocuments) || onBoardingFormFieldsInitialState.identificationDocument,
-      dateOfBirth: details?.dateOfBirth ? formatDateFromApi(details?.dateOfBirth) : '',
+      dateOfBirth: details?.dateOfBirth ? formatDate(details?.dateOfBirth, 'DEFAULT', { currentFormat: 'API' }) : '',
       domicile: details?.domicile as Domicile,
       citizenshipCountry: details?.domicile?.citizenshipCountry || '',
       birthCountry: details?.domicile?.birthCountry || '',

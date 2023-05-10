@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { formatDateForDatePicker } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { Box } from '../Containers/Box/Box';
 import { StyledText } from '../typography/StyledText';
@@ -13,7 +13,8 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
   const [selectedDay, setSelectedDay] = useState<number>(-1);
   const [autoSelectedDays, setAutoSelectedDays] = useState<number[]>([]);
 
-  const calendarLabel = formatDateForDatePicker(dayjs().toDate());
+  const calendarLabel = formatDate(dayjs().toDate(), 'DATE_PICKER', { currentFormat: 'DATE_PICKER' });
+  // const calendarLabel = 'May';
   const today = +dayjs().format('D');
   const calendarDays = useMemo(() => getCalendarDays(), []);
 

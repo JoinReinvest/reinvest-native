@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
-import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
+import { AccountOverview, AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
@@ -66,7 +65,10 @@ export const Settings = () => {
     );
   };
 
-  const showAddBeneficiaryLink = listAccountTypesUserCanOpen?.includes(AccountType.Beneficiary);
+  const showAddBeneficiaryLink = useMemo(
+    () => account.type === AccountType.Individual && listAccountTypesUserCanOpen?.includes(AccountType.Beneficiary),
+    [account.type, listAccountTypesUserCanOpen],
+  );
 
   const signOut = () => {
     setSignOutLoading(true);

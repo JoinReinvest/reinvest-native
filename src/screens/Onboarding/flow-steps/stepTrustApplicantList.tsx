@@ -4,7 +4,7 @@ import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-f
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { AddressInput, DocumentFileLinkInput, DraftAccountType, SimplifiedDomicileType } from 'reinvest-app-common/src/types/graphql';
-import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
@@ -70,7 +70,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
             middleName: applicant.middleName,
           },
           dateOfBirth: {
-            dateOfBirth: applicant.dateOfBirth ? formatDateForApi(applicant.dateOfBirth) : '',
+            dateOfBirth: applicant.dateOfBirth ? formatDate(applicant.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : '',
           },
           address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
           idScan: applicant.idScan as DocumentFileLinkInput[],

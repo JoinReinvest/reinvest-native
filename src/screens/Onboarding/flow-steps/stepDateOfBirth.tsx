@@ -6,7 +6,7 @@ import { Masks } from 'react-native-mask-input';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
-import { formatDateForApi } from 'reinvest-app-common/src/utilities/dates';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 import { z } from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -60,7 +60,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
       if (dateOfBirth) {
         await updateStoreFields({ dateOfBirth });
 
-        await completeProfileMutate({ input: { dateOfBirth: { dateOfBirth: formatDateForApi(dateOfBirth) } } });
+        await completeProfileMutate({ input: { dateOfBirth: { dateOfBirth: formatDate(dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) } } });
       }
     };
 

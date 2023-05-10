@@ -2,7 +2,6 @@ import React from 'react';
 
 import { AccountOverview } from '../../components/AccountOverview';
 import { Button } from '../../components/Button';
-import { Calendar } from '../../components/Calendar';
 import { Chart } from '../../components/Chart';
 import { Box } from '../../components/Containers/Box/Box';
 import { MainWrapper } from '../../components/MainWrapper';
@@ -69,8 +68,6 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
-        <Calendar autoSelectionPeriod="WEEKLY" />
-
         <AccountOverview
           summaryValue={'$100,500'}
           chartData={mockedChartData}

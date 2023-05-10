@@ -20,7 +20,10 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   useKeyboardAware();
 
   return (
-    <MainWrapper dark>
+    <MainWrapper
+      dark
+      noPadding
+    >
       <StatusBar barStyle="light-content" />
       <CurrentStepView />
       {shouldShowFooter && <TermsFooter dark />}
