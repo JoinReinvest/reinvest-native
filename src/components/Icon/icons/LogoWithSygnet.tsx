@@ -5,8 +5,9 @@ import { palette } from '../../../constants/theme';
 
 export const LogoWithSygnet = ({ color = palette.pureBlack, ...rest }: SvgProps) => (
   <Svg
-    width={153}
-    height={39}
+    width="100%"
+    height="100%"
+    viewBox="0 0 153 39"
     fill="none"
     {...rest}
   >

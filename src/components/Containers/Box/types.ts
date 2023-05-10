@@ -56,6 +56,7 @@ export type SpacingProps = MarginProps & PaddingProps;
 export type BoxProps = {
   color?: Theme;
   colorOpacity?: number;
+  fh?: boolean;
   fw?: boolean;
   onPress?: () => void;
   radius?: number;

@@ -1,6 +1,6 @@
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import React, { PropsWithChildren, useCallback, useMemo } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -27,15 +27,15 @@ export const CustomHeader = ({ children, style, dark, ...rest }: PropsWithChildr
 export const ScreenHeader = ({
   navigation,
   dark,
-  options: { title, headerRight, headerLeft },
+  options: { title, headerRight, headerLeft, headerShown },
   showGradient = true,
 }: (NativeStackHeaderProps | BottomTabHeaderProps) & {
   dark?: boolean;
   showGradient?: boolean;
   title?: string | 'logo';
 }) => {
-  const headerProps = useMemo(() => ({ canGoBack: navigation.canGoBack(), tintColor: '' }), [navigation]);
-  const renderHeaderLeft = useCallback(() => {
+  const headerProps = { canGoBack: navigation.canGoBack(), tintColor: '' };
+  const renderHeaderLeft = () => {
     if (headerLeft) {
       return headerLeft?.(headerProps);
     }
@@ -46,7 +46,11 @@ export const ScreenHeader = ({
         {...headerProps}
       />
     );
-  }, [dark, headerLeft, headerProps]);
+  };
+
+  if (!headerShown && typeof headerShown !== 'undefined') {
+    return null;
+  }
 
   return (
     <CustomHeader dark={dark}>

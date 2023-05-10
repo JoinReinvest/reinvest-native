@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, View } from 'react-native';
-import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -15,16 +15,10 @@ import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
 const { headline, content } = InvestingDisclaimers.whatIsAutomaticDividendReinvesting;
-export const RecurringDividendReinvesting: StepParams<InvestFormFields> = {
-  identifier: Identifiers.RECURRING_DIVIDEND_REINVESTING,
+export const DividendReinvesting: StepParams<InvestFormFields> = {
+  identifier: Identifiers.DIVIDEND_REINVESTING,
   doesMeetConditionFields: fields => {
-    const requiredFields = allRequiredFieldsExists([
-      fields.recurringInvestment?.interval,
-      fields.recurringInvestment?.recurringAmount,
-      fields.isRecurringInvestment,
-    ]);
-
-    return !!fields.isRecurringInvestment && requiredFields;
+    return !!fields.isRecurringInvestment || !!fields.oneTimeInvestmentId;
   },
 
   Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {

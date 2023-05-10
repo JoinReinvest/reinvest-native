@@ -7,8 +7,10 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
+import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
+import { useInvestFlow } from './index';
 import { styles } from './styles';
 
 export const RecurringAmount: StepParams<InvestFormFields> = {
@@ -19,7 +21,8 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
 
   Component: ({ moveToNextStep, storeFields, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
     const [amount, setAmount] = useState<string | undefined>(storeFields.recurringInvestment?.recurringAmount);
-
+    const { goBack } = useLogInNavigation();
+    const { resetStoreFields } = useInvestFlow();
     const handleContinue = async () => {
       if (amount) {
         await updateStoreFields({ recurringInvestment: { ...storeFields.recurringInvestment, recurringAmount: amount } });
@@ -27,7 +30,15 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
       }
     };
 
-    const handleSkip = () => {
+    const handleSkip = async () => {
+      /*
+       * in case no option is selected for either onetime and recurring we should dismiss investment screen
+       */
+      if (!storeFields.oneTimeInvestmentId) {
+        await resetStoreFields();
+        goBack();
+      }
+
       moveToNextStep();
     };
 
@@ -38,11 +49,11 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             pt="24"
             pb="16"
           >
-            <StyledText variant="h5">Make your initial one-time investment </StyledText>
+            <StyledText variant="h5">How often would you like to have a recurring investment?</StyledText>
           </Box>
           <InvestingAmountTable
             amount={amount}
-            bankAccount={storeFields.accountNumber}
+            bankAccount={storeFields.bankAccount?.accountNumber || ''}
             setAmount={setAmount}
           />
         </PaddedScrollView>

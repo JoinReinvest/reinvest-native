@@ -75,7 +75,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
         />
         <Chart />
         <Box py={'16'}>
-          <Button onPress={() => navigation.navigate(Screens.Investing)}>Invest</Button>
+          <Button onPress={() => navigation.navigate(Screens.Investing, { initialInvestment: false })}>Invest</Button>
         </Box>
         <Table
           heading="$522.94" // TODO: Replace with values from API:

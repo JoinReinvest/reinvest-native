@@ -1,5 +1,7 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 
+import { HeaderAvatar } from '../../../components/HeaderAvatar';
+import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -7,12 +9,14 @@ import { useStepBackOverride } from '../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInStackParamList } from '../../../navigation/LogInNavigator/types';
+import Screens from '../../../navigation/screens';
 import { DialogProvider } from '../../../providers/DialogProvider';
 import { useInvestFlow } from '../flow-steps';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 
 interface Props {
+  initialInvestment?: boolean;
   shouldShowFooter?: boolean;
 }
 /*
@@ -20,7 +24,10 @@ interface Props {
  */
 
 const stepsWithCancelOption: Identifiers[] = [];
-export const InvestmentLayout = ({ shouldShowFooter = true }: Props) => {
+const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.LANDING];
+const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
+const overrideBackSteps: Identifiers[] = [Identifiers.ONE_TIME_INVESTMENT];
+export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
   const {
     resetStoreFields,
     CurrentStepView,
@@ -28,7 +35,12 @@ export const InvestmentLayout = ({ shouldShowFooter = true }: Props) => {
   } = useInvestFlow();
   const navigation = useLogInNavigation();
 
-  useStepBackOverride<InvestFormFields, LogInStackParamList>(useInvestFlow, navigation, false);
+  useStepBackOverride<InvestFormFields, LogInStackParamList>(
+    useInvestFlow,
+    navigation,
+    false,
+    overrideBackSteps.includes(currentStepIdentifier as Identifiers),
+  );
   useKeyboardAware();
 
   const onCancelInvestment = useCallback(async () => {
@@ -36,20 +48,42 @@ export const InvestmentLayout = ({ shouldShowFooter = true }: Props) => {
     navigation.goBack();
   }, [navigation, resetStoreFields]);
 
+  const getLeftHeader = useCallback(() => {
+    if (initialInvestment) {
+      return () => (
+        <Icon
+          icon={'hamburgerClose'}
+          onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+        />
+      );
+    }
+
+    if (stepsWithoutBack.includes(currentStepIdentifier as Identifiers)) {
+      return () => null;
+    }
+
+    return undefined;
+  }, [initialInvestment, navigation, currentStepIdentifier]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerShown: !stepsWithoutHeader.includes(currentStepIdentifier as Identifiers),
       headerRight: stepsWithCancelOption.includes(currentStepIdentifier as Identifiers)
         ? undefined
-        : () => (
-            <StyledText
-              variant={'h6'}
-              onPress={onCancelInvestment}
-            >
-              Cancel
-            </StyledText>
-          ),
+        : () =>
+            initialInvestment ? (
+              <HeaderAvatar />
+            ) : (
+              <StyledText
+                variant={'h6'}
+                onPress={onCancelInvestment}
+              >
+                Cancel
+              </StyledText>
+            ),
+      headerLeft: getLeftHeader(),
     });
-  }, [currentStepIdentifier, navigation, onCancelInvestment]);
+  }, [currentStepIdentifier, getLeftHeader, initialInvestment, navigation, onCancelInvestment]);
 
   return (
     <DialogProvider>

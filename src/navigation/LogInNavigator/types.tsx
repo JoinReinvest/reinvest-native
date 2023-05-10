@@ -8,7 +8,7 @@ import Screens from '../screens';
 export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;
   [Screens.Onboarding]: undefined;
-  [Screens.Investing]: undefined;
+  [Screens.Investing]: { initialInvestment?: boolean };
   [Screens.AddBeneficiary]: undefined;
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;

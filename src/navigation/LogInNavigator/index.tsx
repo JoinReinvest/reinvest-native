@@ -35,6 +35,7 @@ const stackOptions: Record<
   },
   [Screens.Investing]: {
     title: 'Investing',
+    headerShown: false,
   },
   [Screens.ManageAccountMainScreen]: {
     title: 'Manage Account',
@@ -76,7 +77,8 @@ export const LogInNavigator: React.FC = () => {
       const defaultAccount = { ...accounts?.[0] };
       setAccount(defaultAccount);
     }
-  }, [account, accountLoading, accounts, setAccount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountLoading, accounts]);
 
   if (!data)
     return (

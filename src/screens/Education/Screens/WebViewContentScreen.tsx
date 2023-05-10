@@ -6,14 +6,23 @@ import { WebView } from 'react-native-webview';
 import { Loader } from '../../../components/Loader';
 import { isIOS } from '../../../constants/common';
 import Screens from '../../../navigation/screens';
-import { EducationStackProps } from '../../Education/types';
+import { EducationStackProps } from '../types';
 import { styles } from './styles';
 
 /*
  * Iframe is scaling on input focus
  */
-const jsInjection =
-  "const meta =  document.querySelectorAll('meta')[1]; meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');";
+const jsInjection = ` try {
+    function loadPageEnd() {
+      const meta =  document.querySelectorAll('meta')[1];
+      meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+    }
+    window.onLoad = loadPageEnd();
+  } catch (e) {
+    window.ReactNativeWebView.postMessage(JSON.stringify({ error: JSON.stringify(e) }));
+    true;
+  }
+  true;`;
 export const WebViewContentScreen = ({ route: { params } }: EducationStackProps<Screens.WebViewContent>) => {
   const [isLoading, setIsLoading] = useState(true);
 

@@ -148,7 +148,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     useEffect(() => {
       if (isOpenAccountSuccess) {
         (async () => {
-          navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+          navigation.navigate(Screens.Investing, { initialInvestment: true });
           await refetch();
         })();
       }
