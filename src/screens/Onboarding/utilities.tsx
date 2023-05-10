@@ -51,6 +51,13 @@ export type ApplicantFormFields = Omit<Applicant, 'domicile'> & { domicile?: Dom
 
 type GetDefaultValuesForApplicantWithoutIdentification = (applicants: Applicant[], currentApplicantIndex: number | undefined) => ApplicantFormFields;
 
+const parseDateOfBirthFromApplicant = (dateOfBirth?: string) => {
+  if (dateOfBirth) {
+    return checkIfLocalDate(dateOfBirth) ? dateOfBirth : formatDate(dateOfBirth, 'DEFAULT', { currentFormat: 'API' });
+  }
+
+  return '';
+};
 export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValuesForApplicantWithoutIdentification = (applicants, currentApplicantIndex) => {
   const hasApplicants = !!applicants.length;
   const hasAnIndex = currentApplicantIndex !== undefined;
@@ -63,11 +70,7 @@ export const getDefaultValuesForApplicantWithoutIdentification: GetDefaultValues
       return {
         ...applicant,
         domicile: mapDomicileTypeToDomicileLabel(applicant.domicile),
-        dateOfBirth: applicant.dateOfBirth
-          ? checkIfLocalDate(applicant.dateOfBirth)
-            ? applicant.dateOfBirth
-            : formatDate(applicant.dateOfBirth, 'DEFAULT', { currentFormat: 'API' })
-          : '',
+        dateOfBirth: parseDateOfBirthFromApplicant(applicant.dateOfBirth),
       };
     }
   }

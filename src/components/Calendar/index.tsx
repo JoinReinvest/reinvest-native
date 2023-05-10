@@ -14,7 +14,6 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
   const [autoSelectedDays, setAutoSelectedDays] = useState<number[]>([]);
 
   const calendarLabel = formatDate(dayjs().toDate(), 'DATE_PICKER', { currentFormat: 'DATE_PICKER' });
-  // const calendarLabel = 'May';
   const today = +dayjs().format('D');
   const calendarDays = useMemo(() => getCalendarDays(), []);
 
