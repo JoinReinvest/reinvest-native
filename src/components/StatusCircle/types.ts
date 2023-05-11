@@ -9,5 +9,5 @@ export interface Props {
   justifyContent?: FlexJustify;
   style?: StyleProp<ViewStyle>;
   title?: string;
-  variant?: 'success' | 'error';
+  variant?: 'success' | 'error' | 'alert';
 }

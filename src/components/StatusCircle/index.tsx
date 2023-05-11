@@ -10,12 +10,23 @@ import type { Props } from './types';
 export const StatusCircle = ({ variant = 'success', dark, title, children, style, fillColor, justifyContent }: PropsWithChildren<Props>) => {
   const success = variant === 'success';
 
+  const getIcon = () => {
+    switch (variant) {
+      case 'error':
+        return 'hamburgerClose';
+      case 'success':
+        return 'tick';
+      case 'alert':
+        return 'alert';
+    }
+  };
+
   return (
     <View style={[styles.wrapper, justifyContent && { justifyContent }, style]}>
       <View style={[styles.iconContainer, !success && styles.iconContainerError, fillColor && { backgroundColor: palette[fillColor] }]}>
         <Icon
           size="xl"
-          icon={success ? 'tick' : 'hamburgerClose'}
+          icon={getIcon()}
           color={success ? palette.pureBlack : dark ? palette.pureWhite : palette.pureBlack}
         />
       </View>

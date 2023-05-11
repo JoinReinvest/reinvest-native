@@ -84,15 +84,30 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
     // };
 
     const onSubmit = async () => {
-      moveToNextStep();
+      // mock failing both times:
+
       // clear all data provided by user from previous verification
-      await updateStoreFields({
-        ...initialKYCFailedFormFields,
-        _actions: [
-          { action: ActionName.UpdateMemberAgain, onObject: { accountId: storeFields.accountId, stakeholderId: null, type: VerificationObjectType.Profile } },
-        ],
-      });
-      // mock failing again:
+      if (storeFields._actions?.find(({ action }) => action === ActionName.UpdateMember)) {
+        await updateStoreFields({
+          ...initialKYCFailedFormFields,
+          _actions: [
+            { action: ActionName.UpdateMemberAgain, onObject: { accountId: storeFields.accountId, stakeholderId: null, type: VerificationObjectType.Profile } },
+          ],
+        });
+      }
+
+      if (storeFields._actions?.find(({ action }) => action === ActionName.UpdateMemberAgain)) {
+        await updateStoreFields({
+          ...initialKYCFailedFormFields,
+          _actions: [
+            {
+              action: ActionName.RequireManualReview,
+              onObject: { accountId: storeFields.accountId, stakeholderId: null, type: VerificationObjectType.Profile },
+            },
+          ],
+        });
+      }
+
       moveToStepByIdentifier(Identifiers.VERIFICATION_FAILED);
     };
 
