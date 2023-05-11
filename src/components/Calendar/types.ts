@@ -1,4 +1,4 @@
-import { Period } from '../../types/period';
+export type Period = 'WEEKLY' | 'BI-WEEKLY' | 'MONTHLY' | 'QUARTERLY';
 
 export interface CalendarProps {
   autoSelectionPeriod: Period;

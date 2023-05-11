@@ -251,6 +251,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
             Continue
           </Button>
           <Button
+            dark
             variant="outlined"
             disabled={isLoading}
             onPress={completeProfileAndOpenAccount}

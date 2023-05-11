@@ -97,6 +97,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
             Skip
           </Button>
           <Button
+            dark
             disabled={referralValue?.replace('-', '').length !== 6 || isValidating}
             isLoading={isValidating}
             onPress={handleSubmit(onSubmit)}

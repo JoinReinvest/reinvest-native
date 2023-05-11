@@ -193,6 +193,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
           <Button
             variant={hasApplicants ? 'primary' : 'outlined'}
             onPress={onContinue}
+            dark={!hasApplicants}
           >
             {hasApplicants ? 'Continue' : 'Skip'}
           </Button>
