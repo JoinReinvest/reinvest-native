@@ -14,4 +14,5 @@ export const styles = StyleSheet.create({
     columnGap: yScale(8),
     paddingTop: yScale(8),
   },
+  removeMargin: { marginBottom: 0 },
 });

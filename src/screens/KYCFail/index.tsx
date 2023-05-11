@@ -9,6 +9,8 @@ import { initialKYCFailedFormFields, KYCFailedFormFlowProvider } from './flow-st
 export const KYCFail = ({ route: { params } }: LogInProps<Screens.KYCFail>) => {
   const [account] = useAtom(currentAccount);
 
+  console.log('Landed on Screen: KYCFail');
+
   return (
     <KYCFailedFormFlowProvider
       initialStoreFields={{

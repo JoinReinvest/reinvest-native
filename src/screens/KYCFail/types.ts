@@ -5,7 +5,7 @@ import { IdentificationDocuments } from '../Onboarding/types';
 export interface KYCFailedFormFields {
   _actions: VerificationAction[] | null;
   accountId: string;
-  address?: Address;
+  address: Address | null;
   dateOfBirth?: string;
   identificationDocument?: IdentificationDocuments;
   name?: {
