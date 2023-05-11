@@ -14,6 +14,7 @@ import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
 import { Investing } from '../../screens/Investing';
+import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { Onboarding } from '../../screens/Onboarding';
@@ -28,7 +29,7 @@ const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 const stackOptions: Record<
   Extract<
     Screens,
-    Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary | Screens.BankAccount
+    Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary | Screens.KYCFail | Screens.BankAccount
   >,
   NativeStackNavigationOptions
 > = {
@@ -53,6 +54,10 @@ const stackOptions: Record<
   },
   [Screens.AddBeneficiary]: {
     title: 'Add Beneficiary',
+  },
+  [Screens.KYCFail]: {
+    title: 'logo',
+    header: DarkScreenHeader,
   },
 };
 
@@ -131,6 +136,11 @@ export const LogInNavigator: React.FC = () => {
               options={stackOptions[Screens.ManageAccount]}
               name={Screens.ManageAccount}
               component={ManageAccountScreen}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.KYCFail]}
+              name={Screens.KYCFail}
+              component={KYCFail}
             />
           </LogInStack.Navigator>
         </DialogProvider>
