@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
-import { Period } from '../../types/';
+import { Period } from './types';
 
 export const selectDatesForAutoSelection = (day: number, period: Period) => {
   const daysInMonth = dayjs().daysInMonth();

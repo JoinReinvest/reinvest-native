@@ -185,6 +185,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
         >
           <Button
             variant={hasApplicants ? 'primary' : 'outlined'}
+            dark={!hasApplicants}
             onPress={onContinue}
           >
             {hasApplicants ? 'Continue' : 'Skip'}

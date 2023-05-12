@@ -11,7 +11,7 @@ export const Card = <T extends object | string>({ id, title, value, description,
   return (
     <Pressable
       id={`${id}`}
-      style={[styles.cardWrapper, selected && styles.selected, compact && styles.compact]}
+      style={[styles.cardWrapper, dark && styles.darkWrapper, selected && styles.selected, compact && styles.compact]}
       onPress={handleCardPress}
     >
       <StyledText
