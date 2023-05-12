@@ -25,7 +25,7 @@ const schema = z.object({
     lastName: formValidationRules.lastName,
   }),
   dateOfBirth: dateOlderThanEighteenYearsSchema,
-  ssn: formValidationRules.socialSecurityNumber,
+  ssn: formValidationRules.maskedSocialSecurityNumber,
 });
 
 export const StepProfileInformation: StepParams<KYCFailedFormFields> = {

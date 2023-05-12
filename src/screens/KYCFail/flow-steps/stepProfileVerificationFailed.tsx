@@ -13,8 +13,12 @@ import { IdentificationDocuments } from '../../Onboarding/types';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
-export const StepVerificationFailed: StepParams<KYCFailedFormFields> = {
-  identifier: Identifiers.VERIFICATION_FAILED,
+export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
+  identifier: Identifiers.PROFILE_VERIFICATION_FAILED,
+
+  doesMeetConditionFields({ _actions }) {
+    return !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+  },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
     const { _actions } = storeFields;

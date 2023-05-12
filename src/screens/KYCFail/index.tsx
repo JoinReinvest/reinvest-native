@@ -1,4 +1,5 @@
 import React from 'react';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
@@ -9,13 +10,12 @@ import { initialKYCFailedFormFields, KYCFailedFormFlowProvider } from './flow-st
 export const KYCFail = ({ route: { params } }: LogInProps<Screens.KYCFail>) => {
   const [account] = useAtom(currentAccount);
 
-  console.log('Landed on Screen: KYCFail');
-
   return (
     <KYCFailedFormFlowProvider
       initialStoreFields={{
         ...initialKYCFailedFormFields,
         _actions: params.actions,
+        accountType: account.type as AccountType,
         accountId: account?.id || '',
       }}
     >

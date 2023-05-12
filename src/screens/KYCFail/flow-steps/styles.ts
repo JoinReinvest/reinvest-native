@@ -15,4 +15,8 @@ export const styles = StyleSheet.create({
     paddingTop: yScale(8),
   },
   removeMargin: { marginBottom: 0 },
+  fw: {
+    width: '100%',
+  },
+  stakeholderRow: { columnGap: 27, justifyContent: 'space-between', alignItems: 'center' },
 });

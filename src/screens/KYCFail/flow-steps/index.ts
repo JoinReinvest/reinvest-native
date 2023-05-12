@@ -5,12 +5,25 @@ import { StepIdentificationDocuments } from './/stepIdentificationDocuments';
 import { StepManualReview } from './stepManualReview';
 import { StepPermanentAddress } from './stepPermanentAddress';
 import { StepProfileInformation } from './stepProfileInformation';
-import { StepVerificationFailed } from './stepVerificationFailed';
+import { StepProfileVerificationFailed } from './stepProfileVerificationFailed';
+import { StepStakeholderList } from './stepStakeholderList';
+import { StepStakeholdersVerificationFailed } from './stepStakeholdersVerificationFailed';
+import { StepTrusteesVerificationFailed } from './stepTrusteesVerificationFailed';
 
-export const FLOW_STEPS = [StepVerificationFailed, StepProfileInformation, StepPermanentAddress, StepIdentificationDocuments, StepManualReview];
+export const FLOW_STEPS = [
+  StepTrusteesVerificationFailed,
+  StepStakeholdersVerificationFailed,
+  StepStakeholderList,
+  StepProfileVerificationFailed,
+  StepProfileInformation,
+  StepPermanentAddress,
+  StepIdentificationDocuments,
+  StepManualReview,
+];
 
 export const initialKYCFailedFormFields: Omit<KYCFailedFormFields, 'accountId'> = {
   _actions: null,
+  accountType: null,
   address: null,
   name: {
     firstName: undefined,

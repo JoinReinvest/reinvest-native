@@ -94,7 +94,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
             { action: ActionName.UpdateMemberAgain, onObject: { accountId: storeFields.accountId, stakeholderId: null, type: VerificationObjectType.Profile } },
           ],
         });
-        moveToStepByIdentifier(Identifiers.VERIFICATION_FAILED);
+        moveToStepByIdentifier(Identifiers.PROFILE_VERIFICATION_FAILED);
       }
 
       if (storeFields._actions?.find(({ action }) => action === ActionName.UpdateMemberAgain)) {
