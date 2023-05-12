@@ -1,50 +1,45 @@
-import { Alert } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { ActionName } from 'reinvest-app-common/src/types/graphql';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StatusCircle } from '../../../components/StatusCircle';
-import { useLogInNavigation } from '../../../navigation/hooks';
-import Screens from '../../../navigation/screens';
+import { IdentificationDocuments } from '../../Onboarding/types';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
 export const StepVerificationFailed: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.VERIFICATION_FAILED,
 
-  Component: ({ storeFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
     const { _actions } = storeFields;
-    const { navigate } = useLogInNavigation();
-
+    const { data: userProfile } = useGetUserProfile(getApiClient);
     const failedAgain = _actions?.find(({ action }) => action === ActionName.UpdateMemberAgain) ?? false;
-    const isManualReviewRequired = _actions?.find(({ action }) => action === ActionName.RequireManualReview) ?? false;
+    const headline = failedAgain ? 'We still are unable to verify your information' : 'We could not verify your information';
 
-    const getFormHeadline = () => {
-      const formTitle = {
-        headline: 'We could not verify your information',
-        description: 'Please update your information and we will run our verification process again.',
-      };
+    const handleContinue = async () => {
+      //prefill profile info from API:
+      const onObjectTypes = _actions?.map(({ onObject }) => onObject.type);
 
-      if (failedAgain) {
-        formTitle.headline = 'We still are unable to verify your information';
-      }
-
-      if (isManualReviewRequired) {
-        formTitle.headline = 'Notice: $10 fee for manual verification ';
-        formTitle.description = 'As your verification has failed twice, REINVEST needs to run a manual verification.';
-      }
-
-      return formTitle;
-    };
-
-    const { headline, description } = getFormHeadline();
-
-    const handleContinue = () => {
-      if (isManualReviewRequired) {
-        return Alert.alert('Submit for manual review');
+      if (onObjectTypes?.includes(VerificationObjectType.Profile)) {
+        await updateStoreFields({
+          name: {
+            firstName: userProfile?.details?.firstName ?? '',
+            middleName: userProfile?.details?.middleName ?? '',
+            lastName: userProfile?.details?.lastName ?? '',
+          },
+          dateOfBirth: userProfile?.details?.dateOfBirth ? formatDate(userProfile.details.dateOfBirth, 'DEFAULT', { currentFormat: 'API' }) : undefined,
+          ssn: userProfile?.details?.ssn ?? '',
+          identificationDocument: (userProfile?.details?.idScan as IdentificationDocuments) ?? [],
+          address: {
+            ...userProfile?.details?.address,
+          },
+        });
       }
 
       moveToNextStep();
@@ -52,14 +47,14 @@ export const StepVerificationFailed: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView contentContainerStyle={{ position: 'relative' }}>
+        <PaddedScrollView>
           <Box pt="24">
-            <StatusCircle variant={isManualReviewRequired ? 'alert' : 'error'} />
+            <StatusCircle variant="error" />
           </Box>
           <FormTitle
             dark
             headline={headline}
-            description={description}
+            description="Please update your information and we will run our verification process again."
           />
         </PaddedScrollView>
         <Box
@@ -67,14 +62,7 @@ export const StepVerificationFailed: StepParams<KYCFailedFormFields> = {
           px="default"
           pb="24"
         >
-          {isManualReviewRequired ? (
-            <>
-              <Button onPress={handleContinue}>Submit</Button>
-              <Button onPress={() => navigate(Screens.Dashboard)}>Cancel</Button>
-            </>
-          ) : (
-            <Button onPress={handleContinue}>Edit Information</Button>
-          )}
+          <Button onPress={handleContinue}>Edit Information</Button>
         </Box>
       </>
     );

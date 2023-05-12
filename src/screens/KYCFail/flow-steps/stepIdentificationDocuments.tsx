@@ -32,7 +32,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
     );
   },
 
-  Component: ({ storeFields, updateStoreFields, moveToNextStep, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
     const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.identificationDocument as AssetWithPreloadedFiles[]) || []);
     const { mutateAsync: reverifyAccount } = useVerifyAccount(getApiClient);
 
@@ -94,6 +94,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
             { action: ActionName.UpdateMemberAgain, onObject: { accountId: storeFields.accountId, stakeholderId: null, type: VerificationObjectType.Profile } },
           ],
         });
+        moveToStepByIdentifier(Identifiers.VERIFICATION_FAILED);
       }
 
       if (storeFields._actions?.find(({ action }) => action === ActionName.UpdateMemberAgain)) {
@@ -106,9 +107,8 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
             },
           ],
         });
+        moveToStepByIdentifier(Identifiers.MANUAL_REVIEW);
       }
-
-      moveToStepByIdentifier(Identifiers.VERIFICATION_FAILED);
     };
 
     const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;

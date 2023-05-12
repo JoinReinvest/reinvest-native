@@ -2,11 +2,12 @@ import { createFormFlow } from 'reinvest-app-common/src/services/form-flow';
 
 import { KYCFailedFormFields } from '../types';
 import { StepIdentificationDocuments } from './/stepIdentificationDocuments';
+import { StepManualReview } from './stepManualReview';
 import { StepPermanentAddress } from './stepPermanentAddress';
 import { StepProfileInformation } from './stepProfileInformation';
 import { StepVerificationFailed } from './stepVerificationFailed';
 
-export const FLOW_STEPS = [StepVerificationFailed, StepProfileInformation, StepPermanentAddress, StepIdentificationDocuments];
+export const FLOW_STEPS = [StepVerificationFailed, StepProfileInformation, StepPermanentAddress, StepIdentificationDocuments, StepManualReview];
 
 export const initialKYCFailedFormFields: Omit<KYCFailedFormFields, 'accountId'> = {
   _actions: null,

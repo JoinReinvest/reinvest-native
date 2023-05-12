@@ -56,8 +56,7 @@ const stackOptions: Record<
     title: 'Add Beneficiary',
   },
   [Screens.KYCFail]: {
-    title: 'logo',
-    header: DarkScreenHeader,
+    headerShown: false,
   },
 };
 

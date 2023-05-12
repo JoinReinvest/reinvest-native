@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Masks } from 'react-native-mask-input';
-import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import z from 'zod';
@@ -12,7 +11,8 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { SSN_MASK } from '../../../constants/masks';
-import { dateOlderThanEighteenYearsSchema } from '../../../utils/formValidationRules';
+import { dateOlderThanEighteenYearsSchema, formValidationRules } from '../../../utils/formValidationRules';
+import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
@@ -39,21 +39,31 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
     const { handleSubmit, control, formState } = useForm<Fields>({
       mode: 'onBlur',
       resolver: zodResolver(schema),
-      defaultValues: {
-        ...storeFields,
-      },
+      defaultValues: storeFields,
     });
 
     const shouldButtonBeDisabled = !formState.isValid;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
+      const { ssn, ...restFields } = fields;
+      const isSSNFromApi = apiSSN.test(ssn ?? '');
+
+      if (isSSNFromApi) {
+        //TODO: update API without SSN
+        await updateStoreFields(restFields);
+
+        return moveToNextStep();
+      }
+
+      //TODO: update API with SSN
       await updateStoreFields(fields);
-      moveToNextStep();
+
+      return moveToNextStep();
     };
 
     return (
       <>
-        <PaddedScrollView contentContainerStyle={{ position: 'relative' }}>
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Verify that you entered your information correctly"
