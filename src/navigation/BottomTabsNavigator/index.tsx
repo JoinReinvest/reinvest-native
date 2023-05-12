@@ -46,6 +46,15 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
   [Screens.Notifications]: {
     title: 'Notifications',
     tabBarIcon: ({ focused }) => <NotificationIcon focused={focused} />,
+    headerLeft: () => (
+      <Box
+        m="8"
+        width={32}
+        height={32}
+      >
+        <Sygnet color={palette.pureBlack} />
+      </Box>
+    ),
   },
 };
 
@@ -108,7 +117,9 @@ export const BottomTabsNavigator: React.FC = () => {
         component={Notifications}
         options={() => ({
           ...stackOptions[Screens.Notifications],
-          tabBarBadge: 3,
+          headerShown: true,
+          header: props => <ScreenHeader {...props} />,
+          headerRight: HeaderAvatar,
         })}
       />
     </Tab.Navigator>
