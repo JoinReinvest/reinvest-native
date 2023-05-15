@@ -19,7 +19,6 @@ export const useBackOverrideBase = <T extends object, K extends ParamListBase>(
     meta: { isFirstStep },
     moveToPreviousValidStep,
   } = useCurrentFormContext();
-  console.log('=>(useBackOverrideBase.tsx:22) isFirstStep', isFirstStep, notOverrideOtherSteps);
   const { data } = useGetUserProfile(getApiClient);
 
   const iconProps: IconProps = useMemo(

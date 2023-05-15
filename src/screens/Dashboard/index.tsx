@@ -73,7 +73,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
           chartData={mockedChartData}
           rateOfReturn={'9.75%'}
         />
-        <Chart />
+        <Chart chartData={mockedChartData} />
         <Box py={'16'}>
           <Button onPress={() => navigation.navigate(Screens.Investing, { initialInvestment: false })}>Invest</Button>
         </Box>

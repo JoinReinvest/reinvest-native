@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from 'react';
-import { Alert } from 'react-native';
 import { Area, Chart as ChartBase, Line } from 'react-native-responsive-linechart';
 
 import { PADDED_SAFE_WIDTH } from '../../constants/styles';
@@ -23,15 +22,15 @@ const options = [
 ];
 
 /*
- *  react-native-responsive-linechart is not supporting React 18 types
+ *  react-native-responsive-lineChart is not supporting React 18 types
  */
 const ChartOverload: React.FC<PropsWithChildren<React.ComponentProps<typeof ChartBase>>> = ChartBase;
 
 export const Chart = ({ compact, chartData }: ChartProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const selectHandler = (option: RangeOption) =>
     new Promise<void>(resolve => {
       setTimeout(() => {
-        Alert.alert(JSON.stringify(option));
         resolve();
       }, 0.5);
     });

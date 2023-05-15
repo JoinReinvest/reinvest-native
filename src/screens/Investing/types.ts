@@ -5,6 +5,7 @@ export interface InvestFormFields {
   accountId: string;
   source: string;
   addingAccount?: boolean;
+  automaticDividendReinvestmentAgreement?: boolean;
   bankAccount?: BankAccount;
   initialInvestment?: boolean;
   investAmount?: string;
