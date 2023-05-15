@@ -13,17 +13,17 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { HEADER_HEIGHT } from '../../../constants/styles';
 import { Identifiers } from '../identifiers';
-import { InvestFormFields } from '../types';
+import { BankAccountFormFields } from '../types';
 import { styles } from './styles';
 
-export const PlaidInformation: StepParams<InvestFormFields> = {
+export const PlaidInformation: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.PLAID_INFORMATION,
 
   doesMeetConditionFields: fields => {
     return !fields.bankAccount;
   },
 
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep }: StepComponentProps<BankAccountFormFields>) => {
     const { top } = useSafeAreaInsets();
     const handleContinue = async () => {
       moveToNextStep();

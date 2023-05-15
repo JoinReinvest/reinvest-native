@@ -6,20 +6,20 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
+import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
-import { InvestFormFields } from '../types';
+import { BankAccountFormFields } from '../types';
 import { styles } from './styles';
 
-export const BankAccountConfirmed: StepParams<InvestFormFields> = {
+export const BankAccountConfirmed: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.BANK_ACCOUNT_CONFIRMED,
-  doesMeetConditionFields: fields => {
-    return !!fields.bankAccount && !!fields.addingAccount;
-  },
 
-  Component: ({ moveToNextStep, storeFields: { bankAccount }, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ storeFields: { bankAccount, sourceScreen } }: StepComponentProps<BankAccountFormFields>) => {
+    const { navigate } = useLogInNavigation();
     const handleContinue = async () => {
-      await updateStoreFields({ addingAccount: undefined });
-      moveToNextStep();
+      if (sourceScreen) {
+        navigate(sourceScreen, { bankAccount });
+      }
     };
 
     return (
