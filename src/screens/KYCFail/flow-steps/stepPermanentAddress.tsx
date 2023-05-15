@@ -5,7 +5,7 @@ import { Pressable } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { allRequiredFieldsExists } from 'reinvest-app-common/src/services/form-flow';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { Address, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { ActionName, Address, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -44,8 +44,10 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
     const { name, dateOfBirth, ssn } = fields;
 
     const requiredFields = [name?.firstName, name?.lastName, dateOfBirth, ssn];
+    const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile) && allRequiredFieldsExists(requiredFields);
+    return !!profileVerificationAction && !doesRequireManualReview && allRequiredFieldsExists(requiredFields);
   },
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<KYCFailedFormFields>) => {

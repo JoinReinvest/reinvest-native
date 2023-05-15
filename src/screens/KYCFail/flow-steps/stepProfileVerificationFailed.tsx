@@ -17,34 +17,35 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_VERIFICATION_FAILED,
 
   doesMeetConditionFields({ _actions }) {
-    return !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
+
+    return !!profileVerificationAction && !doesRequireManualReview;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
     const { _actions } = storeFields;
     const { data: userProfile } = useGetUserProfile(getApiClient);
-    const failedAgain = _actions?.find(({ action }) => action === ActionName.UpdateMemberAgain) ?? false;
+    const failedAgain =
+      _actions?.find(({ action, onObject }) => action === ActionName.UpdateMemberAgain && onObject.type === VerificationObjectType.Profile) ?? false;
     const headline = failedAgain ? 'We still are unable to verify your information' : 'We could not verify your information';
 
     const handleContinue = async () => {
       //prefill profile info from API:
-      const onObjectTypes = _actions?.map(({ onObject }) => onObject.type);
 
-      if (onObjectTypes?.includes(VerificationObjectType.Profile)) {
-        await updateStoreFields({
-          name: {
-            firstName: userProfile?.details?.firstName ?? '',
-            middleName: userProfile?.details?.middleName ?? '',
-            lastName: userProfile?.details?.lastName ?? '',
-          },
-          dateOfBirth: userProfile?.details?.dateOfBirth ? formatDate(userProfile.details.dateOfBirth, 'DEFAULT', { currentFormat: 'API' }) : undefined,
-          ssn: userProfile?.details?.ssn ?? '',
-          identificationDocument: (userProfile?.details?.idScan as IdentificationDocuments) ?? [],
-          address: {
-            ...userProfile?.details?.address,
-          },
-        });
-      }
+      await updateStoreFields({
+        name: {
+          firstName: userProfile?.details?.firstName ?? '',
+          middleName: userProfile?.details?.middleName ?? '',
+          lastName: userProfile?.details?.lastName ?? '',
+        },
+        dateOfBirth: userProfile?.details?.dateOfBirth ? formatDate(userProfile.details.dateOfBirth, 'DEFAULT', { currentFormat: 'API' }) : undefined,
+        ssn: userProfile?.details?.ssn ?? '',
+        identificationDocument: (userProfile?.details?.idScan as IdentificationDocuments) ?? [],
+        address: {
+          ...userProfile?.details?.address,
+        },
+      });
 
       moveToNextStep();
     };

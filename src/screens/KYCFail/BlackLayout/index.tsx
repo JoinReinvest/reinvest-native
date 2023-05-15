@@ -29,8 +29,10 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   useStepBackOverride<KYCFailedFormFields, LogInStackParamList>(useKYCFailedFlow, navigation);
   useKeyboardAware();
 
+  const isOnManualReviewScreen = currentStepIdentifier === Identifiers.PROFILE_MANUAL_REVIEW || currentStepIdentifier === Identifiers.STAKEHOLDER_MANUAL_REVIEW;
+
   const headerLeft = () =>
-    currentStepIdentifier === Identifiers.MANUAL_REVIEW ? null : (
+    isOnManualReviewScreen ? null : (
       <Icon
         color={'#FFF'}
         icon={'down'}

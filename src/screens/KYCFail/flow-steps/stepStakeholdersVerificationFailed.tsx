@@ -1,6 +1,6 @@
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetCorporateAccount } from 'reinvest-app-common/src/services/queries/getCorporateAccount';
-import { AccountType, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
@@ -16,7 +16,10 @@ export const StepStakeholdersVerificationFailed: StepParams<KYCFailedFormFields>
   identifier: Identifiers.STAKEHOLDER_VERIFICATION_FAILED,
 
   doesMeetConditionFields({ _actions, accountType }) {
-    return accountType === AccountType.Corporate && !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
+    const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
+    const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
+
+    return accountType === AccountType.Corporate && !!stakeholderVerificationAction && !doesRequireManualReview;
   },
 
   Component: ({ storeFields: { accountId, accountType }, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {

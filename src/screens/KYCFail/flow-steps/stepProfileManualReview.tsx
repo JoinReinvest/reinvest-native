@@ -1,6 +1,5 @@
-import { Alert } from 'react-native';
-import { StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { ActionName } from 'reinvest-app-common/src/types/graphql';
+import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -12,18 +11,33 @@ import Screens from '../../../navigation/screens';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
-export const StepManualReview: StepParams<KYCFailedFormFields> = {
-  identifier: Identifiers.MANUAL_REVIEW,
+export const StepProfileManualReview: StepParams<KYCFailedFormFields> = {
+  identifier: Identifiers.PROFILE_MANUAL_REVIEW,
 
   doesMeetConditionFields({ _actions }) {
-    return !!_actions?.find(({ action }) => action === ActionName.RequireManualReview);
+    const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
+
+    return !!profileVerificationAction && doesRequireManualReview;
   },
 
-  Component: () => {
-    const navigation = useLogInNavigation();
+  Component: ({ moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+    const { navigate } = useLogInNavigation();
 
-    const handleSubmit = () => {
-      Alert.alert('Submit for manual review');
+    const handleSubmit = async () => {
+      /*
+        - Submit profile for manual review
+        - Continue verification with next verification object
+      */
+
+      moveToNextStep();
+    };
+
+    const handleCancel = () => {
+      /*
+        Cancel the investment and navigate back to dashboard
+      */
+      navigate(Screens.Dashboard);
     };
 
     return (
@@ -46,7 +60,7 @@ export const StepManualReview: StepParams<KYCFailedFormFields> = {
           <Button onPress={handleSubmit}>Submit</Button>
           <Button
             variant="outlined"
-            onPress={() => navigation.navigate(Screens.Dashboard)}
+            onPress={handleCancel}
           >
             Cancel
           </Button>

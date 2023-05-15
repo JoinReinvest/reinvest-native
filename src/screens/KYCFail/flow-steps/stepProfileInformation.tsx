@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Masks } from 'react-native-mask-input';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import z from 'zod';
 
 import { Button } from '../../../components/Button';
@@ -32,7 +32,10 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_INFORMATION,
 
   doesMeetConditionFields({ _actions }) {
-    return !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
+    const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
+
+    return !!profileVerificationAction && !doesRequireManualReview;
   },
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<KYCFailedFormFields>) => {

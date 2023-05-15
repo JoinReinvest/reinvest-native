@@ -1,11 +1,8 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
-import { AddressInput, DocumentFileLinkInput, SimplifiedDomicileType, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
-import { formatDate } from 'reinvest-app-common/src/utilities/dates';
+import { AccountType, ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
-import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -13,34 +10,31 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Icon } from '../../../components/Icon';
 import { ApplicantFormModal } from '../../../components/Modals/ModalContent/ApplicantForm';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
-import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
-import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
-import { apiSSN } from '../../../utils/regexes';
 import { Applicant, IndexedSchema } from '../../Onboarding/types';
 import { getDefaultValuesForApplicantWithoutIdentification } from '../../Onboarding/utilities';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
-import { useKYCFailedFlow } from '.';
 import { styles } from './styles';
 
 export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.STAKEHOLDER_LIST,
 
-  doesMeetConditionFields({ _actions }) {
-    return !!_actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
-  },
-  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
-    const { stakeholders } = storeFields;
-    const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator('company' || '');
-    const { mutateAsync: completeTrustDraftAccount } = useCompleteTrustDraftAccount(getApiClient);
-    const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
+  doesMeetConditionFields({ _actions, accountType }) {
+    const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
+    const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    const { progressPercentage } = useKYCFailedFlow();
+    return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual;
+  },
+
+  Component: ({ storeFields: { stakeholders, accountId }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+    const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
     const { openDialog, closeDialog } = useDialog();
+
+    const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator('company' || '');
 
     const indexedStakeholderApplicants: IndexedSchema<Applicant>[] = applicantsRef.current.map((item, index) => ({
       ...item,
@@ -48,39 +42,43 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     }));
 
     const uploadApplicant = async (applicant: Applicant) => {
-      if (!storeFields.accountId) {
+      if (!accountId) {
         return;
       }
 
-      const stakeholders = [
-        {
-          id: applicant.id,
-          name: {
-            firstName: applicant.firstName,
-            lastName: applicant.lastName,
-            middleName: applicant.middleName,
-          },
-          dateOfBirth: {
-            dateOfBirth: applicant.dateOfBirth ? formatDate(applicant.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : '',
-          },
-          address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
-          idScan: applicant.idScan as DocumentFileLinkInput[],
-          // when ssn is anonymized we need to send null
-          ssn: !apiSSN.test(applicant?.socialSecurityNumber || '')
-            ? {
-                ssn: applicant.socialSecurityNumber,
-              }
-            : undefined,
-          domicile: {
-            type: applicant.domicile || SimplifiedDomicileType.Citizen,
-          },
-        },
-      ];
-      const response = await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { stakeholders } });
-      const currentStakeholders = response?.details?.stakeholders?.map(apiStakeholderToApplicant);
-      applicantsRef.current = currentStakeholders || [];
+      // eslint-disable-next-line no-console
+      console.log('uploadApplicant(): ', applicant);
 
-      return updateStoreFields({ stakeholders: currentStakeholders });
+      //TODO: uncomment when working on connecting the API
+      // const stakeholders = [
+      //   {
+      //     id: applicant.id,
+      //     name: {
+      //       firstName: applicant.firstName,
+      //       lastName: applicant.lastName,
+      //       middleName: applicant.middleName,
+      //     },
+      //     dateOfBirth: {
+      //       dateOfBirth: applicant.dateOfBirth ? formatDate(applicant.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : '',
+      //     },
+      //     address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
+      //     idScan: applicant.idScan as DocumentFileLinkInput[],
+      //     // when ssn is anonymized we need to send null
+      //     ssn: !apiSSN.test(applicant?.socialSecurityNumber || '')
+      //       ? {
+      //           ssn: applicant.socialSecurityNumber,
+      //         }
+      //       : undefined,
+      //     domicile: {
+      //       type: applicant.domicile || SimplifiedDomicileType.Citizen,
+      //     },
+      //   },
+      // ];
+      // const response = await completeTrustDraftAccount({ accountId, input: { stakeholders } });
+      // const currentStakeholders = response?.details?.stakeholders?.map(apiStakeholderToApplicant);
+      // applicantsRef.current = currentStakeholders || [];
+
+      // return updateStoreFields({ stakeholders: currentStakeholders });
     };
 
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
@@ -106,7 +104,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
       closeDialog();
     };
 
-    const onContinue = async () => {
+    const handleSubmit = async () => {
       moveToNextStep();
     };
 
@@ -132,9 +130,6 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <View style={[styles.fw]}>
-          <ProgressBar value={progressPercentage} />
-        </View>
         <PaddedScrollView>
           <FormTitle
             dark
@@ -162,7 +157,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
           key="buttons_section"
           style={[styles.buttonsSection]}
         >
-          <Button onPress={onContinue}>Submit</Button>
+          <Button onPress={handleSubmit}>Submit</Button>
         </View>
       </>
     );
