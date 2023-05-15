@@ -9,7 +9,7 @@ import { InvestmentLayout } from './InvestmentLayout';
 
 export const Investing = ({ route }: NativeStackScreenProps<LogInStackParamList, Screens.Investing>) => {
   const [account] = useAtom(currentAccount);
-  const { initialInvestment } = route.params || {};
+  const { initialInvestment, bankAccount } = route.params || {};
 
   return (
     <InvestFormFlowProvider
@@ -17,6 +17,7 @@ export const Investing = ({ route }: NativeStackScreenProps<LogInStackParamList,
         ...investingFormFieldsInitialState,
         initialInvestment,
         accountId: account?.id || '',
+        bankAccount,
       }}
     >
       <InvestmentLayout

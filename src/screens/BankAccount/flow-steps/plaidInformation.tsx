@@ -12,20 +12,26 @@ import { PlaidLogo } from '../../../components/Icon/icons/PlaidLogo';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { HEADER_HEIGHT } from '../../../constants/styles';
+import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
-import { InvestFormFields } from '../types';
+import { BankAccountFormFields } from '../types';
 import { styles } from './styles';
 
-export const PlaidInformation: StepParams<InvestFormFields> = {
+export const PlaidInformation: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.PLAID_INFORMATION,
 
   doesMeetConditionFields: fields => {
     return !fields.bankAccount;
   },
 
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields: { sourceScreen } }: StepComponentProps<BankAccountFormFields>) => {
     const { top } = useSafeAreaInsets();
+    const { navigate } = useLogInNavigation();
     const handleContinue = async () => {
+      if (sourceScreen) {
+        navigate(sourceScreen, { bankAccount: { accountNumber: '**** **** **** 0000', accountType: 'Checking' } });
+      }
+
       moveToNextStep();
     };
 

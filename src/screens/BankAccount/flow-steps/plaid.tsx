@@ -4,6 +4,7 @@ import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateBankAccount } from 'reinvest-app-common/src/services/queries/createBankAccount';
 import { useFulfillBankAccount } from 'reinvest-app-common/src/services/queries/fulfillBankAccount';
+import { useUpdateBankAccount } from 'reinvest-app-common/src/services/queries/updateBankAccount';
 import { mapPlaidDataForApi } from 'reinvest-app-common/src/utilities/plaid';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -16,8 +17,8 @@ import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { currentAccount, useAtom } from '../../../store/atoms';
 import { Identifiers } from '../identifiers';
-import { InvestFormFields } from '../types';
-import { useInvestFlow } from './index';
+import { BankAccountFormFields } from '../types';
+import { useBankAccountFlow } from './index';
 
 const jsInjection = `try {
     function loadPageEnd() {
@@ -40,18 +41,19 @@ const jsInjection = `try {
   }
   true;`;
 
-export const Plaid: StepParams<InvestFormFields> = {
+export const Plaid: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.PLAID,
   doesMeetConditionFields: fields => {
     return !fields.bankAccount;
   },
 
-  Component: ({ moveToNextStep, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, updateStoreFields, storeFields: { isUpdatingAccount } }: StepComponentProps<BankAccountFormFields>) => {
     const [isLoading, setIsLoading] = useState(false);
     const [account] = useAtom(currentAccount);
     const { mutateAsync: createBankAccount, error: createAccountError } = useCreateBankAccount(getApiClient);
+    const { mutateAsync: updateBankAccount, error: updateAccountError } = useUpdateBankAccount(getApiClient);
     const { mutate: fulfillBankAccountMutation, isSuccess: isFulfillBankAccountSuccess, error: fulFillError } = useFulfillBankAccount(getApiClient);
-    const { resetStoreFields } = useInvestFlow();
+    const { resetStoreFields } = useBankAccountFlow();
     const { replace } = useLogInNavigation();
 
     const [uri, setUri] = useState<string>('');
@@ -62,12 +64,21 @@ export const Plaid: StepParams<InvestFormFields> = {
 
     const setPlaidUri = useCallback(async () => {
       try {
-        const result = await createBankAccount({ accountId: account.id || '' });
-        setUri(result?.link || '');
+        let link;
+
+        if (isUpdatingAccount) {
+          const response = await updateBankAccount({ accountId: account.id || '' });
+          link = response?.link;
+        } else {
+          const response = await createBankAccount({ accountId: account.id || '' });
+          link = response?.link;
+        }
+
+        setUri(link || '');
       } finally {
         setIsLoading(false);
       }
-    }, [account.id, createBankAccount]);
+    }, [account.id, createBankAccount, isUpdatingAccount, updateBankAccount]);
 
     const resetAndClose = async () => {
       await resetStoreFields();
@@ -108,7 +119,6 @@ export const Plaid: StepParams<InvestFormFields> = {
               accountNumber: plaidDataForApi.accountNumber.slice(-4).padStart(plaidDataForApi.accountNumber.length, '*'),
               accountType: plaidDataForApi.accountType,
             },
-            addingAccount: true,
           });
           await fulfillBankAccountMutation({ accountId: account.id, input: plaidDataForApi });
         }
@@ -119,7 +129,7 @@ export const Plaid: StepParams<InvestFormFields> = {
       }
     };
 
-    const error = plaidError || fulFillError || createAccountError;
+    const error = plaidError || fulFillError || createAccountError || updateAccountError;
 
     return (
       <Box

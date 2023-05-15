@@ -4,9 +4,9 @@ import { INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/inv
 import { Box } from '../../../../components/Containers/Box/Box';
 import { Row } from '../../../../components/Containers/Row';
 import { Input } from '../../../../components/Input';
-import { FormModalDisclaimer } from '../../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { StyledText } from '../../../../components/typography/StyledText';
-import { useDialog } from '../../../../providers/DialogProvider';
+import { useLogInNavigation } from '../../../../navigation/hooks';
+import Screens from '../../../../navigation/screens';
 import { styles } from './styles';
 import { Props } from './types';
 
@@ -15,7 +15,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) 
   const optionValue = INVESTMENT_PRESET_AMOUNTS.find(option => option.value === amount);
   const [selectedFromOptions, setSelectedFromOptions] = useState<Option | undefined>(optionValue);
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
-  const { openDialog } = useDialog();
+  const { navigate } = useLogInNavigation();
   const setCustomValue = (value: string) => {
     setCustomAmount(value);
     setAmount(value);
@@ -28,12 +28,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) 
   };
 
   const openPlaid = () => {
-    openDialog(
-      <FormModalDisclaimer
-        headline="ChangeBankAccount"
-        content={'plaid integration'}
-      />,
-    );
+    navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, isUpdatingAccount: true });
   };
 
   return (
@@ -76,7 +71,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) 
           onChangeText={setCustomValue}
         />
       </Box>
-      <StyledText>{`Cheecking ${bankAccount}`}</StyledText>
+      <StyledText>{`Checking ${bankAccount}`}</StyledText>
       <Box py={'16'}>
         <StyledText variant={'paragraphSmall'}>{`You can have 1 bank account connected to your REINVEST profile.`}</StyledText>
       </Box>

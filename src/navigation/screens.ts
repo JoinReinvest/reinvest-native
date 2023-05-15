@@ -18,6 +18,7 @@ enum Screens {
   ManageAccount = 'ManageAccount',
   Investing = 'Investing',
   AddBeneficiary = 'AddBeneficiary',
+  BankAccount = 'BankAccount',
 }
 
 export default Screens;
