@@ -1,60 +1,54 @@
 import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
+import { palette } from '../../constants/theme';
 import { Box } from '../Containers/Box/Box';
+import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CalendarProps } from './types';
-import { formatDayToDate, getCalendarDays, selectDatesForAutoSelection } from './utilities';
+import { getCalendarDays, getRecurringDates } from './utilities';
 
 export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
-  const [selectedDay, setSelectedDay] = useState<number>(-1);
-  const [autoSelectedDays, setAutoSelectedDays] = useState<number[]>([]);
+  const [startingDate, setStartingDate] = useState<dayjs.Dayjs | null>(null);
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const recurringDatesRef = useRef<dayjs.Dayjs[]>([]);
 
-  const calendarLabel = formatDate(dayjs().toDate(), 'DATE_PICKER', { currentFormat: 'DATE_PICKER' });
-  const today = +dayjs().format('D');
-  const calendarDays = useMemo(() => getCalendarDays(), []);
+  const calendarLabel = formatDate(currentDate.toDate(), 'DATE_PICKER', { currentFormat: 'DATE_PICKER' });
+  const isShowingCurrentMonth = currentDate.month() === dayjs().month();
+  const calendarDays = useMemo(() => getCalendarDays(currentDate), [currentDate]);
 
-  const selectDay = (day: number | undefined) => {
-    if (!day || day < today) {
+  const selectDay = (date: dayjs.Dayjs | undefined) => {
+    if (!date || date.isBefore(dayjs(), 'day')) {
       return;
     }
 
-    const startingDate = formatDayToDate(day)[0];
+    const autoSelectedDates = getRecurringDates(date, autoSelectionPeriod);
 
-    if (!startingDate) {
-      return;
-    }
-
-    setSelectedDay(day);
-
-    const recurringDays = selectDatesForAutoSelection(day, autoSelectionPeriod);
-    setAutoSelectedDays(recurringDays);
+    recurringDatesRef.current = autoSelectedDates;
+    setStartingDate(date);
 
     onSelect({
-      startingDate,
-      recurringDates: formatDayToDate(...recurringDays),
+      startingDate: formatDate(date.toDate(), 'API'),
+      recurringDates: autoSelectedDates.map(date => formatDate(date.toDate(), 'API')),
     });
   };
 
-  const getDayColor = (day: number) => {
-    if (autoSelectedDays.includes(day)) {
-      return 'pureWhite';
+  const jumpBetweenMonths = () => {
+    if (isShowingCurrentMonth) {
+      return setCurrentDate(prevDate => prevDate.add(1, 'month'));
     }
 
-    if (day < today) {
-      return 'darkerGray';
-    }
-
-    return 'pureBlack';
+    setCurrentDate(prevDate => prevDate.subtract(1, 'month'));
   };
 
   return (
     <>
       <Box style={styles.container}>
         <Box
+          style={styles.labelContainer}
           py="12"
           px="24"
         >
@@ -65,6 +59,11 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
           >
             {calendarLabel}
           </StyledText>
+          <Icon
+            icon={isShowingCurrentMonth ? 'arrowRight' : 'arrowLeft'}
+            color={palette.dark2}
+            onPress={jumpBetweenMonths}
+          />
         </Box>
       </Box>
       <Box
@@ -73,23 +72,29 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
         pb="8"
         style={[styles.container, styles.noBorderTop, styles.grid]}
       >
-        {calendarDays.map((day, index) => (
-          <Pressable
-            key={index}
-            style={[styles.day]}
-            onPress={() => selectDay(day)}
-          >
-            <View style={[styles.mark, selectedDay === day && styles.selected, autoSelectedDays.includes(day) && styles.autoSelected]}>
-              <StyledText
-                variant="h6"
-                color={getDayColor(day)}
-                opacity={0.87}
-              >
-                {day}
-              </StyledText>
-            </View>
-          </Pressable>
-        ))}
+        {calendarDays?.map((date, index) => {
+          const isAutoSelected = !!recurringDatesRef.current.find(autoSelectedDate => autoSelectedDate.isSame(date));
+          const isSelectedAsStartingDate = date && date.isSame(startingDate);
+          const shouldBeDisabled = date?.isBefore(dayjs(), 'day');
+
+          return (
+            <Pressable
+              key={index}
+              style={[styles.day]}
+              onPress={() => selectDay(date)}
+            >
+              <View style={[styles.mark, isSelectedAsStartingDate && styles.selected, isAutoSelected && styles.autoSelected]}>
+                <StyledText
+                  style={[isAutoSelected && styles.autoSelected, shouldBeDisabled && styles.disabled]}
+                  variant="h6"
+                  opacity={0.87}
+                >
+                  {date?.format('D')}
+                </StyledText>
+              </View>
+            </Pressable>
+          );
+        })}
       </Box>
     </>
   );

@@ -4,9 +4,13 @@ import { palette } from '../../constants/theme';
 
 export const styles = StyleSheet.create({
   container: {
-    width: '100%',
     borderWidth: 1,
     borderColor: palette.lightGray,
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   noBorderTop: {
     borderTopWidth: 0,
