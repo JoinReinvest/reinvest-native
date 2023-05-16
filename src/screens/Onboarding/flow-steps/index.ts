@@ -1,4 +1,4 @@
-import { createFormFlow } from 'reinvest-app-common/src/services/form-flow/index';
+import { createFormFlow } from 'reinvest-app-common/src/services/form-flow';
 
 import { OnboardingFormFields } from '../types';
 import { StepAccountType } from './stepAccountType';
@@ -7,6 +7,7 @@ import { StepAuthorizedSignatoryEntity } from './stepAuthorizedSignatoryEntity';
 import { StepBusinessAddress } from './stepBusinessAddress';
 import { StepCompanyTickerSymbols } from './stepCompanyTickerSymbols';
 import { StepCompliance } from './stepCompliance';
+import { StepCongratulations } from './stepCongratulations';
 import { StepCorporateApplicantList } from './stepCorporateApplicantList';
 import { StepCorporationInformation } from './stepCorporationInformation';
 import { StepCorporationLegalName } from './stepCorporationLegalName';
@@ -37,6 +38,7 @@ import { StepTrustType } from './stepTrustType';
 
 export const FLOW_STEPS = [
   StepAccountType,
+
   //profile steps
   StepFullName,
   StepPhoneNumber,
@@ -79,6 +81,7 @@ export const FLOW_STEPS = [
   StepCorporateApplicantList,
   // last step
   StepProfilePicture,
+  StepCongratulations,
 ];
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {

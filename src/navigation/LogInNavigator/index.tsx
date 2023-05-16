@@ -20,7 +20,6 @@ import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { currentAccount, useAtom } from '../../store/atoms';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
-import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
@@ -61,24 +60,11 @@ export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
   const { data: accounts, isLoading: accountLoading } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
-  const navigation = useLogInNavigation();
 
   useLayoutEffect(() => {
     refetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (data) {
-      if (data.isCompleted) {
-        navigation.reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
-      }
-
-      if (!data.isCompleted) {
-        navigation.reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
-      }
-    }
-  }, [data, navigation]);
 
   useEffect(() => {
     if (!account.id && !accountLoading) {
@@ -104,7 +90,7 @@ export const LogInNavigator: React.FC = () => {
     <BottomSheetModalProvider>
       <SafeAreaProvider>
         <DialogProvider dark={false}>
-          <LogInStack.Navigator initialRouteName={!data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
+          <LogInStack.Navigator initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
             <LogInStack.Screen
               options={{ headerShown: false }}
               name={Screens.BottomNavigator}

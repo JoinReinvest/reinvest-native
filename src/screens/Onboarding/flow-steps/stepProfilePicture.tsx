@@ -25,7 +25,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../navigation/hooks';
-import Screens from '../../../navigation/screens';
 import { currentAccount, useSetAtom } from '../../../store/atoms';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
@@ -58,7 +57,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     return allRequiredFieldsExists(profileFields);
   },
 
-  Component: ({ storeFields, updateStoreFields }: StepComponentProps<OnboardingFormFields>) => {
+  Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { profilePicture, name, accountType, accountId } = storeFields;
 
     const [selectedImageUri, setSelectedImageUri] = useState<string | undefined>(profilePicture);
@@ -153,21 +152,25 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
 
     useEffect(() => {
       if (isOpenAccountSuccess) {
-        if (storeFields.isCompletedProfile) {
-          (async () => {
-            const { data } = await refetchAccounts();
-            const account = data?.find(account => account?.id === storeFields.accountId) ?? data?.[0];
-            setCurrentAccount(account as AccountOverview);
-            navigation.navigate(Screens.Investing, { initialInvestment: false });
-          })();
-        }
-
         (async () => {
-          navigation.navigate(Screens.Investing, { initialInvestment: true });
-          await refetch();
+          await updateStoreFields({ initialInvestment: !storeFields.isCompletedProfile });
+          const { data } = await refetchAccounts();
+          const account = data?.find(account => account?.id === storeFields.accountId) ?? data?.[0];
+          setCurrentAccount(account as AccountOverview);
+          moveToNextStep();
         })();
       }
-    }, [isOpenAccountSuccess, navigation, refetch, refetchAccounts, setCurrentAccount, storeFields.accountId, storeFields.isCompletedProfile]);
+    }, [
+      isOpenAccountSuccess,
+      moveToNextStep,
+      navigation,
+      refetch,
+      refetchAccounts,
+      setCurrentAccount,
+      storeFields.accountId,
+      storeFields.isCompletedProfile,
+      updateStoreFields,
+    ]);
 
     const handleSelectProfilePicture = (uri: string | undefined) => {
       setValue('profilePicture', uri);
