@@ -23,7 +23,6 @@ import { useBankAccountFlow } from './index';
 const jsInjection = `try {
     function loadPageEnd() {
       const plaidHandler = (event) => {
-      console.log(event)
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
 
         if ('plaidAccountDetails' in data && data.plaidAccountDetails.length) {

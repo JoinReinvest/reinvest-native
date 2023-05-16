@@ -63,7 +63,7 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
     }
 
     if (initialInvestment) {
-      return HeaderAvatar;
+      return () => <HeaderAvatar />;
     }
 
     return () => (
@@ -82,7 +82,7 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
       headerRight: getRightHeader(),
       headerLeft: getLeftHeader(),
     });
-  }, [currentStepIdentifier, getRightHeader, getLeftHeader, initialInvestment, navigation, onCancel]);
+  }, [currentStepIdentifier, getLeftHeader, getRightHeader, initialInvestment, navigation, onCancel]);
 
   return (
     <DialogProvider>

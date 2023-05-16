@@ -71,7 +71,7 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }:
     }
 
     if (initialInvestment) {
-      return HeaderAvatar;
+      return () => <HeaderAvatar />;
     }
 
     return () => (
