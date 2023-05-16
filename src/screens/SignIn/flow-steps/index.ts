@@ -6,8 +6,8 @@ import { StepCheckYourPhone } from './checkYourPhone';
 export const FLOW_STEPS = [StepCheckYourPhone];
 
 export const initialSteps = {
-  email: 'rafal+777@hookooekoo.co',
-  password: 'Developer1!',
+  email: '',
+  password: '',
   authenticationCode: '',
 };
 
