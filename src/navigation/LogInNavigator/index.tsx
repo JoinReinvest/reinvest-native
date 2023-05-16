@@ -12,6 +12,7 @@ import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
+import { BankAccount } from '../../screens/BankAccount';
 import { Investing } from '../../screens/Investing';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
@@ -26,7 +27,10 @@ import { LogInStackParamList } from './types';
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 
 const stackOptions: Record<
-  Extract<Screens, Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary>,
+  Extract<
+    Screens,
+    Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary | Screens.BankAccount
+  >,
   NativeStackNavigationOptions
 > = {
   [Screens.Onboarding]: {
@@ -35,6 +39,11 @@ const stackOptions: Record<
   },
   [Screens.Investing]: {
     title: 'Investing',
+    headerShown: false,
+  },
+  [Screens.BankAccount]: {
+    title: 'logo',
+    headerShown: false,
   },
   [Screens.ManageAccountMainScreen]: {
     title: 'Manage Account',
@@ -76,7 +85,8 @@ export const LogInNavigator: React.FC = () => {
       const defaultAccount = { ...accounts?.[0] };
       setAccount(defaultAccount);
     }
-  }, [account, accountLoading, accounts, setAccount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountLoading, accounts]);
 
   if (!data)
     return (
@@ -119,6 +129,11 @@ export const LogInNavigator: React.FC = () => {
                 name={Screens.Investing}
                 options={stackOptions[Screens.Investing]}
                 component={Investing}
+              />
+              <LogInStack.Screen
+                name={Screens.BankAccount}
+                options={stackOptions[Screens.BankAccount]}
+                component={BankAccount}
               />
               <LogInStack.Screen
                 name={Screens.AddBeneficiary}

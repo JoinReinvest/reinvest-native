@@ -1,42 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCreateSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/createSubscriptionAgreement';
+import { useSignSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/signSubscriptionAgreement';
+import { SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
 
+import { AgreementDetails } from '../ components/AgreementDocument';
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
-import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { RadioButton } from '../../../components/RadioButton';
 import { StyledText } from '../../../components/typography/StyledText';
-import { InvestingDisclaimers } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
+type Investment = 'oneTimeAgreement' | 'recurringAgreement';
 export const Agreements: StepParams<InvestFormFields> = {
   identifier: Identifiers.AGREEMENTS,
 
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
+    const { oneTimeInvestmentId, isRecurringInvestment } = storeFields;
     const [agreements, setAgreements] = useState({ oneTimeAgreement: false, recurringAgreement: false });
+    const { mutateAsync: createAgreement, isLoading: createSubscriptionLoading, error: createSubscriptionError } = useCreateSubscriptionAgreement(getApiClient);
+    const { mutateAsync: signInAgreement, isLoading: signInAgreementLoading, error: signInAgreementError } = useSignSubscriptionAgreement(getApiClient);
+    const [agreementsDocs, setAgreementsDocs] = useState<Partial<Record<Investment, SubscriptionAgreement>>>({});
+    const handleAccept = async () => {
+      if (oneTimeInvestmentId && agreements.oneTimeAgreement) {
+        const { id: subscriptionAgreementId } = await createAgreement({ investmentId: oneTimeInvestmentId });
+        await signInAgreement({ subscriptionAgreementId });
+      }
 
-    const handleAccept = () => {
-      Alert.alert('Reinvesting dividend', 'Your dividends will be automatically reinvested', [{ text: 'OK', onPress: moveToNextStep }]);
+      if (isRecurringInvestment && agreements.recurringAgreement) {
+        Alert.alert('Recurring agreement ');
+      }
+
+      moveToNextStep();
     };
 
-    const handleSelect = (variant: 'oneTimeAgreement' | 'recurringAgreement') => {
+    const handleSelect = (variant: Investment) => {
       setAgreements(prev => ({ ...prev, [variant]: !prev[variant] }));
     };
-    const showAgreement = (variant: 'oneTimeAgreement' | 'recurringAgreement') => {
-      const { headline, content } = InvestingDisclaimers[variant];
-      openDialog(
-        <FormModalDisclaimer
-          headline={headline}
-          content={content}
-        />,
-      );
+    const showAgreement = (variant: Investment) => {
+      const agreement = agreementsDocs[variant];
+
+      if (agreement) {
+        openDialog(<AgreementDetails agreement={agreement} />);
+      }
     };
+
+    useEffect(() => {
+      if (oneTimeInvestmentId) {
+        (async () => {
+          const agreement = await createAgreement({ investmentId: oneTimeInvestmentId });
+
+          if (agreement) {
+            setAgreementsDocs(prev => ({ ...prev, oneTimeAgreement: agreement }));
+          }
+        })();
+      }
+    }, [createAgreement, oneTimeInvestmentId]);
+
+    const loading = createSubscriptionLoading || signInAgreementLoading;
+    const shouldButtonBeDisabled = (!!oneTimeInvestmentId && !agreements.oneTimeAgreement) || (isRecurringInvestment && !agreements.recurringAgreement);
 
     return (
       <>
@@ -44,43 +74,50 @@ export const Agreements: StepParams<InvestFormFields> = {
           <Box pt={'24'}>
             <StyledText variant="h5">Approve subscription agreements</StyledText>
           </Box>
+          {createSubscriptionError && <ErrorMessagesHandler error={createSubscriptionError} />}
+          {signInAgreementError && <ErrorMessagesHandler error={signInAgreementError} />}
           <Box py={'16'}>
             <StyledText variant="paragraphLarge">I have read through the selected documents referenced below:</StyledText>
           </Box>
-          <RadioButton
-            radioStyles={styles.agreementsRadioStyles}
-            value={'oneTimeAgreement'}
-            checked={agreements.oneTimeAgreement}
-            onPress={handleSelect}
-          >
-            <StyledText
-              variant="link"
-              onPress={() => showAgreement('oneTimeAgreement')}
+          {storeFields.oneTimeInvestmentId && (
+            <RadioButton
+              radioStyles={styles.agreementsRadioStyles}
+              value={'oneTimeAgreement'}
+              checked={agreements.oneTimeAgreement}
+              onPress={handleSelect}
             >
-              One Time Investment Agreement
-            </StyledText>
-          </RadioButton>
-          <RadioButton
-            radioStyles={styles.agreementsRadioStyles}
-            value={'recurringAgreement'}
-            checked={agreements.recurringAgreement}
-            onPress={handleSelect}
-          >
-            <StyledText
-              variant="link"
-              onPress={() => showAgreement('recurringAgreement')}
+              <StyledText
+                variant="link"
+                onPress={() => showAgreement('oneTimeAgreement')}
+              >
+                One Time Investment Agreement
+              </StyledText>
+            </RadioButton>
+          )}
+          {!!storeFields.recurringInvestment && (
+            <RadioButton
+              radioStyles={styles.agreementsRadioStyles}
+              value={'recurringAgreement'}
+              checked={agreements.recurringAgreement}
+              onPress={handleSelect}
             >
-              Recurring Investment Agreement
-            </StyledText>
-          </RadioButton>
+              <StyledText
+                variant="link"
+                onPress={() => showAgreement('recurringAgreement')}
+              >
+                Recurring Investment Agreement
+              </StyledText>
+            </RadioButton>
+          )}
         </PaddedScrollView>
         <View
           key="buttons_section"
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!agreements.oneTimeAgreement || !agreements.recurringAgreement}
+            disabled={shouldButtonBeDisabled}
             onPress={handleAccept}
+            isLoading={loading}
           >
             Accept
           </Button>

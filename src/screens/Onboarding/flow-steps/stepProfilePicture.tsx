@@ -9,9 +9,10 @@ import { useCompleteIndividualDraftAccount } from 'reinvest-app-common/src/servi
 import { useCompleteProfileDetails } from 'reinvest-app-common/src/services/queries/completeProfileDetails';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { useCreateAvatarFileLink } from 'reinvest-app-common/src/services/queries/createAvatarFileLink';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 import { useOpenAccount } from 'reinvest-app-common/src/services/queries/openAccount';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { AccountOverview, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 import { z } from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -25,6 +26,7 @@ import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
+import { currentAccount, useSetAtom } from '../../../store/atoms';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
@@ -37,7 +39,7 @@ const schema = z.object({
 });
 
 const getInitials = (value: string) => {
-  return `${value.charAt(0)}${value.split(' ')[1]?.charAt(0)}`.toUpperCase();
+  return `${value.charAt(0)}${value.split(' ')[1]?.charAt(0) || ''}`.toUpperCase();
 };
 export const StepProfilePicture: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PROFILE_PICTURE,
@@ -70,6 +72,8 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       },
     });
 
+    const { refetch: refetchAccounts } = useGetAccountsOverview(getApiClient);
+
     const navigation = useLogInNavigation();
     const { refetch } = useGetUserProfile(getApiClient);
 
@@ -101,6 +105,8 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       error: completeCorporateDraftAccountError,
       isLoading: corporateLoading,
     } = useCompleteCorporateDraftAccount(getApiClient);
+
+    const setCurrentAccount = useSetAtom(currentAccount);
 
     const onSubmit: SubmitHandler<Fields> = async ({ profilePicture }) => {
       await updateStoreFields({
@@ -147,12 +153,21 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
 
     useEffect(() => {
       if (isOpenAccountSuccess) {
+        if (storeFields.isCompletedProfile) {
+          (async () => {
+            const { data } = await refetchAccounts();
+            const account = data?.find(account => account?.id === storeFields.accountId) ?? data?.[0];
+            setCurrentAccount(account as AccountOverview);
+            navigation.navigate(Screens.Investing, { initialInvestment: false });
+          })();
+        }
+
         (async () => {
-          navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+          navigation.navigate(Screens.Investing, { initialInvestment: true });
           await refetch();
         })();
       }
-    }, [isOpenAccountSuccess, navigation, refetch]);
+    }, [isOpenAccountSuccess, navigation, refetch, refetchAccounts, setCurrentAccount, storeFields.accountId, storeFields.isCompletedProfile]);
 
     const handleSelectProfilePicture = (uri: string | undefined) => {
       setValue('profilePicture', uri);

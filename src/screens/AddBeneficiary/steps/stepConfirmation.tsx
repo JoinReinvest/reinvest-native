@@ -24,7 +24,7 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
   Component: ({ storeFields }: StepComponentProps<BeneficiaryCreationFormFields>) => {
     const { replace } = useLogInNavigation();
     const onSubmit = () => {
-      replace(Screens.Investing);
+      replace(Screens.Investing, {});
     };
 
     return (
@@ -38,7 +38,10 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
             Let&apos;s build generational wealth!{'\n'}
             {'\n'}Make your first investment to set up your beneficiary&apos;s account and get started. 💰💪
           </StyledText>
-          <StatusCircle variant={'success'} />
+          <StatusCircle
+            variant={'success'}
+            dark
+          />
         </Box>
         <Box
           fw

@@ -12,4 +12,5 @@ export interface MainWrapperProps {
   noPadding?: boolean;
   noScrollableContent?: (style: ViewStyle) => ReactNode;
   style?: StyleProp<ViewStyle>;
+  topSafe?: boolean;
 }

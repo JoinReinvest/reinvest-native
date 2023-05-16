@@ -7,12 +7,12 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import type { Props } from './types';
 
-export const StatusCircle = ({ variant = 'success', dark = true, title, children }: PropsWithChildren<Props>) => {
+export const StatusCircle = ({ variant = 'success', dark, title, children, style, fillColor, justifyContent }: PropsWithChildren<Props>) => {
   const success = variant === 'success';
 
   return (
-    <View style={[styles.wrapper]}>
-      <View style={[styles.iconContainer, !success && styles.iconContainerError]}>
+    <View style={[styles.wrapper, justifyContent && { justifyContent }, style]}>
+      <View style={[styles.iconContainer, !success && styles.iconContainerError, fillColor && { backgroundColor: palette[fillColor] }]}>
         <Icon
           size="xl"
           icon={success ? 'tick' : 'hamburgerClose'}

@@ -91,6 +91,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
+            dark
             variant="outlined"
             onPress={onSkip}
           >

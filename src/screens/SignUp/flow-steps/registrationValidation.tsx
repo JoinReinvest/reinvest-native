@@ -89,6 +89,7 @@ export const StepRegistrationValidation: StepParams<RegisterFormFields> = {
               <StatusCircle
                 title={error ? error : 'Your login credentials were successfully created'}
                 variant={error ? 'error' : undefined}
+                dark
               >
                 {displayLoginLink && (
                   <Box mt="16">

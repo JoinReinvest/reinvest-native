@@ -18,7 +18,7 @@ interface AuthContextInterface {
     forgotPassword: (email: string) => Promise<Error | void> | null;
     forgotPasswordSubmit: (email: string, code: string, newPassword: string) => Promise<Error | void> | null;
     signIn: (email: string, password: string) => Promise<Error | CognitoUser | null>;
-    signOut: () => Promise<Error | void> | null;
+    signOut: (...callbacks: Array<() => void>) => Promise<Error | void> | null;
     signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | null> | null;
   };
   loading: boolean;
@@ -107,12 +107,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const confirmSignUp = async (email: string, authenticationCode: string) => Auth.confirmSignUp(email, authenticationCode);
 
-  const signOut = async () => {
+  const signOut = async (...callbacks: Array<() => void>) => {
     try {
       await Auth.signOut();
-      await queryClient.invalidateQueries({ queryKey: ['getProfile'] });
+      await queryClient.invalidateQueries();
       setLoggedIn(false);
       setUser(null);
+      callbacks.forEach(arg => typeof arg === 'function' && arg());
     } catch (e: unknown) {
       setError('SignOut error');
     }

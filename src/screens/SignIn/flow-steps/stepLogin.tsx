@@ -13,8 +13,8 @@ import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { ChallengeName, useAuth } from '../../../providers/AuthProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { useLoginFormFlow } from '../flow-steps/index';
 import { LoginFormFields } from '../types';
+import { useLoginFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Omit<LoginFormFields, 'authenticationCode'>;

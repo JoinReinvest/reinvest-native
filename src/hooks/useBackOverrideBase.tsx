@@ -13,6 +13,7 @@ export const useBackOverrideBase = <T extends object, K extends ParamListBase>(
   useCurrentFormContext: () => ContextState<T>,
   navigation: NativeStackNavigationProp<K>,
   dark = true,
+  notOverrideOtherSteps?: boolean,
 ) => {
   const {
     meta: { isFirstStep },
@@ -43,14 +44,16 @@ export const useBackOverrideBase = <T extends object, K extends ParamListBase>(
 
       return;
     } else {
-      navigation.setOptions({
-        headerLeft: () => (
-          <Icon
-            {...iconProps}
-            onPress={moveToPreviousValidStep}
-          />
-        ),
-      });
+      if (!notOverrideOtherSteps) {
+        navigation.setOptions({
+          headerLeft: () => (
+            <Icon
+              {...iconProps}
+              onPress={moveToPreviousValidStep}
+            />
+          ),
+        });
+      }
     }
-  }, [data?.isCompleted, iconProps, isFirstStep, moveToPreviousValidStep, navigation]);
+  }, [data?.isCompleted, iconProps, isFirstStep, moveToPreviousValidStep, navigation, notOverrideOtherSteps]);
 };

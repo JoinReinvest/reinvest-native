@@ -11,6 +11,7 @@ export const FormModalError = ({ title, message, dark = true }: { message: strin
       <StatusCircle
         variant={'error'}
         title={title}
+        dark={dark}
       >
         <Box pt={'12'}>
           <StyledText color={dark ? 'pureWhite' : 'pureBlack'}>{message}</StyledText>

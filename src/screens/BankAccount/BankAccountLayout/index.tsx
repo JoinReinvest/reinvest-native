@@ -6,14 +6,13 @@ import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useStepBackOverride } from '../../../hooks/useBackOverride';
-import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInStackParamList } from '../../../navigation/LogInNavigator/types';
 import Screens from '../../../navigation/screens';
 import { DialogProvider } from '../../../providers/DialogProvider';
-import { useInvestFlow } from '../flow-steps';
+import { useBankAccountFlow } from '../flow-steps';
 import { Identifiers } from '../identifiers';
-import { InvestFormFields } from '../types';
+import { BankAccountFormFields } from '../types';
 
 interface Props {
   initialInvestment?: boolean;
@@ -24,26 +23,19 @@ interface Props {
  */
 
 const stepsWithCancelOption: Identifiers[] = [];
-const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.LANDING];
+const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID];
 const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
-const overrideBackSteps: Identifiers[] = [Identifiers.ONE_TIME_INVESTMENT];
-export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
+export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
   const {
     resetStoreFields,
     CurrentStepView,
     meta: { currentStepIdentifier },
-  } = useInvestFlow();
+  } = useBankAccountFlow();
   const navigation = useLogInNavigation();
 
-  useStepBackOverride<InvestFormFields, LogInStackParamList>(
-    useInvestFlow,
-    navigation,
-    false,
-    overrideBackSteps.includes(currentStepIdentifier as Identifiers),
-  );
-  useKeyboardAware();
+  useStepBackOverride<BankAccountFormFields, LogInStackParamList>(useBankAccountFlow, navigation, false);
 
-  const onCancelInvestment = useCallback(async () => {
+  const onCancel = useCallback(async () => {
     await resetStoreFields();
     navigation.goBack();
   }, [navigation, resetStoreFields]);
@@ -77,12 +69,12 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }:
     return () => (
       <StyledText
         variant={'h6'}
-        onPress={onCancelInvestment}
+        onPress={onCancel}
       >
         Cancel
       </StyledText>
     );
-  }, [currentStepIdentifier, initialInvestment, onCancelInvestment]);
+  }, [currentStepIdentifier, initialInvestment, onCancel]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -90,7 +82,7 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }:
       headerRight: getRightHeader(),
       headerLeft: getLeftHeader(),
     });
-  }, [currentStepIdentifier, getLeftHeader, getRightHeader, initialInvestment, navigation, onCancelInvestment]);
+  }, [currentStepIdentifier, getLeftHeader, getRightHeader, initialInvestment, navigation, onCancel]);
 
   return (
     <DialogProvider>

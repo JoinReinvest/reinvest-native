@@ -20,7 +20,7 @@ import { AuthProvider } from './providers/AuthProvider';
     tracesSampleRate: 1.0,
   });
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
 const App = () => {
   useEffect(() => {

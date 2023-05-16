@@ -10,12 +10,13 @@ export const useStepBackOverride = <T extends object, K extends ParamListBase>(
   useCurrentFormContext: () => ContextState<T>,
   navigation: NativeStackNavigationProp<K>,
   dark?: boolean,
+  notOverrideOtherSteps?: boolean,
 ) => {
   const {
     meta: { previousStepIdentifier },
     moveToPreviousValidStep,
   } = useCurrentFormContext();
-  useBackOverrideBase(useCurrentFormContext, navigation, dark);
+  useBackOverrideBase(useCurrentFormContext, navigation, dark, notOverrideOtherSteps);
 
   useFocusEffect(
     useCallback(() => {

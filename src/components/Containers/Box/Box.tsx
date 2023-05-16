@@ -46,6 +46,7 @@ export const Box = ({
   alignSelf,
   onPress,
   fw,
+  fh,
   colorOpacity = 1,
   ...props
 }: PropsWithChildren<BoxProps>) => {
@@ -68,7 +69,7 @@ export const Box = ({
           justifyContent,
           backgroundColor: color ? hexToRgbA(palette[`${color}`], colorOpacity) : undefined,
           width: fw ? '100%' : width,
-          height,
+          height: fh ? '100%' : height,
           flex,
           flexBasis,
           flexDirection,

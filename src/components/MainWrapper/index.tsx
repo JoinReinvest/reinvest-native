@@ -16,9 +16,10 @@ export const MainWrapper = ({
   style,
   noPadding,
   isLoading,
-  bottomSafe = false,
+  bottomSafe,
+  topSafe,
 }: PropsWithChildren<MainWrapperProps>) => {
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
   const LoaderComp = isLoading && (
     <View style={[styles.loaderWrapper, dark && styles.darkLoader]}>
       <Loader color={dark ? palette.pureWhite : palette.deepGreen} />
@@ -26,7 +27,7 @@ export const MainWrapper = ({
   );
 
   return (
-    <View style={[!dark ? styles.light : styles.dark, styles.flex, bottomSafe && { paddingBottom: bottom }]}>
+    <View style={[!dark ? styles.light : styles.dark, styles.flex, bottomSafe && { paddingBottom: bottom }, topSafe && { paddingTop: top }]}>
       <StatusBar
         hidden={false}
         backgroundColor="transparent"

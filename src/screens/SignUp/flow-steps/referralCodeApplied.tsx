@@ -23,7 +23,10 @@ export const StepReferralCodeApplied: StepParams<RegisterFormFields> = {
   Component: ({ moveToNextStep }: StepComponentProps<RegisterFormFields>) => {
     return (
       <View style={[styles.wrapper, styles.fw, styles.flex]}>
-        <StatusCircle title="Referral code applied" />
+        <StatusCircle
+          title="Referral code applied"
+          dark
+        />
         <Box fw>
           <Button onPress={moveToNextStep}>Continue</Button>
         </Box>

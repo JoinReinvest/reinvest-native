@@ -2,30 +2,31 @@ import { createFormFlow } from 'reinvest-app-common/src/services/form-flow';
 
 import { InvestFormFields } from '../types';
 import { Agreements } from './agreements';
-import { InitialInvestment } from './initialInvestment';
+import { DividendReinvesting } from './dividendReinvesting';
+import { Landing } from './landing';
+import { OneTimeInvestment } from './oneTimeInvestment';
 import { RecurringDates } from './recurringDates';
 import { RecurringDepositSchedule } from './recurringDepositSchedule';
-import { RecurringDividendReinvesting } from './recurringDividendReinvesting';
 import { RecurringInterval } from './recurringInterval';
 import { RecurringAmount } from './recurringInvestmentAmount';
 import { RecurringInvestmentInfo } from './recurringInvestmentInfo';
 import { VerifyInvestment } from './verifyInvestment';
 
 export const FLOW_STEPS = [
-  InitialInvestment,
+  Landing,
+  OneTimeInvestment,
   RecurringInvestmentInfo,
   RecurringAmount,
   RecurringInterval,
   RecurringDates,
   RecurringDepositSchedule,
-  RecurringDividendReinvesting,
+  DividendReinvesting,
   Agreements,
   VerifyInvestment,
 ];
 
 export const investingFormFieldsInitialState: Omit<InvestFormFields, 'accountId'> = {
   source: 'JPMORGAN CHASE BANK, NA ****1234',
-  accountNumber: '*** *** *** *** 00000',
 };
 
 const [useInvestFlow, InvestFormFlowProvider] = createFormFlow<InvestFormFields>({
