@@ -58,6 +58,7 @@ export const Plaid: StepParams<BankAccountFormFields> = {
     const [uri, setUri] = useState<string>('');
     const [plaidError, setPlaidError] = useState<string | undefined>();
     const { top } = useSafeAreaInsets();
+    const { reset } = useLogInNavigation();
 
     const ref = useRef<WebView>(null);
 
@@ -93,6 +94,12 @@ export const Plaid: StepParams<BankAccountFormFields> = {
         moveToNextStep();
       }
     }, [isFulfillBankAccountSuccess, moveToNextStep]);
+
+    useEffect(() => {
+      if (createAccountError) {
+        reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
+      }
+    }, [createAccountError, reset]);
 
     if (isLoading || isFulfillBankAccountSuccess || !uri) {
       return (

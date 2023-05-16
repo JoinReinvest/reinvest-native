@@ -1,7 +1,9 @@
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
+import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../components/CustomHeader';
 import { HeaderAvatar } from '../../components/HeaderAvatar';
@@ -17,6 +19,7 @@ import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
+import { useLogInNavigation } from '../hooks';
 import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
@@ -69,6 +72,14 @@ const getLabel = (focused: boolean, children: string) => (
 
 export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
+  const { data } = useGetUserProfile(getApiClient);
+  const { reset } = useLogInNavigation();
+
+  useEffect(() => {
+    if (!data?.isCompleted) {
+      reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
+    }
+  }, [data, reset]);
 
   return (
     <Tab.Navigator
