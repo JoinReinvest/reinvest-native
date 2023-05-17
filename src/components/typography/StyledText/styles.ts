@@ -115,6 +115,9 @@ const styles = StyleSheet.create({
     lineHeight: 20 * 1.1,
     letterSpacing: -0.5,
   },
+  bold: {
+    fontWeight: '700',
+  },
 });
 
 export default styles;

@@ -4,6 +4,7 @@ import { Theme } from '../../../constants/theme';
 
 type TextAlign = TextStyle['textAlign'];
 export interface StyledTextProps extends TextProps {
+  bold?: boolean;
   color?: Theme;
   opacity?: number;
   textAlign?: TextAlign;

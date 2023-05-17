@@ -7,6 +7,7 @@ import { Icon } from '../../../../components/Icon';
 import { PaddedScrollView } from '../../../../components/PaddedScrollView';
 import { StyledText } from '../../../../components/typography/StyledText';
 import { palette } from '../../../../constants/theme';
+import { markdownBold } from '../../../../utils/markdownBold';
 
 export const AgreementDetails = ({ agreement }: { agreement: SubscriptionAgreement }) => {
   const { top, bottom } = useSafeAreaInsets();
@@ -40,17 +41,17 @@ export const AgreementSection = ({ section }: { section: SubscriptionAgreementSe
           {section.header}
         </StyledText>
       </Box>
-      {section.paragraphs.map(({ lines, bold, isCheckedOption }, idx) => {
+      {section.paragraphs.map(({ lines, isCheckedOption }, idx) => {
         if (lines.length) {
           return (
             <Box key={`${lines[0]?.substring(0, -4)} + ${idx}`}>
-              {lines.map(line => {
+              {lines.map((line, idx) => {
                 return (
                   <Box
-                    key={line.substring(0, 14)}
-                    py={'4'}
+                    pt={'4'}
+                    key={line?.substring(0, -4) + idx}
                   >
-                    <StyledText variant={bold ? 'h6' : 'paragraph'}>{line}</StyledText>
+                    {markdownBold(line)}
                   </Box>
                 );
               })}

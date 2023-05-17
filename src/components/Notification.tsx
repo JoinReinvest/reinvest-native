@@ -5,7 +5,7 @@ import { formatDateForNotification } from 'reinvest-app-common/src/utilities/dat
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../constants/styles';
 import { palette } from '../constants/theme';
 import { hexToRgbA } from '../utils/hexToRgb';
-import { parse } from '../utils/parse';
+import { markdownBold } from '../utils/markdownBold';
 import { xScale } from '../utils/scale';
 import { Box } from './Containers/Box/Box';
 import { Icon } from './Icon';
@@ -17,7 +17,7 @@ interface NotificationProps extends Partial<BaseNotification> {
 }
 
 export const Notification = ({ id, header, body, date, isRead, onPress }: NotificationProps) => {
-  const parsedBody = parse(body, { variant: 'paragraphLarge', style: { fontWeight: '700' } }, { variant: 'paragraphLarge' });
+  const parsedBody = markdownBold(body);
 
   return (
     <Pressable
