@@ -15,7 +15,27 @@ import { PaddedScrollView } from '../../../PaddedScrollView';
 import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
-export const InvestSuccess = () => {
+export type DialogInvestment = {
+  amount: string;
+  date: string;
+  headline: string;
+  isRecurring?: boolean;
+};
+
+interface Props {
+  disclaimer: string;
+  investments: DialogInvestment[];
+  type: 'invest' | 'withdrawal' | 'reward';
+}
+
+const headlines = {
+  invest: 'Thank you for investing in Community REIT',
+  withdrawal: '',
+  reward: '',
+  beneficiary: '',
+};
+
+export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
   const { closeDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
@@ -32,23 +52,22 @@ export const InvestSuccess = () => {
           textAlign="center"
           variant="h3"
         >
-          Thank you for investing in Community REIT
+          {headlines[type]}
         </StyledText>
-        <InvestSuccessInfo
-          type={'One Time'}
-          amount={`10000`}
-          date={`March 1, 2023`}
-        />
-        <Box
-          fw
-          style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
-        />
-        <InvestSuccessInfo
-          type={'Recurring'}
-          amount={`1000`}
-          date={`March 1, 2023`}
-        />
-        <FormDisclaimer>Please expect funds to be drawn from your bank account within 3 days.</FormDisclaimer>
+        {investments.map((investment, idx) => {
+          return (
+            <>
+              <InvestSuccessInfo {...investment} />
+              {idx !== investments.length - 1 && (
+                <Box
+                  fw
+                  style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
+                />
+              )}
+            </>
+          );
+        })}
+        <FormDisclaimer>{disclaimer}</FormDisclaimer>
       </PaddedScrollView>
       <Box
         fw
@@ -61,21 +80,21 @@ export const InvestSuccess = () => {
   );
 };
 
-const InvestSuccessInfo = ({ type, amount, date }: { amount: string; date: string; type: string }) => {
+const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvestment) => {
   return (
     <Box
       fw
       py="32"
       alignItems="center"
     >
-      <StyledText variant="paragraphEmp">{`${type} investment`}</StyledText>
+      <StyledText variant="paragraphEmp">{headline}</StyledText>
       <Row
         alignItems="center"
         pt="16"
       >
         <Icon
           color={palette.success}
-          icon="down"
+          icon={!isRecurring ? 'down' : 'refresh'}
           style={{ transform: [{ rotate: '180deg' }] }}
         />
         <StyledText variant="h1">{`$${amount}`}</StyledText>
@@ -84,7 +103,7 @@ const InvestSuccessInfo = ({ type, amount, date }: { amount: string; date: strin
         color="dark3"
         variant="h6"
       >
-        {date}
+        {`${isRecurring ? 'Starting ' : ''}${date}`}
       </StyledText>
     </Box>
   );

@@ -19,6 +19,7 @@ enum Screens {
   Investing = 'Investing',
   AddBeneficiary = 'AddBeneficiary',
   BankAccount = 'BankAccount',
+  KYCFail = 'KYCFail',
 }
 
 export default Screens;

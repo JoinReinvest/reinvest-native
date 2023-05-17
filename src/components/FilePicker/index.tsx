@@ -68,7 +68,15 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
     setChoosingMode(false);
     setLoading(true);
     try {
-      const files = type === 'single' ? await DocumentPicker.pick() : await DocumentPicker.pickMultiple();
+      let files;
+
+      if (type === 'single') {
+        const file = await DocumentPicker.pickSingle();
+        files = [file];
+      } else {
+        files = await DocumentPicker.pick();
+      }
+
       const batch = [...results, ...files];
       setResults(batch);
       onSelect(batch);

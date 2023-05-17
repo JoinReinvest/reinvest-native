@@ -26,6 +26,12 @@ export const formValidationRules = {
   phone: zod.string({ required_error: requiredError }).regex(phoneWithoutCallingCodeRegex, {
     message: 'Invalid phone number',
   }),
+  socialSecurityNumber: zod
+    .string()
+    .regex(/^((?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4})|(\*{3}-\*{2}-\*{2}(?!0{2})\d{2})$/, { message: 'Invalid Social Security Number' }),
+  maskedSocialSecurityNumber: zod
+    .string()
+    .regex(/^((?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4})|(\*{3}-\*{2}-\d{4})$/, { message: 'Invalid Social Security Number' }),
 };
 
 export const MINIMUM_CORPORATION_FILES_COUNT = 1;
