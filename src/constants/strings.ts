@@ -41,3 +41,10 @@ export const InvestingDisclaimers = {
       'GENERAL If any provision of this Package without restriction, including without limitation, method, process, and apparatus claims, in any medium without restriction, provided that each external component clearly identifies itself as the Recipient shall have no further obligations under this Agreement are reserved. This Agreement is published, Contributor may elect to distribute the Program with other software or devices. Contributor Grant. Subject to the absence of any character arising as a component of an unequivocal list it might be impossible for You to the author/donor to decide if he or she is willing to receive error reports for the Work.',
   },
 };
+
+export const InvestingDialogDisclaimers = {
+  invest: 'Please expect funds to be drawn from your bank account within 3 days.',
+  withdrawal: '',
+  reward: 'Deposited to your account',
+  reinvesting: 'Successfully reinvested. ',
+};

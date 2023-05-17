@@ -18,7 +18,7 @@ import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
-type Investment = 'oneTimeAgreement' | 'recurringAgreement';
+type AgreementType = 'oneTimeAgreement' | 'recurringAgreement';
 export const Agreements: StepParams<InvestFormFields> = {
   identifier: Identifiers.AGREEMENTS,
 
@@ -28,11 +28,10 @@ export const Agreements: StepParams<InvestFormFields> = {
     const [agreements, setAgreements] = useState({ oneTimeAgreement: false, recurringAgreement: false });
     const { mutateAsync: createAgreement, isLoading: createSubscriptionLoading, error: createSubscriptionError } = useCreateSubscriptionAgreement(getApiClient);
     const { mutateAsync: signInAgreement, isLoading: signInAgreementLoading, error: signInAgreementError } = useSignSubscriptionAgreement(getApiClient);
-    const [agreementsDocs, setAgreementsDocs] = useState<Partial<Record<Investment, SubscriptionAgreement>>>({});
+    const [agreementsDocs, setAgreementsDocs] = useState<Partial<Record<AgreementType, SubscriptionAgreement>>>({});
     const handleAccept = async () => {
       if (oneTimeInvestmentId && agreements.oneTimeAgreement) {
-        const { id: subscriptionAgreementId } = await createAgreement({ investmentId: oneTimeInvestmentId });
-        await signInAgreement({ subscriptionAgreementId });
+        await signInAgreement({ investmentId: oneTimeInvestmentId });
       }
 
       if (isRecurringInvestment && agreements.recurringAgreement) {
@@ -42,10 +41,10 @@ export const Agreements: StepParams<InvestFormFields> = {
       moveToNextStep();
     };
 
-    const handleSelect = (variant: Investment) => {
+    const handleSelect = (variant: AgreementType) => {
       setAgreements(prev => ({ ...prev, [variant]: !prev[variant] }));
     };
-    const showAgreement = (variant: Investment) => {
+    const showAgreement = (variant: AgreementType) => {
       const agreement = agreementsDocs[variant];
 
       if (agreement) {

@@ -1,12 +1,20 @@
-import React, { useCallback, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
+import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
+import { VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
-import { InvestSuccess } from '../../../components/Modals/ModalContent/InvestmentSuccess';
+import { DialogInvestment, InvestSuccess } from '../../../components/Modals/ModalContent/InvestmentSuccess';
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../../components/typography/StyledText';
+import { InvestingDialogDisclaimers } from '../../../constants/strings';
 import { useLogInNavigation } from '../../../navigation/hooks';
+import { LogInRouteProps } from '../../../navigation/LogInNavigator/types';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
@@ -16,23 +24,84 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
   identifier: Identifiers.VERIFY_INVESTMENT,
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Component: ({ moveToNextStep }: StepComponentProps<InvestFormFields>) => {
+  Component: ({
+    storeFields: { accountId, oneTimeInvestmentId, investAmount, isRecurringInvestment, recurringInvestment },
+  }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
+    const {
+      params: { validationSuccess },
+    } = useRoute<LogInRouteProps<Screens.Investing>>();
+
     const { navigate } = useLogInNavigation();
+    const { mutateAsync } = useVerifyAccount(getApiClient);
+    const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
+    const isAlreadyStarted = useRef(false);
 
     const showSuccessDialog = useCallback(() => {
-      openDialog(<InvestSuccess />, {
-        showLogo: true,
-        header: <HeaderWithLogo onClose={() => navigate(Screens.Dashboard)} />,
-        closeIcon: false,
-      });
+      const investments: DialogInvestment[] = [];
+
+      if (oneTimeInvestmentId && !!investAmount) {
+        investments.push({ amount: investAmount, date: dayjs().format('MMMM D, YYYY'), headline: `One Time investment` });
+      }
+
+      if (isRecurringInvestment && recurringInvestment) {
+        investments.push({
+          amount: recurringInvestment.recurringAmount || '',
+          //TODO extend dialog for getting info about dates while we will be sure about shape
+          date: recurringInvestment.startDate || '',
+          headline: `Recurring ${recurringInvestment.interval} investment`,
+          isRecurring: true,
+        });
+      }
+
+      openDialog(
+        <InvestSuccess
+          type="invest"
+          investments={investments}
+          disclaimer={InvestingDialogDisclaimers.invest}
+        />,
+        {
+          showLogo: true,
+          header: <HeaderWithLogo onClose={() => navigate(Screens.Dashboard)} />,
+          closeIcon: false,
+        },
+      );
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate, openDialog]);
 
-    useEffect(() => {
-      setTimeout(() => {
+    const startInvestmentHandler = useCallback(async () => {
+      if (oneTimeInvestmentId) {
+        await startInvestment({ investmentId: oneTimeInvestmentId, approveFees: true });
         showSuccessDialog();
-      }, 3000);
-    }, [showSuccessDialog]);
+      }
+    }, [oneTimeInvestmentId, showSuccessDialog, startInvestment]);
+
+    const validateAndStart = async () => {
+      const response = await mutateAsync({ accountId });
+
+      if (oneTimeInvestmentId) {
+        if (response?.canUserContinueTheInvestment) {
+          await startInvestmentHandler();
+        } else if (response?.requiredActions) {
+          navigate(Screens.KYCFail, { actions: response.requiredActions as VerificationAction[] });
+        }
+      }
+    };
+
+    useLayoutEffect(() => {
+      validateAndStart();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+      /*
+      To avoid running while re-rendering during showing dialog
+       */
+      if (validationSuccess && !isAlreadyStarted.current) {
+        startInvestmentHandler();
+        isAlreadyStarted.current = true;
+      }
+    }, [startInvestmentHandler, validationSuccess]);
 
     return (
       <MainWrapper>

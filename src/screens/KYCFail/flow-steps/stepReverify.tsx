@@ -26,7 +26,7 @@ export const StepReverify: StepParams<KYCFailedFormFields> = {
 
       // verification succeeded return to investing:
       if (verificationResponse?.canUserContinueTheInvestment || !verificationResponse?.requiredActions || !verificationResponse?.requiredActions.length) {
-        navigate(Screens.Investing);
+        navigate(Screens.Investing, { validationSuccess: true });
       }
 
       await updateStoreFields({ _actions: (verificationResponse?.requiredActions ?? []) as VerificationAction[] });

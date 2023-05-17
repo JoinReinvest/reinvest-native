@@ -2,9 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Masks } from 'react-native-mask-input';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useUpdateProfileForVerification } from 'reinvest-app-common/src/services/queries/updateProfileForVerification';
 import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 import z from 'zod';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -45,20 +48,27 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
       defaultValues: storeFields,
     });
 
+    const { mutateAsync: updateProfile } = useUpdateProfileForVerification(getApiClient);
+
     const shouldButtonBeDisabled = !formState.isValid;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       const { ssn, ...restFields } = fields;
       const isSSNFromApi = apiSSN.test(ssn ?? '');
 
-      if (isSSNFromApi) {
-        //TODO: update API without SSN
-        await updateStoreFields(restFields);
+      const apiDateOfBirth = formatDate(fields?.dateOfBirth || '', 'API', { currentFormat: 'DEFAULT' });
 
+      if (isSSNFromApi) {
+        //TODO: update API without SSN move update logic to last profile step
+        await updateStoreFields(restFields);
+        await updateProfile({ input: { ...restFields, dateOfBirth: { dateOfBirth: apiDateOfBirth } } });
+        // if(result.)
+        // eslint-disable-next-line newline-before-return
         return moveToNextStep();
       }
 
       //TODO: update API with SSN
+      await updateProfile({ input: { ...fields, dateOfBirth: { dateOfBirth: apiDateOfBirth } } });
       await updateStoreFields(fields);
 
       return moveToNextStep();

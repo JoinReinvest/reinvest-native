@@ -29,7 +29,13 @@ const LogInStack = createNativeStackNavigator<LogInStackParamList>();
 const stackOptions: Record<
   Extract<
     Screens,
-    Screens.Onboarding | Screens.ManageAccount | Screens.ManageAccountMainScreen | Screens.Investing | Screens.AddBeneficiary | Screens.KYCFail | Screens.BankAccount
+    | Screens.Onboarding
+    | Screens.ManageAccount
+    | Screens.ManageAccountMainScreen
+    | Screens.Investing
+    | Screens.AddBeneficiary
+    | Screens.KYCFail
+    | Screens.BankAccount
   >,
   NativeStackNavigationOptions
 > = {

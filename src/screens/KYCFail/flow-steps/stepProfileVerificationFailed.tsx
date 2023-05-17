@@ -54,7 +54,10 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
       <>
         <PaddedScrollView>
           <Box pt="24">
-            <StatusCircle variant="error" />
+            <StatusCircle
+              variant="error"
+              dark
+            />
           </Box>
           <FormTitle
             dark

@@ -1,4 +1,4 @@
-import { AccountType, Address, VerificationAction } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, Address, PersonName, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { Applicant, IdentificationDocuments } from '../Onboarding/types';
 
@@ -9,11 +9,7 @@ export interface KYCFailedFormFields {
   address: Address | null;
   dateOfBirth?: string;
   identificationDocument?: IdentificationDocuments;
-  name?: {
-    firstName?: string;
-    lastName?: string;
-    middleName?: string;
-  };
+  name?: PersonName;
   ssn?: string;
   stakeholders?: Applicant[];
 }
