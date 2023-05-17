@@ -15,10 +15,7 @@ import { useKYCFailedFlow } from '../flow-steps';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
-interface Props {
-  shouldShowFooter?: boolean;
-}
-export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
+export const BlackLayout = () => {
   const {
     CurrentStepView,
     meta: { currentStepIdentifier },
@@ -58,7 +55,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
           />
         </Box>
         <CurrentStepView />
-        {shouldShowFooter && <TermsFooter dark />}
+        <TermsFooter dark />
       </MainWrapper>
     </DialogProvider>
   );

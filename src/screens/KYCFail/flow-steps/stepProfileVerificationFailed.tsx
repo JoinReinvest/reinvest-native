@@ -68,7 +68,7 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
         <Box
           fw
           px="default"
-          pb="24"
+          pb="8"
         >
           <Button onPress={handleContinue}>Edit Information</Button>
         </Box>

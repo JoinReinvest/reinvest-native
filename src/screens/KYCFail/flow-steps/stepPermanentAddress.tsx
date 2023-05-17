@@ -164,7 +164,7 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
         </PaddedScrollView>
         <Box
           fw
-          pb="24"
+          pb="8"
           style={[styles.buttonsSection]}
         >
           <Button

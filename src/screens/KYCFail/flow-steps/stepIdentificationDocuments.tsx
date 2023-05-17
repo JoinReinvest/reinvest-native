@@ -122,7 +122,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
           />
         </PaddedScrollView>
         <Box
-          pb="24"
+          pb="8"
           px="default"
           fw
         >

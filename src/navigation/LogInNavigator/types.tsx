@@ -1,6 +1,6 @@
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BankAccount, VerificationAction } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, BankAccount, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { NavigationIdentifiers } from '../../constants/navigationLinks';
 import { BottomTabsParamsBase } from '../BottomTabsNavigator/types';
@@ -17,6 +17,7 @@ export type LogInStackParamList = {
   [Screens.ManageAccount]: { heading: string; identifier: NavigationIdentifiers };
   [Screens.BankAccount]: { sourceScreen: Screens.Investing; isUpdatingAccount?: boolean };
   [Screens.KYCFail]: { actions: VerificationAction[] };
+  [Screens.Locked]: { action: VerificationAction; accountType?: AccountType };
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;

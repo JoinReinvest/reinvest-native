@@ -127,7 +127,7 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
         <Box
           fw
           px="default"
-          pb="24"
+          pb="8"
         >
           <Button
             disabled={shouldButtonBeDisabled}

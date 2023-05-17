@@ -1,7 +1,10 @@
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
+import { ActionName, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
@@ -12,6 +15,7 @@ import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/Das
 import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
 import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
 import { ReitIcon } from '../../components/Icon/icons/TabNavigtionIcons/ReitIcon';
+import { Loader } from '../../components/Loader';
 import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
 import Screens from '../../navigation/screens';
@@ -19,6 +23,7 @@ import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
+import { currentAccount } from '../../store/atoms';
 import { useLogInNavigation } from '../hooks';
 import { BottomTabsParamsBase } from './types';
 
@@ -72,14 +77,42 @@ const getLabel = (focused: boolean, children: string) => (
 
 export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
-  const { data } = useGetUserProfile(getApiClient);
-  const { reset } = useLogInNavigation();
+  const { data, isLoading: isLoadingUserProfile } = useGetUserProfile(getApiClient);
+  const { reset, navigate } = useLogInNavigation();
+  const { mutateAsync: verifyAccountMutate, isLoading: isVerifying } = useVerifyAccount(getApiClient);
+  const [account] = useAtom(currentAccount);
 
   useEffect(() => {
-    if (!data?.isCompleted) {
-      reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
-    }
-  }, [data, reset]);
+    (async () => {
+      const response = await verifyAccountMutate({ accountId: account.id ?? '' });
+
+      const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
+        ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
+      );
+
+      if (bannedAction) {
+        return navigate(Screens.Locked, { action: bannedAction });
+      }
+
+      // TODO: Navigate to KYC Failed Flow if verification failed on recurring investment
+
+      if (!data?.isCompleted) {
+        reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
+      }
+    })();
+  }, [account.id, data?.isCompleted, navigate, reset, verifyAccountMutate]);
+
+  if (isLoadingUserProfile || isVerifying)
+    return (
+      <Box
+        flex={1}
+        fw
+        justifyContent={'center'}
+        alignItems={'center'}
+      >
+        <Loader color={palette.pureBlack} />
+      </Box>
+    );
 
   return (
     <Tab.Navigator
