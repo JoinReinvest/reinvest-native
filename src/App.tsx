@@ -1,4 +1,4 @@
-import { SENTRY_DNS } from '@env';
+import { API_URL, SENTRY_DNS } from '@env';
 import * as Sentry from '@sentry/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -19,6 +19,14 @@ import { AuthProvider } from './providers/AuthProvider';
     dsn: SENTRY_DNS,
     tracesSampleRate: 1.0,
   });
+
+const apiEnvs = {
+  'https://s129aec8m7.execute-api.us-east-1.amazonaws.com': 'Integration',
+  'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com': 'Staging',
+} as const;
+
+// eslint-disable-next-line no-console
+__DEV__ && console.info('Current environment: ', apiEnvs[API_URL as keyof typeof apiEnvs]);
 
 export const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
