@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import { StyledText } from '../components/typography/StyledText/index';
+import { StyledText } from '../components/typography/StyledText';
 import { TextVariants } from '../components/typography/StyledText/types';
 import { Theme } from '../constants/theme';
 
@@ -11,7 +11,7 @@ interface Options {
   variant: TextVariants;
 }
 
-export const parse = (input: string | undefined, matchedStyles: Partial<Options>, noMatchedStyles: Partial<Options>) => {
+export const markdownBold = (input: string | undefined, matchedStyles?: Partial<Options>, noMatchedStyles?: Partial<Options>) => {
   if (!input) return [];
 
   const regex = /{{(.*?)}}/g;
@@ -42,7 +42,9 @@ export const parse = (input: string | undefined, matchedStyles: Partial<Options>
     result.push(
       <StyledText
         key={result.length}
+        variant="paragraphLarge"
         {...matchedStyles}
+        bold
       >
         {matchText}
       </StyledText>,

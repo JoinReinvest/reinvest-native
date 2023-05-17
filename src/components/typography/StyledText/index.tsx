@@ -6,18 +6,30 @@ import { hexToRgbA } from '../../../utils/hexToRgb';
 import styles from './styles';
 import { StyledTextProps } from './types';
 
-export const StyledText = ({ children, style, color = 'pureBlack', opacity, textAlign, variant = 'label', ...rest }: PropsWithChildren<StyledTextProps>) => (
-  <Text
-    allowFontScaling={false}
-    style={[
-      styles.text,
-      styles[`${variant}`],
-      { color: opacity !== undefined ? hexToRgbA(palette[`${color}`], opacity) : palette[`${color}`] },
-      { textAlign },
-      style,
-    ]}
-    {...rest}
-  >
-    {children}
-  </Text>
-);
+export const StyledText = ({
+  children,
+  style,
+  color = 'pureBlack',
+  opacity,
+  textAlign,
+  variant = 'label',
+  bold,
+  ...rest
+}: PropsWithChildren<StyledTextProps>) => {
+  return (
+    <Text
+      allowFontScaling={false}
+      style={[
+        styles.text,
+        styles[`${variant}`],
+        { color: opacity !== undefined ? hexToRgbA(palette[`${color}`], opacity) : palette[`${color}`] },
+        { textAlign },
+        bold && styles.bold,
+        style,
+      ]}
+      {...rest}
+    >
+      {children}
+    </Text>
+  );
+};
