@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { FormMessage } from '../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../components/Forms/FormTitle';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -23,11 +24,13 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
 
   Component: ({ storeFields }: StepComponentProps<LoginFormFields>) => {
-    const { actions, loading } = useAuth();
+    const { actions, loading, user } = useAuth();
+
     const schema: Schema<Fields> = zod.object({
       authenticationCode: formValidationRules.authenticationCode,
     });
     const [error, setError] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     const { formState, handleSubmit, control } = useForm<LoginFormFields>({
       defaultValues: storeFields,
@@ -44,13 +47,29 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
 
     const shouldButtonBeDisabled = !formState.isValid || loading;
 
+    useEffect(() => {
+      if (user) {
+        user.getUserAttributes((err, attributes) => {
+          if (err instanceof Error) {
+            setError(err.message);
+
+            return;
+          }
+
+          const phoneNumber = attributes?.find(attr => attr.Name === 'phone_number')?.Value ?? '';
+          const maskedPhoneNumber = `(xxx) xxxx-xx${phoneNumber.slice(-2)}`;
+          setPhoneNumber(maskedPhoneNumber);
+        });
+      }
+    }, [user]);
+
     return (
       <>
         <PaddedScrollView style={{ width: '100%' }}>
           <FormTitle
             dark
             headline="Check Your Phone"
-            description="Enter the SMS authentication code sent to your phone (xxx) xxxx-xx84."
+            description={`Enter the SMS authentication code sent to your phone ${phoneNumber}.`}
           />
           {error && (
             <FormMessage
@@ -69,27 +88,32 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
               maxLength: 6,
             }}
           />
+          <View style={styles.row}>
+            <StyledText
+              variant="link"
+              color="frostGreen"
+            >
+              Resend Code
+            </StyledText>
+            <StyledText
+              variant="link"
+              color="frostGreen"
+            >
+              Get Help
+            </StyledText>
+          </View>
         </PaddedScrollView>
-        <View style={styles.row}>
-          <StyledText
-            variant="link"
-            color="frostGreen"
-          >
-            Resend Code
-          </StyledText>
-          <StyledText
-            variant="link"
-            color="frostGreen"
-          >
-            Get Help
-          </StyledText>
-        </View>
-        <Button
-          disabled={shouldButtonBeDisabled}
-          onPress={handleSubmit(onSubmit)}
+        <Box
+          px="default"
+          fw
         >
-          Continue
-        </Button>
+          <Button
+            disabled={shouldButtonBeDisabled}
+            onPress={handleSubmit(onSubmit)}
+          >
+            Continue
+          </Button>
+        </Box>
       </>
     );
   },
