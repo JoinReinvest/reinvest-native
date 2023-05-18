@@ -23,6 +23,7 @@ enum Screens {
   Locked = 'Locked',
   NotificationDetails = 'NotificationDetails',
   TradeSummary = 'TradeSummary',
+  DividendsPayout = 'DividendsPayout',
 }
 
 export default Screens;

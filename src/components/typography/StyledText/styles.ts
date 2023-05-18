@@ -118,6 +118,11 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: '700',
   },
+  dividend: {
+    fontFamily: Fonts.GTAmericaRegular,
+    fontSize: 48,
+    lineHeight: 48 * 1.1,
+  },
 });
 
 export default styles;
