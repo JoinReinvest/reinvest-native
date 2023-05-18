@@ -1,6 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useInitiateRecurringInvestment } from 'reinvest-app-common/src/services/queries/initiateRecurringInvestment';
 import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
@@ -34,7 +35,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     } = useRoute<LogInRouteProps<Screens.Investing>>();
 
     const { navigate } = useLogInNavigation();
-    const { mutateAsync } = useVerifyAccount(getApiClient);
+    const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
     const isAlreadyStarted = useRef(false);
@@ -46,11 +47,11 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
         investments.push({ amount: investAmount, date: dayjs().format('YYYY-MM-DD'), headline: `One Time investment` });
       }
 
-      if (recurringInvestmentId && recurringInvestment) {
+      if (recurringInvestmentId && recurringInvestment && recurringInvestment.interval) {
         investments.push({
           amount: recurringInvestment.recurringAmount || 0,
           date: recurringInvestment.startingDate || '',
-          headline: `Recurring ${recurringInvestment.interval} investment`,
+          headline: `Recurring ${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment.interval)} investment`,
           isRecurring: true,
         });
       }
@@ -83,9 +84,9 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     }, [accountId, oneTimeInvestmentId, recurringInvestmentId, showSuccessDialog, startInvestment, startRecurring]);
 
     const validateAndStart = async () => {
-      const response = await mutateAsync({ accountId });
+      const response = await validateAccount({ accountId });
 
-      if (oneTimeInvestmentId) {
+      if (oneTimeInvestmentId || recurringInvestmentId) {
         if (response?.canUserContinueTheInvestment) {
           await startInvestmentHandler();
         } else if (response?.requiredActions) {

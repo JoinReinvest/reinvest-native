@@ -1,11 +1,10 @@
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { RecurringInvestmentInterval } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
-import { BankAccount } from 'reinvest-app-common/src/types/graphql';
+import { BankAccount, RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
 
 export interface InvestFormFields {
-  _shouldDisplayRecurringInvestment: boolean;
   accountId: string;
   source: string;
+  _shouldDisplayRecurringInvestment?: boolean;
   addingAccount?: boolean;
   automaticDividendReinvestmentAgreement?: boolean;
   bankAccount?: BankAccount;
@@ -18,4 +17,4 @@ export interface InvestFormFields {
   subscriptionAgreementId?: Maybe<string>;
 }
 
-export type RecurringInvestmentDetails = { endDate: string; interval: RecurringInvestmentInterval; recurringAmount: number; startingDate: string };
+export type RecurringInvestmentDetails = { endDate: string; interval: RecurringInvestmentFrequency; recurringAmount: number; startingDate: string };

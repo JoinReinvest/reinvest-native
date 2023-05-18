@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { RecurringInvestmentInterval } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateRecurringInvestment } from 'reinvest-app-common/src/services/queries/createRecurringInvestment';
 import { RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
@@ -16,15 +15,9 @@ import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
-const intervalToApi = {
-  [RecurringInvestmentInterval.WEEKLY]: RecurringInvestmentFrequency.Weekly,
-  [RecurringInvestmentInterval.BI_WEEKLY]: RecurringInvestmentFrequency.BiWeekly,
-  [RecurringInvestmentInterval.MONTHLY]: RecurringInvestmentFrequency.Monthly,
-  [RecurringInvestmentInterval.QUARTERLY]: RecurringInvestmentFrequency.Quarterly,
-};
 export const RecurringDates: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_DATES,
-  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
+  willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
 
   doesMeetConditionFields: fields => {
     return !!fields.isRecurringInvestment && !!fields.recurringInvestment?.interval;
@@ -37,7 +30,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
         const { id, subscriptionAgreementId } = await createInvestment({
           accountId,
           amount: { value: recurringInvestment?.recurringAmount || 0 },
-          schedule: { startDate: startingDate, frequency: intervalToApi[recurringInvestment?.interval] },
+          schedule: { startDate: startingDate, frequency: recurringInvestment.interval },
         });
         await updateStoreFields({ recurringInvestmentId: id, subscriptionAgreementId });
       }
@@ -57,7 +50,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
           </Box>
           {error && <ErrorMessagesHandler error={error} />}
           <Calendar
-            autoSelectionPeriod={intervalToApi[recurringInvestment?.interval || RecurringInvestmentInterval.WEEKLY]}
+            autoSelectionPeriod={recurringInvestment?.interval || RecurringInvestmentFrequency.Weekly}
             onSelect={async selectedData => {
               setStartingDate(selectedData.startingDate);
               await updateStoreFields({ recurringInvestment: { ...recurringInvestment, ...selectedData } });
