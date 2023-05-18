@@ -41,9 +41,9 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_ADDRESS,
 
   doesMeetConditionFields({ _actions, ...fields }) {
-    const { name, dateOfBirth, ssn } = fields;
+    const { name, dateOfBirth } = fields;
 
-    const requiredFields = [name?.firstName, name?.lastName, dateOfBirth, ssn];
+    const requiredFields = [name?.firstName, name?.lastName, dateOfBirth];
     const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
     const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
@@ -65,7 +65,9 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
 
     const onSubmit: SubmitHandler<Fields> = async address => {
-      await updateStoreFields({ address });
+      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === address?.state)?.value || '';
+
+      await updateStoreFields({ address: { ...address, state: selectedStateCode } });
       moveToNextStep();
     };
 

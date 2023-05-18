@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import { DocumentPickerResponse } from 'react-native-document-picker';
+import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
-import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { useUpdateProfileForVerification } from 'reinvest-app-common/src/services/queries/updateProfileForVerification';
+import { ActionName, AddressInput, UpdateProfileForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { Address } from 'reinvest-app-common/src/types/graphql';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
-import { useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
+import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FilePicker } from '../../../components/FilePicker';
@@ -13,6 +19,7 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { palette } from '../../../constants/theme';
+import { documentReducer } from '../../../utils/documentReducer';
 import { AssetWithPreloadedFiles } from '../../Onboarding/types';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
@@ -21,70 +28,94 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.IDENTIFICATION_DOCUMENTS,
 
   doesMeetConditionFields({ _actions, ...fields }) {
-    const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.ssn];
+    const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth];
     const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
     const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
     return allRequiredFieldsExists(requiredFields) && !!profileVerificationAction && !doesRequireManualReview;
   },
 
-  Component: ({ storeFields: { identificationDocument }, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
-    const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((identificationDocument as AssetWithPreloadedFiles[]) || []);
-
+  Component: ({ storeFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+    const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.identificationDocument as AssetWithPreloadedFiles[]) || []);
+    const [didFilesChange, setDidFilesChange] = useState(false);
+    const { data: userProfile } = useGetUserProfile(getApiClient);
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
-
     const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
+    const { mutateAsync: updateProfile, isLoading: isUpdatingProfile } = useUpdateProfileForVerification(getApiClient);
 
     const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;
 
-    //TODO: uncomment when connecting with API:
-    // const onSubmit = async () => {
-    //   const preloadedFiles = documentReducer(selectedFiles);
+    const convertFiles = async () => {
+      if (!didFilesChange) {
+        return [];
+      }
 
-    //   const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const preloadedFiles = documentReducer(selectedFiles);
+      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
 
-    //   try {
-    //     const idScan = [];
+      try {
+        if (selectedFilesUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+          const scans = await sendDocumentsToS3AndGetScanIdsMutate({
+            documentsFileLinks: documentsFileLinks as PutFileLink[],
+            identificationDocument: preloadedFiles.forUpload,
+          });
 
-    //     if (selectedFilesUris.length) {
-    //       const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
-    //       const scans = await sendDocumentsToS3AndGetScanIdsMutate({
-    //         documentsFileLinks: documentsFileLinks as PutFileLink[],
-    //         identificationDocument: preloadedFiles.forUpload,
-    //       });
-    //       idScan.push(...scans);
-    //     }
+          return scans;
+        }
 
-    //     await updateStoreFields({ identificationDocument: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
-    //     const verificationResponse = await reverifyAccount({ accountId: storeFields.accountId });
+        return [];
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('-> e', e);
 
-    //     if (
-    //       verificationResponse?.canUserContinueTheInvestment ||
-    //       (verificationResponse?.isAccountVerified && !verificationResponse.requiredActions?.length) ||
-    //       !selectedFilesUris.length
-    //     ) {
-    //       moveToNextStep();
-    //     }
-    //     // clear all the data provided by user from previous verification and go back to the start:
-
-    //     await updateStoreFields({
-    //       ...initialKYCFailedFormFields,
-    //       _actions: verificationResponse.requiredActions,
-    //     });
-
-    //     // mock failing again:
-    //     moveToStepByIdentifier(Identifiers.VERIFICATION_FAILED);
-    //   } catch (e) {
-    //     // eslint-disable-next-line no-console
-    //     console.log('-> e', e);
-    //   }
-    // };
-
-    const onSubmit = async () => {
-      moveToNextStep();
+        return [];
+      }
     };
 
-    if (isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading) {
+    const onSubmit = async () => {
+      if (!userProfile?.details) return;
+
+      const { name: updatedName, dateOfBirth: updatedDateOfBirth, ssn: updatedSSN, address: updatedAddress } = storeFields;
+      const { firstName, middleName, lastName, dateOfBirth, ssn, address } = userProfile.details;
+      const name = { firstName, middleName, lastName };
+
+      const formattedUpdatedDateOfBirth = updatedDateOfBirth ? formatDate(updatedDateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined;
+
+      const shouldUpdateName = !!(updatedName && Object.entries(updatedName).some(([key, value]) => name[key as keyof typeof name] !== value));
+      const shouldUpdateDateOfBirth = !!(formattedUpdatedDateOfBirth && formattedUpdatedDateOfBirth !== dateOfBirth);
+      const shouldUpdateSSN = !!(updatedSSN && updatedSSN !== ssn);
+      const shouldUpdateAddress = !!(updatedAddress && address
+        ? Object.entries(updatedAddress).some(([key, value]) => address[key as keyof Address] !== value)
+        : false);
+
+      const idScan = await convertFiles();
+
+      const input: UpdateProfileForVerificationInput = {
+        ...(shouldUpdateName ? { name: updatedName } : {}),
+        ...(shouldUpdateDateOfBirth ? { dateOfBirth: { dateOfBirth: formattedUpdatedDateOfBirth } } : {}),
+        ...(shouldUpdateSSN ? { ssn: { ssn: updatedSSN } } : {}),
+        ...(shouldUpdateAddress ? { address: updatedAddress as AddressInput } : {}),
+        ...(didFilesChange && idScan.length ? { idScan } : {}),
+      };
+
+      try {
+        await updateProfile({ input });
+      } catch (err) {
+        if (err instanceof Error) {
+          console.log(err.message);
+        }
+      } finally {
+        moveToNextStep();
+      }
+    };
+
+    const handleSelectFiles = (files: (DocumentPickerResponse | Asset)[]) => {
+      setSelectedFiles(files);
+      setDidFilesChange(true);
+    };
+
+    if (isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading || isUpdatingProfile) {
       return (
         <View style={{ flex: 1 }}>
           <Box
@@ -98,7 +129,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
             />
             <FormTitle
               dark
-              headline={`Uploading Your Document${selectedFiles.length > 1 ? 's' : ''}`}
+              headline={`Uploading Your Profile Information`}
             />
           </Box>
         </View>
@@ -115,7 +146,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
           <FilePicker
             dark
             label="Upload Files"
-            onSelect={setSelectedFiles}
+            onSelect={handleSelectFiles}
             type="multi"
             selectionLimit={5}
             state={selectedFiles}
@@ -128,7 +159,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
         >
           <Button
             onPress={onSubmit}
-            disabled={shouldButtonBeDisabled || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading}
+            disabled={shouldButtonBeDisabled || isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading || isUpdatingProfile}
           >
             Submit
           </Button>
