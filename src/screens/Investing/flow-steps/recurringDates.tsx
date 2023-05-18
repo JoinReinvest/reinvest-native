@@ -24,6 +24,7 @@ const intervalToApi = {
 };
 export const RecurringDates: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_DATES,
+  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
 
   doesMeetConditionFields: fields => {
     return !!fields.isRecurringInvestment && !!fields.recurringInvestment?.interval;

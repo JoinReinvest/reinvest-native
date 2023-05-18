@@ -3,13 +3,14 @@ import { RecurringInvestmentInterval } from 'reinvest-app-common/src/constants/r
 import { BankAccount } from 'reinvest-app-common/src/types/graphql';
 
 export interface InvestFormFields {
+  _shouldDisplayRecurringInvestment: boolean;
   accountId: string;
   source: string;
   addingAccount?: boolean;
   automaticDividendReinvestmentAgreement?: boolean;
   bankAccount?: BankAccount;
   initialInvestment?: boolean;
-  investAmount?: string;
+  investAmount?: number;
   isRecurringInvestment?: boolean;
   oneTimeInvestmentId?: string;
   recurringInvestment?: Partial<RecurringInvestmentDetails>;
@@ -17,4 +18,4 @@ export interface InvestFormFields {
   subscriptionAgreementId?: Maybe<string>;
 }
 
-export type RecurringInvestmentDetails = { endDate: string; interval: RecurringInvestmentInterval; recurringAmount: string; startingDate: string };
+export type RecurringInvestmentDetails = { endDate: string; interval: RecurringInvestmentInterval; recurringAmount: number; startingDate: string };

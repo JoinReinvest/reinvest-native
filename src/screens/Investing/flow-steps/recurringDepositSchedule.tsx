@@ -20,6 +20,7 @@ import { styles } from './styles';
 
 export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_DEPOSIT_SCHEDULE,
+  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
     const requiredFields = allRequiredFieldsExists([
       fields.recurringInvestment?.interval,

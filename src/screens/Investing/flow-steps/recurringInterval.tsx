@@ -14,6 +14,7 @@ import { styles } from './styles';
 
 export const RecurringInterval: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INTERVAL,
+  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
 
   doesMeetConditionFields: fields => {
     return !!fields.isRecurringInvestment;

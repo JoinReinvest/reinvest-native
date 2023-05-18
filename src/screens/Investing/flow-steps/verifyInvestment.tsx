@@ -48,7 +48,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
 
       if (recurringInvestmentId && recurringInvestment) {
         investments.push({
-          amount: recurringInvestment.recurringAmount || '',
+          amount: recurringInvestment.recurringAmount || 0,
           date: recurringInvestment.startingDate || '',
           headline: `Recurring ${recurringInvestment.interval} investment`,
           isRecurring: true,

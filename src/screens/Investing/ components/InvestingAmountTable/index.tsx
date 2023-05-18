@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { TextInput } from 'react-native';
 import { INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 
 import { Box } from '../../../../components/Containers/Box/Box';
@@ -11,19 +12,20 @@ import { styles } from './styles';
 import { Props } from './types';
 
 type Option = (typeof INVESTMENT_PRESET_AMOUNTS)[0];
-export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) => {
-  const optionValue = INVESTMENT_PRESET_AMOUNTS.find(option => option.value === amount);
-  const [selectedFromOptions, setSelectedFromOptions] = useState<Option | undefined>(optionValue);
+export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error }: Props) => {
+  const optionValue = INVESTMENT_PRESET_AMOUNTS.find(option => option.value === amount?.toString());
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
   const { navigate } = useLogInNavigation();
+  const inputRef = useRef<TextInput>(null);
+
   const setCustomValue = (value: string) => {
     setCustomAmount(value);
     setAmount(value);
   };
 
   const selectValueFromOptions = (option: Option) => {
-    setSelectedFromOptions(option);
     setCustomAmount('');
+    inputRef.current?.blur();
     setAmount(option.value);
   };
 
@@ -41,7 +43,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) 
         justifyContent={'space-between'}
       >
         {INVESTMENT_PRESET_AMOUNTS.map(preset => {
-          const isActive = preset.value === selectedFromOptions?.value && customAmount.length === 0;
+          const isActive = preset.value === (amount?.toString() || '');
 
           return (
             <Box
@@ -64,11 +66,13 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount }: Props) 
       </Row>
       <Box pt={'16'}>
         <Input
+          ref={inputRef}
           placeholder={'+ Add custom amount'}
           dark={false}
           keyboardType={'numeric'}
-          value={customAmount}
+          value={customAmount.toString()}
           onChangeText={setCustomValue}
+          error={error}
         />
       </Box>
       <StyledText>{`Checking ${bankAccount}`}</StyledText>

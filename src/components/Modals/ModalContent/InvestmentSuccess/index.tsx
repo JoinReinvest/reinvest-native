@@ -17,7 +17,7 @@ import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
 export type DialogInvestment = {
-  amount: string;
+  amount: number;
   date: string;
   headline: string;
   isRecurring?: boolean;
@@ -98,7 +98,11 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvest
           icon={!isRecurring ? 'down' : 'refresh'}
           style={{ transform: [{ rotate: '180deg' }] }}
         />
-        <StyledText variant="h1">{`$${amount}`}</StyledText>
+        <StyledText
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          variant="h1"
+        >{`$${amount.toFixed(2)}`}</StyledText>
       </Row>
       <StyledText
         color="dark3"
