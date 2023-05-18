@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { palette } from '../../../../constants/theme';
 import { useLogInNavigation } from '../../../../navigation/hooks';
@@ -56,7 +57,7 @@ export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
         </StyledText>
         {investments.map((investment, idx) => {
           return (
-            <>
+            <React.Fragment key={`${investment.headline}+${investment.date}`}>
               <InvestSuccessInfo {...investment} />
               {idx !== investments.length - 1 && (
                 <Box
@@ -64,7 +65,7 @@ export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
                   style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
                 />
               )}
-            </>
+            </React.Fragment>
           );
         })}
         <FormDisclaimer>{disclaimer}</FormDisclaimer>
@@ -103,7 +104,7 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvest
         color="dark3"
         variant="h6"
       >
-        {`${isRecurring ? 'Starting ' : ''}${date}`}
+        {`${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'DEFAULT' })}`}
       </StyledText>
     </Box>
   );

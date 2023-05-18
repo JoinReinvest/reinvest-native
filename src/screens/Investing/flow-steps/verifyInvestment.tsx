@@ -2,6 +2,7 @@ import { useRoute } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useInitiateRecurringInvestment } from 'reinvest-app-common/src/services/queries/initiateRecurringInvestment';
 import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
 import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
 import { VerificationAction } from 'reinvest-app-common/src/types/graphql';
@@ -25,7 +26,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Component: ({
-    storeFields: { accountId, oneTimeInvestmentId, investAmount, isRecurringInvestment, recurringInvestment },
+    storeFields: { accountId, oneTimeInvestmentId, investAmount, recurringInvestment, recurringInvestmentId },
   }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
     const {
@@ -35,20 +36,20 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const { navigate } = useLogInNavigation();
     const { mutateAsync } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
+    const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
     const isAlreadyStarted = useRef(false);
 
     const showSuccessDialog = useCallback(() => {
       const investments: DialogInvestment[] = [];
 
       if (oneTimeInvestmentId && !!investAmount) {
-        investments.push({ amount: investAmount, date: dayjs().format('MMMM D, YYYY'), headline: `One Time investment` });
+        investments.push({ amount: investAmount, date: dayjs().format('YYYY-MM-DD'), headline: `One Time investment` });
       }
 
-      if (isRecurringInvestment && recurringInvestment) {
+      if (recurringInvestmentId && recurringInvestment) {
         investments.push({
           amount: recurringInvestment.recurringAmount || '',
-          //TODO extend dialog for getting info about dates while we will be sure about shape
-          date: recurringInvestment.startDate || '',
+          date: recurringInvestment.startingDate || '',
           headline: `Recurring ${recurringInvestment.interval} investment`,
           isRecurring: true,
         });
@@ -72,9 +73,14 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const startInvestmentHandler = useCallback(async () => {
       if (oneTimeInvestmentId) {
         await startInvestment({ investmentId: oneTimeInvestmentId, approveFees: true });
-        showSuccessDialog();
       }
-    }, [oneTimeInvestmentId, showSuccessDialog, startInvestment]);
+
+      if (recurringInvestmentId) {
+        await startRecurring({ accountId });
+      }
+
+      showSuccessDialog();
+    }, [accountId, oneTimeInvestmentId, recurringInvestmentId, showSuccessDialog, startInvestment, startRecurring]);
 
     const validateAndStart = async () => {
       const response = await mutateAsync({ accountId });
