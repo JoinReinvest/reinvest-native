@@ -1,15 +1,17 @@
 import dayjs from 'dayjs';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
+import { useGetScheduleSimulation } from 'reinvest-app-common/src/services/queries/getScheduleSimulation';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
+import { getApiClient } from '../../api/getApiClient';
 import { palette } from '../../constants/theme';
 import { Box } from '../Containers/Box/Box';
 import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { CalendarProps } from './types';
-import { getCalendarDays, getRecurringDates } from './utilities';
+import { getCalendarDays } from './utilities';
 
 export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
   const [startingDate, setStartingDate] = useState<dayjs.Dayjs | null>(null);
@@ -20,20 +22,33 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
   const isShowingCurrentMonth = currentDate.month() === dayjs().month();
   const calendarDays = useMemo(() => getCalendarDays(currentDate), [currentDate]);
 
-  const selectDay = (date: dayjs.Dayjs | undefined) => {
+  const { refetch } = useGetScheduleSimulation(getApiClient, {
+    schedule: { frequency: autoSelectionPeriod, startDate: startingDate || '' },
+    config: { enabled: !!startingDate },
+  });
+
+  useEffect(() => {
+    if (startingDate) {
+      (async () => {
+        const { data } = await refetch();
+
+        if (data) {
+          recurringDatesRef.current = data?.map(date => dayjs(date));
+          onSelect({
+            startingDate: formatDate(startingDate.toDate(), 'API'),
+            recurringDates: data,
+          });
+        }
+      })();
+    }
+  }, [onSelect, refetch, startingDate]);
+
+  const selectDay = async (date: dayjs.Dayjs | undefined) => {
     if (!date || date.isBefore(dayjs(), 'day')) {
       return;
     }
 
-    const autoSelectedDates = getRecurringDates(date, autoSelectionPeriod);
-
-    recurringDatesRef.current = autoSelectedDates;
     setStartingDate(date);
-
-    onSelect({
-      startingDate: formatDate(date.toDate(), 'API'),
-      recurringDates: autoSelectedDates.map(date => formatDate(date.toDate(), 'API')),
-    });
   };
 
   const jumpBetweenMonths = () => {

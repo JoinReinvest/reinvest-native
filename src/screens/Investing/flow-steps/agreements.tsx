@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCreateRecurringSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/createRecurringSubscriptionAgreement';
 import { useCreateSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/createSubscriptionAgreement';
+import { useSignRecurringInvestmentSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/signRecurringInvestmentSubscriptionAgreement';
 import { useSignSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/signSubscriptionAgreement';
 import { SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
 
@@ -24,10 +26,20 @@ export const Agreements: StepParams<InvestFormFields> = {
 
   Component: ({ moveToNextStep, storeFields }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
-    const { oneTimeInvestmentId, isRecurringInvestment } = storeFields;
+    const { oneTimeInvestmentId, isRecurringInvestment, accountId, recurringInvestmentId } = storeFields;
     const [agreements, setAgreements] = useState({ oneTimeAgreement: false, recurringAgreement: false });
     const { mutateAsync: createAgreement, isLoading: createSubscriptionLoading, error: createSubscriptionError } = useCreateSubscriptionAgreement(getApiClient);
+    const {
+      mutateAsync: createRecurringAgreement,
+      isLoading: createRecurringLoading,
+      error: createRecurringError,
+    } = useCreateRecurringSubscriptionAgreement(getApiClient);
     const { mutateAsync: signInAgreement, isLoading: signInAgreementLoading, error: signInAgreementError } = useSignSubscriptionAgreement(getApiClient);
+    const {
+      mutateAsync: signInRecurring,
+      isLoading: signInRecurringLoading,
+      error: signInRecurringError,
+    } = useSignRecurringInvestmentSubscriptionAgreement(getApiClient);
     const [agreementsDocs, setAgreementsDocs] = useState<Partial<Record<AgreementType, SubscriptionAgreement>>>({});
     const handleAccept = async () => {
       if (oneTimeInvestmentId && agreements.oneTimeAgreement) {
@@ -35,7 +47,7 @@ export const Agreements: StepParams<InvestFormFields> = {
       }
 
       if (isRecurringInvestment && agreements.recurringAgreement) {
-        Alert.alert('Recurring agreement ');
+        await signInRecurring({ accountId });
       }
 
       moveToNextStep();
@@ -53,7 +65,7 @@ export const Agreements: StepParams<InvestFormFields> = {
     };
 
     useEffect(() => {
-      if (oneTimeInvestmentId) {
+      if (oneTimeInvestmentId && !agreementsDocs.recurringAgreement) {
         (async () => {
           const agreement = await createAgreement({ investmentId: oneTimeInvestmentId });
 
@@ -62,9 +74,20 @@ export const Agreements: StepParams<InvestFormFields> = {
           }
         })();
       }
-    }, [createAgreement, oneTimeInvestmentId]);
 
-    const loading = createSubscriptionLoading || signInAgreementLoading;
+      if (recurringInvestmentId && !agreementsDocs.recurringAgreement) {
+        (async () => {
+          const agreement = await createRecurringAgreement({ accountId });
+
+          if (agreement) {
+            setAgreementsDocs(prev => ({ ...prev, recurringAgreement: agreement }));
+          }
+        })();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const loading = createSubscriptionLoading || signInAgreementLoading || createRecurringLoading || signInRecurringLoading;
     const shouldButtonBeDisabled = (!!oneTimeInvestmentId && !agreements.oneTimeAgreement) || (isRecurringInvestment && !agreements.recurringAgreement);
 
     return (
@@ -75,6 +98,8 @@ export const Agreements: StepParams<InvestFormFields> = {
           </Box>
           {createSubscriptionError && <ErrorMessagesHandler error={createSubscriptionError} />}
           {signInAgreementError && <ErrorMessagesHandler error={signInAgreementError} />}
+          {createRecurringError && <ErrorMessagesHandler error={createRecurringError} />}
+          {signInRecurringError && <ErrorMessagesHandler error={signInRecurringError} />}
           <Box py={'16'}>
             <StyledText variant="paragraphLarge">I have read through the selected documents referenced below:</StyledText>
           </Box>

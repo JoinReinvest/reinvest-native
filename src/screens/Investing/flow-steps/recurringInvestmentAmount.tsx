@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import { recurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
 import { Button } from '../../../components/Button';
@@ -15,16 +17,30 @@ import { styles } from './styles';
 
 export const RecurringAmount: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_AMOUNT_INVESTMENT,
+  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
     return !!fields.isRecurringInvestment;
   },
 
   Component: ({ moveToNextStep, storeFields, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
-    const [amount, setAmount] = useState<string | undefined>(storeFields.recurringInvestment?.recurringAmount);
+    const [error, setError] = useState<string | undefined>();
+
+    const [amount, setAmount] = useState<number | undefined>(storeFields.recurringInvestment?.recurringAmount);
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
+    const validateInput = () => {
+      const result = recurringInvestmentSchema.safeParse({ amount });
+
+      if ('error' in result && result.error instanceof ZodError) {
+        setError((result.error as ZodError).issues[0]?.message);
+
+        return false;
+      }
+
+      return true;
+    };
     const handleContinue = async () => {
-      if (amount) {
+      if (amount && validateInput()) {
         await updateStoreFields({ recurringInvestment: { ...storeFields.recurringInvestment, recurringAmount: amount } });
         moveToNextStep();
       }
@@ -52,9 +68,13 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             <StyledText variant="h5">How often would you like to have a recurring investment?</StyledText>
           </Box>
           <InvestingAmountTable
+            error={error}
             amount={amount}
             bankAccount={storeFields.bankAccount?.accountNumber || ''}
-            setAmount={setAmount}
+            setAmount={value => {
+              setError(undefined);
+              setAmount(parseFloat(value));
+            }}
           />
         </PaddedScrollView>
         <View
@@ -69,7 +89,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
           </Button>
           <Button
             onPress={handleContinue}
-            disabled={!amount?.length}
+            disabled={!amount}
           >
             Continue
           </Button>

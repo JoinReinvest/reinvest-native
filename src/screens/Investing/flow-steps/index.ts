@@ -26,7 +26,7 @@ export const FLOW_STEPS = [
 ];
 
 export const investingFormFieldsInitialState: Omit<InvestFormFields, 'accountId'> = {
-  source: 'JPMORGAN CHASE BANK, NA ****1234',
+  source: 'JPMORGAN CHASE BANK, NA',
 };
 
 const [useInvestFlow, InvestFormFlowProvider] = createFormFlow<InvestFormFields>({

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { palette } from '../../../../constants/theme';
 import { useLogInNavigation } from '../../../../navigation/hooks';
@@ -16,7 +17,7 @@ import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
 export type DialogInvestment = {
-  amount: string;
+  amount: number;
   date: string;
   headline: string;
   isRecurring?: boolean;
@@ -56,7 +57,7 @@ export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
         </StyledText>
         {investments.map((investment, idx) => {
           return (
-            <>
+            <React.Fragment key={`${investment.headline}+${investment.date}`}>
               <InvestSuccessInfo {...investment} />
               {idx !== investments.length - 1 && (
                 <Box
@@ -64,7 +65,7 @@ export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
                   style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
                 />
               )}
-            </>
+            </React.Fragment>
           );
         })}
         <FormDisclaimer>{disclaimer}</FormDisclaimer>
@@ -97,13 +98,17 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvest
           icon={!isRecurring ? 'down' : 'refresh'}
           style={{ transform: [{ rotate: '180deg' }] }}
         />
-        <StyledText variant="h1">{`$${amount}`}</StyledText>
+        <StyledText
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          variant="h1"
+        >{`$${amount.toFixed(2)}`}</StyledText>
       </Row>
       <StyledText
         color="dark3"
         variant="h6"
       >
-        {`${isRecurring ? 'Starting ' : ''}${date}`}
+        {`${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'DEFAULT' })}`}
       </StyledText>
     </Box>
   );

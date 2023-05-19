@@ -1,6 +1,6 @@
-export type Period = 'WEEKLY' | 'BI-WEEKLY' | 'MONTHLY' | 'QUARTERLY';
+import { RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
 
 export interface CalendarProps {
-  autoSelectionPeriod: Period;
+  autoSelectionPeriod: RecurringInvestmentFrequency;
   onSelect: (dates: { recurringDates: string[]; startingDate: string }) => void;
 }

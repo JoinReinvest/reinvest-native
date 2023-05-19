@@ -1,5 +1,6 @@
 export interface Props {
   setAmount: (amount: string) => void;
-  amount?: string;
+  amount?: number;
   bankAccount?: string;
+  error?: string;
 }
