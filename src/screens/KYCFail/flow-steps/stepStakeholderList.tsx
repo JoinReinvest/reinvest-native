@@ -130,7 +130,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Verify your applicant's details and edit if necessary"

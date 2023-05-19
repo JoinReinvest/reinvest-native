@@ -1,28 +1,36 @@
 import React from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
+import { useSetAutomaticDividendReinvestmentAgreement } from 'reinvest-app-common/src/services/queries/setAutomaticDividendReinvestmentAgreement';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormDisclaimer } from '../../../components/FormDisclaimer';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { InvestingDisclaimers } from '../../../constants/strings';
-import { useLogInNavigation } from '../../../navigation/hooks';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
+import { useCurrentAccountConfig } from '../../../hooks/useActiveAccountConfig';
 import { useDialog } from '../../../providers/DialogProvider';
 import { styles } from '../../Investing/flow-steps/styles';
 
 const { headline, content } = InvestingDisclaimers.whatIsAutomaticDividendReinvesting;
 
 export const DividendsReinvesting = () => {
+  const {
+    activeAccount: { id: accountId },
+  } = useCurrentAccount();
   const { openDialog } = useDialog();
-  const { goBack } = useLogInNavigation();
-  const handleSkip = async () => {
-    goBack();
-  };
+  const { mutateAsync, isLoading, error } = useSetAutomaticDividendReinvestmentAgreement(getApiClient);
+  const { accountConfig, refetch, isLoading: configLoading } = useCurrentAccountConfig();
 
-  const handleOptIn = () => {
-    Alert.alert('Reinvesting dividend', 'Your dividends will be automatically reinvested', [{ text: 'OK', onPress: goBack }]);
+  const setValueHandler = async (optIn: boolean) => {
+    if (accountId) {
+      await mutateAsync({ accountId, automaticDividendReinvestmentAgreement: optIn });
+      await refetch();
+    }
   };
 
   const showInfo = () => {
@@ -34,13 +42,17 @@ export const DividendsReinvesting = () => {
     );
   };
 
+  const status = accountConfig?.automaticDividendReinvestmentAgreement.signed ? 'Active' : 'Inactive';
+
   return (
     <>
-      <PaddedScrollView>
-        <Box py={'24'}>
-          <StyledText variant={'h5'}>Opt in for automatic dividend reinvesting?</StyledText>
+      <PaddedScrollView isLoading={isLoading || configLoading}>
+        <Box py={'16'}>
+          <StyledText variant={'h5'}>Automatic Dividend Reinvesting</StyledText>
         </Box>
-        <FormDisclaimer>
+        {error && <ErrorMessagesHandler error={error} />}
+        <StyledText>{`Current Status: ${status}`}</StyledText>
+        <FormDisclaimer mt={'8'}>
           <StyledText
             variant="link"
             onPress={showInfo}
@@ -54,12 +66,20 @@ export const DividendsReinvesting = () => {
         style={styles.buttonsSection}
       >
         <Button
+          isLoading={isLoading}
+          disabled={isLoading}
           variant="outlined"
-          onPress={handleSkip}
+          onPress={() => setValueHandler(false)}
         >
           Opt Out
         </Button>
-        <Button onPress={handleOptIn}>Opt In</Button>
+        <Button
+          isLoading={isLoading}
+          disabled={isLoading}
+          onPress={() => setValueHandler(true)}
+        >
+          Opt In
+        </Button>
       </View>
     </>
   );

@@ -171,7 +171,10 @@ export const StepBusinessAddress: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView keyboardShouldPersistTaps="never">
+        <PaddedScrollView
+          keyboardShouldPersistTaps="never"
+          dark
+        >
           <FormTitle
             dark
             headline={`Enter the business address for your ${fiduciaryEntity}`}

@@ -94,7 +94,10 @@ export const StepPassword: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <PaddedScrollView keyboardShouldPersistTaps={'handled'}>
+        <PaddedScrollView
+          dark
+          keyboardShouldPersistTaps={'handled'}
+        >
           <FormTitle
             dark
             headline="Sign Up to REINVEST"

@@ -12,7 +12,7 @@ import { styles } from './styles';
 
 export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INVESTMENT,
-  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
+  willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
 
   Component: ({ moveToNextStep, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
     const handleContinue = async () => {

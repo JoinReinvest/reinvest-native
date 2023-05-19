@@ -115,7 +115,10 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView keyboardShouldPersistTaps="never">
+        <PaddedScrollView
+          dark
+          keyboardShouldPersistTaps="never"
+        >
           <FormTitle
             dark
             headline="Verify that you entered your information correctly"

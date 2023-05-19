@@ -70,7 +70,10 @@ export const FilterDialog = ({ fillDetailsCallback, options, dark = true, value,
       </Box>
 
       {!!list?.length && (
-        <PaddedScrollView keyboardShouldPersistTaps={'handled'}>
+        <PaddedScrollView
+          keyboardShouldPersistTaps={'handled'}
+          dark={dark}
+        >
           {list.map((el, idx) => {
             return (
               <Box

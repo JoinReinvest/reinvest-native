@@ -59,7 +59,7 @@ export const StepReferralCode: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Do you have a referral code? (optional)"

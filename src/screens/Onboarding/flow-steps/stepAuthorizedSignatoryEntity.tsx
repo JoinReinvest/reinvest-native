@@ -91,7 +91,7 @@ export const StepAuthorizedSignatoryEntity: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Are you an authorized signatory & beneficiary owner of this entity?"

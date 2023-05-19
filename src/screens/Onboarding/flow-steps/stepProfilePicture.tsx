@@ -223,6 +223,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           <ProgressBar value={progressPercentage} />
         </View>
         <PaddedScrollView
+          dark
           contentContainerStyle={{
             flex: 1,
             alignItems: 'center',

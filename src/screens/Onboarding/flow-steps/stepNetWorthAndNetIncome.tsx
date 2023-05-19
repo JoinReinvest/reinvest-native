@@ -84,7 +84,7 @@ export const StepNetWorthAndNetIncome: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="What is approximate net worth and income?"

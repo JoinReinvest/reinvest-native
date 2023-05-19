@@ -11,6 +11,7 @@ import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/servi
 import { useGetPhoneCompleted } from 'reinvest-app-common/src/services/queries/getPhoneCompleted';
 import { useGetTrustDraftAccount } from 'reinvest-app-common/src/services/queries/getTrustDraftAccount';
 import {
+  AccountType,
   Address,
   DraftAccount,
   DraftAccountType,
@@ -19,7 +20,6 @@ import {
   IndividualDraftAccount,
   TrustCompanyTypeEnum,
 } from 'reinvest-app-common/src/types/graphql';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
@@ -206,7 +206,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Which type of account would you like to open?"

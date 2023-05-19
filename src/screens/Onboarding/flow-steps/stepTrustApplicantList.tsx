@@ -158,7 +158,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline={hasApplicants ? 'Your applicants.' : 'Other Trustees, Grantors and Protectors'}
