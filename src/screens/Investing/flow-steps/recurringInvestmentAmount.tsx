@@ -17,7 +17,7 @@ import { styles } from './styles';
 
 export const RecurringAmount: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_AMOUNT_INVESTMENT,
-  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
+  willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
     return !!fields.isRecurringInvestment;
   },

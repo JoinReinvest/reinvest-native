@@ -112,7 +112,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Please upload your Driver’s License or Passport for further verification"

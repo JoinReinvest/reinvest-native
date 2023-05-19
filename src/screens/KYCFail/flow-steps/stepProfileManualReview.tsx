@@ -42,7 +42,7 @@ export const StepProfileManualReview: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <Box pt="24">
             <StatusCircle variant="alert" />
           </Box>

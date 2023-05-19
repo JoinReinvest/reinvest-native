@@ -121,7 +121,7 @@ export const StepCompanyTickerSymbols: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Please list ticker symbols of the publicly traded company(s) below."

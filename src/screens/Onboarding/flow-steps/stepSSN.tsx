@@ -134,7 +134,7 @@ export const StepSSN: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="What's your social security number"

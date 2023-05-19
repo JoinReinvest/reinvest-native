@@ -76,7 +76,7 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Verify that you entered your information correctly"

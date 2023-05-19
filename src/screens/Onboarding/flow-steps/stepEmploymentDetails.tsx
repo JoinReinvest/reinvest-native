@@ -106,7 +106,7 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Where are you employed?"

@@ -71,7 +71,7 @@ export const StepSeniorPoliticalFigure: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Please provide the name and position of this senior political figure."
