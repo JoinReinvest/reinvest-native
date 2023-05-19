@@ -16,50 +16,57 @@ import { PaddedScrollView } from '../../../PaddedScrollView';
 import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
-export type DialogInvestment = {
+export type DialogItem = {
   amount: number;
-  date: string;
   headline: string;
+  date?: string;
   isRecurring?: boolean;
 };
 
 interface Props {
+  dialogItems: DialogItem[];
   disclaimer: string;
-  investments: DialogInvestment[];
-  type: 'invest' | 'withdrawal' | 'reward';
+  type: 'invest' | 'withdrawal' | 'reward' | 'reinvest';
+  buttonLabel?: string;
+  onProceed?: () => void;
 }
 
 const headlines = {
   invest: 'Thank you for investing in Community REIT',
-  withdrawal: '',
+  withdrawal: 'Thank you for withdrawing',
   reward: '',
+  reinvest: 'Thank you for reinvesting.',
   beneficiary: '',
 };
 
-export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
+export const InvestSuccess = ({ disclaimer, dialogItems, type, onProceed, buttonLabel = 'Continue' }: Props) => {
   const { closeDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
 
   const returnToDashboard = () => {
-    navigation.navigate(Screens.Dashboard);
+    if (!onProceed) {
+      navigation.navigate(Screens.Dashboard);
+    }
+
+    onProceed?.();
     closeDialog();
   };
 
   return (
     <View style={[styles.center, styles.container, { paddingBottom: bottom }]}>
-      <PaddedScrollView contentContainerStyle={styles.center}>
+      <PaddedScrollView contentContainerStyle={[styles.center]}>
         <StyledText
           textAlign="center"
           variant="h3"
         >
           {headlines[type]}
         </StyledText>
-        {investments.map((investment, idx) => {
+        {dialogItems.map((item, idx) => {
           return (
-            <React.Fragment key={`${investment.headline}+${investment.date}`}>
-              <InvestSuccessInfo {...investment} />
-              {idx !== investments.length - 1 && (
+            <React.Fragment key={`${item.headline}+${item.date}`}>
+              <InvestSuccessInfo {...item} />
+              {idx !== dialogItems.length - 1 && (
                 <Box
                   fw
                   style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
@@ -68,20 +75,20 @@ export const InvestSuccess = ({ disclaimer, investments, type }: Props) => {
             </React.Fragment>
           );
         })}
-        <FormDisclaimer>{disclaimer}</FormDisclaimer>
+        <FormDisclaimer fw>{disclaimer}</FormDisclaimer>
       </PaddedScrollView>
       <Box
         fw
         pb="24"
         px="default"
       >
-        <Button onPress={returnToDashboard}>Continue</Button>
+        <Button onPress={returnToDashboard}>{buttonLabel}</Button>
       </Box>
     </View>
   );
 };
 
-const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvestment) => {
+const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogItem) => {
   return (
     <Box
       fw
@@ -108,7 +115,7 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogInvest
         color="dark3"
         variant="h6"
       >
-        {`${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'DEFAULT' })}`}
+        {date && `${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'DEFAULT' })}`}
       </StyledText>
     </Box>
   );

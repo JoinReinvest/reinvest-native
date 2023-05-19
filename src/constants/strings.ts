@@ -44,7 +44,7 @@ export const InvestingDisclaimers = {
 
 export const InvestingDialogDisclaimers = {
   invest: 'Please expect funds to be drawn from your bank account within 3 days.',
-  withdrawal: '',
+  withdrawal: 'Please expect funds to be withdrawn to your bank account within 3 days.',
   reward: 'Deposited to your account',
-  reinvesting: 'Successfully reinvested. ',
+  reinvest: 'Successfully reinvested. ',
 };

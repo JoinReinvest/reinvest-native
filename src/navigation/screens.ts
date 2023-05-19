@@ -21,6 +21,7 @@ enum Screens {
   BankAccount = 'BankAccount',
   KYCFail = 'KYCFail',
   Locked = 'Locked',
+  NotificationDetails = 'NotificationDetails',
 }
 
 export default Screens;

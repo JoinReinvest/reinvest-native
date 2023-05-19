@@ -1,79 +1,76 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useGetNotDismissedNotifications } from 'reinvest-app-common/src/services/queries/getNotDimissedNotifications';
+import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/queries/markNotificationAsRead';
 import { Notification as BaseNotification } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
+import { ContainerOverlay } from '../../components/Containers/ContainerOverlay';
 import { Icon } from '../../components/Icon';
+import { Loader } from '../../components/Loader';
 import { MainWrapper } from '../../components/MainWrapper';
 import { Notification } from '../../components/Notification';
 import { StyledText } from '../../components/typography/StyledText';
-import { styles } from './styles';
-
-// TODO: Fetch notifications from API
-
-const notifications: (Partial<BaseNotification> & { id: string })[] = [
-  {
-    id: '0',
-    header: 'Referral Reward Update',
-    body: '{{$10}} in referral reward credit has been transferred to your bank account. Please expect to see it deposited within 3–5 business days.',
-    date: '2023-05-15',
-    isRead: false,
-  },
-  {
-    id: '1',
-    header: 'Dividend Update',
-    body: 'You earned $10 in dividends. Reinvest or withdraw your dividend.',
-    date: '2023-05-10',
-    isRead: true,
-  },
-  {
-    id: '2',
-    header: 'Investment failed',
-    body: "Your recent investment [trade ID] failed. We'll try to process payment again over the next few days. To process investment, you may need to update your billing details.",
-    date: '2023-05-09',
-    isRead: false,
-  },
-  {
-    id: '3',
-    header: 'Dividends Payout',
-    body: 'Congrats! You have received a {{$30}} dividend payout in your bank account. Funds should appear within 3–5 business days.',
-    date: '2023-05-08',
-    isRead: false,
-  },
-];
+import { palette } from '../../constants/theme';
+import { useCurrentAccount } from '../../hooks/useActiveAccount';
+import { useLogInNavigation } from '../../navigation/hooks';
+import Screens from '../../navigation/screens';
 
 export const Notifications = () => {
   const { top } = useSafeAreaInsets();
+  const [page, setPage] = useState(0);
+  const { activeAccount } = useCurrentAccount();
+  const { navigate } = useLogInNavigation();
+  const { data, isLoading, refetch } = useGetNotDismissedNotifications(getApiClient, {
+    accountId: activeAccount.id || '',
+    pagination: { page, perPage: 10 },
+  });
+  const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
+
+  const onPressHandler = ({ notification }: { id: string; notification: BaseNotification }) => {
+    if (notification.isDismissible) {
+      markRead({ notificationId: notification.id });
+    }
+
+    navigate(Screens.NotificationDetails, { notification });
+  };
+
+  if (isLoading) {
+    return (
+      <ContainerOverlay>
+        <Loader color={palette.deepGreen} />
+      </ContainerOverlay>
+    );
+  }
 
   return (
     <MainWrapper
-      isScroll
-      style={{ paddingTop: top }}
-      contentContainerStyle={{ paddingHorizontal: 0 }}
+      noPadding
+      isLoading={isLoading}
     >
-      <Box
-        px="default"
-        py="24"
-        fw
-        style={styles.notificationHeaderContainer}
-      >
-        <StyledText variant="h3">Notifications</StyledText>
-      </Box>
-      {notifications.length ? (
-        notifications.map(notification => (
-          <Notification
-            onPress={id => Alert.alert(`Notification ${id} clicked: Navigate to somewhere`)}
-            key={notification.id}
-            {...notification}
-          />
-        ))
-      ) : (
+      {data && (
+        <FlatList<BaseNotification>
+          refreshing={isLoading}
+          onRefresh={refetch}
+          contentContainerStyle={{ maxWidth: '100%', paddingTop: top }}
+          data={data as BaseNotification[]}
+          keyExtractor={(item: BaseNotification) => item.id}
+          renderItem={({ item }) => (
+            <Notification
+              onPress={id => onPressHandler({ notification: item, id })}
+              key={item.id}
+              {...item}
+            />
+          )}
+        />
+      )}
+      {!data && (
         <Box
           mt="24"
           fw
           px="default"
-          style={styles.noNotificationContainer}
         >
           <Icon icon="info" />
           <StyledText variant="h6">No Notifications</StyledText>

@@ -19,7 +19,7 @@ export const KYCFail = ({ route: { params } }: LogInProps<Screens.KYCFail>) => {
         accountId: account?.id || '',
       }}
     >
-      <BlackLayout shouldShowFooter={false} />
+      <BlackLayout />
     </KYCFailedFormFlowProvider>
   );
 };

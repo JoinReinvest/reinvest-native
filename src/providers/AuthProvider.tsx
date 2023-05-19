@@ -45,8 +45,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-//TODO add serialisation and mapping for handling errors - instead invoking main cognito instance we should use dep inv class
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);

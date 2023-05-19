@@ -94,8 +94,6 @@ export const BottomTabsNavigator: React.FC = () => {
         return navigate(Screens.Locked, { action: bannedAction });
       }
 
-      // TODO: Navigate to KYC Failed Flow if verification failed on recurring investment
-
       if (!data?.isCompleted) {
         reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
       }

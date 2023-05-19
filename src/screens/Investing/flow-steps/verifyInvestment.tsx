@@ -11,7 +11,7 @@ import { VerificationAction } from 'reinvest-app-common/src/types/graphql';
 import { getApiClient } from '../../../api/getApiClient';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
-import { DialogInvestment, InvestSuccess } from '../../../components/Modals/ModalContent/InvestmentSuccess';
+import { DialogItem, InvestSuccess } from '../../../components/Modals/ModalContent/InvestmentSuccess';
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../../components/typography/StyledText';
 import { InvestingDialogDisclaimers } from '../../../constants/strings';
@@ -41,7 +41,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const isAlreadyStarted = useRef(false);
 
     const showSuccessDialog = useCallback(() => {
-      const investments: DialogInvestment[] = [];
+      const investments: DialogItem[] = [];
 
       if (oneTimeInvestmentId && !!investAmount) {
         investments.push({ amount: investAmount, date: dayjs().format('YYYY-MM-DD'), headline: `One Time investment` });
@@ -59,7 +59,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
       openDialog(
         <InvestSuccess
           type="invest"
-          investments={investments}
+          dialogItems={investments}
           disclaimer={InvestingDialogDisclaimers.invest}
         />,
         {
