@@ -14,7 +14,7 @@ export type LogInStackParamList = {
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;
   [Screens.ManageAccountMainScreen]: undefined;
-  [Screens.ManageAccount]: { heading: string; identifier: NavigationIdentifiers };
+  [Screens.ManageAccount]: { heading: string; identifier: NavigationIdentifiers; cancellable?: boolean };
   [Screens.BankAccount]: { sourceScreen: Screens.Investing; isUpdatingAccount?: boolean };
   [Screens.KYCFail]: { actions: VerificationAction[] };
   [Screens.Locked]: { action: VerificationAction; accountType?: AccountType };

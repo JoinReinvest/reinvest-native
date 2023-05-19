@@ -13,7 +13,8 @@ import { styles } from './styles';
 
 export const ManageAccountMainScreen = () => {
   const navigation = useLogInNavigation();
-  const navigate = (identifier: NavigationIdentifiers, heading: string) => navigation.navigate(Screens.ManageAccount, { identifier, heading });
+  const navigate = (identifier: NavigationIdentifiers, heading: string, cancellable?: boolean) =>
+    navigation.navigate(Screens.ManageAccount, { identifier, heading, cancellable: cancellable });
 
   return (
     <PaddedScrollView

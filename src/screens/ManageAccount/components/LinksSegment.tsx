@@ -10,7 +10,7 @@ import { Link } from '../../../types/link';
 interface LinksSegmentProps {
   heading: string;
   links: Link[];
-  onPress: (identifier: NavigationIdentifiers, heading: string) => void;
+  onPress: (identifier: NavigationIdentifiers, heading: string, cancellable?: boolean) => void;
   size: 'l' | 's';
   disableSeparator?: boolean;
 }
@@ -22,14 +22,14 @@ export const LinksSegment = ({ heading, links, disableSeparator = false, size, o
         fw
         style={styles.linksContainer}
       >
-        {links.map(({ identifier, label }) => (
+        {links.map(({ identifier, label, cancellable }) => (
           <Box
             fw
             key={identifier}
           >
             <NavigationButton
               size={size}
-              onPress={() => onPress(identifier, heading)}
+              onPress={() => onPress(identifier, heading, cancellable)}
               label={label}
             />
           </Box>

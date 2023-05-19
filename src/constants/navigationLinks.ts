@@ -27,6 +27,7 @@ export const MANAGE_ACCOUNT_INVESTING: Link[] = [
   {
     identifier: NavigationIdentifiers.DIVIDEND_REINVESTING,
     label: 'Automatic Dividend Reinvesting',
+    cancellable: true,
   },
   {
     identifier: NavigationIdentifiers.WITHDRAW_FUNDS,
