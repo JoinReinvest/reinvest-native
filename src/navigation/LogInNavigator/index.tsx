@@ -13,6 +13,7 @@ import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
+import { BannedScreen } from '../../screens/BannedScreen';
 import { Investing } from '../../screens/Investing';
 import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
@@ -36,6 +37,7 @@ const stackOptions: Record<
     | Screens.AddBeneficiary
     | Screens.KYCFail
     | Screens.BankAccount
+    | Screens.Locked
   >,
   NativeStackNavigationOptions
 > = {
@@ -63,6 +65,10 @@ const stackOptions: Record<
   },
   [Screens.KYCFail]: {
     headerShown: false,
+  },
+  [Screens.Locked]: {
+    title: 'logo',
+    header: DarkScreenHeader,
   },
 };
 
@@ -146,6 +152,11 @@ export const LogInNavigator: React.FC = () => {
               options={stackOptions[Screens.KYCFail]}
               name={Screens.KYCFail}
               component={KYCFail}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.Locked]}
+              name={Screens.Locked}
+              component={BannedScreen}
             />
           </LogInStack.Navigator>
         </DialogProvider>

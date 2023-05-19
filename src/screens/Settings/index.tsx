@@ -3,7 +3,8 @@ import { Linking, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
-import { AccountOverview, AccountType } from 'reinvest-app-common/src/types/graphql';
+import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
+import { AccountOverview, AccountType, ActionName, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
@@ -40,9 +41,24 @@ export const Settings = () => {
   const { bottom } = useSafeAreaInsets();
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [account, setAccountAtom] = useAtom(currentAccount);
+  const { mutateAsync: verifyAccountMutate } = useVerifyAccount(getApiClient);
 
-  const handleSelectAccount = (value: string) => {
+  const handleSelectAccount = async (value: string) => {
     const account = accounts?.find(account => account?.id === value) ?? accounts?.[0];
+    const response = await verifyAccountMutate({ accountId: account?.id ?? '' });
+
+    const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
+      ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
+    );
+
+    if (bannedAction) {
+      bottomSheetRef.current?.dismiss();
+
+      return navigate(Screens.Locked, { action: bannedAction, accountType: account?.type as AccountType });
+    }
+
+    // TODO: Add KYC Failed flow when account has failed verification on recurring investment
+
     setAccountAtom(account as AccountOverview);
     bottomSheetRef.current?.dismiss();
   };

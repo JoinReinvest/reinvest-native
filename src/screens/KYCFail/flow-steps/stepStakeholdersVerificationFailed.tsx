@@ -51,13 +51,16 @@ export const StepStakeholdersVerificationFailed: StepParams<KYCFailedFormFields>
             description="Please verify your information and we will run our verification process again."
           />
           <Box>
-            <StatusCircle variant="error" />
+            <StatusCircle
+              dark
+              variant="error"
+            />
           </Box>
         </PaddedScrollView>
         <Box
           fw
           px="default"
-          pb="24"
+          pb="8"
         >
           <Button
             onPress={isCorporateProfileLoading ? undefined : handleContinue}

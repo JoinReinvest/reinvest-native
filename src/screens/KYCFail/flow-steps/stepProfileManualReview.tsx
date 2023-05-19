@@ -44,7 +44,10 @@ export const StepProfileManualReview: StepParams<KYCFailedFormFields> = {
       <>
         <PaddedScrollView>
           <Box pt="24">
-            <StatusCircle variant="alert" />
+            <StatusCircle
+              dark
+              variant="alert"
+            />
           </Box>
           <FormTitle
             dark
@@ -55,10 +58,11 @@ export const StepProfileManualReview: StepParams<KYCFailedFormFields> = {
         <Box
           fw
           px="default"
-          pb="24"
+          pb="8"
         >
           <Button onPress={handleSubmit}>Submit</Button>
           <Button
+            dark
             variant="outlined"
             onPress={handleCancel}
           >

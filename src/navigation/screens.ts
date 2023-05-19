@@ -20,6 +20,7 @@ enum Screens {
   AddBeneficiary = 'AddBeneficiary',
   BankAccount = 'BankAccount',
   KYCFail = 'KYCFail',
+  Locked = 'Locked',
 }
 
 export default Screens;
