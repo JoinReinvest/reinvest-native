@@ -84,7 +84,11 @@ export const BottomTabsNavigator: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await verifyAccountMutate({ accountId: account.id ?? '' });
+      if (!account.id) {
+        return;
+      }
+
+      const response = await verifyAccountMutate({ accountId: account.id });
 
       const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
         ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
