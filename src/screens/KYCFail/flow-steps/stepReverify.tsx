@@ -54,7 +54,7 @@ export const StepReverify: StepParams<KYCFailedFormFields> = {
 
     return isLoading ? (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <Box pt="48">
             <Loader
               color={palette.pureWhite}

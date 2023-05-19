@@ -41,7 +41,7 @@ export const StepStakeholderManualReview: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <Box pt="24">
             <StatusCircle
               dark

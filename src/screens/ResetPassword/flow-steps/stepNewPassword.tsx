@@ -77,7 +77,7 @@ export const StepNewPassword: StepParams<ResetPasswordFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Reset Password"

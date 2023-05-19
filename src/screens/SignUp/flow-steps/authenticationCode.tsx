@@ -63,7 +63,7 @@ export const StepAuthenticationCode: StepParams<RegisterFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Check Your Email"

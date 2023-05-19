@@ -13,10 +13,10 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useAuth } from '../../../providers/AuthProvider';
-import { styles } from '../../../screens/SignIn/flow-steps/styles';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { LoginFormFields } from '../../SignIn/types';
 import { Identifiers } from '../identifiers';
+import { LoginFormFields } from '../types';
+import { styles } from './styles';
 
 export type Fields = Pick<LoginFormFields, 'authenticationCode'>;
 
@@ -65,7 +65,7 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
 
     return (
       <>
-        <PaddedScrollView style={{ width: '100%' }}>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Check Your Phone"

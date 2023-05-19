@@ -107,7 +107,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Verify that the ID you uploaded is correct"

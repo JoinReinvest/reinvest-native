@@ -101,7 +101,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
         <View style={[styles.fw]}>
           <ProgressBar value={progressPercentage} />
         </View>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Are you an accredited investor?"
@@ -110,7 +110,7 @@ export const StepAccreditedInvestor: StepParams<OnboardingFormFields> = {
           />
           <RadioButtonGroup
             selectedValue={selectedValue}
-            onSelect={val => setValue('isAccreditedInvestor', val === 'yes' ? true : false)}
+            onSelect={val => setValue('isAccreditedInvestor', val === 'yes')}
             options={BOOLEAN_OPTIONS}
           />
         </PaddedScrollView>

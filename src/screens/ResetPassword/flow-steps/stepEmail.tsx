@@ -57,7 +57,7 @@ export const StepEmail: StepParams<ResetPasswordFormFields> = {
             variant="error"
           />
         )}
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="Reset Password"

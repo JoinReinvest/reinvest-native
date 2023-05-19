@@ -43,7 +43,7 @@ export const StepTrusteesVerificationFailed: StepParams<KYCFailedFormFields> = {
 
     return (
       <>
-        <PaddedScrollView>
+        <PaddedScrollView dark>
           <FormTitle
             dark
             headline="We could not verify your applicant's information"

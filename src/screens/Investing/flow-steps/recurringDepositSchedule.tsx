@@ -1,8 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import { RECURRING_INVESTMENT_INTERVAL_LABELS, RecurringInvestmentInterval } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
+import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetDraftRecurringInvestment } from 'reinvest-app-common/src/services/queries/getDraftRecurringInvestment';
+import { RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -20,7 +21,7 @@ import { styles } from './styles';
 
 export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_DEPOSIT_SCHEDULE,
-  willBePartOfTheFlow: fields => fields._shouldDisplayRecurringInvestment,
+  willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
     const requiredFields = allRequiredFieldsExists([
       fields.recurringInvestment?.interval,
@@ -62,7 +63,7 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
               />
               <SummaryDetail
                 label="Frequency"
-                value={`${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment?.interval || RecurringInvestmentInterval.WEEKLY)}: ${formatDate(
+                value={`${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment?.interval || RecurringInvestmentFrequency.Weekly)}: ${formatDate(
                   data?.schedule.startDate,
                   'INVESTMENT_FREQUENCY_LONG',
                   {
