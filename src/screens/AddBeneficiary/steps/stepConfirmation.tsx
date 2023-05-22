@@ -1,9 +1,11 @@
+import React, { useEffect } from 'react';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { Icon } from '../../../components/Icon';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
@@ -28,6 +30,20 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
     const { replace } = useLogInNavigation();
     const { setActiveAccount } = useCurrentAccount();
     const { data: accounts } = useGetAccountsOverview(getApiClient);
+    const navigation = useLogInNavigation();
+
+    useEffect(() => {
+      navigation.setOptions({
+        headerLeft: () => (
+          <Icon
+            icon="down"
+            style={{ transform: [{ rotate: '90deg' }] }}
+            onPress={() => navigation.goBack()}
+          />
+        ),
+        headerRight: undefined,
+      });
+    }, [navigation]);
     const onSubmit = async () => {
       const beneficiaryAccount = accounts?.find(account => account?.id === storeFields.id);
 

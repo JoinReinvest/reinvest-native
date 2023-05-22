@@ -7,7 +7,6 @@ import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verif
 import { AccountOverview, AccountType, ActionName, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
-import { queryClient } from '../../App';
 import { AccountSummary, AccountSummaryProps } from '../../components/AccountSummary';
 import { BottomSheetHandle, StyledBottomSheet } from '../../components/BottomSheet/BottomSheet';
 import { Button } from '../../components/Button';
@@ -89,7 +88,6 @@ export const Settings = () => {
     setSignOutLoading(true);
     actions.signOut(() => {
       setAccountAtom(RESET);
-      queryClient.clear();
     });
   };
 
