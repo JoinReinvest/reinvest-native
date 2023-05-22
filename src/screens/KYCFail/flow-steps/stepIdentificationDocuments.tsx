@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { DocumentPickerResponse } from 'react-native-document-picker';
@@ -8,7 +9,6 @@ import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getP
 import { useUpdateProfileForVerification } from 'reinvest-app-common/src/services/queries/updateProfileForVerification';
 import { ActionName, AddressInput, UpdateProfileForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
-import { compareObjects } from 'utils/compareObjects';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
@@ -84,10 +84,10 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       const formattedUpdatedDateOfBirth = updatedDateOfBirth ? formatDate(updatedDateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined;
 
       // send only changed fields
-      const shouldUpdateName = !compareObjects(updatedName, name);
+      const shouldUpdateName = !isEqual(updatedName, name);
       const shouldUpdateDateOfBirth = !!(formattedUpdatedDateOfBirth && formattedUpdatedDateOfBirth !== dateOfBirth);
       const shouldUpdateSSN = !!(updatedSSN && updatedSSN !== ssn);
-      const shouldUpdateAddress = updatedAddress && address ? !compareObjects(updatedAddress, address) : false;
+      const shouldUpdateAddress = updatedAddress && address ? !isEqual(updatedAddress, address) : false;
       const idScan = await convertFiles();
 
       const input: UpdateProfileForVerificationInput = {

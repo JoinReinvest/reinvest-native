@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
@@ -16,7 +17,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
-import { compareObjects } from '../../../utils/compareObjects';
 import { mapApplicantToApiStakeholder } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { Applicant, IndexedSchema } from '../../Onboarding/types';
@@ -60,9 +60,9 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
       const { residentialAddress: originalResidentialAddress, idScan: originalIdScan, ...originalGeneralInformation } = originalStakeholder;
 
       // update only stakeholders that have changed
-      const didStakeholderAddressChange = !compareObjects(originalResidentialAddress, updatedResidentialAddress);
-      const didIdScansChange = !compareObjects(originalIdScan, updatedIdScan);
-      const didGeneralInformationChange = !compareObjects(originalGeneralInformation, {
+      const didStakeholderAddressChange = !isEqual(originalResidentialAddress, updatedResidentialAddress);
+      const didIdScansChange = !isEqual(originalIdScan, updatedIdScan);
+      const didGeneralInformationChange = !isEqual(originalGeneralInformation, {
         ...updatedGeneralInformation,
         dateOfBirth: updatedGeneralInformation.dateOfBirth ? formatDate(updatedGeneralInformation.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined,
       });
