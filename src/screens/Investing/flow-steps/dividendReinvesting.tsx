@@ -12,6 +12,7 @@ import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/For
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { InvestingDisclaimers } from '../../../constants/strings';
+import { useCurrentAccountConfig } from '../../../hooks/useActiveAccountConfig';
 import { useDialog } from '../../../providers/DialogProvider';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
@@ -24,16 +25,17 @@ export const DividendReinvesting: StepParams<InvestFormFields> = {
     return (!!fields.isRecurringInvestment || !!fields.oneTimeInvestmentId) && !fields.automaticDividendReinvestmentAgreement;
   },
 
-  Component: ({ moveToNextStep, storeFields: { accountId }, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields: { accountId } }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
     const { mutateAsync, isLoading, error } = useSetAutomaticDividendReinvestmentAgreement(getApiClient);
+    const { refetch } = useCurrentAccountConfig(accountId);
     const handleSkip = async () => {
       moveToNextStep();
     };
 
     const handleOptIn = async () => {
       await mutateAsync({ accountId, automaticDividendReinvestmentAgreement: true });
-      await updateStoreFields({ automaticDividendReinvestmentAgreement: true });
+      await refetch();
       moveToNextStep();
     };
 

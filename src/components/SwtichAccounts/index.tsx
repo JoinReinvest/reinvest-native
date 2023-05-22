@@ -14,7 +14,7 @@ export const SwitchAccountsList = ({ accounts, onSelect, value, ...rest }: Switc
   };
 
   return (
-    <View style={styles.switchAccountsList}>
+    <View style={[styles.switchAccountsList]}>
       {accounts.map(account => (
         <SwitchAccountItem
           selected={selectedAccountId === account.id}

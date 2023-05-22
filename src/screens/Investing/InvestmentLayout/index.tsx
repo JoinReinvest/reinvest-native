@@ -24,7 +24,7 @@ interface Props {
  */
 
 const stepsWithCancelOption: Identifiers[] = [];
-const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.LANDING];
+const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.INITIALISE];
 const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
 const overrideBackSteps: Identifiers[] = [Identifiers.ONE_TIME_INVESTMENT];
 export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
@@ -71,7 +71,7 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }:
     }
 
     if (initialInvestment) {
-      return () => <HeaderAvatar />;
+      return () => <HeaderAvatar disabled />;
     }
 
     return () => (
