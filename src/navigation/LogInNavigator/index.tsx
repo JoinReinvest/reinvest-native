@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
@@ -8,6 +8,7 @@ import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getP
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
 import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
+import { HeaderCancel } from '../../components/HeaderCancel';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
 import { DialogProvider } from '../../providers/DialogProvider';
@@ -18,6 +19,7 @@ import { Investing } from '../../screens/Investing';
 import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
+import { NotificationDetails } from '../../screens/NotificationDetails';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
 import { currentAccount, useAtom } from '../../store/atoms';
@@ -26,7 +28,7 @@ import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
 const LogInStack = createNativeStackNavigator<LogInStackParamList>();
-
+type StackOptionsParametrized = ({ navigation }: { navigation: NativeStackNavigationProp<LogInStackParamList> }) => NativeStackNavigationOptions;
 const stackOptions: Record<
   Extract<
     Screens,
@@ -38,8 +40,9 @@ const stackOptions: Record<
     | Screens.KYCFail
     | Screens.BankAccount
     | Screens.Locked
+    | Screens.NotificationDetails
   >,
-  NativeStackNavigationOptions
+  NativeStackNavigationOptions | StackOptionsParametrized
 > = {
   [Screens.Onboarding]: {
     title: 'logo',
@@ -70,6 +73,10 @@ const stackOptions: Record<
     title: 'logo',
     header: DarkScreenHeader,
   },
+  [Screens.NotificationDetails]: ({ navigation }) => ({
+    header: ScreenHeader,
+    headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
+  }),
 };
 
 export const LogInNavigator: React.FC = () => {
@@ -157,6 +164,11 @@ export const LogInNavigator: React.FC = () => {
               options={stackOptions[Screens.Locked]}
               name={Screens.Locked}
               component={BannedScreen}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.NotificationDetails]}
+              name={Screens.NotificationDetails}
+              component={NotificationDetails}
             />
           </LogInStack.Navigator>
         </DialogProvider>

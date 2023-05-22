@@ -57,8 +57,6 @@ export const Settings = () => {
       return navigate(Screens.Locked, { action: bannedAction, accountType: account?.type as AccountType });
     }
 
-    // TODO: Add KYC Failed flow when account has failed verification on recurring investment
-
     setAccountAtom(account as AccountOverview);
     bottomSheetRef.current?.dismiss();
   };

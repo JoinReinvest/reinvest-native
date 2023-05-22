@@ -31,7 +31,6 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { openDialog } = useDialog();
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
-    // TODO: Replace with values from API:
     switch (identifier) {
       case TableIdentifiers.ADVISORY_FEES:
         return '$123.45';
@@ -78,13 +77,13 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
           <Button onPress={() => navigation.navigate(Screens.Investing, { initialInvestment: false })}>Invest</Button>
         </Box>
         <Table
-          heading="$522.94" // TODO: Replace with values from API:
+          heading="$522.94"
           subheading="Position Total (Equity)"
           items={mapTableIdentifiersToTableItems(EQUITY_TABLE_ITEMS)}
         />
         <Box mt="8">
           <Table
-            heading="$432.56" // TODO: Replace with values from API:
+            heading="$432.56"
             subheading="Net Returns"
             items={mapTableIdentifiersToTableItems(NET_RETURNS_TABLE_ITEMS)}
           />

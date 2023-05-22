@@ -3,6 +3,7 @@ import { ScrollView, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '../../constants/theme';
+import { ContainerOverlay } from '../Containers/ContainerOverlay';
 import { Loader } from '../Loader';
 import { styles } from './styles';
 import { MainWrapperProps } from './types';
@@ -21,9 +22,9 @@ export const MainWrapper = ({
 }: PropsWithChildren<MainWrapperProps>) => {
   const { bottom, top } = useSafeAreaInsets();
   const LoaderComp = isLoading && (
-    <View style={[styles.loaderWrapper, dark && styles.darkLoader]}>
+    <ContainerOverlay dark={dark}>
       <Loader color={dark ? palette.pureWhite : palette.deepGreen} />
-    </View>
+    </ContainerOverlay>
   );
 
   return (

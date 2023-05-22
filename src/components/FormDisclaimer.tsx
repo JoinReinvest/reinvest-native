@@ -22,7 +22,7 @@ export const FormDisclaimer = ({ icon = 'circleAlert', children, dark, ...props 
         color={dark ? palette.pureWhite : palette.pureBlack}
       />
       <StyledText
-        style={{ maxWidth: '98%' }}
+        style={{ maxWidth: '90%' }}
         adjustsFontSizeToFit
         color={dark ? 'pureWhite' : 'dark2'}
         variant="paragraph"
