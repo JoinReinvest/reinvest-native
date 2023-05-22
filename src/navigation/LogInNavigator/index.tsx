@@ -83,7 +83,7 @@ const stackOptions: Record<
   }),
   [Screens.TradeSummary]: {
     headerShown: false,
-  }
+  },
   [Screens.DividendsPayout]: {
     headerShown: false,
   },
@@ -176,22 +176,19 @@ export const LogInNavigator: React.FC = () => {
               component={BannedScreen}
             />
             <LogInStack.Screen
-<<<<<<< HEAD
               options={stackOptions[Screens.NotificationDetails]}
               name={Screens.NotificationDetails}
               component={NotificationDetails}
-=======
-<<<<<<< HEAD
+            />
+            <LogInStack.Screen
               options={stackOptions[Screens.TradeSummary]}
               name={Screens.TradeSummary}
               component={TradeSummary}
->>>>>>> a6ef58c (RIA-1006: implement trade summary screen)
-=======
+            />
+            <LogInStack.Screen
               options={stackOptions[Screens.DividendsPayout]}
               name={Screens.DividendsPayout}
               component={DividendsPayoutScreen}
->>>>>>> 28a1389 (RIA-939: implement dividends payout flow)
->>>>>>> 69659c0 (RIA-939: implement dividends payout flow)
             />
           </LogInStack.Navigator>
         </DialogProvider>
