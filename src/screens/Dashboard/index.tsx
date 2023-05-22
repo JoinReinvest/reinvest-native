@@ -1,5 +1,4 @@
 import React from 'react';
-import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
 import { AccountOverview } from '../../components/AccountOverview';
 import { Button } from '../../components/Button';
@@ -75,13 +74,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
         />
         <Chart chartData={mockedChartData} />
         <Box py={'16'}>
-          <Button
-            onPress={() =>
-              navigation.navigate(Screens.KYCFail, { actions: [{ action: ActionName.UpdateMember, onObject: { type: VerificationObjectType.Profile } }] })
-            }
-          >
-            Invest
-          </Button>
+          <Button onPress={() => navigation.navigate(Screens.Investing, { initialInvestment: false })}>Invest</Button>
         </Box>
         <Table
           heading="$522.94"

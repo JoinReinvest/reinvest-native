@@ -7,8 +7,8 @@ import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/qu
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 import { useUpdateProfileForVerification } from 'reinvest-app-common/src/services/queries/updateProfileForVerification';
 import { ActionName, AddressInput, UpdateProfileForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
-import { Address } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
+import { compareObjects } from 'utils/compareObjects';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
@@ -66,7 +66,6 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
 
         return [];
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.log('-> e', e);
 
         return [];
@@ -74,7 +73,9 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
     };
 
     const onSubmit = async () => {
-      if (!userProfile?.details) return;
+      if (!userProfile?.details) {
+        return;
+      }
 
       const { name: updatedName, dateOfBirth: updatedDateOfBirth, ssn: updatedSSN, address: updatedAddress } = storeFields;
       const { firstName, middleName, lastName, dateOfBirth, ssn, address } = userProfile.details;
@@ -82,13 +83,11 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
 
       const formattedUpdatedDateOfBirth = updatedDateOfBirth ? formatDate(updatedDateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined;
 
-      const shouldUpdateName = !!(updatedName && Object.entries(updatedName).some(([key, value]) => name[key as keyof typeof name] !== value));
+      // send only changed fields
+      const shouldUpdateName = !compareObjects(updatedName, name);
       const shouldUpdateDateOfBirth = !!(formattedUpdatedDateOfBirth && formattedUpdatedDateOfBirth !== dateOfBirth);
       const shouldUpdateSSN = !!(updatedSSN && updatedSSN !== ssn);
-      const shouldUpdateAddress = !!(updatedAddress && address
-        ? Object.entries(updatedAddress).some(([key, value]) => address[key as keyof Address] !== value)
-        : false);
-
+      const shouldUpdateAddress = updatedAddress && address ? !compareObjects(updatedAddress, address) : false;
       const idScan = await convertFiles();
 
       const input: UpdateProfileForVerificationInput = {
@@ -103,7 +102,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
         await updateProfile({ input });
       } catch (err) {
         if (err instanceof Error) {
-          console.log(err.message);
+          throw err;
         }
       } finally {
         moveToNextStep();
