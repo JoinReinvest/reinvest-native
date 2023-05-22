@@ -76,7 +76,14 @@ export const StepProfilePicture: StepParams<BeneficiaryCreationFormFields> = {
       const { firstName, lastName } = storeFields;
 
       if (firstName && lastName) {
-        await openAccountMutation({ individualAccountId: account.id as string, input: { avatar: { id: avatarId }, name: { firstName, lastName } } });
+        const beneficiary = await openAccountMutation({
+          individualAccountId: account.id as string,
+          input: { avatar: { id: avatarId }, name: { firstName, lastName } },
+        });
+
+        if (beneficiary?.id) {
+          await updateStoreFields({ id: beneficiary.id });
+        }
       }
     };
 
