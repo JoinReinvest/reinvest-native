@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { TextInput } from 'react-native';
-import { INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
+import { AmountsOption, INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 
 import { Box } from '../../../../components/Containers/Box/Box';
 import { Row } from '../../../../components/Containers/Row';
@@ -10,10 +10,10 @@ import { useLogInNavigation } from '../../../../navigation/hooks';
 import Screens from '../../../../navigation/screens';
 import { styles } from './styles';
 import { Props } from './types';
+export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType, investmentType }: Props) => {
+  const investmentsOptionsRef = useRef(INVESTMENT_PRESET_AMOUNTS[accountType]?.[investmentType]);
 
-type Option = (typeof INVESTMENT_PRESET_AMOUNTS)[0];
-export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error }: Props) => {
-  const optionValue = INVESTMENT_PRESET_AMOUNTS.find(option => option.value === amount?.toString());
+  const optionValue = investmentsOptionsRef.current?.find(option => option.value === amount?.toString());
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
   const { navigate } = useLogInNavigation();
   const inputRef = useRef<TextInput>(null);
@@ -23,7 +23,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error }: 
     setAmount(value);
   };
 
-  const selectValueFromOptions = (option: Option) => {
+  const selectValueFromOptions = (option: AmountsOption) => {
     setCustomAmount('');
     inputRef.current?.blur();
     setAmount(option.value);
@@ -42,7 +42,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error }: 
         style={styles.optionsRow}
         justifyContent={'space-between'}
       >
-        {INVESTMENT_PRESET_AMOUNTS.map(preset => {
+        {investmentsOptionsRef.current?.map(preset => {
           const isActive = preset.value === (amount?.toString() || '');
 
           return (

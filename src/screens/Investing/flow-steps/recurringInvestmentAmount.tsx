@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { recurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
@@ -10,6 +11,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../navigation/hooks';
+import { currentAccount, useAtom } from '../../../store/atoms';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { useInvestFlow } from './index';
@@ -28,6 +30,8 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
     const [amount, setAmount] = useState<number | undefined>(storeFields.recurringInvestment?.recurringAmount);
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
+    const [account] = useAtom(currentAccount);
+
     const validateInput = () => {
       const result = recurringInvestmentSchema.safeParse({ amount });
 
@@ -68,6 +72,8 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             <StyledText variant="h5">How often would you like to have a recurring investment?</StyledText>
           </Box>
           <InvestingAmountTable
+            accountType={account.type as AccountType}
+            investmentType="recurring"
             error={error}
             amount={amount}
             bankAccount={storeFields.bankAccount?.accountNumber || ''}

@@ -1,8 +1,10 @@
+import { useAtom } from 'jotai';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { generateInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateInvestment } from 'reinvest-app-common/src/services/queries/createInvestment';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
@@ -13,6 +15,7 @@ import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
+import { currentAccount } from '../../../store/atoms';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -26,6 +29,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     const [amount, setAmount] = useState<number | undefined>(investAmount);
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
     const [error, setError] = useState<string | undefined>();
+    const [account] = useAtom(currentAccount);
 
     const validateInput = () => {
       const result = schema.safeParse({ amount });
@@ -69,6 +73,8 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
               setError(undefined);
               setAmount(parseFloat(value));
             }}
+            accountType={account.type as AccountType}
+            investmentType="oneTime"
           />
         </PaddedScrollView>
         <View
