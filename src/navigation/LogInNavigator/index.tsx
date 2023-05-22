@@ -22,6 +22,7 @@ import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { NotificationDetails } from '../../screens/NotificationDetails';
 import { Onboarding } from '../../screens/Onboarding';
 import { Settings } from '../../screens/Settings';
+import { TradeSummary } from '../../screens/TradeSummary';
 import { currentAccount, useAtom } from '../../store/atoms';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
 import Screens from '../screens';
@@ -40,7 +41,11 @@ const stackOptions: Record<
     | Screens.KYCFail
     | Screens.BankAccount
     | Screens.Locked
+<<<<<<< HEAD
     | Screens.NotificationDetails
+=======
+    | Screens.TradeSummary
+>>>>>>> a6ef58c (RIA-1006: implement trade summary screen)
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -77,6 +82,9 @@ const stackOptions: Record<
     header: ScreenHeader,
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
+  [Screens.TradeSummary]: {
+    headerShown: false,
+  },
 };
 
 export const LogInNavigator: React.FC = () => {
@@ -166,9 +174,15 @@ export const LogInNavigator: React.FC = () => {
               component={BannedScreen}
             />
             <LogInStack.Screen
+<<<<<<< HEAD
               options={stackOptions[Screens.NotificationDetails]}
               name={Screens.NotificationDetails}
               component={NotificationDetails}
+=======
+              options={stackOptions[Screens.TradeSummary]}
+              name={Screens.TradeSummary}
+              component={TradeSummary}
+>>>>>>> a6ef58c (RIA-1006: implement trade summary screen)
             />
           </LogInStack.Navigator>
         </DialogProvider>

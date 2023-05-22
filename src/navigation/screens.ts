@@ -22,6 +22,7 @@ enum Screens {
   KYCFail = 'KYCFail',
   Locked = 'Locked',
   NotificationDetails = 'NotificationDetails',
+  TradeSummary = 'TradeSummary',
 }
 
 export default Screens;

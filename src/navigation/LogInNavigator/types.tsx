@@ -19,6 +19,7 @@ export type LogInStackParamList = {
   [Screens.KYCFail]: { actions: VerificationAction[] };
   [Screens.Locked]: { action: VerificationAction; accountType?: AccountType };
   [Screens.NotificationDetails]: { notification: BaseNotification };
+  [Screens.TradeSummary]: { investmentId: string };
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;
