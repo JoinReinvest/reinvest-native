@@ -11,18 +11,23 @@ import { Box } from './Containers/Box/Box';
 import { Icon } from './Icon';
 import { StyledText } from './typography/StyledText';
 
-interface NotificationProps extends Partial<BaseNotification> {
+interface NotificationProps extends BaseNotification {
   id: string;
-  onPress?: (id: string) => void;
+  onPress?: (notification: Pick<BaseNotification, 'id' | 'notificationType'>) => void;
 }
 
-export const Notification = ({ id, header, body, date, isRead, onPress }: NotificationProps) => {
+export const Notification = ({ id, header, body, date, isRead, notificationType, onPress }: NotificationProps) => {
   const parsedBody = markdownBold(body);
 
   return (
     <Pressable
       style={[styles.container, isRead && styles.read]}
-      onPress={() => onPress?.(id)}
+      onPress={() =>
+        onPress?.({
+          id,
+          notificationType,
+        })
+      }
     >
       <View>
         <Box mb="4">

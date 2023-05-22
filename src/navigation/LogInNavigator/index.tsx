@@ -15,6 +15,7 @@ import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
 import { BannedScreen } from '../../screens/BannedScreen';
+import { DividendsPayoutScreen } from '../../screens/DividendsPayout';
 import { Investing } from '../../screens/Investing';
 import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
@@ -41,11 +42,9 @@ const stackOptions: Record<
     | Screens.KYCFail
     | Screens.BankAccount
     | Screens.Locked
-<<<<<<< HEAD
     | Screens.NotificationDetails
-=======
     | Screens.TradeSummary
->>>>>>> a6ef58c (RIA-1006: implement trade summary screen)
+    | Screens.DividendsPayout
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -83,6 +82,9 @@ const stackOptions: Record<
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
   [Screens.TradeSummary]: {
+    headerShown: false,
+  }
+  [Screens.DividendsPayout]: {
     headerShown: false,
   },
 };
@@ -179,10 +181,17 @@ export const LogInNavigator: React.FC = () => {
               name={Screens.NotificationDetails}
               component={NotificationDetails}
 =======
+<<<<<<< HEAD
               options={stackOptions[Screens.TradeSummary]}
               name={Screens.TradeSummary}
               component={TradeSummary}
 >>>>>>> a6ef58c (RIA-1006: implement trade summary screen)
+=======
+              options={stackOptions[Screens.DividendsPayout]}
+              name={Screens.DividendsPayout}
+              component={DividendsPayoutScreen}
+>>>>>>> 28a1389 (RIA-939: implement dividends payout flow)
+>>>>>>> 69659c0 (RIA-939: implement dividends payout flow)
             />
           </LogInStack.Navigator>
         </DialogProvider>
