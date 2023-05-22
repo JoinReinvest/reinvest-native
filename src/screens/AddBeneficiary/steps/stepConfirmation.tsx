@@ -1,9 +1,12 @@
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { BeneficiaryCreationFormFields } from '../form-fields';
@@ -23,7 +26,16 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Component: ({ storeFields }: StepComponentProps<BeneficiaryCreationFormFields>) => {
     const { replace } = useLogInNavigation();
-    const onSubmit = () => {
+    const { setActiveAccount } = useCurrentAccount();
+    const { data: accounts } = useGetAccountsOverview(getApiClient);
+    const onSubmit = async () => {
+      const beneficiaryAccount = accounts?.find(account => account?.id === storeFields.id);
+
+      if (beneficiaryAccount) {
+        await setActiveAccount(beneficiaryAccount);
+      }
+
+      // As an option we can parametrize navigation , to get account id in invest flow  (if we will skip setting current account globally)
       replace(Screens.Investing, {});
     };
 
