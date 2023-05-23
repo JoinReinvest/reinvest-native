@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { generateInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateInvestment } from 'reinvest-app-common/src/services/queries/createInvestment';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
@@ -19,8 +20,15 @@ import { styles } from './styles';
 
 export const OneTimeInvestment: StepParams<InvestFormFields> = {
   identifier: Identifiers.ONE_TIME_INVESTMENT,
+  doesMeetConditionFields: fields => {
+    return !!(fields.accountId && fields.accountType);
+  },
 
-  Component: ({ moveToNextStep, storeFields: { bankAccount, investAmount, accountId }, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
+  Component: ({
+    moveToNextStep,
+    storeFields: { bankAccount, investAmount, accountId, accountType },
+    updateStoreFields,
+  }: StepComponentProps<InvestFormFields>) => {
     const { activeAccount } = useCurrentAccount();
     const schema = useMemo(() => generateInvestmentSchema({ accountType: activeAccount?.type || undefined }), [activeAccount]);
     const [amount, setAmount] = useState<number | undefined>(investAmount);
@@ -62,6 +70,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
           </Box>
           {createAccountError && <ErrorMessagesHandler error={createAccountError} />}
           <InvestingAmountTable
+            accountType={accountType || AccountType.Individual}
             error={error}
             amount={amount}
             bankAccount={bankAccount?.accountNumber || ''}

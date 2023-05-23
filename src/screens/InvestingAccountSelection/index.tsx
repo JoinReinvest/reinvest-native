@@ -33,7 +33,10 @@ export const InvestingAccountSelection = () => {
       bottomSafe
     >
       <>
-        <Box fw>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewPaddingTop}
+        >
           <Box
             pt="24"
             pb="16"
@@ -41,20 +44,18 @@ export const InvestingAccountSelection = () => {
           >
             <StyledText variant="h5">Choose which account you want to invest in </StyledText>
           </Box>
-          <ScrollView contentContainerStyle={{ paddingTop: 24 }}>
-            {!!accounts?.length && (
-              <SwitchAccountsList
-                value={selected}
-                onSelect={setSelected}
-                accounts={accounts as AccountSummaryProps[]}
-              />
-            )}
-          </ScrollView>
-        </Box>
+          {!!accounts?.length && (
+            <SwitchAccountsList
+              value={selected}
+              onSelect={setSelected}
+              accounts={accounts as AccountSummaryProps[]}
+            />
+          )}
+        </ScrollView>
         <Box flex={1}></Box>
         <View
           key="buttons_section"
-          style={[styles.buttonsSection, { alignSelf: 'flex-end' }]}
+          style={[styles.buttonsSection]}
         >
           <Button onPress={onSubmit}>Continue</Button>
         </View>

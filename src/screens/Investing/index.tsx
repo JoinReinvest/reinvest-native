@@ -21,6 +21,7 @@ export const Investing = ({ route }: NativeStackScreenProps<LogInStackParamList,
         ...investingFormFieldsInitialState,
         initialInvestment,
         accountId: accountId || activeAccount.id || '',
+        accountType: activeAccount.type,
         accountSelectable: !!(accounts && accounts?.length > 1),
         bankAccount,
       }}

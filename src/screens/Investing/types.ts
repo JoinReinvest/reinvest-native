@@ -1,11 +1,12 @@
 import { Maybe } from 'graphql/jsutils/Maybe';
-import { BankAccount, RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, BankAccount, RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
 
 export interface InvestFormFields {
   accountId: string;
   source: string;
   _shouldDisplayRecurringInvestment?: boolean;
   accountSelectable?: boolean;
+  accountType?: Maybe<AccountType>;
   addingAccount?: boolean;
   automaticDividendReinvestmentAgreement?: boolean;
   bankAccount?: BankAccount;
