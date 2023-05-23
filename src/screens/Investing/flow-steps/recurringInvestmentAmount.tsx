@@ -27,15 +27,14 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
 
   Component: ({
     moveToNextStep,
-    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, bankAccount },
+    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, bankAccount, accountId },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const [error, setError] = useState<string | undefined>();
-    const { activeAccount } = useCurrentAccount();
     const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount);
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
-    const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: activeAccount?.type || undefined }), [activeAccount]);
+    const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: accountType || undefined }), [accountType]);
 
     const validateInput = () => {
       const result = schema.safeParse({ amount });
@@ -78,6 +77,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             <StyledText variant="h5">{investingHeadlines.recurring}</StyledText>
           </Box>
           <InvestingAmountTable
+            accountId={accountId}
             error={error}
             amount={amount}
             accountType={accountType || AccountType.Individual}

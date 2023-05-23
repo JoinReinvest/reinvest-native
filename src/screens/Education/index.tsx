@@ -40,10 +40,10 @@ export const EducationStack = () => {
       <Stack.Screen
         component={EducationMainScreen}
         name={Screens.EducationMainScreen}
-        options={() => ({
+        options={{
           ...stackOptions[Screens.EducationMainScreen],
           headerRight: HeaderAvatar,
-        })}
+        }}
       />
       <Stack.Screen
         component={BlogScreen}

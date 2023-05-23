@@ -15,7 +15,7 @@ export type LogInStackParamList = {
   [Screens.Settings]: undefined;
   [Screens.ManageAccountMainScreen]: undefined;
   [Screens.ManageAccount]: { heading: string; identifier: NavigationIdentifiers; cancellable?: boolean };
-  [Screens.BankAccount]: { sourceScreen: Screens.Investing; isUpdatingAccount?: boolean };
+  [Screens.BankAccount]: { sourceScreen: Screens.Investing; accountId?: string; isUpdatingAccount?: boolean };
   [Screens.KYCFail]: { actions: VerificationAction[] };
   [Screens.Locked]: { action: VerificationAction; accountType?: AccountType };
   [Screens.NotificationDetails]: { notification: BaseNotification };

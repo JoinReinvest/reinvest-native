@@ -17,6 +17,7 @@ import { InvestFormFields } from '../types';
 
 interface Props {
   initialInvestment?: boolean;
+  isSingleAccount?: boolean;
   shouldShowFooter?: boolean;
 }
 /*
@@ -27,7 +28,7 @@ const stepsWithCancelOption: Identifiers[] = [];
 const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.INITIALISE];
 const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
 const overrideBackSteps: Identifiers[] = [Identifiers.ONE_TIME_INVESTMENT];
-export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
+export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, isSingleAccount }: Props) => {
   const {
     resetStoreFields,
     CurrentStepView,
@@ -45,8 +46,8 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment }:
 
   const onCancelInvestment = useCallback(async () => {
     await resetStoreFields();
-    navigation.goBack();
-  }, [navigation, resetStoreFields]);
+    navigation.pop(isSingleAccount ? 1 : 2);
+  }, [isSingleAccount, navigation, resetStoreFields]);
 
   const getLeftHeader = useCallback(() => {
     if (initialInvestment) {

@@ -11,7 +11,7 @@ import Screens from '../../../../navigation/screens';
 import { styles } from './styles';
 import { Props } from './types';
 
-export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType }: Props) => {
+export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType, accountId }: Props) => {
   const presets = INVESTMENT_PRESET_AMOUNTS[accountType];
   const optionValue = presets.find(option => option.value === amount?.toString());
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
@@ -30,7 +30,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, ac
   };
 
   const openPlaid = () => {
-    navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, isUpdatingAccount: true });
+    navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, isUpdatingAccount: true, accountId });
   };
 
   return (

@@ -9,7 +9,7 @@ import { BankAccountFlowProvider, bankAccountInitialSteps } from './flow-steps';
 
 export const BankAccount = ({ route }: NativeStackScreenProps<LogInStackParamList, Screens.BankAccount>) => {
   const [account] = useAtom(currentAccount);
-  const { sourceScreen, isUpdatingAccount } = route.params;
+  const { sourceScreen, isUpdatingAccount, accountId } = route.params;
 
   return (
     <BankAccountFlowProvider
@@ -17,7 +17,7 @@ export const BankAccount = ({ route }: NativeStackScreenProps<LogInStackParamLis
         ...bankAccountInitialSteps,
         sourceScreen,
         isUpdatingAccount,
-        accountId: account.id || '',
+        accountId: accountId || account.id || '',
       }}
     >
       <BankAccountLayout shouldShowFooter={false} />

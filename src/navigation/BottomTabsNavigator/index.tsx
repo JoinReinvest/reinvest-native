@@ -138,7 +138,6 @@ export const BottomTabsNavigator: React.FC = () => {
         component={Dashboard}
         options={() => ({
           ...stackOptions[Screens.Dashboard],
-
           headerRight: HeaderAvatar,
           headerShown: true,
           header: ScreenHeader,

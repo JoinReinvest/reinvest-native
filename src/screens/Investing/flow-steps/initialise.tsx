@@ -33,7 +33,7 @@ export const Initialise: StepParams<InvestFormFields> = {
 
     useEffect(() => {
       if (error) {
-        navigate(Screens.BankAccount, { sourceScreen: Screens.Investing });
+        navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, accountId: storeFields.accountId });
       }
 
       if (data) {
@@ -42,7 +42,7 @@ export const Initialise: StepParams<InvestFormFields> = {
           moveToNextStep();
         })();
       }
-    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, data, error, moveToNextStep, navigate, updateStoreFields]);
+    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, data, error, moveToNextStep, navigate, storeFields.accountId, updateStoreFields]);
 
     useEffect(() => {
       if (params?.bankAccount) {
