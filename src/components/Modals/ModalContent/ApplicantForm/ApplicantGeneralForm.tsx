@@ -21,7 +21,7 @@ export const schema = z.object({
   firstName: formValidationRules.firstName,
   middleName: formValidationRules.middleName,
   lastName: formValidationRules.lastName,
-  socialSecurityNumber: formValidationRules.socialSecurityNumber,
+  socialSecurityNumber: formValidationRules.maskedSocialSecurityNumber,
   dateOfBirth: dateOlderThanEighteenYearsSchema,
   domicile: z.enum(STAKEHOLDER_RESIDENCY_STATUS_LABELS),
 });

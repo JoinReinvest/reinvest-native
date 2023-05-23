@@ -32,7 +32,6 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
 
     const handleContinue = async () => {
       //prefill profile info from API:
-
       await updateStoreFields({
         name: {
           firstName: userProfile?.details?.firstName ?? '',

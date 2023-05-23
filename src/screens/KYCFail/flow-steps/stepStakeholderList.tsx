@@ -1,8 +1,12 @@
+import isEqual from 'lodash.isequal';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
-import { AccountType, ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { useUpdateStakeholderForVerification } from 'reinvest-app-common/src/services/queries/updateStakeholderForVerification';
+import { AccountType, ActionName, UpdateStakeholderForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -13,6 +17,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
+import { mapApplicantToApiStakeholder } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { Applicant, IndexedSchema } from '../../Onboarding/types';
 import { getDefaultValuesForApplicantWithoutIdentification } from '../../Onboarding/utilities';
@@ -31,7 +36,10 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
   },
 
   Component: ({ storeFields: { stakeholders, accountId }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+    const { mutateAsync: updateStakeholderMutate } = useUpdateStakeholderForVerification(getApiClient);
     const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
+    const updatedApplicantsRef = useRef<Applicant[]>([]);
+
     const { openDialog, closeDialog } = useDialog();
 
     const lowerCasedCorporationLegalName = lowerCaseWithoutSpacesGenerator('company' || '');
@@ -41,56 +49,38 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
       _index: index,
     }));
 
-    const uploadApplicant = async (applicant: Applicant) => {
-      if (!accountId) {
+    const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
+      const originalStakeholder = applicantIndex !== undefined ? stakeholders?.[applicantIndex] : null;
+
+      if (!stakeholders || !originalStakeholder || !submittedApplicant.id) {
         return;
       }
 
-      // eslint-disable-next-line no-console
-      console.log('uploadApplicant(): ', applicant);
+      const { residentialAddress: updatedResidentialAddress, idScan: updatedIdScan, ...updatedGeneralInformation } = submittedApplicant;
+      const { residentialAddress: originalResidentialAddress, idScan: originalIdScan, ...originalGeneralInformation } = originalStakeholder;
 
-      //TODO: uncomment when working on connecting the API
-      // const stakeholders = [
-      //   {
-      //     id: applicant.id,
-      //     name: {
-      //       firstName: applicant.firstName,
-      //       lastName: applicant.lastName,
-      //       middleName: applicant.middleName,
-      //     },
-      //     dateOfBirth: {
-      //       dateOfBirth: applicant.dateOfBirth ? formatDate(applicant.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : '',
-      //     },
-      //     address: { ...applicant.residentialAddress, country: 'USA' } as AddressInput,
-      //     idScan: applicant.idScan as DocumentFileLinkInput[],
-      //     // when ssn is anonymized we need to send null
-      //     ssn: !apiSSN.test(applicant?.socialSecurityNumber || '')
-      //       ? {
-      //           ssn: applicant.socialSecurityNumber,
-      //         }
-      //       : undefined,
-      //     domicile: {
-      //       type: applicant.domicile || SimplifiedDomicileType.Citizen,
-      //     },
-      //   },
-      // ];
-      // const response = await completeTrustDraftAccount({ accountId, input: { stakeholders } });
-      // const currentStakeholders = response?.details?.stakeholders?.map(apiStakeholderToApplicant);
-      // applicantsRef.current = currentStakeholders || [];
+      // update only stakeholders that have changed
+      const didStakeholderAddressChange = !isEqual(originalResidentialAddress, updatedResidentialAddress);
+      const didIdScansChange = !isEqual(originalIdScan, updatedIdScan);
+      const didGeneralInformationChange = !isEqual(originalGeneralInformation, {
+        ...updatedGeneralInformation,
+        dateOfBirth: updatedGeneralInformation.dateOfBirth ? formatDate(updatedGeneralInformation.dateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined,
+      });
 
-      // return updateStoreFields({ stakeholders: currentStakeholders });
-    };
-
-    const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
-      // add as new applicant if it doesn't have index
-      if (applicantIndex === undefined) {
-        applicantsRef.current = [...applicantsRef.current, submittedApplicant];
+      if (!didStakeholderAddressChange && !didIdScansChange && !didGeneralInformationChange) {
+        return;
       }
 
-      // update existing one otherwise,
-      if (applicantIndex !== undefined && applicantIndex >= 0) {
-        applicantsRef.current = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
+      // when applicant was already updated update list in place
+      const wasApplicantAlreadyUpdated = updatedApplicantsRef.current.some(applicant => applicant.id === submittedApplicant.id);
+
+      if (wasApplicantAlreadyUpdated) {
+        updatedApplicantsRef.current = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
+      } else {
+        updatedApplicantsRef.current.push(submittedApplicant);
       }
+
+      applicantsRef.current = applicantsRef.current.map((applicant, index) => (applicantIndex === index ? submittedApplicant : applicant));
 
       await updateStoreFields({
         stakeholders: applicantsRef.current,
@@ -100,11 +90,20 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
         submittedApplicant.id = indexedStakeholderApplicants[applicantIndex]?.id;
       }
 
-      await uploadApplicant(submittedApplicant);
       closeDialog();
     };
 
     const handleSubmit = async () => {
+      const stakeholdersToUpdate = updatedApplicantsRef.current.map(mapApplicantToApiStakeholder);
+
+      if (!stakeholdersToUpdate) return;
+
+      await Promise.all(
+        stakeholdersToUpdate.map(async stakeholder =>
+          updateStakeholderMutate({ accountId, stakeholderId: stakeholder.id ?? '', input: stakeholder as UpdateStakeholderForVerificationInput }),
+        ),
+      );
+
       moveToNextStep();
     };
 
