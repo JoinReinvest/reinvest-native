@@ -1,10 +1,10 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 
 import { HeaderAvatar } from '../../../components/HeaderAvatar';
+import { HeaderCancel } from '../../../components/HeaderCancel';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
-import { StyledText } from '../../../components/typography/StyledText';
 import { useStepBackOverride } from '../../../hooks/useBackOverride';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInStackParamList } from '../../../navigation/LogInNavigator/types';
@@ -37,7 +37,7 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
 
   const onCancel = useCallback(async () => {
     await resetStoreFields();
-    navigation.goBack();
+    navigation.reset({ index: 0, routes: [{ name: Screens.BottomNavigator, params: { screen: Screens.Dashboard } }] });
   }, [navigation, resetStoreFields]);
 
   const getLeftHeader = useCallback(() => {
@@ -66,14 +66,7 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
       return () => <HeaderAvatar />;
     }
 
-    return () => (
-      <StyledText
-        variant={'h6'}
-        onPress={onCancel}
-      >
-        Cancel
-      </StyledText>
-    );
+    return () => <HeaderCancel onPress={onCancel} />;
   }, [currentStepIdentifier, initialInvestment, onCancel]);
 
   useLayoutEffect(() => {

@@ -50,6 +50,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
       /*
        * in case no option is selected for either onetime and recurring we should dismiss investment screen
        */
+
       if (!storeFields.oneTimeInvestmentId) {
         await resetStoreFields();
         goBack();
