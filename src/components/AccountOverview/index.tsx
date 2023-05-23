@@ -7,7 +7,7 @@ import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
 import { AccountOverviewProps } from './types';
 
-export const AccountOverview = ({ summaryValue, chartData, rateOfReturn }: AccountOverviewProps) => {
+export const AccountOverview = ({ summaryValue, rateOfReturn }: AccountOverviewProps) => {
   return (
     <Box
       fw
@@ -29,10 +29,7 @@ export const AccountOverview = ({ summaryValue, chartData, rateOfReturn }: Accou
             {summaryValue}
           </StyledText>
         </Box>
-        <Chart
-          compact
-          chartData={chartData}
-        />
+        <Chart compact />
       </Row>
       <Row
         fw

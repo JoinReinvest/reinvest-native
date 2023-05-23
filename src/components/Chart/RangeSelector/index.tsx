@@ -5,18 +5,21 @@ import { xScale, yScale } from '../../../utils/scale';
 import { Box } from '../../Containers/Box/Box';
 import { Row } from '../../Containers/Row';
 import { StyledText } from '../../typography/StyledText';
+import { RANGE_OPTIONS } from '../constants';
 import { styles } from './styles';
 import { ChartProps, RangeOption } from './types';
 
 const blockWidth = xScale(49);
 
-export const RangeSelector = ({ onSelect, options }: ChartProps) => {
-  const [selected, setSelected] = useState(0);
+export const RangeSelector = ({ onSelect, resolution }: ChartProps) => {
+  const [selected, setSelected] = useState(RANGE_OPTIONS.findIndex(opt => opt.resolution === resolution));
+
   const animatedValue = useDerivedValue(() => {
     return selected;
   }, [selected]);
+
   const selectOption = async (index: number) => {
-    await onSelect?.(options[index] as RangeOption);
+    onSelect?.(RANGE_OPTIONS[index] as RangeOption);
     setSelected(index);
   };
 
@@ -39,7 +42,7 @@ export const RangeSelector = ({ onSelect, options }: ChartProps) => {
         alignItems={'center'}
         justifyContent={'space-between'}
       >
-        {options.map((option, idx) => (
+        {RANGE_OPTIONS.map((option, idx) => (
           <Box
             width={xScale(49)}
             alignItems={'center'}
