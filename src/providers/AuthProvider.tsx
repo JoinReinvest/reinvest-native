@@ -109,6 +109,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       await Auth.signOut();
       await queryClient.invalidateQueries();
+      await queryClient.clear();
       setLoggedIn(false);
       setUser(null);
       callbacks.forEach(arg => typeof arg === 'function' && arg());

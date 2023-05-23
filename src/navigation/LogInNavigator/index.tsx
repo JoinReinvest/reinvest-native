@@ -69,9 +69,10 @@ const stackOptions: Record<
     title: 'Manage Account',
     headerShown: false,
   },
-  [Screens.AddBeneficiary]: {
+  [Screens.AddBeneficiary]: ({ navigation }) => ({
     title: 'Add Beneficiary',
-  },
+    headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
+  }),
   [Screens.KYCFail]: {
     headerShown: false,
   },
