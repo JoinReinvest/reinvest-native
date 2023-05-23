@@ -13,6 +13,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
+import { investingHeadlines } from '../../../constants/strings';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
@@ -26,7 +27,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
 
   Component: ({
     moveToNextStep,
-    storeFields: { bankAccount, investAmount, accountId, accountType },
+    storeFields: { bankAccount, investAmount, accountId, accountType, initialInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const { activeAccount } = useCurrentAccount();
@@ -66,7 +67,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
             pt="24"
             pb="16"
           >
-            <StyledText variant="h5">Make your initial one-time investment </StyledText>
+            <StyledText variant="h5">{initialInvestment ? investingHeadlines.oneTime.initial : investingHeadlines.oneTime.regular} </StyledText>
           </Box>
           {createAccountError && <ErrorMessagesHandler error={createAccountError} />}
           <InvestingAmountTable

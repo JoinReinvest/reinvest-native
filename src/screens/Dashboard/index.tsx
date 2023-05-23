@@ -1,5 +1,7 @@
 import React from 'react';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 
+import { getApiClient } from '../../api/getApiClient';
 import { AccountOverview } from '../../components/AccountOverview';
 import { Button } from '../../components/Button';
 import { Chart } from '../../components/Chart';
@@ -29,6 +31,7 @@ const mockedChartData = [
 
 export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { openDialog } = useDialog();
+  const { data: accounts, isLoading } = useGetAccountsOverview(getApiClient);
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
     switch (identifier) {
@@ -64,6 +67,14 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
       onPress: () => openInfoDialog(identifier),
     }));
 
+  const handleInvest = () => {
+    if (accounts?.length && accounts.length > 1) {
+      return navigation.navigate(Screens.InvestingAccountSelection);
+    }
+
+    return navigation.navigate(Screens.Investing, {});
+  };
+
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
@@ -74,7 +85,12 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
         />
         <Chart chartData={mockedChartData} />
         <Box py={'16'}>
-          <Button onPress={() => navigation.navigate(Screens.InvestingAccountSelection)}>Invest</Button>
+          <Button
+            disabled={isLoading}
+            onPress={handleInvest}
+          >
+            Invest
+          </Button>
         </Box>
         <Table
           heading="$522.94"
