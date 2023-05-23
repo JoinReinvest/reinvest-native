@@ -6,5 +6,4 @@ export interface Props {
   amount?: number;
   bankAccount?: string;
   error?: string;
-  type?: 'recurring' | 'oneTime';
 }

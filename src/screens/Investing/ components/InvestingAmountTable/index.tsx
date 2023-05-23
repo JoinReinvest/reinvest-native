@@ -11,8 +11,8 @@ import Screens from '../../../../navigation/screens';
 import { styles } from './styles';
 import { Props } from './types';
 
-export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType, type = 'oneTime' }: Props) => {
-  const presets = INVESTMENT_PRESET_AMOUNTS[accountType][type];
+export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType }: Props) => {
+  const presets = INVESTMENT_PRESET_AMOUNTS[accountType];
   const optionValue = presets.find(option => option.value === amount?.toString());
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
   const { navigate } = useLogInNavigation();

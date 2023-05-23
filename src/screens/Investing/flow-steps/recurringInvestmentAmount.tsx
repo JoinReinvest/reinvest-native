@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
+import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { recurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
+import { generateRecurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
@@ -29,12 +30,14 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const [error, setError] = useState<string | undefined>();
-
+    const { activeAccount } = useCurrentAccount();
     const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount);
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
+    const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: activeAccount?.type || undefined }), [activeAccount]);
+
     const validateInput = () => {
-      const result = recurringInvestmentSchema.safeParse({ amount });
+      const result = schema.safeParse({ amount });
 
       if ('error' in result && result.error instanceof ZodError) {
         setError((result.error as ZodError).issues[0]?.message);
@@ -76,7 +79,6 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
           <InvestingAmountTable
             error={error}
             amount={amount}
-            type="recurring"
             accountType={accountType || AccountType.Individual}
             bankAccount={bankAccount?.accountNumber || ''}
             setAmount={value => {
