@@ -5,6 +5,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { DarkScreenHeader } from '../../../components/CustomHeader';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
+import { TermsFooter } from '../../../components/TermsFooter';
 import { useStepBackOverride } from '../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../navigation/hooks';
@@ -54,6 +55,7 @@ export const BlackLayout = () => {
           />
         </Box>
         <CurrentStepView />
+        <TermsFooter dark />
       </MainWrapper>
     </DialogProvider>
   );

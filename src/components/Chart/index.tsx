@@ -38,7 +38,7 @@ export const Chart = ({ compact }: ChartProps) => {
 
   const gridPosition = [0, 1, 2, 3].map(count => 48 * 0.8 * count);
 
-  if (isLoading) {
+  if ((isLoading || isRefetching) && !chartData.length) {
     <Box
       height={yScale(48) * 4}
       style={[styles.wrapper, compact && styles.compact]}
@@ -94,7 +94,7 @@ export const Chart = ({ compact }: ChartProps) => {
               style={{ borderBottomWidth: 1, borderBottomColor: palette.lightGray, position: 'absolute', bottom: position }}
             />
           ))}
-        {!compact && (!chartData.length || isRefetching) ? (
+        {!compact && !chartData.length ? (
           <Box
             height={yScale(48) * 4}
             style={[styles.wrapper, compact && styles.compact]}
@@ -104,7 +104,7 @@ export const Chart = ({ compact }: ChartProps) => {
           >
             <Loader />
           </Box>
-        ) : (
+        ) : chartData.length ? (
           <ChartOverload
             style={{ borderColor: 'transparent', borderWidth: 0, height: !compact ? 48 * 4 : yScale(24), width: !compact ? PADDED_SAFE_WIDTH : yScale(64) }}
             data={chartData}
@@ -120,7 +120,7 @@ export const Chart = ({ compact }: ChartProps) => {
               theme={{ stroke: { color: palette.pureBlack, width: compact ? 1 : 2 } }}
             />
           </ChartOverload>
-        )}
+        ) : null}
       </Box>
       {compact ? (
         <Box style={{ paddingTop: 6 }}>
