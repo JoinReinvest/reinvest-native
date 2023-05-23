@@ -9,6 +9,8 @@ import { palette } from '../../constants/theme';
 import { currentAccount, useAtom } from '../../store/atoms';
 import { yScale } from '../../utils/scale';
 import { Box } from '../Containers/Box/Box';
+import { Row } from '../Containers/Row';
+import { Icon } from '../Icon';
 import { EmptyChart } from '../Icon/icons/EducationIcons/EmptyChart';
 import { Loader } from '../Loader';
 import { StyledText } from '../typography/StyledText';
@@ -120,7 +122,22 @@ export const Chart = ({ compact }: ChartProps) => {
           </ChartOverload>
         )}
       </Box>
-      {!compact && (
+      {compact ? (
+        <Box style={{ paddingTop: 6 }}>
+          <Row
+            alignItems={'center'}
+            style={{ columnGap: 6 }}
+          >
+            <Box>
+              <Icon
+                size={'xs'}
+                icon={'circleChevron'}
+              />
+            </Box>
+            <StyledText>{data?.changeFactor}</StyledText>
+          </Row>
+        </Box>
+      ) : (
         <RangeSelector
           resolution={selectedOption?.resolution ?? EvsChartResolution.Day}
           onSelect={setSelectedOption}

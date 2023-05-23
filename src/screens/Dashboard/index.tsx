@@ -53,10 +53,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
-        <AccountOverview
-          summaryValue={'$100,500'}
-          rateOfReturn={'9.75%'}
-        />
+        <AccountOverview summaryValue={'$100,500'} />
         <Chart />
         <Box py={'16'}>
           <Button onPress={() => navigation.navigate(Screens.InvestingAccountSelection)}>Invest</Button>
