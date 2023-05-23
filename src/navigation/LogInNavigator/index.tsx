@@ -17,6 +17,7 @@ import { BankAccount } from '../../screens/BankAccount';
 import { BannedScreen } from '../../screens/BannedScreen';
 import { DividendsPayoutScreen } from '../../screens/DividendsPayout';
 import { Investing } from '../../screens/Investing';
+import { InvestingAccountSelection } from '../../screens/InvestingAccountSelection';
 import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
@@ -45,6 +46,7 @@ const stackOptions: Record<
     | Screens.NotificationDetails
     | Screens.TradeSummary
     | Screens.DividendsPayout
+    | Screens.InvestingAccountSelection
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -87,6 +89,11 @@ const stackOptions: Record<
   [Screens.DividendsPayout]: {
     headerShown: false,
   },
+  [Screens.InvestingAccountSelection]: ({ navigation }) => ({
+    header: ScreenHeader,
+    title: 'Investing',
+    headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack} />,
+  }),
 };
 
 export const LogInNavigator: React.FC = () => {
@@ -189,6 +196,11 @@ export const LogInNavigator: React.FC = () => {
               options={stackOptions[Screens.DividendsPayout]}
               name={Screens.DividendsPayout}
               component={DividendsPayoutScreen}
+            />
+            <LogInStack.Screen
+              options={stackOptions[Screens.InvestingAccountSelection]}
+              name={Screens.InvestingAccountSelection}
+              component={InvestingAccountSelection}
             />
           </LogInStack.Navigator>
         </DialogProvider>

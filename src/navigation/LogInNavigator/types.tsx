@@ -9,7 +9,7 @@ import Screens from '../screens';
 export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;
   [Screens.Onboarding]: undefined;
-  [Screens.Investing]: { bankAccount?: BankAccount; initialInvestment?: boolean; validationSuccess?: boolean };
+  [Screens.Investing]: { accountId?: string; bankAccount?: BankAccount; initialInvestment?: boolean; validationSuccess?: boolean };
   [Screens.AddBeneficiary]: undefined;
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;
@@ -21,6 +21,7 @@ export type LogInStackParamList = {
   [Screens.NotificationDetails]: { notification: BaseNotification };
   [Screens.TradeSummary]: { investmentId: string };
   [Screens.DividendsPayout]: undefined;
+  [Screens.InvestingAccountSelection]: undefined;
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;

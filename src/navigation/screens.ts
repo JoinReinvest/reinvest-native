@@ -24,6 +24,7 @@ enum Screens {
   NotificationDetails = 'NotificationDetails',
   TradeSummary = 'TradeSummary',
   DividendsPayout = 'DividendsPayout',
+  InvestingAccountSelection = 'InvestingAccountSelection',
 }
 
 export default Screens;

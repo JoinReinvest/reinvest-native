@@ -35,7 +35,7 @@ export const StepCongratulations: StepParams<OnboardingFormFields> = {
     }, [accounts, account, setAccountAtom]);
     const handleContinue = async () => {
       if (storeFields.initialInvestment) {
-        reset({ index: 0, routes: [{ name: Screens.Investing, params: { initialInvestment: true } }] });
+        reset({ index: 0, routes: [{ name: Screens.Investing, params: { initialInvestment: true, accountId: account.id } }] });
       } else {
         replace(Screens.Investing, { initialInvestment: false });
       }

@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useInitiateRecurringInvestment } from 'reinvest-app-common/src/services/queries/initiateRecurringInvestment';
 import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
 import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
@@ -15,6 +16,7 @@ import { DialogItem, InvestSuccess } from '../../../components/Modals/ModalConte
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../../components/typography/StyledText';
 import { InvestingDialogDisclaimers } from '../../../constants/strings';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInRouteProps } from '../../../navigation/LogInNavigator/types';
 import Screens from '../../../navigation/screens';
@@ -34,6 +36,8 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
       params: { validationSuccess },
     } = useRoute<LogInRouteProps<Screens.Investing>>();
 
+    const { setActiveAccount, activeAccount } = useCurrentAccount();
+    const { data: accounts } = useGetAccountsOverview(getApiClient);
     const { navigate } = useLogInNavigation();
     const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
@@ -56,20 +60,39 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
         });
       }
 
+      const setCurrentAccountAfterSuccess = () => {
+        if (activeAccount.id !== accountId) {
+          const account = accounts?.find(account => account?.id === accountId);
+
+          if (account) {
+            setActiveAccount(account);
+          }
+        }
+      };
+
       openDialog(
         <InvestSuccess
+          onProceed={setCurrentAccountAfterSuccess}
           type="invest"
           dialogItems={investments}
           disclaimer={InvestingDialogDisclaimers.invest}
         />,
         {
           showLogo: true,
-          header: <HeaderWithLogo onClose={() => navigate(Screens.Dashboard)} />,
+          header: (
+            <HeaderWithLogo
+              onClose={() => {
+                setCurrentAccountAfterSuccess();
+
+                navigate(Screens.Dashboard);
+              }}
+            />
+          ),
           closeIcon: false,
         },
       );
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate, openDialog]);
+    }, [navigate, openDialog, accounts]);
 
     const startInvestmentHandler = useCallback(async () => {
       if (oneTimeInvestmentId) {
