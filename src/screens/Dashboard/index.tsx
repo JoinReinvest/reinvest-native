@@ -13,20 +13,6 @@ import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
 
-const mockedChartData = [
-  { x: -2, y: 7 },
-  { x: -1, y: 15 },
-
-  { x: 2, y: 42 },
-  { x: 3, y: 52 },
-  { x: 4, y: 61 },
-  { x: 5, y: 60 },
-  { x: 6, y: 51 },
-  { x: 7, y: 70 },
-
-  { x: 10, y: 80 },
-];
-
 export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { openDialog } = useDialog();
 
@@ -67,12 +53,8 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
-        <AccountOverview
-          summaryValue={'$100,500'}
-          chartData={mockedChartData}
-          rateOfReturn={'9.75%'}
-        />
-        <Chart chartData={mockedChartData} />
+        <AccountOverview summaryValue={'$100,500'} />
+        <Chart />
         <Box py={'16'}>
           <Button onPress={() => navigation.navigate(Screens.InvestingAccountSelection)}>Invest</Button>
         </Box>
