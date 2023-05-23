@@ -1,4 +1,3 @@
-import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { generateRecurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
@@ -11,6 +10,8 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
+import { investingHeadlines } from '../../../constants/strings';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
@@ -74,7 +75,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             pt="24"
             pb="16"
           >
-            <StyledText variant="h5">How often would you like to have a recurring investment?</StyledText>
+            <StyledText variant="h5">{investingHeadlines.recurring}</StyledText>
           </Box>
           <InvestingAmountTable
             error={error}

@@ -15,6 +15,9 @@ import { styles } from './styles';
 export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INVESTMENT,
   willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
+  doesMeetConditionFields: fields => {
+    return !fields.isActiveRecurring;
+  },
 
   Component: ({ moveToNextStep, updateStoreFields, storeFields }: StepComponentProps<InvestFormFields>) => {
     const { resetStoreFields } = useInvestFlow();
@@ -65,7 +68,7 @@ export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
             onPress={handleSkip}
             variant={'outlined'}
           >
-            Skip
+            {`I'll do this later`}
           </Button>
           <Button onPress={handleContinue}>Continue</Button>
         </View>

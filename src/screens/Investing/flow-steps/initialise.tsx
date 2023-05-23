@@ -1,7 +1,9 @@
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
 import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
+import { RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -25,6 +27,9 @@ export const Initialise: StepParams<InvestFormFields> = {
 
     const { data, error, isLoading } = useReadBankAccount(getApiClient, { accountId: storeFields.accountId });
     const { accountConfig } = useCurrentAccountConfig(storeFields.accountId);
+    const { data: activeRecurringInvestment, isLoading: getRecurringInvestmentLoading } = useGetActiveRecurringInvestment(getApiClient, {
+      accountId: storeFields.accountId,
+    });
 
     useEffect(() => {
       if (error) {
@@ -59,6 +64,17 @@ export const Initialise: StepParams<InvestFormFields> = {
         })();
       }
     }, [accountConfig, updateStoreFields]);
+
+    useEffect(() => {
+      if (activeRecurringInvestment) {
+        (async () => {
+          await updateStoreFields({
+            isActiveRecurring: activeRecurringInvestment?.status === RecurringInvestmentStatus.Active,
+            _shouldDisplayRecurringInvestment: activeRecurringInvestment?.status !== RecurringInvestmentStatus.Active,
+          });
+        })();
+      }
+    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, activeRecurringInvestment, updateStoreFields]);
 
     return isLoading ? (
       <Box

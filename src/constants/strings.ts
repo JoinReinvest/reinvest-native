@@ -48,3 +48,8 @@ export const InvestingDialogDisclaimers = {
   reward: 'Deposited to your account',
   reinvest: 'Successfully reinvested. ',
 };
+
+export const investingHeadlines = {
+  oneTime: { initial: 'Make your initial one-time investment', regular: 'Choose your investment amount and frequency.' },
+  recurring: 'How often would you like to have a recurring investment?',
+};
