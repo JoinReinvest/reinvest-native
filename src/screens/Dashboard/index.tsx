@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountOverview } from '../../components/AccountOverview';
@@ -11,6 +12,7 @@ import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormMo
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
+import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
@@ -18,21 +20,27 @@ import { useDialog } from '../../providers/DialogProvider';
 export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { openDialog } = useDialog();
   const { data: accounts, isLoading } = useGetAccountsOverview(getApiClient);
+  const { activeAccount } = useCurrentAccount();
+  const { data: stats } = useGetAccountStats(getApiClient, {
+    accountId: activeAccount.id ?? '',
+  });
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
+    if (!stats) return '';
+
     switch (identifier) {
       case TableIdentifiers.ADVISORY_FEES:
-        return '$123.45';
+        return stats.advisorFees;
       case TableIdentifiers.APPRECIATION:
-        return '$123.45';
+        return stats.appreciation;
       case TableIdentifiers.COST_OF_SHARES:
-        return '$123.45';
+        return stats.costOfSharesOwned;
       case TableIdentifiers.DIVIDENDS:
-        return '$123.45';
+        return stats.dividends;
       case TableIdentifiers.NAV_PER_SHARE:
-        return '$123.45';
+        return stats.currentNAVPerShare;
       case TableIdentifiers.QUANTITY:
-        return '$123.45';
+        return stats.quantityOfShares;
     }
   };
 
@@ -64,7 +72,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
-        <AccountOverview summaryValue={'$100,500'} />
+        <AccountOverview summaryValue={stats?.EVS ?? ''} />
         <Chart />
         <Box py={'16'}>
           <Button
@@ -75,13 +83,13 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
           </Button>
         </Box>
         <Table
-          heading="$522.94"
+          heading={stats?.accountValue ?? ''}
           subheading="Position Total (Equity)"
           items={mapTableIdentifiersToTableItems(EQUITY_TABLE_ITEMS)}
         />
         <Box mt="8">
           <Table
-            heading="$432.56"
+            heading={stats?.netReturns ?? ''}
             subheading="Net Returns"
             items={mapTableIdentifiersToTableItems(NET_RETURNS_TABLE_ITEMS)}
           />
