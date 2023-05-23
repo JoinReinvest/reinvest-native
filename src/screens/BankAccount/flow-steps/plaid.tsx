@@ -4,6 +4,7 @@ import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateBankAccount } from 'reinvest-app-common/src/services/queries/createBankAccount';
 import { useFulfillBankAccount } from 'reinvest-app-common/src/services/queries/fulfillBankAccount';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 import { useUpdateBankAccount } from 'reinvest-app-common/src/services/queries/updateBankAccount';
 import { mapPlaidDataForApi } from 'reinvest-app-common/src/utilities/plaid';
 
@@ -46,12 +47,18 @@ export const Plaid: StepParams<BankAccountFormFields> = {
     return !fields.bankAccount;
   },
 
-  Component: ({ moveToNextStep, updateStoreFields, storeFields: { isUpdatingAccount } }: StepComponentProps<BankAccountFormFields>) => {
+  Component: ({
+    moveToNextStep,
+    updateStoreFields,
+    storeFields: { isUpdatingAccount, accountId: idFromStoreParams },
+  }: StepComponentProps<BankAccountFormFields>) => {
     const [isLoading, setIsLoading] = useState(false);
     const [account] = useAtom(currentAccount);
+    const accountId = idFromStoreParams || account.id || '';
     const { mutateAsync: createBankAccount, error: createAccountError } = useCreateBankAccount(getApiClient);
     const { mutateAsync: updateBankAccount, error: updateAccountError } = useUpdateBankAccount(getApiClient);
     const { mutate: fulfillBankAccountMutation, isSuccess: isFulfillBankAccountSuccess, error: fulFillError } = useFulfillBankAccount(getApiClient);
+    const { refetch } = useReadBankAccount(getApiClient, { accountId, config: { enabled: false } });
     const { resetStoreFields } = useBankAccountFlow();
     const { replace } = useLogInNavigation();
 
@@ -67,10 +74,10 @@ export const Plaid: StepParams<BankAccountFormFields> = {
         let link;
 
         if (isUpdatingAccount) {
-          const response = await updateBankAccount({ accountId: account.id || '' });
+          const response = await updateBankAccount({ accountId });
           link = response?.link;
         } else {
-          const response = await createBankAccount({ accountId: account.id || '' });
+          const response = await createBankAccount({ accountId });
           link = response?.link;
         }
 
@@ -78,7 +85,7 @@ export const Plaid: StepParams<BankAccountFormFields> = {
       } finally {
         setIsLoading(false);
       }
-    }, [account.id, createBankAccount, isUpdatingAccount, updateBankAccount]);
+    }, [accountId, createBankAccount, isUpdatingAccount, updateBankAccount]);
 
     const resetAndClose = async () => {
       await resetStoreFields();
@@ -87,13 +94,16 @@ export const Plaid: StepParams<BankAccountFormFields> = {
 
     useEffect(() => {
       setPlaidUri();
-    }, [account.id, createBankAccount, setPlaidUri]);
+    }, [accountId, createBankAccount, setPlaidUri]);
 
     useEffect(() => {
       if (isFulfillBankAccountSuccess) {
-        moveToNextStep();
+        (async () => {
+          await refetch();
+          moveToNextStep();
+        })();
       }
-    }, [isFulfillBankAccountSuccess, moveToNextStep]);
+    }, [isFulfillBankAccountSuccess, moveToNextStep, refetch]);
 
     useEffect(() => {
       if (createAccountError) {
@@ -115,7 +125,7 @@ export const Plaid: StepParams<BankAccountFormFields> = {
     }
 
     const handleMessage = async (event: WebViewMessageEvent) => {
-      if (account.id) {
+      if (accountId) {
         const { data, error } = await JSON.parse(event.nativeEvent.data);
 
         if (data) {
@@ -126,7 +136,7 @@ export const Plaid: StepParams<BankAccountFormFields> = {
               accountType: plaidDataForApi.accountType,
             },
           });
-          await fulfillBankAccountMutation({ accountId: account.id, input: plaidDataForApi });
+          await fulfillBankAccountMutation({ accountId, input: plaidDataForApi });
         }
 
         if (error) {

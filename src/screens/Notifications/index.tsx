@@ -29,7 +29,7 @@ export const Notifications = () => {
   });
   const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
 
-  const onPressHandler = ({ notification }: { id: string; notification: BaseNotification }) => {
+  const onPressHandler = (notification: BaseNotification) => {
     if (notification.isDismissible) {
       markRead({ notificationId: notification.id });
     }
@@ -59,7 +59,7 @@ export const Notifications = () => {
           keyExtractor={(item: BaseNotification) => item.id}
           renderItem={({ item }) => (
             <Notification
-              onPress={id => onPressHandler({ notification: item, id })}
+              onPress={() => onPressHandler(item)}
               key={item.id}
               {...item}
             />

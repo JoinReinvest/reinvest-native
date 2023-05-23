@@ -1,3 +1,4 @@
+import { HeaderBackButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
 
 import { useLogInNavigation } from '../navigation/hooks';
@@ -5,7 +6,7 @@ import Screens from '../navigation/screens';
 import { currentAccount, useAtom } from '../store/atoms';
 import { Avatar } from './Avatar';
 
-export const HeaderAvatar = ({ disabled }: { disabled?: boolean }) => {
+export const HeaderAvatar = ({ disabled }: { disabled?: boolean } & Partial<HeaderBackButtonProps>) => {
   const { navigate } = useLogInNavigation();
   const [account] = useAtom(currentAccount);
 

@@ -14,7 +14,6 @@ import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
-import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -30,8 +29,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     storeFields: { bankAccount, investAmount, accountId, accountType, initialInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
-    const { activeAccount } = useCurrentAccount();
-    const schema = useMemo(() => generateInvestmentSchema({ accountType: activeAccount?.type || undefined }), [activeAccount]);
+    const schema = useMemo(() => generateInvestmentSchema({ accountType: accountType || AccountType.Individual }), [accountType]);
     const [amount, setAmount] = useState<number | undefined>(investAmount);
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
     const [error, setError] = useState<string | undefined>();
@@ -71,6 +69,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
           </Box>
           {createAccountError && <ErrorMessagesHandler error={createAccountError} />}
           <InvestingAmountTable
+            accountId={accountId}
             accountType={accountType || AccountType.Individual}
             error={error}
             amount={amount}

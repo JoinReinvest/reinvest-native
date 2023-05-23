@@ -19,10 +19,6 @@ import { styles } from './styles';
 export const PlaidInformation: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.PLAID_INFORMATION,
 
-  doesMeetConditionFields: fields => {
-    return !fields.bankAccount;
-  },
-
   Component: ({ moveToNextStep }: StepComponentProps<BankAccountFormFields>) => {
     const { top } = useSafeAreaInsets();
     const handleContinue = async () => {
