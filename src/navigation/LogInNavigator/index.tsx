@@ -93,7 +93,7 @@ const stackOptions: Record<
   [Screens.InvestingAccountSelection]: ({ navigation }) => ({
     header: ScreenHeader,
     title: 'Investing',
-    headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack} />,
+    headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
 };
 

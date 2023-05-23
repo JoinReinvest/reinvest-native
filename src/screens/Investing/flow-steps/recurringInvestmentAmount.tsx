@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { recurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
@@ -22,10 +23,14 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
     return !!fields.isRecurringInvestment;
   },
 
-  Component: ({ moveToNextStep, storeFields, updateStoreFields }: StepComponentProps<InvestFormFields>) => {
+  Component: ({
+    moveToNextStep,
+    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, bankAccount },
+    updateStoreFields,
+  }: StepComponentProps<InvestFormFields>) => {
     const [error, setError] = useState<string | undefined>();
 
-    const [amount, setAmount] = useState<number | undefined>(storeFields.recurringInvestment?.recurringAmount);
+    const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount);
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
     const validateInput = () => {
@@ -41,7 +46,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
     };
     const handleContinue = async () => {
       if (amount && validateInput()) {
-        await updateStoreFields({ recurringInvestment: { ...storeFields.recurringInvestment, recurringAmount: amount } });
+        await updateStoreFields({ recurringInvestment: { ...recurringInvestment, recurringAmount: amount } });
         moveToNextStep();
       }
     };
@@ -51,7 +56,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
        * in case no option is selected for either onetime and recurring we should dismiss investment screen
        */
 
-      if (!storeFields.oneTimeInvestmentId) {
+      if (!oneTimeInvestmentId) {
         await resetStoreFields();
         goBack();
       }
@@ -71,7 +76,9 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
           <InvestingAmountTable
             error={error}
             amount={amount}
-            bankAccount={storeFields.bankAccount?.accountNumber || ''}
+            type="recurring"
+            accountType={accountType || AccountType.Individual}
+            bankAccount={bankAccount?.accountNumber || ''}
             setAmount={value => {
               setError(undefined);
               setAmount(parseFloat(value));
