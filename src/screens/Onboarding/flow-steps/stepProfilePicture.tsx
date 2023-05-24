@@ -108,20 +108,28 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     const setCurrentAccount = useSetAtom(currentAccount);
 
     const onSubmit: SubmitHandler<Fields> = async ({ profilePicture }) => {
-      await updateStoreFields({
-        profilePicture,
-      });
+      if (isLoading) {
+        return;
+      }
 
       const hasFile = !!profilePicture && selectedImageUri;
       let avatarId = '';
 
-      if (hasFile) {
-        const avatarLink = await createAvatarLinkMutate({});
+      if (!hasFile) {
+        await completeProfileAndOpenAccount();
 
-        if (avatarLink?.url && avatarLink.id && profilePicture) {
-          await sendFilesToS3Bucket([{ file: { uri: selectedImageUri }, url: avatarLink.url, id: avatarLink.id }]);
-          avatarId = avatarLink.id;
-        }
+        return;
+      }
+
+      await updateStoreFields({
+        profilePicture,
+      });
+
+      const avatarLink = await createAvatarLinkMutate({});
+
+      if (avatarLink?.url && avatarLink.id && profilePicture) {
+        await sendFilesToS3Bucket([{ file: { uri: selectedImageUri }, url: avatarLink.url, id: avatarLink.id }]);
+        avatarId = avatarLink.id;
       }
 
       if (accountId && avatarId) {
@@ -210,8 +218,6 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
       completeDraftLoading ||
       corporateLoading;
 
-    const shouldButtonBeDisabled = !selectedImageUri?.length || isLoading;
-
     const initials =
       accountType === DraftAccountType.Individual
         ? `${name?.firstName.charAt(0)}${name?.lastName.charAt(0)}`.toUpperCase()
@@ -264,18 +270,10 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={shouldButtonBeDisabled}
+            isLoading={isLoading}
             onPress={handleSubmit(onSubmit)}
           >
-            Continue
-          </Button>
-          <Button
-            dark
-            variant="outlined"
-            disabled={isLoading}
-            onPress={completeProfileAndOpenAccount}
-          >
-            Skip
+            Complete Profile
           </Button>
         </View>
       </>
