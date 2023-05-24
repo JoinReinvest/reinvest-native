@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
     fontSize: 42,
   },
   avatarInitialsExtraLarge: {
-    fontSize: 20,
+    fontSize: 32,
   },
   avatarInitialsLarge: {
-    fontSize: 32,
+    fontSize: 20,
   },
   avatarInitialsMedium: {
     fontSize: 18,
