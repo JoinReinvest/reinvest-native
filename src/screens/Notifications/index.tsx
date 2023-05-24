@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import { UseInfiniteQueryResult } from '@tanstack/react-query';
+import React, { useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useGetNotDismissedNotifications } from 'reinvest-app-common/src/services/queries/getNotDimissedNotifications';
+import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
+import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
 import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/queries/markNotificationAsRead';
-import { Notification as BaseNotification } from 'reinvest-app-common/src/types/graphql';
+import { Notification as BaseNotification, Query } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
-import { Box } from '../../components/Containers/Box/Box';
-import { ContainerOverlay } from '../../components/Containers/ContainerOverlay';
+import { Row } from '../../components/Containers/Row';
 import { Icon } from '../../components/Icon';
-import { Loader } from '../../components/Loader';
 import { MainWrapper } from '../../components/MainWrapper';
 import { Notification } from '../../components/Notification';
 import { StyledText } from '../../components/typography/StyledText';
-import { palette } from '../../constants/theme';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
+import { styles } from './styles';
+
+export type UseApiQuery<QueryKey extends keyof Query> = (getClient: GetApiClient) => UseInfiniteQueryResult<Query[QueryKey]>;
 
 export const Notifications = () => {
   const { top } = useSafeAreaInsets();
-  const [page, setPage] = useState(0);
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
-  const { data, isLoading, refetch } = useGetNotDismissedNotifications(getApiClient, {
+  const { data, isLoading, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id || '',
-    pagination: { page, perPage: 10 },
   });
   const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
+  const list = useMemo(() => data?.pages.map(el => el.getNotifications).flat() || [], [data]);
 
   const onPressHandler = (notification: BaseNotification) => {
     if (notification.isDismissible) {
@@ -37,45 +38,42 @@ export const Notifications = () => {
     navigate(Screens.NotificationDetails, { notification });
   };
 
-  if (isLoading) {
-    return (
-      <ContainerOverlay>
-        <Loader color={palette.deepGreen} />
-      </ContainerOverlay>
-    );
-  }
-
   return (
     <MainWrapper
-      noPadding
       isLoading={isLoading}
+      noPadding
     >
-      {data && (
-        <FlatList<BaseNotification>
-          refreshing={isLoading}
-          onRefresh={refetch}
-          contentContainerStyle={{ maxWidth: '100%', paddingTop: top }}
-          data={data as BaseNotification[]}
-          keyExtractor={(item: BaseNotification) => item.id}
-          renderItem={({ item }) => (
-            <Notification
-              onPress={() => onPressHandler(item)}
-              key={item.id}
-              {...item}
-            />
-          )}
-        />
-      )}
-      {!data && (
-        <Box
-          mt="24"
-          fw
-          px="default"
-        >
-          <Icon icon="info" />
-          <StyledText variant="h6">No Notifications</StyledText>
-        </Box>
-      )}
+      <FlatList<BaseNotification>
+        ListEmptyComponent={
+          !isLoading ? (
+            <Row
+              mt="24"
+              fw
+              px="default"
+              alignItems="center"
+            >
+              <Icon icon="info" />
+              <StyledText variant="h6">No Notifications</StyledText>
+            </Row>
+          ) : null
+        }
+        refreshing={isLoading}
+        onRefresh={refetch}
+        initialNumToRender={2}
+        onEndReached={() => fetchNextPage()}
+        onEndReachedThreshold={0.3}
+        style={styles.container}
+        contentContainerStyle={[styles.contentContainer, { paddingTop: top }]}
+        data={list as BaseNotification[]}
+        keyExtractor={(item: BaseNotification) => item.id}
+        renderItem={({ item }) => (
+          <Notification
+            onPress={() => onPressHandler(item)}
+            key={item.id}
+            {...item}
+          />
+        )}
+      />
     </MainWrapper>
   );
 };
