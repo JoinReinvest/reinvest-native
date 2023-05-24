@@ -6,4 +6,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 10,
   },
+  contentContainer: { maxWidth: '100%' },
+  container: { width: '100%' },
 });
