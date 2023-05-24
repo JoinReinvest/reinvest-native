@@ -16,6 +16,7 @@ export const RadioButton = <T extends string>({ value, checked, onPress, radioSt
       id={value}
       style={[styles.radio, radioStyles]}
       onPress={handlePress}
+      pointerEvents={onPress ? 'auto' : 'none'}
     >
       <Icon
         icon={icon}

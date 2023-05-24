@@ -19,6 +19,7 @@ import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
 
+const shortFormatIntervals = [RecurringInvestmentFrequency.Monthly, RecurringInvestmentFrequency.Quarterly];
 export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_DEPOSIT_SCHEDULE,
   willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
@@ -61,16 +62,18 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
                 label="From"
                 value={`${source}\n${bankAccount?.accountNumber || ''}`}
               />
-              <SummaryDetail
-                label="Frequency"
-                value={`${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment?.interval || RecurringInvestmentFrequency.Weekly)}: ${formatDate(
-                  data?.schedule.startDate,
-                  'INVESTMENT_FREQUENCY_LONG',
-                  {
-                    currentFormat: 'API',
-                  },
-                )}`}
-              />
+              {!!recurringInvestment?.interval && (
+                <SummaryDetail
+                  label="Frequency"
+                  value={`${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment.interval || RecurringInvestmentFrequency.Weekly)}: ${formatDate(
+                    data?.schedule.startDate,
+                    shortFormatIntervals.includes(recurringInvestment.interval) ? 'INVESTMENT_FREQUENCY_SHORT' : 'INVESTMENT_FREQUENCY_LONG',
+                    {
+                      currentFormat: 'API',
+                    },
+                  )}`}
+                />
+              )}
               <SummaryDetail
                 label="Starting on "
                 value={formatDate(data.schedule.startDate, 'INVESTMENT_RECURRENT', { currentFormat: 'DEFAULT' })}
