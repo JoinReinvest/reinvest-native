@@ -109,7 +109,9 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogItem) 
           numberOfLines={1}
           adjustsFontSizeToFit
           variant="h1"
-        >{`$${amount.toFixed(2)}`}</StyledText>
+        >
+          {amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+        </StyledText>
       </Row>
       <StyledText
         color="dark3"
