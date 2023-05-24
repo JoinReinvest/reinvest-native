@@ -8,16 +8,25 @@ import { useLogInNavigation } from '../../../navigation/hooks';
 import { LogInStackParamList } from '../../../navigation/LogInNavigator/types';
 import { DialogProvider } from '../../../providers/DialogProvider';
 import { useOnboardingFormFlow } from '../flow-steps';
+import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 
 interface Props {
   shouldShowFooter?: boolean;
 }
 export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
-  const { CurrentStepView } = useOnboardingFormFlow();
+  const {
+    CurrentStepView,
+    meta: { currentStepIdentifier },
+  } = useOnboardingFormFlow();
   const navigation = useLogInNavigation();
 
-  useStepBackOverride<OnboardingFormFields, LogInStackParamList>(useOnboardingFormFlow, navigation);
+  useStepBackOverride<OnboardingFormFields, LogInStackParamList>(
+    useOnboardingFormFlow,
+    navigation,
+    true,
+    currentStepIdentifier === Identifiers.CONGRATULATIONS,
+  );
   useKeyboardAware();
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
@@ -8,8 +8,10 @@ import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
+import { Icon } from '../../../components/Icon';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { currentAccount, useAtom } from '../../../store/atoms';
@@ -25,6 +27,23 @@ export const StepCongratulations: StepParams<OnboardingFormFields> = {
     const { refetch } = useGetUserProfile(getApiClient);
     const { data: accounts } = useGetAccountsOverview(getApiClient);
     const [account, setAccountAtom] = useAtom(currentAccount);
+    const { setOptions, goBack } = useLogInNavigation();
+
+    useLayoutEffect(() => {
+      setOptions({
+        headerLeft: () => (
+          <Icon
+            color={palette.pureWhite}
+            icon="hamburgerClose"
+            onPress={() =>
+              storeFields.initialInvestment
+                ? reset({ index: 0, routes: [{ name: Screens.Investing, params: { initialInvestment: true, accountId: account.id } }] })
+                : goBack()
+            }
+          />
+        ),
+      });
+    }, [account.id, goBack, reset, setOptions, storeFields.initialInvestment]);
 
     useEffect(() => {
       if (!account) {
