@@ -83,10 +83,7 @@ export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onCl
           navigation={navigation}
         />
       </View>
-      <Box
-        mt={isIOS ? '56' : '12'}
-        style={{ flex: 1 }}
-      >
+      <Box style={{ flex: 1 }}>
         <ApplicantGeneralForm
           onContinue={onContinue}
           isVisible={currentStep === 0}

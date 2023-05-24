@@ -15,7 +15,6 @@ export const styles = StyleSheet.create({
   bottomBordered: { borderBottomWidth: 1, borderBottomColor: palette.dark2 },
 
   headerWrapper: {
-    position: 'absolute',
     top: isIOS ? 0 : -STATUS_BAR,
     left: 0,
     right: 0,
