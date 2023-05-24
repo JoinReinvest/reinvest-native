@@ -16,7 +16,6 @@ export const SwitchAccountItem = ({ id, selected = false, onPress, ...rest }: Sw
         />
         <RadioButton
           checked={selected}
-          onPress={onPress}
           value={id}
         />
       </Row>
