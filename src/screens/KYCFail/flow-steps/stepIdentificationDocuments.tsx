@@ -12,6 +12,7 @@ import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
+import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FilePicker } from '../../../components/FilePicker';
@@ -87,26 +88,21 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       const shouldUpdateName = !isEqual(updatedName, name);
       const shouldUpdateDateOfBirth = !!(formattedUpdatedDateOfBirth && formattedUpdatedDateOfBirth !== dateOfBirth);
       const shouldUpdateSSN = !!(updatedSSN && updatedSSN !== ssn);
-      const shouldUpdateAddress = updatedAddress && address ? !isEqual(updatedAddress, address) : false;
+      const shouldUpdateAddress = updatedAddress && address ? !isEqual({ ...updatedAddress, country: 'USA' }, { ...address }) : false;
       const idScan = await convertFiles();
 
       const input: UpdateProfileForVerificationInput = {
         ...(shouldUpdateName ? { name: updatedName } : {}),
         ...(shouldUpdateDateOfBirth ? { dateOfBirth: { dateOfBirth: formattedUpdatedDateOfBirth } } : {}),
         ...(shouldUpdateSSN ? { ssn: { ssn: updatedSSN } } : {}),
-        ...(shouldUpdateAddress ? { address: updatedAddress as AddressInput } : {}),
+        ...(shouldUpdateAddress ? { address: { ...updatedAddress, country: 'USA' } as AddressInput } : {}),
         ...(didFilesChange && idScan.length ? { idScan } : {}),
       };
 
-      try {
-        await updateProfile({ input });
-      } catch (err) {
-        if (err instanceof Error) {
-          throw err;
-        }
-      } finally {
-        moveToNextStep();
-      }
+      await updateProfile({ input });
+      queryClient.invalidateQueries(['getProfile']);
+
+      return moveToNextStep();
     };
 
     const handleSelectFiles = (files: (DocumentPickerResponse | Asset)[]) => {
