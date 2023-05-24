@@ -27,7 +27,7 @@ export const AccountOverview = ({ summaryValue }: AccountOverviewProps) => {
           variant="paragraphLarge"
           color="dark3"
         >
-          Amount value
+          Account Value
         </StyledText>
       </Box>
       <Row alignItems="flex-end">
