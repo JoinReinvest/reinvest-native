@@ -1,10 +1,10 @@
 import { BankAccount } from 'reinvest-app-common/src/types/graphql';
 
-import Screens from '../../navigation/screens';
+import { BankAccountSourceScreens } from '../../navigation/LogInNavigator/types';
 
 export interface BankAccountFormFields {
   accountId?: string;
   bankAccount?: BankAccount;
   isUpdatingAccount?: boolean;
-  sourceScreen?: Screens.Investing;
+  sourceScreen?: BankAccountSourceScreens;
 }

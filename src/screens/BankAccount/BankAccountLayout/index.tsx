@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { HeaderAvatar } from '../../../components/HeaderAvatar';
 import { HeaderCancel } from '../../../components/HeaderCancel';
@@ -22,9 +22,8 @@ interface Props {
  * Add identifiers for skipping cancel element Probably will be Identifiers.PLAID , Identifiers.ACCOUNT_SELECTION
  */
 
-const stepsWithCancelOption: Identifiers[] = [];
+const stepsWithCancelOption: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
 const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID];
-const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
 export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }: Props) => {
   const {
     resetStoreFields,
@@ -41,21 +40,19 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
   }, [navigation, resetStoreFields]);
 
   const getLeftHeader = useCallback(() => {
-    if (initialInvestment) {
-      return () => (
-        <Icon
-          icon={'hamburgerClose'}
-          onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
-        />
-      );
-    }
+    return () => (
+      <Icon
+        icon={'hamburgerClose'}
+        onPress={() => {
+          if (initialInvestment) {
+            return navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+          }
 
-    if (stepsWithoutBack.includes(currentStepIdentifier as Identifiers)) {
-      return () => null;
-    }
-
-    return undefined;
-  }, [initialInvestment, navigation, currentStepIdentifier]);
+          return navigation.goBack();
+        }}
+      />
+    );
+  }, [initialInvestment, navigation]);
 
   const getRightHeader = useCallback(() => {
     if (stepsWithCancelOption.includes(currentStepIdentifier as Identifiers)) {
@@ -69,7 +66,7 @@ export const BankAccountLayout = ({ shouldShowFooter = true, initialInvestment }
     return () => <HeaderCancel onPress={onCancel} />;
   }, [currentStepIdentifier, initialInvestment, onCancel]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerShown: !stepsWithoutHeader.includes(currentStepIdentifier as Identifiers),
       headerRight: getRightHeader(),
