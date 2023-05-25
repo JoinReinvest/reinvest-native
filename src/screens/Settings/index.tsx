@@ -84,6 +84,8 @@ export const Settings = () => {
     [account.type, listAccountTypesUserCanOpen],
   );
 
+  const showAddAnotherAccount = !!listAccountTypesUserCanOpen?.includes(AccountType.Individual || AccountType.Trust || AccountType.Corporate);
+
   const signOut = () => {
     setSignOutLoading(true);
     actions.signOut(() => {
@@ -137,11 +139,13 @@ export const Settings = () => {
                 onPress={() => navigate(Screens.AddBeneficiary)}
               />
             )}
-            <NavigationButton
-              startIcon="addUser"
-              label="Add Another Account"
-              onPress={() => navigate(Screens.Onboarding)}
-            />
+            {showAddAnotherAccount && (
+              <NavigationButton
+                startIcon="addUser"
+                label="Add Another Account"
+                onPress={() => navigate(Screens.Onboarding)}
+              />
+            )}
             <View style={styles.separator} />
             <NavigationButton
               startIcon="friendsAndFamily"
