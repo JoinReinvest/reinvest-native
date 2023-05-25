@@ -7,6 +7,7 @@ import { AccountType, ActionName, UpdateStakeholderForVerificationInput, Verific
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -35,7 +36,11 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual;
   },
 
-  Component: ({ storeFields: { _actions, stakeholders, accountId }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({
+    storeFields: { _actions, stakeholders, accountId, accountType },
+    updateStoreFields,
+    moveToNextStep,
+  }: StepComponentProps<KYCFailedFormFields>) => {
     const { mutateAsync: updateStakeholderMutate } = useUpdateStakeholderForVerification(getApiClient);
     const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
     const updatedApplicantsRef = useRef<Applicant[]>([]);
@@ -96,13 +101,17 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     const handleSubmit = async () => {
       const stakeholdersToUpdate = updatedApplicantsRef.current.map(mapApplicantToApiStakeholder);
 
-      if (!stakeholdersToUpdate) return;
-
       await Promise.all(
         stakeholdersToUpdate.map(async stakeholder =>
           updateStakeholderMutate({ accountId, stakeholderId: stakeholder.id ?? '', input: stakeholder as UpdateStakeholderForVerificationInput }),
         ),
       );
+
+      if (accountType === AccountType.Corporate) {
+        queryClient.invalidateQueries(['getCorporateAccount']);
+      } else if (accountType === AccountType.Trust) {
+        queryClient.invalidateQueries(['getTrustAccount']);
+      }
 
       moveToNextStep();
     };
@@ -138,37 +147,41 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
             headline="Verify your applicant's details and edit if necessary"
           />
           <Box mb="20">
-            {indexedStakeholderApplicants.map(applicant => (
-              <Box
-                fw
-                mb="16"
-                key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
-              >
-                <Row
-                  style={styles.stakeholderRow}
-                  mb="8"
+            {indexedStakeholderApplicants.map(applicant => {
+              const showError = !updatedApplicantsRef.current.some(app => app.id === applicant.id) && stakeholderVerificationActions?.includes(applicant.id);
+
+              return (
+                <Box
+                  fw
+                  mb="16"
+                  key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
                 >
-                  <StyledText color="pureWhite">
-                    {applicant.firstName} {applicant.lastName}
-                  </StyledText>
-                  <Icon
-                    icon="edit"
-                    color={palette.pureWhite}
-                    onPress={() => onEditApplicant(applicant)}
-                  />
-                </Row>
-                {stakeholderVerificationActions?.includes(applicant.id) && (
-                  <Row fw>
-                    <StyledText
-                      color="error"
-                      variant="paragraphSmall"
-                    >
-                      Review applicant details for accuracy
+                  <Row
+                    style={styles.stakeholderRow}
+                    mb="8"
+                  >
+                    <StyledText color="pureWhite">
+                      {applicant.firstName} {applicant.lastName}
                     </StyledText>
+                    <Icon
+                      icon="edit"
+                      color={palette.pureWhite}
+                      onPress={() => onEditApplicant(applicant)}
+                    />
                   </Row>
-                )}
-              </Box>
-            ))}
+                  {showError && (
+                    <Row fw>
+                      <StyledText
+                        color="error"
+                        variant="paragraphSmall"
+                      >
+                        Review applicant details for accuracy
+                      </StyledText>
+                    </Row>
+                  )}
+                </Box>
+              );
+            })}
           </Box>
         </PaddedScrollView>
         <View
