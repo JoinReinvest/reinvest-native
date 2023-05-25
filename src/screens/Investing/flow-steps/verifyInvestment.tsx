@@ -38,7 +38,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
 
     const { setActiveAccount, activeAccount } = useCurrentAccount();
     const { data: accounts } = useGetAccountsOverview(getApiClient);
-    const { navigate } = useLogInNavigation();
+    const { navigate, pop } = useLogInNavigation();
     const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
@@ -68,6 +68,8 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
             setActiveAccount(account);
           }
         }
+
+        pop(accounts && accounts?.length > 1 ? 2 : 1);
       };
 
       openDialog(
@@ -83,8 +85,6 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
             <HeaderWithLogo
               onClose={() => {
                 setCurrentAccountAfterSuccess();
-
-                navigate(Screens.Dashboard);
               }}
             />
           ),

@@ -93,7 +93,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
           <Button
             isLoading={isLoading}
             onPress={onSubmit}
-            disabled={isLoading}
+            disabled={isLoading || !amount}
           >
             Continue
           </Button>
