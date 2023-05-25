@@ -11,7 +11,6 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
-import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
@@ -63,6 +62,8 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
         await resetStoreFields();
         goBack();
       }
+
+      await updateStoreFields({ recurringInvestment: undefined, isRecurringInvestment: false });
 
       moveToNextStep();
     };

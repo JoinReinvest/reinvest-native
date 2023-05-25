@@ -118,7 +118,7 @@ export const Agreements: StepParams<InvestFormFields> = {
               </StyledText>
             </RadioButton>
           )}
-          {!!storeFields.recurringInvestment && (
+          {!!storeFields.recurringInvestmentId && (
             <RadioButton
               radioStyles={styles.agreementsRadioStyles}
               value={'recurringAgreement'}

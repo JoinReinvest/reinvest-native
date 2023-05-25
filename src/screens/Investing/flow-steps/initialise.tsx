@@ -27,7 +27,7 @@ export const Initialise: StepParams<InvestFormFields> = {
 
     const { data, error, isLoading } = useReadBankAccount(getApiClient, { accountId: storeFields.accountId });
     const { accountConfig } = useCurrentAccountConfig(storeFields.accountId);
-    const { data: activeRecurringInvestment, isLoading: getRecurringInvestmentLoading } = useGetActiveRecurringInvestment(getApiClient, {
+    const { data: activeRecurringInvestment } = useGetActiveRecurringInvestment(getApiClient, {
       accountId: storeFields.accountId,
     });
 
@@ -38,11 +38,11 @@ export const Initialise: StepParams<InvestFormFields> = {
 
       if (data) {
         (async () => {
-          await updateStoreFields({ bankAccount: data, automaticDividendReinvestmentAgreement: accountConfig?.automaticDividendReinvestmentAgreement.signed });
+          await updateStoreFields({ bankAccount: data, automaticDividendReinvestmentAgreement: accountConfig?.automaticDividendReinvestmentAgreement?.signed });
           moveToNextStep();
         })();
       }
-    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, data, error, moveToNextStep, navigate, storeFields.accountId, updateStoreFields]);
+    }, [accountConfig?.automaticDividendReinvestmentAgreement?.signed, data, error, moveToNextStep, navigate, storeFields.accountId, updateStoreFields]);
 
     useEffect(() => {
       if (params?.bankAccount) {
@@ -53,13 +53,13 @@ export const Initialise: StepParams<InvestFormFields> = {
           moveToNextStep();
         })();
       }
-    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, moveToNextStep, params, updateStoreFields]);
+    }, [accountConfig?.automaticDividendReinvestmentAgreement?.signed, moveToNextStep, params, updateStoreFields]);
 
     useEffect(() => {
       if (accountConfig) {
         (async () => {
           await updateStoreFields({
-            automaticDividendReinvestmentAgreement: accountConfig?.automaticDividendReinvestmentAgreement.signed,
+            automaticDividendReinvestmentAgreement: accountConfig?.automaticDividendReinvestmentAgreement?.signed,
           });
         })();
       }
@@ -74,7 +74,7 @@ export const Initialise: StepParams<InvestFormFields> = {
           });
         })();
       }
-    }, [accountConfig?.automaticDividendReinvestmentAgreement.signed, activeRecurringInvestment, updateStoreFields]);
+    }, [accountConfig?.automaticDividendReinvestmentAgreement?.signed, activeRecurringInvestment, updateStoreFields]);
 
     return isLoading ? (
       <Box
