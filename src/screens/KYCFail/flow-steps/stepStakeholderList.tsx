@@ -35,7 +35,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual;
   },
 
-  Component: ({ storeFields: { stakeholders, accountId }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({ storeFields: { _actions, stakeholders, accountId }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
     const { mutateAsync: updateStakeholderMutate } = useUpdateStakeholderForVerification(getApiClient);
     const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
     const updatedApplicantsRef = useRef<Applicant[]>([]);
@@ -126,6 +126,9 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
         );
       }
     };
+    const stakeholderVerificationActions = _actions
+      ?.filter(action => action.onObject.type === VerificationObjectType.Stakeholder)
+      .map(action => action.onObject.stakeholderId);
 
     return (
       <>
@@ -136,19 +139,35 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
           />
           <Box mb="20">
             {indexedStakeholderApplicants.map(applicant => (
-              <Row
-                style={styles.stakeholderRow}
+              <Box
+                fw
+                mb="16"
                 key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
               >
-                <StyledText color="pureWhite">
-                  {applicant.firstName} {applicant.lastName}
-                </StyledText>
-                <Icon
-                  icon="edit"
-                  color={palette.pureWhite}
-                  onPress={() => onEditApplicant(applicant)}
-                />
-              </Row>
+                <Row
+                  style={styles.stakeholderRow}
+                  mb="8"
+                >
+                  <StyledText color="pureWhite">
+                    {applicant.firstName} {applicant.lastName}
+                  </StyledText>
+                  <Icon
+                    icon="edit"
+                    color={palette.pureWhite}
+                    onPress={() => onEditApplicant(applicant)}
+                  />
+                </Row>
+                {stakeholderVerificationActions?.includes(applicant.id) && (
+                  <Row fw>
+                    <StyledText
+                      color="error"
+                      variant="paragraphSmall"
+                    >
+                      Review applicant details for accuracy
+                    </StyledText>
+                  </Row>
+                )}
+              </Box>
             ))}
           </Box>
         </PaddedScrollView>
