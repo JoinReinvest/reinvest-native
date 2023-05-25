@@ -120,7 +120,7 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
           />
           <FilePicker
             dark
-            label="Upload Files"
+            label={selectedFiles.length ? 'Add Additional Files' : 'Upload Files'}
             onSelect={setSelectedFiles}
             type="multi"
             selectionLimit={5}

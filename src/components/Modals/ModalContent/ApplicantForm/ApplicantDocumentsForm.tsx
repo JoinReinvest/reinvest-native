@@ -57,7 +57,7 @@ export const ApplicantDocumentsForm = ({ isVisible, onContinue, defaultValues }:
         />
         <FilePicker
           dark
-          label="Upload Files"
+          label={document.length ? 'Add Additional Files' : 'Upload Files'}
           onSelect={setDocument}
           type="multi"
           state={document}
