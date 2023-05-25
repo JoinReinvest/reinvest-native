@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
-import { ActionName, VerificationAction, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, ActionName, VerificationAction, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -17,7 +17,7 @@ import { KYCFailedFormFields } from '../types';
 export const StepReverify: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_VERIFICATION_FAILED,
 
-  Component: ({ storeFields: { _actions, accountId }, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({ storeFields: { _actions, accountId, accountType }, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
     const { mutateAsync, isLoading } = useVerifyAccount(getApiClient);
     const { navigate } = useLogInNavigation();
 
@@ -39,9 +39,13 @@ export const StepReverify: StepParams<KYCFailedFormFields> = {
       }
 
       if (failedVerificationObjects.includes(VerificationObjectType.Stakeholder)) {
-        return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+        if (accountType === AccountType.Corporate) {
+          return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+        }
+
+        return moveToStepByIdentifier(Identifiers.TRUSTEES_VERIFICATION_FAILED);
       }
-    }, [accountId, moveToStepByIdentifier, mutateAsync, navigate, updateStoreFields]);
+    }, [accountId, accountType, moveToStepByIdentifier, mutateAsync, navigate, updateStoreFields]);
 
     useEffect(() => {
       // if there are no actions that can be automatically verified return to dashboard and cancel the investment
