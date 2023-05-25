@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
 import zod, { Schema } from 'zod';
 
@@ -20,17 +20,27 @@ import { styles } from './styles';
 
 export type Fields = Pick<LoginFormFields, 'authenticationCode'>;
 
+const schema: Schema<Fields> = zod.object({
+  authenticationCode: formValidationRules.authenticationCode,
+});
+
+const maskPhoneNumber = (phoneNumber: string) => {
+  const lastTwoDigits = phoneNumber.slice(-2);
+
+  if (phoneNumber.length > 9) {
+    return `(xxx) xxx-xx${lastTwoDigits}`;
+  }
+
+  return `(xxx) xxx-x${lastTwoDigits}`;
+};
+
 export const StepCheckYourPhone: StepParams<LoginFormFields> = {
   identifier: Identifiers.PHONE_AUTHENTICATION,
 
   Component: ({ storeFields }: StepComponentProps<LoginFormFields>) => {
     const { actions, loading, user } = useAuth();
-
-    const schema: Schema<Fields> = zod.object({
-      authenticationCode: formValidationRules.authenticationCode,
-    });
+    const [infoMessage, setInfoMessage] = useState('');
     const [error, setError] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
 
     const { formState, handleSubmit, control } = useForm<LoginFormFields>({
       defaultValues: storeFields,
@@ -45,23 +55,20 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
       }
     };
 
+    const resendCodeOnClick = async () => {
+      try {
+        await actions.signIn(storeFields.email, storeFields.password);
+
+        setInfoMessage('Code has been sent');
+      } catch (err) {
+        setError((err as Error).message);
+      }
+    };
+
     const shouldButtonBeDisabled = !formState.isValid || loading;
 
-    useEffect(() => {
-      if (user) {
-        user.getUserAttributes((err, attributes) => {
-          if (err instanceof Error) {
-            setError(err.message);
-
-            return;
-          }
-
-          const phoneNumber = attributes?.find(attr => attr.Name === 'phone_number')?.Value ?? '';
-          const maskedPhoneNumber = `(xxx) xxxx-xx${phoneNumber.slice(-2)}`;
-          setPhoneNumber(maskedPhoneNumber);
-        });
-      }
-    }, [user]);
+    // @ts-expect-error - cognito wraps the CognitoUser class
+    const phoneNumber = maskPhoneNumber(user.challengeParam?.CODE_DELIVERY_DESTINATION);
 
     return (
       <>
@@ -75,6 +82,12 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
             <FormMessage
               message={error}
               variant="error"
+            />
+          )}
+          {infoMessage && (
+            <FormMessage
+              message={infoMessage}
+              variant="info"
             />
           )}
           <Controller
@@ -92,12 +105,14 @@ export const StepCheckYourPhone: StepParams<LoginFormFields> = {
             <StyledText
               variant="link"
               color="frostGreen"
+              onPress={resendCodeOnClick}
             >
               Resend Code
             </StyledText>
             <StyledText
               variant="link"
               color="frostGreen"
+              onPress={() => Linking.openURL('mailto:support@reinvestcommunity.com')}
             >
               Get Help
             </StyledText>
