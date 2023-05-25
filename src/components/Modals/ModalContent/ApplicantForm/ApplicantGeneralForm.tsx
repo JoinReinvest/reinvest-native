@@ -71,7 +71,7 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
           onSubmit={handleSubmit(onSubmit)}
           control={control}
           fieldName="dateOfBirth"
-          inputProps={{ placeholder: 'Date of birth', maskedPlaceholder: 'MM/DD/YYYY', dark: true, mask: Masks.DATE_MMDDYYYY }}
+          inputProps={{ keyboardType: 'numeric', placeholder: 'Date of birth', maskedPlaceholder: 'MM/DD/YYYY', dark: true, mask: Masks.DATE_MMDDYYYY }}
         />
         <Controller
           onSubmit={handleSubmit(onSubmit)}
