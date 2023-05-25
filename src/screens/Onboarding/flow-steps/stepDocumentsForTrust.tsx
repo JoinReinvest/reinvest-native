@@ -149,7 +149,7 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
           <FilePicker
             state={selectedFiles}
             dark
-            label="Upload Files"
+            label={selectedFiles.length ? 'Add Additional Files' : 'Upload Files'}
             onSelect={setSelectedFiles}
             type="multi"
           />

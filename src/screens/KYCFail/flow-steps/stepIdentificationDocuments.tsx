@@ -140,7 +140,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
           />
           <FilePicker
             dark
-            label="Upload Files"
+            label={selectedFiles.length ? 'Add Additional Files' : 'Upload Files'}
             onSelect={handleSelectFiles}
             type="multi"
             selectionLimit={5}
