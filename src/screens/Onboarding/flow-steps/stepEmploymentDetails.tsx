@@ -81,10 +81,8 @@ export const StepEmploymentDetails: StepParams<OnboardingFormFields> = {
         return;
       }
 
-      const industryValue = INDUESTRIES_AS_OPTIONS.find(industry => industry.label === employer.industry)?.value ?? '';
-
       await updateStoreFields({
-        employer: { ...employer, industry: industryValue },
+        employer: { ...employer, industry: employer.industry },
       });
 
       if (storeFields.accountId && employer?.nameOfEmployer && employer?.title && employer?.industry) {
