@@ -98,6 +98,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
               dark: true,
               keyboardType: 'numeric',
               mask: Masks.DATE_MMDDYYYY,
+              maxLength: 10,
             }}
           />
           <Box
