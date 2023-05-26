@@ -52,7 +52,7 @@ const stackOptions: Record<
 > = {
   [Screens.Onboarding]: {
     title: 'logo',
-    headerShown: false,
+    header: DarkScreenHeader,
   },
   [Screens.Investing]: {
     title: 'Investing',
