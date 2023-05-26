@@ -18,11 +18,12 @@ import { styles } from './styles';
 
 interface SearchViewProps extends InputProps {
   fillDetailsCallback: (option: Address) => void;
+  noPadding?: boolean;
   shouldDismissModal?: boolean;
   value?: string;
 }
 
-export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, dark = true, value, ...rest }: SearchViewProps) => {
+export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, dark = true, value, noPadding = false, ...rest }: SearchViewProps) => {
   const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState<string>(value || '');
   const [list, setList] = useState<AddressAsOption[]>([]);
@@ -73,7 +74,10 @@ export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, d
       pointerEvents={'box-none'}
       style={[styles.sheetContentWrapper, dark && styles.dark]}
     >
-      <Box px="default">
+      <Box
+        px={noPadding ? undefined : 'default'}
+        fw={noPadding}
+      >
         <Input
           dark
           ref={inputRef}

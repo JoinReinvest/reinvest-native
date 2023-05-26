@@ -94,6 +94,7 @@ export const ApplicantAddressForm = ({
             value={addressWatched || ''}
             placeholder={placeholders.addressLine1}
             fillDetailsCallback={fillFieldsFromPrediction}
+            noPadding
           />
         </PaddedScrollView>
       )}
