@@ -46,14 +46,15 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
+    const defaultValues = {
+      citizenshipCountry: getLabel(storeFields.citizenshipCountry),
+      birthCountry: getLabel(storeFields.birthCountry),
+      visaType: storeFields.visaType,
+    };
     const { formState, handleSubmit, watch, setValue } = useForm<Fields>({
       mode: 'all',
       resolver: zodResolver(schema),
-      defaultValues: {
-        citizenshipCountry: getLabel(storeFields.citizenshipCountry),
-        birthCountry: getLabel(storeFields.birthCountry),
-        visaType: storeFields.visaType,
-      },
+      defaultValues,
     });
 
     const { openDialog } = useDialog();
@@ -65,7 +66,7 @@ export const StepResidencyVisa: StepParams<OnboardingFormFields> = {
       const birthCountryValue = getValue(birthCountry);
 
       if (visaType && citizenshipCountryValue && birthCountryValue) {
-        await updateStoreFields({ domicile: { forVisa: { birthCountry: birthCountryValue, citizenshipCountry: citizenshipCountryValue, visaType } } });
+        await updateStoreFields({ birthCountry: birthCountryValue, citizenshipCountry: citizenshipCountryValue, visaType });
         await completeProfileMutate({
           input: {
             domicile: {
