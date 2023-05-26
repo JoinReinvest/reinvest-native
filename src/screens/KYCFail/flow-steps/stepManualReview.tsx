@@ -1,6 +1,7 @@
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { useAbortInvestment } from 'reinvest-app-common/src/services/queries/abortInvestment';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FormTitle } from '../../../components/Forms/FormTitle';
@@ -10,33 +11,44 @@ import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
+export const StepManualReview: StepParams<KYCFailedFormFields> = {
+  identifier: Identifiers.MANUAL_REVIEW,
 
-export const StepStakeholderManualReview: StepParams<KYCFailedFormFields> = {
-  identifier: Identifiers.STAKEHOLDER_MANUAL_REVIEW,
-
-  doesMeetConditionFields({ _actions }) {
-    const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
-    const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
-
-    return !!stakeholderVerificationAction && doesRequireManualReview;
+  doesMeetConditionFields({ fees, _bannedAction }) {
+    return !!fees && !_bannedAction;
   },
 
-  Component: ({ moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
-    const navigation = useLogInNavigation();
+  Component: ({
+    storeFields: { _oneTimeInvestmentId, _recurringInvestmentId, fees },
+    updateStoreFields,
+    moveToStepByIdentifier,
+  }: StepComponentProps<KYCFailedFormFields>) => {
+    const { navigate } = useLogInNavigation();
+    const { mutateAsync: abortInvestment } = useAbortInvestment(getApiClient);
 
     const handleSubmit = async () => {
       /*
-        - Submit Stakeholders for manual review
-        - Continue verification with next verification object
+        user approved fees, rerun validation
       */
-      moveToNextStep();
+
+      await updateStoreFields({ _approvedFees: true });
+      moveToStepByIdentifier(Identifiers.REVERIFY);
     };
 
-    const handleCancel = () => {
+    const handleCancel = async () => {
       /*
         Cancel the investment and navigate back to dashboard
       */
-      navigation.navigate(Screens.Dashboard);
+
+      if (_oneTimeInvestmentId) {
+        await abortInvestment({ investmentId: _oneTimeInvestmentId });
+      }
+
+      if (_recurringInvestmentId) {
+        await abortInvestment({ investmentId: _recurringInvestmentId });
+      }
+
+      navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
     };
 
     return (
@@ -50,8 +62,8 @@ export const StepStakeholderManualReview: StepParams<KYCFailedFormFields> = {
           </Box>
           <FormTitle
             dark
-            headline="Notice: $10 fee for manual verification"
-            description="As your applicants verification has failed twice, REINVEST needs to run a manual verification."
+            headline={`Notice: ${fees?.formatted} fee for manual verification`}
+            description="As your verification has failed twice, REINVEST needs to run a manual verification."
           />
         </PaddedScrollView>
         <Box

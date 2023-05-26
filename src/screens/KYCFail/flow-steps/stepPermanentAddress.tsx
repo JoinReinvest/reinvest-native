@@ -40,14 +40,14 @@ const getValueFromOption = (id: string) => STATES_AS_SELECT_OPTION.find(({ value
 export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_ADDRESS,
 
-  doesMeetConditionFields({ _actions, ...fields }) {
+  doesMeetConditionFields({ _actions, _forceManualReviewScreen, _bannedAction, ...fields }) {
     const { name, dateOfBirth } = fields;
 
     const requiredFields = [name?.firstName, name?.lastName, dateOfBirth];
     const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
     const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return !!profileVerificationAction && !doesRequireManualReview && allRequiredFieldsExists(requiredFields);
+    return !!profileVerificationAction && !doesRequireManualReview && allRequiredFieldsExists(requiredFields) && !_forceManualReviewScreen && !_bannedAction;
   },
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<KYCFailedFormFields>) => {

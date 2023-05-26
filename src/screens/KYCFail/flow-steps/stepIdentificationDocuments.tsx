@@ -28,12 +28,12 @@ import { KYCFailedFormFields } from '../types';
 export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.IDENTIFICATION_DOCUMENTS,
 
-  doesMeetConditionFields({ _actions, ...fields }) {
+  doesMeetConditionFields({ _actions, _forceManualReviewScreen, _bannedAction, ...fields }) {
     const requiredFields = [fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth];
     const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
     const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return allRequiredFieldsExists(requiredFields) && !!profileVerificationAction && !doesRequireManualReview;
+    return allRequiredFieldsExists(requiredFields) && !!profileVerificationAction && !doesRequireManualReview && !_forceManualReviewScreen && !_bannedAction;
   },
 
   Component: ({ storeFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
