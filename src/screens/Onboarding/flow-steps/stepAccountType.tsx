@@ -96,8 +96,6 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
       const existingDraft = draftAccountList?.find(draft => draft?.type === selectedAccountType);
 
       if (existingDraft) {
-        let draftAccountDetails;
-
         /*
         For each type of account we will need to map values to feed form
          */
@@ -106,7 +104,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
           case DraftAccountType.Individual:
             {
               const response = await refetchIndividualDraft();
-              draftAccountDetails = response.data;
+              const draftAccountDetails = response.data;
               await updateStoreFields({
                 accountType: existingDraft.type || undefined,
                 accountId: existingDraft?.id || undefined,
@@ -121,15 +119,14 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             break;
           case DraftAccountType.Trust:
             {
-              const response = await refetchTrustDraftAccount();
-              const trustDraftAccountData = response.data;
+              const { data: trustDraftAccountData } = await refetchTrustDraftAccount();
               await updateStoreFields({
                 ...storeFields,
                 accountType: existingDraft.type || undefined,
                 businessAddress: trustDraftAccountData?.details?.address as Address,
                 trustLegalName: trustDraftAccountData?.details?.companyName?.name as string,
                 trustType: trustDraftAccountData?.details?.companyType?.type as unknown as TrustCompanyTypeEnum,
-                ein: trustDraftAccountData?.details?.ein?.ein as string,
+                ein: trustDraftAccountData?.details?.ein?.ein || '',
                 accountId: trustDraftAccountData?.id || '',
                 fiduciaryEntityInformation: {
                   industry: trustDraftAccountData?.details?.industry?.value ?? '',
@@ -143,14 +140,13 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
             break;
           case DraftAccountType.Corporate:
             {
-              const response = await refetchCorporateDraft();
-              const corporateDraftAccount = response.data;
+              const { data: corporateDraftAccount } = await refetchCorporateDraft();
               await updateStoreFields({
                 ...storeFields,
                 accountType: existingDraft.type || undefined,
                 businessAddress: corporateDraftAccount?.details?.address as Address,
                 corporationType: corporateDraftAccount?.details?.companyType?.type || undefined,
-                ein: corporateDraftAccount?.details?.ein?.ein as string,
+                ein: corporateDraftAccount?.details?.ein?.ein || '',
                 accountId: corporateDraftAccount?.id || '',
                 corporationLegalName: corporateDraftAccount?.details?.companyName?.name || '',
                 documentsForCorporation: (corporateDraftAccount?.details?.companyDocuments as IdentificationDocuments) ?? [],
