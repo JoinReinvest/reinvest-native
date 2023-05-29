@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { LogInStackParamList } from 'navigation/LogInNavigator/types';
 import { useLayoutEffect } from 'react';
 import { Linking } from 'react-native';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
@@ -14,6 +13,7 @@ import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { StatusCircle } from '../../components/StatusCircle';
 import { TermsFooter } from '../../components/TermsFooter';
 import { useLogInNavigation } from '../../navigation/hooks';
+import { LogInStackParamList } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { currentAccount, useAtom } from '../../store/atoms';
 

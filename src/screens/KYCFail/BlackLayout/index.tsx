@@ -26,7 +26,7 @@ export const BlackLayout = () => {
   useStepBackOverride<KYCFailedFormFields, LogInStackParamList>(useKYCFailedFlow, navigation);
   useKeyboardAware();
 
-  const isOnManualReviewScreen = currentStepIdentifier === Identifiers.PROFILE_MANUAL_REVIEW || currentStepIdentifier === Identifiers.STAKEHOLDER_MANUAL_REVIEW;
+  const isOnManualReviewScreen = currentStepIdentifier === Identifiers.MANUAL_REVIEW;
 
   const headerLeft = () =>
     isOnManualReviewScreen ? null : (

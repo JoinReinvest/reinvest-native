@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useAbortInvestment } from 'reinvest-app-common/src/services/queries/abortInvestment';
+import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
 import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
 import { AccountType, ActionName, VerificationAction, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 
@@ -15,45 +17,104 @@ import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
 export const StepReverify: StepParams<KYCFailedFormFields> = {
-  identifier: Identifiers.PROFILE_VERIFICATION_FAILED,
+  identifier: Identifiers.REVERIFY,
 
-  Component: ({ storeFields: { _actions, accountId, accountType }, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
-    const { mutateAsync, isLoading } = useVerifyAccount(getApiClient);
+  doesMeetConditionFields({ _bannedAction, _forceManualReviewScreen }) {
+    return !_bannedAction && !_forceManualReviewScreen;
+  },
+
+  Component: ({
+    storeFields: { _actions, accountId, accountType, _oneTimeInvestmentId, _recurringInvestmentId, _approvedFees },
+    updateStoreFields,
+    moveToStepByIdentifier,
+  }: StepComponentProps<KYCFailedFormFields>) => {
+    const { mutateAsync, isLoading: isVerifying } = useVerifyAccount(getApiClient);
     const { navigate } = useLogInNavigation();
+    const { mutateAsync: abortInvestment } = useAbortInvestment(getApiClient);
+    const { data: investmentSummary, isLoading: isLoadingInvestmentSummary } = useGetInvestmentSummary(getApiClient, {
+      investmentId: _oneTimeInvestmentId ?? _recurringInvestmentId ?? '',
+    });
+
+    const isLoading = isVerifying || isLoadingInvestmentSummary;
+
+    const cancelInvestment = useCallback(async () => {
+      if (_oneTimeInvestmentId) {
+        await abortInvestment({ investmentId: _oneTimeInvestmentId });
+      }
+
+      if (_recurringInvestmentId) {
+        await abortInvestment({ investmentId: _recurringInvestmentId });
+      }
+    }, [_oneTimeInvestmentId, _recurringInvestmentId, abortInvestment]);
 
     const verifyAccount = useCallback(async () => {
       const verificationResponse = await mutateAsync({ accountId });
 
-      // verification succeeded return to investing:
-      if (verificationResponse?.canUserContinueTheInvestment || !verificationResponse?.requiredActions || !verificationResponse?.requiredActions.length) {
-        navigate(Screens.Investing, { validationSuccess: true });
+      // verification failed (banned profile or account) -> abort investment and re navigate to locked screen
+      const bannedAction = verificationResponse?.requiredActions?.find(
+        action => action?.action === ActionName.BanAccount || action?.action === ActionName.BanProfile,
+      );
+
+      if (bannedAction) {
+        await cancelInvestment();
+
+        return navigate(Screens.Locked, { action: bannedAction });
       }
 
-      await updateStoreFields({ _actions: (verificationResponse?.requiredActions ?? []) as VerificationAction[] });
+      // additional fees required and not yet accepted by user -> show require manual review screen
+      if (investmentSummary?.investmentFees && investmentSummary.investmentFees.value > 0 && !_approvedFees) {
+        await updateStoreFields({ fees: investmentSummary.investmentFees ?? undefined });
 
-      // verification failed rerun verifications flow
-      const failedVerificationObjects = verificationResponse?.requiredActions?.map(action => action?.onObject.type) ?? [];
-
-      if (failedVerificationObjects.includes(VerificationObjectType.Profile)) {
-        return moveToStepByIdentifier(Identifiers.PROFILE_VERIFICATION_FAILED);
+        return moveToStepByIdentifier(Identifiers.MANUAL_REVIEW);
       }
 
-      if (failedVerificationObjects.includes(VerificationObjectType.Stakeholder)) {
-        if (accountType === AccountType.Corporate) {
-          return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+      // additional fees accepted by user, verification succeeded  -> return to investing:
+      if (verificationResponse?.canUserContinueTheInvestment || verificationResponse?.isAccountVerified) {
+        return navigate(Screens.Investing, { validationSuccess: true });
+      }
+
+      // additional fees accepted by user, verification failed, updates required -> rerun kyc flows
+      const automaticUpdateActions = (verificationResponse?.requiredActions?.filter(
+        action => action?.action === ActionName.UpdateMember || action?.action === ActionName.UpdateMemberAgain,
+      ) ?? []) as VerificationAction[];
+
+      if (automaticUpdateActions.length) {
+        await updateStoreFields({ _actions: automaticUpdateActions });
+
+        const failedVerificationObjects = automaticUpdateActions.map(action => action?.onObject.type);
+
+        if (failedVerificationObjects.includes(VerificationObjectType.Profile)) {
+          return moveToStepByIdentifier(Identifiers.PROFILE_VERIFICATION_FAILED);
         }
 
-        return moveToStepByIdentifier(Identifiers.TRUSTEES_VERIFICATION_FAILED);
+        if (failedVerificationObjects.includes(VerificationObjectType.Stakeholder)) {
+          if (accountType === AccountType.Corporate) {
+            return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+          }
+
+          return moveToStepByIdentifier(Identifiers.TRUSTEES_VERIFICATION_FAILED);
+        }
       }
-    }, [accountId, accountType, moveToStepByIdentifier, mutateAsync, navigate, updateStoreFields]);
+
+      // additional fees accepted by user, verification failed, updates not allowed -> return to dashboard and abort the investment
+      navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+      await cancelInvestment();
+    }, [
+      mutateAsync,
+      accountId,
+      investmentSummary?.investmentFees,
+      _approvedFees,
+      navigate,
+      cancelInvestment,
+      updateStoreFields,
+      moveToStepByIdentifier,
+      accountType,
+    ]);
 
     useEffect(() => {
-      // if there are no actions that can be automatically verified return to dashboard and cancel the investment
-      if (_actions?.every(({ action }) => action === ActionName.RequireManualReview)) {
-        navigate(Screens.Dashboard);
-      } else {
-        verifyAccount();
-      }
+      (async () => {
+        await verifyAccount();
+      })();
     }, [_actions, navigate, verifyAccount]);
 
     return isLoading ? (

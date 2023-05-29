@@ -15,11 +15,11 @@ import { KYCFailedFormFields } from '../types';
 export const StepStakeholdersVerificationFailed: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.STAKEHOLDER_VERIFICATION_FAILED,
 
-  doesMeetConditionFields({ _actions, accountType }) {
+  doesMeetConditionFields({ _actions, accountType, _forceManualReviewScreen, _bannedAction }) {
     const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
     const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return accountType === AccountType.Corporate && !!stakeholderVerificationAction && !doesRequireManualReview;
+    return accountType === AccountType.Corporate && !!stakeholderVerificationAction && !doesRequireManualReview && !_forceManualReviewScreen && !_bannedAction;
   },
 
   Component: ({ storeFields: { accountId, accountType }, updateStoreFields, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {

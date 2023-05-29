@@ -7,6 +7,7 @@ import { AccountType, ActionName, UpdateStakeholderForVerificationInput, Verific
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -28,14 +29,18 @@ import { styles } from './styles';
 export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.STAKEHOLDER_LIST,
 
-  doesMeetConditionFields({ _actions, accountType }) {
+  doesMeetConditionFields({ _actions, accountType, _forceManualReviewScreen, _bannedAction }) {
     const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
     const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual;
+    return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual && !_forceManualReviewScreen && !_bannedAction;
   },
 
-  Component: ({ storeFields: { stakeholders, accountId, _actions }, updateStoreFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
+  Component: ({
+    storeFields: { _actions, stakeholders, accountId, accountType },
+    updateStoreFields,
+    moveToNextStep,
+  }: StepComponentProps<KYCFailedFormFields>) => {
     const { mutateAsync: updateStakeholderMutate } = useUpdateStakeholderForVerification(getApiClient);
     const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
     const updatedApplicantsRef = useRef<Applicant[]>([]);
@@ -49,6 +54,10 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
       _index: index,
     }));
 
+    const stakeholdersIdsRequiringUpdate = _actions
+      ?.filter(action => action.onObject.type === VerificationObjectType.Stakeholder)
+      .map(action => action.onObject.stakeholderId);
+
     const updateApplicants = async (submittedApplicant: Applicant, applicantIndex: number | undefined) => {
       const originalStakeholder = applicantIndex !== undefined ? stakeholders?.[applicantIndex] : null;
 
@@ -60,7 +69,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
       const { residentialAddress: originalResidentialAddress, idScan: originalIdScan, ...originalGeneralInformation } = originalStakeholder;
 
       // update only stakeholders that have changed
-      const didStakeholderAddressChange = !isEqual(originalResidentialAddress, updatedResidentialAddress);
+      const didStakeholderAddressChange = !isEqual({ ...originalResidentialAddress, country: 'USA' }, { ...updatedResidentialAddress, country: 'USA' });
       const didIdScansChange = !isEqual(originalIdScan, updatedIdScan);
       const didGeneralInformationChange = !isEqual(originalGeneralInformation, {
         ...updatedGeneralInformation,
@@ -94,20 +103,24 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     };
 
     const handleSubmit = async () => {
-      const stakeholdersIdsRequiringUpdate = _actions
-        ?.filter(action => action.onObject.type === VerificationObjectType.Stakeholder)
-        .map(action => action.onObject.stakeholderId);
+      if (!stakeholdersIdsRequiringUpdate?.length) {
+        return moveToNextStep();
+      }
 
-      if (stakeholdersIdsRequiringUpdate) {
-        const stakeholdersToUpdate = updatedApplicantsRef.current.map(mapApplicantToApiStakeholder);
+      const stakeholdersToUpdate = updatedApplicantsRef.current.map(mapApplicantToApiStakeholder);
 
-        await Promise.all(
-          stakeholdersIdsRequiringUpdate.map(async stakeholderId => {
-            const stakeholderToUpdate = (stakeholdersToUpdate.find(stakeholder => stakeholder.id === stakeholderId) ??
-              {}) as UpdateStakeholderForVerificationInput;
-            await updateStakeholderMutate({ accountId, stakeholderId: stakeholderId ?? '', input: stakeholderToUpdate });
-          }),
-        );
+      await Promise.all(
+        stakeholdersIdsRequiringUpdate.map(async stakeholderId => {
+          const stakeholderToUpdate = (stakeholdersToUpdate.find(stakeholder => stakeholder.id === stakeholderId) ??
+            {}) as UpdateStakeholderForVerificationInput;
+          await updateStakeholderMutate({ accountId, stakeholderId: stakeholderId ?? '', input: stakeholderToUpdate });
+        }),
+      );
+
+      if (accountType === AccountType.Corporate) {
+        queryClient.invalidateQueries(['getCorporateAccount']);
+      } else if (accountType === AccountType.Trust) {
+        queryClient.invalidateQueries(['getTrustAccount']);
       }
 
       moveToNextStep();
@@ -141,21 +154,44 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
             headline="Verify your applicant's details and edit if necessary"
           />
           <Box mb="20">
-            {indexedStakeholderApplicants.map(applicant => (
-              <Row
-                style={styles.stakeholderRow}
-                key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
-              >
-                <StyledText color="pureWhite">
-                  {applicant.firstName} {applicant.lastName}
-                </StyledText>
-                <Icon
-                  icon="edit"
-                  color={palette.pureWhite}
-                  onPress={() => onEditApplicant(applicant)}
-                />
-              </Row>
-            ))}
+            {indexedStakeholderApplicants.map(applicant => {
+              const doesRequireUpdate = stakeholdersIdsRequiringUpdate?.includes(applicant.id);
+              const showError = doesRequireUpdate && !updatedApplicantsRef.current.some(app => app.id === applicant.id);
+
+              return (
+                <Box
+                  fw
+                  mb="16"
+                  key={`${lowerCasedCorporationLegalName}-${applicant._index}`}
+                >
+                  <Row
+                    style={styles.stakeholderRow}
+                    mb="8"
+                  >
+                    <StyledText color="pureWhite">
+                      {applicant.firstName} {applicant.lastName}
+                    </StyledText>
+                    {doesRequireUpdate && (
+                      <Icon
+                        icon="edit"
+                        color={palette.pureWhite}
+                        onPress={() => onEditApplicant(applicant)}
+                      />
+                    )}
+                  </Row>
+                  {showError && (
+                    <Row fw>
+                      <StyledText
+                        color="error"
+                        variant="paragraphSmall"
+                      >
+                        Review applicant details for accuracy
+                      </StyledText>
+                    </Row>
+                  )}
+                </Box>
+              );
+            })}
           </Box>
         </PaddedScrollView>
         <View

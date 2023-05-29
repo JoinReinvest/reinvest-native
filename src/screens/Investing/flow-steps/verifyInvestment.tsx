@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
 import { useInitiateRecurringInvestment } from 'reinvest-app-common/src/services/queries/initiateRecurringInvestment';
 import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
 import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
@@ -42,6 +43,9 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
+    const { data: investmentSummary, isLoading: isLoadingInvestmentSummary } = useGetInvestmentSummary(getApiClient, {
+      investmentId: oneTimeInvestmentId ?? recurringInvestmentId ?? '',
+    });
     const isAlreadyStarted = useRef(false);
 
     const showSuccessDialog = useCallback(() => {
@@ -109,19 +113,28 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const validateAndStart = async () => {
       const response = await validateAccount({ accountId });
 
+      const feesValue = investmentSummary?.investmentFees?.value ?? 10;
+
       if (oneTimeInvestmentId || recurringInvestmentId) {
-        if (response?.canUserContinueTheInvestment) {
+        if (response?.canUserContinueTheInvestment && !feesValue) {
           await startInvestmentHandler();
-        } else if (response?.requiredActions) {
-          navigate(Screens.KYCFail, { actions: response.requiredActions as VerificationAction[] });
+        } else if (response?.requiredActions || feesValue > 0) {
+          navigate(Screens.KYCFail, {
+            actions: (response?.requiredActions ?? []) as VerificationAction[],
+            oneTimeInvestmentId,
+            recurringInvestmentId,
+            fees: investmentSummary?.investmentFees ?? undefined,
+          });
         }
       }
     };
 
     useLayoutEffect(() => {
-      validateAndStart();
+      if (!isLoadingInvestmentSummary) {
+        validateAndStart();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isLoadingInvestmentSummary]);
 
     useEffect(() => {
       /*

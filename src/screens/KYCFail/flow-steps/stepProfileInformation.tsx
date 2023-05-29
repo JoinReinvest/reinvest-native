@@ -31,11 +31,11 @@ const schema = z.object({
 export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.PROFILE_INFORMATION,
 
-  doesMeetConditionFields({ _actions }) {
+  doesMeetConditionFields({ _actions, _forceManualReviewScreen, _bannedAction }) {
     const profileVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Profile);
     const doesRequireManualReview = profileVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return !!profileVerificationAction && !doesRequireManualReview;
+    return !!profileVerificationAction && !doesRequireManualReview && !_forceManualReviewScreen && !_bannedAction;
   },
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<KYCFailedFormFields>) => {
