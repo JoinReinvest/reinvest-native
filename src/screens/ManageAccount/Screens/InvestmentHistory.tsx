@@ -1,12 +1,80 @@
 import React from 'react';
+import { FlatList } from 'react-native-gesture-handler';
+import { InvestmentStatus, InvestmentSummary } from 'reinvest-app-common/src/types/graphql';
 
-import { PaddedScrollView } from '../../../components/PaddedScrollView';
-import { StyledText } from '../../../components/typography/StyledText';
+import { Box } from '../../../components/Containers/Box/Box';
+import { InvestmentItem } from '../components/investmentItem';
+
+const investments: InvestmentSummary[] = [
+  {
+    id: '0',
+    tradeId: '12345',
+    amount: {
+      formatted: '$525.00',
+      value: 525,
+    },
+    createdAt: '2023-05-28',
+    investmentFees: {
+      formatted: '$10.00',
+      value: 10.0,
+    },
+    status: InvestmentStatus.InProgress,
+  },
+  {
+    id: '1',
+    tradeId: '12345',
+    amount: {
+      formatted: '$525.00',
+      value: 525,
+    },
+    createdAt: '2023-05-28',
+    investmentFees: {
+      formatted: '$10.00',
+      value: 10.0,
+    },
+    status: InvestmentStatus.InProgress,
+  },
+  {
+    id: '2',
+    tradeId: '12345',
+    amount: {
+      formatted: '$525.00',
+      value: 525,
+    },
+    createdAt: '2023-05-28',
+    investmentFees: {
+      formatted: '$10.00',
+      value: 10.0,
+    },
+    status: InvestmentStatus.InProgress,
+  },
+  {
+    id: '3',
+    tradeId: '12345',
+    amount: {
+      formatted: '$525.00',
+      value: 525,
+    },
+    createdAt: '2023-05-28',
+    investmentFees: {
+      formatted: '$10.00',
+      value: 10.0,
+    },
+    status: InvestmentStatus.InProgress,
+  },
+];
 
 export const InvestmentHistory = () => {
   return (
-    <PaddedScrollView>
-      <StyledText variant="h4">Investment History Screen</StyledText>
-    </PaddedScrollView>
+    <Box
+      pt="24"
+      fw
+    >
+      <FlatList
+        data={investments}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => <InvestmentItem {...item} />}
+      />
+    </Box>
   );
 };

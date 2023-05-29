@@ -45,10 +45,10 @@ const STATUS_LABEL: { [key in InvestmentStatus]: string } = {
 
 export const TradeSummary = ({
   route: {
-    params: { investmentId },
+    params: { investmentId, investmentSummary, heading = 'Manage Account' },
   },
 }: LogInProps<Screens.TradeSummary>) => {
-  const { data: summary, isLoading } = useGetInvestmentSummary(getApiClient, { investmentId });
+  const { data: summary, isLoading } = useGetInvestmentSummary(getApiClient, { investmentId: investmentId ?? '', config: { enabled: !investmentId } });
   const navigation = useLogInNavigation();
   const route = useRoute<LogInRouteProps<Screens.TradeSummary>>();
 
@@ -64,7 +64,7 @@ export const TradeSummary = ({
     [navigation],
   );
 
-  if (isLoading || !summary) {
+  if (!investmentSummary && (isLoading || !summary)) {
     return (
       <Box
         fw
@@ -76,7 +76,10 @@ export const TradeSummary = ({
     );
   }
 
-  const { tradeId, status, createdAt, amount } = summary;
+  const tradeId = investmentSummary?.tradeId ?? summary?.tradeId;
+  const status = investmentSummary?.status ?? summary?.status;
+  const createdAt = investmentSummary?.createdAt ?? summary?.createdAt;
+  const amount = investmentSummary?.amount ?? summary?.amount;
 
   return (
     <>
@@ -84,7 +87,7 @@ export const TradeSummary = ({
         navigation={navigation}
         route={route}
         options={{
-          title: 'Manage Account',
+          title: heading,
           headerRight: getRightHeader,
         }}
       />
@@ -96,12 +99,14 @@ export const TradeSummary = ({
           <Box mb="12">
             <StyledText variant="h5">Trade ID {tradeId}</StyledText>
           </Box>
-          <StyledText
-            variant="h6"
-            color="dark3"
-          >
-            {STATUS_LABEL[status]}
-          </StyledText>
+          {status && (
+            <StyledText
+              variant="h6"
+              color="dark3"
+            >
+              {STATUS_LABEL[status]}
+            </StyledText>
+          )}
         </Box>
         <Box
           fw
@@ -113,12 +118,14 @@ export const TradeSummary = ({
           />
           <Item
             title="Amount"
-            value={amount.formatted ?? ''}
+            value={amount?.formatted ?? ''}
           />
-          <Item
-            title="Status"
-            value={STATUS_LABEL[status]}
-          />
+          {status && (
+            <Item
+              title="Status"
+              value={STATUS_LABEL[status]}
+            />
+          )}
           {/* TODO: Replace bank account when implemented on backend */}
           <Item
             title="Bank Account"
