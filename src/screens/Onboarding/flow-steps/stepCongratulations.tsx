@@ -35,15 +35,26 @@ export const StepCongratulations: StepParams<OnboardingFormFields> = {
           <Icon
             color={palette.pureWhite}
             icon="hamburgerClose"
-            onPress={() =>
-              storeFields.initialInvestment
-                ? reset({ index: 0, routes: [{ name: Screens.Investing, params: { initialInvestment: true, accountId: account.id } }] })
-                : goBack()
-            }
+            onPress={async () => {
+              const response = await refetch();
+
+              if (!response.data?.isCompleted) {
+                return;
+              }
+
+              if (storeFields.initialInvestment) {
+                return reset({
+                  index: 0,
+                  routes: [{ name: Screens.BottomNavigator }],
+                });
+              }
+
+              return goBack();
+            }}
           />
         ),
       });
-    }, [account.id, goBack, reset, setOptions, storeFields.initialInvestment]);
+    }, [account.id, goBack, refetch, reset, setOptions, storeFields.initialInvestment]);
 
     useEffect(() => {
       if (!account) {
