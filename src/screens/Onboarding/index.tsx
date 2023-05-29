@@ -18,7 +18,7 @@ export const Onboarding = () => {
     <OnboardingFormFlowProvider
       initialStoreFields={{
         ...onBoardingFormFieldsInitialState,
-        ...getPreFiledValues(data?.details ? data?.details : undefined),
+        ...getPreFilledValues(data?.details ? data?.details : undefined),
         isCompletedProfile: data?.isCompleted || false,
         ...{
           name: { firstName: data?.details?.firstName || '', lastName: data?.details?.lastName || '', middleName: data?.details?.middleName || '' },
@@ -99,7 +99,7 @@ const parseStatementsToCompliance = (statements?: Statement[]) => {
   return { compliances: onBoardingFormFieldsInitialState.compliances };
 };
 
-const getPreFiledValues = (details?: ProfileDetails) => {
+const getPreFilledValues = (details?: ProfileDetails) => {
   if (details) {
     return {
       experience: details.experience,
