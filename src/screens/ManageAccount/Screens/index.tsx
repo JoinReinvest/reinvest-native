@@ -9,24 +9,27 @@ import Screens from '../../../navigation/screens';
 import { SCREENS_CONTENT } from '../constants';
 
 export const ManageAccountScreen = ({ navigation, route }: NativeStackScreenProps<LogInStackParamList, Screens.ManageAccount>) => {
-  const { identifier, heading, cancellable } = route.params;
+  const { options } = route.params;
 
   const getRightHeader = useMemo(
-    () => (cancellable ? () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} /> : undefined),
-    [cancellable, navigation],
+    () =>
+      options?.cancellable ? () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} /> : undefined,
+    [navigation, options?.cancellable],
   );
 
   return (
     <>
-      <ScreenHeader
-        options={{
-          title: heading,
-          headerRight: getRightHeader,
-        }}
-        route={route}
-        navigation={navigation}
-      />
-      <MainWrapper bottomSafe>{SCREENS_CONTENT[identifier]}</MainWrapper>
+      {options.hideHeader ? null : (
+        <ScreenHeader
+          options={{
+            title: options.label ?? 'Manage Account',
+            headerRight: getRightHeader,
+          }}
+          route={route}
+          navigation={navigation}
+        />
+      )}
+      <MainWrapper noPadding>{options?.identifier && SCREENS_CONTENT[options.identifier]}</MainWrapper>
     </>
   );
 };

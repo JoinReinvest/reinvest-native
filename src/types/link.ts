@@ -5,6 +5,7 @@ export interface Link {
   identifier: NavigationIdentifiers;
   label: string;
   cancellable?: boolean;
+  hideHeader?: boolean;
   showChevron?: boolean;
   startIcon?: Icons;
 }
