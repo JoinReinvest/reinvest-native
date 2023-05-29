@@ -25,9 +25,9 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
   willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
     const requiredFields = allRequiredFieldsExists([
+      fields.isRecurringInvestment,
       fields.recurringInvestment?.interval,
       fields.recurringInvestment?.recurringAmount,
-      fields.isRecurringInvestment,
     ]);
 
     return !!fields.isRecurringInvestment && requiredFields;

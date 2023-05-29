@@ -16,7 +16,7 @@ export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INVESTMENT,
   willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
-    return !fields.isActiveRecurring;
+    return !!fields._shouldDisplayRecurringInvestment;
   },
 
   Component: ({ moveToNextStep, updateStoreFields, storeFields }: StepComponentProps<InvestFormFields>) => {

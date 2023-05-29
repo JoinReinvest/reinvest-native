@@ -12,7 +12,6 @@ export interface InvestFormFields {
   bankAccount?: BankAccount;
   initialInvestment?: boolean;
   investAmount?: number;
-  isActiveRecurring?: boolean;
   isRecurringInvestment?: boolean;
   oneTimeInvestmentId?: string;
   recurringInvestment?: Partial<RecurringInvestmentDetails>;
