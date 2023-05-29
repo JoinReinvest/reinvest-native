@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { generateInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateInvestment } from 'reinvest-app-common/src/services/queries/createInvestment';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
+import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
+import { AccountType, RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
@@ -14,6 +15,7 @@ import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
+import { useCurrentAccountConfig } from '../../../hooks/useActiveAccountConfig';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -32,6 +34,11 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     const schema = useMemo(() => generateInvestmentSchema({ accountType: accountType || AccountType.Individual }), [accountType]);
     const [amount, setAmount] = useState<number | undefined>(investAmount);
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
+    const { refetch: refetchConfig, isLoading: configRefetching } = useCurrentAccountConfig(accountId);
+    const { refetch: refetchActiveRecurring, isLoading: activeRecurringRefetching } = useGetActiveRecurringInvestment(getApiClient, {
+      accountId,
+    });
+
     const [error, setError] = useState<string | undefined>();
 
     const validateInput = () => {
@@ -49,7 +56,14 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     const onSubmit = async () => {
       if (validateInput()) {
         const investmentId = await mutateAsync({ amount: { value: amount }, accountId });
-        await updateStoreFields({ investAmount: amount, oneTimeInvestmentId: investmentId });
+        const { data: config } = await refetchConfig();
+        const { data: activeRecurring } = await refetchActiveRecurring();
+        await updateStoreFields({
+          investAmount: amount,
+          oneTimeInvestmentId: investmentId,
+          automaticDividendReinvestmentAgreement: config?.automaticDividendReinvestmentAgreement?.signed,
+          _shouldDisplayRecurringInvestment: activeRecurring?.status !== RecurringInvestmentStatus.Active,
+        });
         moveToNextStep();
       }
     };
@@ -57,6 +71,8 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     const handleSkip = () => {
       moveToNextStep();
     };
+
+    const isRefetchingData = configRefetching || activeRecurringRefetching;
 
     return (
       <>
@@ -87,13 +103,14 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
           <Button
             onPress={handleSkip}
             variant={'outlined'}
+            disabled={isRefetchingData}
           >
             Skip
           </Button>
           <Button
             isLoading={isLoading}
             onPress={onSubmit}
-            disabled={isLoading || !amount}
+            disabled={isLoading || !amount || isRefetchingData}
           >
             Continue
           </Button>
