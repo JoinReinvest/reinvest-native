@@ -31,6 +31,8 @@ import { currentAccount, RESET, useAtom } from '../../store/atoms';
 import { NAVBAR_HEIGHT, yScale } from '../../utils/scale';
 import { styles } from './styles';
 
+const ACCOUNT_TO_OPEN = [AccountType.Individual, AccountType.Corporate, AccountType.Trust];
+
 export const Settings = () => {
   const { actions } = useAuth();
   const { navigate } = useLogInNavigation();
@@ -84,7 +86,7 @@ export const Settings = () => {
     [account.type, listAccountTypesUserCanOpen],
   );
 
-  const showAddAnotherAccount = !!listAccountTypesUserCanOpen?.includes(AccountType.Individual || AccountType.Trust || AccountType.Corporate);
+  const showAddAnotherAccount = listAccountTypesUserCanOpen?.some(acc => ACCOUNT_TO_OPEN.includes(acc as AccountType));
 
   const signOut = () => {
     setSignOutLoading(true);
