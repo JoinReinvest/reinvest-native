@@ -29,7 +29,7 @@ export const LinksSegment = ({ heading, links, disableSeparator = false, size, o
           >
             <NavigationButton
               size={size}
-              onPress={() => onPress(identifier, heading, cancellable)}
+              onPress={() => onPress(identifier, label, cancellable)}
               label={label}
             />
           </Box>

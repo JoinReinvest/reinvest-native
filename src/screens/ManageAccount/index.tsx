@@ -13,6 +13,7 @@ import { styles } from './styles';
 
 export const ManageAccountMainScreen = () => {
   const navigation = useLogInNavigation();
+
   const navigate = (identifier: NavigationIdentifiers, heading: string, cancellable?: boolean) =>
     navigation.navigate(Screens.ManageAccount, { identifier, heading, cancellable: cancellable });
 
