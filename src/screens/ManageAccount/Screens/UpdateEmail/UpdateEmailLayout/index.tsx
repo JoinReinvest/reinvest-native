@@ -42,7 +42,6 @@ export const UpdateEmailLayout = ({ shouldShowFooter = true }: Props) => {
     <>
       <MainWrapper
         noPadding
-        bottomSafe
         dark={isOnAuthCodeStep}
       >
         <Box fw>

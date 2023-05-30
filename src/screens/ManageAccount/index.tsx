@@ -9,6 +9,7 @@ import { styles } from './styles';
 
 export const ManageAccountMainScreen = () => {
   const navigation = useLogInNavigation();
+
   const navigate = (options: Partial<Link>) => navigation.navigate(Screens.ManageAccount, { options });
 
   return (

@@ -27,6 +27,7 @@ export const MANAGE_ACCOUNT_INVESTING: Link[] = [
   {
     identifier: NavigationIdentifiers.DIVIDEND_REINVESTING,
     label: 'Automatic Dividend Reinvesting',
+    title: 'Investing',
     cancellable: true,
   },
   {
@@ -48,7 +49,7 @@ export const MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY: Link[] = [
     identifier: NavigationIdentifiers.EMAIL_ADDRESS,
     label: 'Email Address',
     cancellable: true,
-    hideHeader: true,
+    headerShown: false,
   },
   {
     identifier: NavigationIdentifiers.PHONE_NUMBER,
