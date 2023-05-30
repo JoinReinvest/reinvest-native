@@ -66,3 +66,14 @@ Change flavour in android studio or schema to build proper version
   - types.ts for types
   - styles.ts for styling
 - ...more to come
+
+
+# Deployment 
+
+### iOS
+- Project is using xCode cloud for iOS deployment 
+- In order to change any values in env secrets , there is a need to convert desired .env file into base64 and overwrite xcode cloud secret.
+  - there are separate workflows for staging and integration environments
+- All necessary certs and profiles for production deployment can be delivered by your supervisor
+
+### Android (TBD)
