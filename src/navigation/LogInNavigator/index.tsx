@@ -115,7 +115,7 @@ export const LogInNavigator: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountLoading, accounts]);
 
-  if (!data)
+  if (!data) {
     return (
       <Box
         flex={1}
@@ -126,6 +126,7 @@ export const LogInNavigator: React.FC = () => {
         <Loader color={palette.pureBlack} />
       </Box>
     );
+  }
 
   return (
     <BottomSheetModalProvider>
