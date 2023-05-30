@@ -1,7 +1,7 @@
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import React, { PropsWithChildren } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -29,9 +29,11 @@ export const ScreenHeader = ({
   dark,
   options: { title, headerRight, headerLeft, headerShown },
   showGradient = true,
+  style,
 }: (NativeStackHeaderProps | BottomTabHeaderProps) & {
   dark?: boolean;
   showGradient?: boolean;
+  style?: StyleProp<ViewStyle>;
   title?: string | 'logo';
 }) => {
   const headerProps = { canGoBack: navigation.canGoBack(), tintColor: '' };
@@ -53,8 +55,11 @@ export const ScreenHeader = ({
   }
 
   return (
-    <CustomHeader dark={dark}>
-      {showGradient && (
+    <CustomHeader
+      dark={dark}
+      style={style}
+    >
+      {!dark && showGradient && (
         <LinearGradient
           colors={gradients.headerGradient}
           style={{ ...StyleSheet.absoluteFillObject }}

@@ -72,7 +72,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   return (
     <MainWrapper noPadding>
       <PaddedScrollView>
-        <AccountOverview summaryValue={stats?.EVS ?? ''} />
+        <AccountOverview summaryValue={stats?.accountValue ?? ''} />
         <Chart />
         <Box py={'16'}>
           <Button
@@ -83,7 +83,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
           </Button>
         </Box>
         <Table
-          heading={stats?.accountValue ?? ''}
+          heading={stats?.EVS ?? ''}
           subheading="Position Total (Equity)"
           items={mapTableIdentifiersToTableItems(EQUITY_TABLE_ITEMS)}
         />

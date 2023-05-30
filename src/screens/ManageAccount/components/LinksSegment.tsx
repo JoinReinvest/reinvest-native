@@ -3,14 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { Box } from '../../../components/Containers/Box/Box';
 import { NavigationButton } from '../../../components/NavigationButton';
 import { StyledText } from '../../../components/typography/StyledText';
-import { NavigationIdentifiers } from '../../../constants/navigationLinks';
 import { palette } from '../../../constants/theme';
 import { Link } from '../../../types/link';
 
 interface LinksSegmentProps {
   heading: string;
   links: Link[];
-  onPress: (identifier: NavigationIdentifiers, heading: string, cancellable?: boolean) => void;
+  onPress: (options: Partial<Link>) => void;
   size: 'l' | 's';
   disableSeparator?: boolean;
 }
@@ -22,15 +21,15 @@ export const LinksSegment = ({ heading, links, disableSeparator = false, size, o
         fw
         style={styles.linksContainer}
       >
-        {links.map(({ identifier, label, cancellable }) => (
+        {links.map(link => (
           <Box
             fw
-            key={identifier}
+            key={link.identifier}
           >
             <NavigationButton
               size={size}
-              onPress={() => onPress(identifier, label, cancellable)}
-              label={label}
+              onPress={() => onPress(link)}
+              label={link.label}
             />
           </Box>
         ))}

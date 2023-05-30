@@ -3,6 +3,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { InvestmentStatus, InvestmentSummary } from 'reinvest-app-common/src/types/graphql';
 
 import { Box } from '../../../components/Containers/Box/Box';
+import { palette } from '../../../constants/theme';
 import { InvestmentItem } from '../components/investmentItem';
 
 const investments: InvestmentSummary[] = [
@@ -68,7 +69,11 @@ export const InvestmentHistory = () => {
   return (
     <Box
       pt="24"
+      pl="24"
+      pr="16"
+      style={{ backgroundColor: palette.pureWhite }}
       fw
+      flex={1}
     >
       <FlatList
         data={investments}
