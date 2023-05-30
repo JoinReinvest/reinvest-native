@@ -10,7 +10,7 @@ export const UpdateEmail = () => {
         email: '',
       }}
     >
-      <UpdateEmailLayout shouldShowFooter={false} />
+      <UpdateEmailLayout />
     </UpdateEmailFlowProvider>
   );
 };

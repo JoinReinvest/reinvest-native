@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { useSetAutomaticDividendReinvestmentAgreement } from 'reinvest-app-common/src/services/queries/setAutomaticDividendReinvestmentAgreement';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -7,6 +6,7 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FormDisclaimer } from '../../../components/FormDisclaimer';
+import { MainWrapper } from '../../../components/MainWrapper';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -14,7 +14,6 @@ import { InvestingDisclaimers } from '../../../constants/strings';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useCurrentAccountConfig } from '../../../hooks/useActiveAccountConfig';
 import { useDialog } from '../../../providers/DialogProvider';
-import { styles } from '../../Investing/flow-steps/styles';
 
 const { headline, content } = InvestingDisclaimers.whatIsAutomaticDividendReinvesting;
 
@@ -45,7 +44,10 @@ export const DividendsReinvesting = () => {
   const status = accountConfig?.automaticDividendReinvestmentAgreement.signed ? 'Active' : 'Inactive';
 
   return (
-    <>
+    <MainWrapper
+      bottomSafe
+      noPadding
+    >
       <PaddedScrollView isLoading={isLoading || configLoading}>
         <Box py={'16'}>
           <StyledText variant={'h5'}>Automatic Dividend Reinvesting</StyledText>
@@ -61,9 +63,9 @@ export const DividendsReinvesting = () => {
           </StyledText>
         </FormDisclaimer>
       </PaddedScrollView>
-      <View
-        key="buttons_section"
-        style={styles.buttonsSection}
+      <Box
+        fw
+        px="default"
       >
         <Button
           isLoading={isLoading}
@@ -80,7 +82,7 @@ export const DividendsReinvesting = () => {
         >
           Opt In
         </Button>
-      </View>
-    </>
+      </Box>
+    </MainWrapper>
   );
 };

@@ -9,15 +9,11 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
-import { DEVICE_WIDTH } from '../../../../../utils/scale';
 import { UpdateEmailFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
 import { useUpdateEmailFlow } from '../steps';
 
-interface Props {
-  shouldShowFooter?: boolean;
-}
-export const UpdateEmailLayout = ({ shouldShowFooter = true }: Props) => {
+export const UpdateEmailLayout = () => {
   const {
     CurrentStepView,
     meta: { currentStepIdentifier },
@@ -42,6 +38,7 @@ export const UpdateEmailLayout = ({ shouldShowFooter = true }: Props) => {
     <>
       <MainWrapper
         noPadding
+        bottomSafe={!isOnAuthCodeStep}
         dark={isOnAuthCodeStep}
       >
         <Box fw>
@@ -52,19 +49,18 @@ export const UpdateEmailLayout = ({ shouldShowFooter = true }: Props) => {
             options={{
               title: isOnAuthCodeStep ? 'logo' : 'Email Address',
             }}
-            style={{ paddingHorizontal: 16 }}
             showGradient={true}
           />
         </Box>
         <Box
-          mt="24"
-          px="default"
+          fw
           flex={1}
-          style={{ width: DEVICE_WIDTH }}
+          px="default"
+          mt="24"
         >
           <CurrentStepView />
         </Box>
-        {shouldShowFooter && <TermsFooter />}
+        {isOnAuthCodeStep && <TermsFooter />}
       </MainWrapper>
     </>
   );
