@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { queryClient } from '../../../App';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
@@ -40,6 +41,9 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   const escapeOnboarding = useCallback(async () => {
     if (!data?.isCompleted) {
       const response = await refetch();
+
+      // hide add another account when necessary:
+      queryClient.invalidateQueries(['listAccountTypesUserCanOpen']);
 
       if (!response.data?.isCompleted) {
         return;

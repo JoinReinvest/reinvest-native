@@ -6,6 +6,7 @@ import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getP
 import { AccountOverview } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
@@ -40,6 +41,8 @@ export const StepCongratulations: StepParams<OnboardingFormFields> = {
         replace(Screens.Investing, { initialInvestment: false });
       }
 
+      // hide add another account when necessary:
+      queryClient.invalidateQueries(['listAccountTypesUserCanOpen']);
       await refetch();
     };
 

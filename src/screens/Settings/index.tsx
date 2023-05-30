@@ -86,7 +86,7 @@ export const Settings = () => {
     [account.type, listAccountTypesUserCanOpen],
   );
 
-  const showAddAnotherAccount = listAccountTypesUserCanOpen?.some(acc => ACCOUNT_TO_OPEN.includes(acc as AccountType));
+  const showAddAnotherAccount = ACCOUNT_TO_OPEN?.some(acc => listAccountTypesUserCanOpen?.includes(acc as AccountType));
 
   const signOut = () => {
     setSignOutLoading(true);
