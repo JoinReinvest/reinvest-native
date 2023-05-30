@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
@@ -25,6 +27,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
     meta: { currentStepIdentifier },
   } = useOnboardingFormFlow();
   const navigation = useLogInNavigation();
+  const { data, refetch } = useGetUserProfile(getApiClient);
 
   useStepBackOverride<OnboardingFormFields, LogInStackParamList>(
     useOnboardingFormFlow,
@@ -34,6 +37,18 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
   );
   useKeyboardAware();
 
+  const escapeOnboarding = useCallback(async () => {
+    if (!data?.isCompleted) {
+      const response = await refetch();
+
+      if (!response.data?.isCompleted) {
+        return;
+      }
+    }
+
+    navigation.replace(Screens.BottomNavigator, { screen: Screens.Dashboard });
+  }, [data?.isCompleted, navigation, refetch]);
+
   useEffect(() => {
     if (stepsWithClosingOption.includes(currentStepIdentifier as Identifiers)) {
       navigation.setOptions({
@@ -41,12 +56,12 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
           <Icon
             icon="hamburgerClose"
             color={palette.pureWhite}
-            onPress={() => navigation.replace(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+            onPress={escapeOnboarding}
           />
         ),
       });
     }
-  }, [currentStepIdentifier, navigation]);
+  }, [currentStepIdentifier, escapeOnboarding, navigation]);
 
   return (
     <DialogProvider dark>
