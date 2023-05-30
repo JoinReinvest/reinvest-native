@@ -117,7 +117,7 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogItem) 
         color="dark3"
         variant="h6"
       >
-        {date && `${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'DEFAULT' })}`}
+        {date && `${isRecurring ? 'Starting ' : ''}${formatDate(date, 'INVESTMENT', { currentFormat: 'API' })}`}
       </StyledText>
     </Box>
   );
