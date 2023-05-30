@@ -23,8 +23,9 @@ import { Dashboard } from '../../screens/Dashboard';
 import { EducationStack } from '../../screens/Education';
 import { Notifications } from '../../screens/Notifications';
 import { ReitScreen } from '../../screens/REIT';
-import { currentAccount } from '../../store/atoms';
+import { currentAccount, unreadNotificationsCount } from '../../store/atoms';
 import { useLogInNavigation } from '../hooks';
+import { styles } from '../styles';
 import { BottomTabsParamsBase } from './types';
 
 const Tab = createBottomTabNavigator<BottomTabsParamsBase>();
@@ -53,7 +54,6 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
   },
   [Screens.Notifications]: {
     title: 'Notifications',
-    tabBarIcon: ({ focused }) => <NotificationIcon focused={focused} />,
     headerLeft: () => (
       <Box
         m="8"
@@ -81,6 +81,7 @@ export const BottomTabsNavigator: React.FC = () => {
   const { reset, navigate } = useLogInNavigation();
   const { mutateAsync: verifyAccountMutate, isLoading: isVerifying } = useVerifyAccount(getApiClient);
   const [account] = useAtom(currentAccount);
+  const [currentNotificationsCount] = useAtom(unreadNotificationsCount);
 
   useEffect(() => {
     (async () => {
@@ -164,6 +165,19 @@ export const BottomTabsNavigator: React.FC = () => {
           ...stackOptions[Screens.Notifications],
           headerShown: true,
           header: props => <ScreenHeader {...props} />,
+          tabBarIcon: ({ focused }) => (
+            <Box style={styles.notificationWrapper}>
+              <Box style={styles.notificationBadge}>
+                <StyledText
+                  color="pureWhite"
+                  variant="today"
+                >
+                  {currentNotificationsCount}
+                </StyledText>
+              </Box>
+              <NotificationIcon focused={focused} />
+            </Box>
+          ),
           headerRight: HeaderAvatar,
         })}
       />

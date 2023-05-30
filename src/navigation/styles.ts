@@ -9,4 +9,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  notificationWrapper: {
+    position: 'relative',
+  },
+  notificationBadge: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    top: -5,
+    right: -5,
+    height: 14,
+    width: 14,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 1,
+    zIndex: 1,
+  },
 });

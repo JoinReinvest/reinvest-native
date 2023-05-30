@@ -7,3 +7,6 @@ export { RESET } from 'jotai/utils';
 
 const storage = createJSONStorage<AccountOverview>(() => AsyncStorage);
 export const currentAccount = atomWithStorage<AccountOverview>('currentAccount', {}, storage);
+
+const notificationsStorage = createJSONStorage<number>(() => AsyncStorage);
+export const unreadNotificationsCount = atomWithStorage<number>('unreadNotificationsCount', 0, notificationsStorage);

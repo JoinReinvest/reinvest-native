@@ -1,6 +1,8 @@
-import React from 'react';
+import { useAtom } from 'jotai';
+import React, { useEffect } from 'react';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
+import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountOverview } from '../../components/AccountOverview';
@@ -16,6 +18,7 @@ import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
+import { unreadNotificationsCount } from '../../store/atoms';
 
 export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { openDialog } = useDialog();
@@ -24,6 +27,12 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { data: stats } = useGetAccountStats(getApiClient, {
     accountId: activeAccount.id ?? '',
   });
+  const { data: notifications } = useGetNotifications(getApiClient, {
+    accountId: activeAccount.id ?? '',
+    config: { enabled: !!activeAccount.id },
+  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
     if (!stats) return '';
@@ -68,6 +77,12 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
 
     return navigation.navigate(Screens.Investing, {});
   };
+
+  useEffect(() => {
+    if (notifications) {
+      setUnreadNotificationsCount(notifications.pages[0]?.unreadCount ?? 0);
+    }
+  }, [notifications, setUnreadNotificationsCount]);
 
   return (
     <MainWrapper noPadding>
