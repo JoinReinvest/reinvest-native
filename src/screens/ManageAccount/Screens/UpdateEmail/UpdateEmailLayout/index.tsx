@@ -3,6 +3,7 @@ import React, { useCallback, useLayoutEffect } from 'react';
 
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { DarkScreenHeader, ScreenHeader } from '../../../../../components/CustomHeader';
+import { HeaderCancel } from '../../../../../components/HeaderCancel';
 import { Icon } from '../../../../../components/Icon';
 import { MainWrapper } from '../../../../../components/MainWrapper';
 import { TermsFooter } from '../../../../../components/TermsFooter';
@@ -10,6 +11,7 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { UpdateEmailFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
 import { useUpdateEmailFlow } from '../steps';
@@ -38,15 +40,18 @@ export const UpdateEmailLayout = () => {
     [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
+  const headerRight = useCallback(() => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} />, [navigation]);
+
   useLayoutEffect(() => {
     if (isOnAuthCodeStep) {
       navigation.setOptions({
         header: DarkScreenHeader,
         title: 'logo',
         headerLeft,
+        headerRight: undefined,
       });
     }
-  }, [headerLeft, isOnAuthCodeStep, navigation]);
+  }, [headerLeft, headerRight, isOnAuthCodeStep, navigation]);
 
   return (
     <>
@@ -63,6 +68,7 @@ export const UpdateEmailLayout = () => {
             options={{
               title: isOnAuthCodeStep ? 'logo' : 'Email Address',
               headerLeft,
+              headerRight,
             }}
             showGradient={true}
           />
