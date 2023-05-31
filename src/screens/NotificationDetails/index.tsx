@@ -16,6 +16,7 @@ import { DialogItem, InvestSuccess } from '../../components/Modals/ModalContent/
 import { HeaderWithLogo } from '../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../components/typography/StyledText';
 import { InvestingDialogDisclaimers } from '../../constants/strings';
+import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
@@ -37,6 +38,8 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
   const { mutateAsync: reinvest, isLoading: reinvestLoading, error: reinvestError } = useReinvestDividends(getApiClient);
   const { mutateAsync: withdraw, isLoading: withdrawLoading, error: withdrawError } = useWithdrawDividends(getApiClient);
   const { openDialog } = useDialog();
+  const { activeAccount } = useCurrentAccount();
+
   useLayoutEffect(() => {
     navigation.setOptions({ title: configStrings[notification.notificationType]?.navHeader });
   }, [navigation, notification.notificationType]);
@@ -66,14 +69,14 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
 
   const onReinvest = async () => {
     if (notification.onObject) {
-      await reinvest({ dividendIds: [notification.onObject.id] });
+      await reinvest({ accountId: activeAccount.id ?? '', dividendIds: [notification.onObject.id] });
       showSuccessDialog('reinvest');
     }
   };
 
   const onWithdraw = async () => {
     if (notification.onObject) {
-      await withdraw({ dividendIds: [notification.onObject.id] });
+      await withdraw({ accountId: activeAccount.id ?? '', dividendIds: [notification.onObject.id] });
       showSuccessDialog('withdrawal');
     }
   };
