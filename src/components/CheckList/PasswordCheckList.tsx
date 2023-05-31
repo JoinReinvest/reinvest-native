@@ -7,9 +7,10 @@ import { styles } from './styles';
 interface PasswordCheckListProps extends ViewProps {
   password: string;
   passwordConfirmation: string;
+  dark?: boolean;
 }
 
-export const PasswordChecklist = ({ password = '', passwordConfirmation = '', ...props }: PasswordCheckListProps) => {
+export const PasswordChecklist = ({ password = '', passwordConfirmation = '', dark = true, ...props }: PasswordCheckListProps) => {
   const hasLowerCaseLetter = password.toUpperCase() != password;
   const hasUpperCaseLetter = password.toLowerCase() != password;
   const hasNumber = /\d/.test(password);
@@ -34,6 +35,7 @@ export const PasswordChecklist = ({ password = '', passwordConfirmation = '', ..
     >
       {checks.map(([label, isChecked]) => (
         <CheckItem
+          dark={dark}
           key={label}
           label={label}
           isChecked={isChecked}
