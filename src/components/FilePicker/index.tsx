@@ -200,7 +200,7 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
       {results &&
         results.map(file => (
           <Button
-            dark
+            dark={dark}
             variant="draft"
             endIcon={
               <Icon

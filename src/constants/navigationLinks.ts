@@ -65,6 +65,8 @@ export const MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
   {
     identifier: NavigationIdentifiers.NAME,
     label: 'Name',
+    title: 'Edit Name',
+    headerShown: false,
   },
   {
     identifier: NavigationIdentifiers.PROFILE_PICTURE,
