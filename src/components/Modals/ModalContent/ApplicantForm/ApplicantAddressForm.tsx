@@ -90,6 +90,7 @@ export const ApplicantAddressForm = ({
           style={[!isSearchDialogOpen && { height: 0, opacity: 0 }]}
         >
           <SearchDialog
+            dark={true}
             shouldDismissModal={false}
             value={addressWatched || ''}
             placeholder={placeholders.addressLine1}

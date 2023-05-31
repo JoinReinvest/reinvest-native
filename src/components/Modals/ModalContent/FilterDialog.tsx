@@ -19,7 +19,7 @@ interface SearchViewProps extends InputProps {
   value?: string;
 }
 
-export const FilterDialog = ({ fillDetailsCallback, options, dark = true, value, ...rest }: SearchViewProps) => {
+export const FilterDialog = ({ fillDetailsCallback, options, dark, value, ...rest }: SearchViewProps) => {
   const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState<string>(value || '');
   const { closeDialog } = useDialog();
@@ -77,7 +77,7 @@ export const FilterDialog = ({ fillDetailsCallback, options, dark = true, value,
           {list.map((el, idx) => {
             return (
               <Box
-                style={[list.length > idx + 1 && styles.bottomBordered]}
+                style={[list.length > idx + 1 && styles.bottomBordered, !dark && styles.borderLight]}
                 py={'12'}
                 key={el.value}
               >

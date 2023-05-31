@@ -82,6 +82,7 @@ export const StepResidencyGreenCard: StepParams<OnboardingFormFields> = {
     const openPicker = (variant: keyof Fields) => {
       openDialog(
         <FilterDialog
+          dark={true}
           options={COUNTRIES}
           fillDetailsCallback={value => setValue(variant, value)}
           value={birthCountry}

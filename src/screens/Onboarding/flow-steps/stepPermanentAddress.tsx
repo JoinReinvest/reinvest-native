@@ -104,6 +104,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     const showSearchDialog = useCallback(() => {
       return openDialog(
         <SearchDialog
+          dark={true}
           value={addressWatched || ''}
           placeholder={placeholders.addressLine1}
           fillDetailsCallback={fillFieldsFromPrediction}
@@ -116,6 +117,7 @@ export const StepPermanentAddress: StepParams<OnboardingFormFields> = {
     const openPicker = () => {
       openDialog(
         <FilterDialog
+          dark={true}
           options={STATES_AS_SELECT_OPTION}
           fillDetailsCallback={value => setValue('state', value)}
           value={stateWatched || ''}

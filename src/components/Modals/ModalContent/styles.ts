@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
   },
 
   bottomBordered: { borderBottomWidth: 1, borderBottomColor: palette.dark2 },
+  borderLight: { borderBottomColor: palette.lightGray },
 
   headerWrapper: {
     top: isIOS ? 0 : -STATUS_BAR,
