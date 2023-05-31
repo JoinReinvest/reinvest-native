@@ -12,7 +12,6 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { SSN_MASK } from '../../../constants/masks';
 import { dateOlderThanEighteenYearsSchema, formValidationRules } from '../../../utils/formValidationRules';
-import { apiSSN } from '../../../utils/regexes';
 import { Identifiers } from '../identifiers';
 import { KYCFailedFormFields } from '../types';
 
@@ -47,9 +46,8 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
 
     const shouldButtonBeDisabled = !formState.isValid;
 
-    const onSubmit: SubmitHandler<Fields> = async ({ name, dateOfBirth, ssn }) => {
-      const isSSNFromApi = apiSSN.test(ssn ?? '');
-      await updateStoreFields({ name, dateOfBirth, ssn: isSSNFromApi ? undefined : ssn });
+    const onSubmit: SubmitHandler<Fields> = async ({ name, dateOfBirth }) => {
+      await updateStoreFields({ name, dateOfBirth });
       moveToNextStep();
     };
 
@@ -100,6 +98,7 @@ export const StepProfileInformation: StepParams<KYCFailedFormFields> = {
               keyboardType: 'numeric',
               maxLength: 11,
               mask: SSN_MASK,
+              disabled: true,
             }}
           />
         </PaddedScrollView>

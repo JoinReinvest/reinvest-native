@@ -18,7 +18,8 @@ import { KYCFailedFormFields } from '../types';
 export const BlackLayout = () => {
   const {
     CurrentStepView,
-    meta: { currentStepIdentifier },
+    moveToPreviousValidStep,
+    meta: { currentStepIdentifier, isFirstStep },
   } = useKYCFailedFlow();
   const navigation = useLogInNavigation();
   const route = useRoute();
@@ -34,7 +35,7 @@ export const BlackLayout = () => {
         color={'#FFF'}
         icon={'down'}
         style={{ transform: [{ rotate: '90deg' }] }}
-        onPress={() => navigation.goBack()}
+        onPress={() => (isFirstStep ? navigation.goBack() : moveToPreviousValidStep())}
       />
     );
 

@@ -1,8 +1,9 @@
 import { useRoute } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react';
+import React, { useCallback, useLayoutEffect } from 'react';
 
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { DarkScreenHeader, ScreenHeader } from '../../../../../components/CustomHeader';
+import { Icon } from '../../../../../components/Icon';
 import { MainWrapper } from '../../../../../components/MainWrapper';
 import { TermsFooter } from '../../../../../components/TermsFooter';
 import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
@@ -16,7 +17,8 @@ import { useUpdateEmailFlow } from '../steps';
 export const UpdateEmailLayout = () => {
   const {
     CurrentStepView,
-    meta: { currentStepIdentifier },
+    meta: { currentStepIdentifier, isFirstStep },
+    moveToPreviousValidStep,
   } = useUpdateEmailFlow();
   const navigation = useLogInNavigation();
   const route = useRoute();
@@ -25,14 +27,26 @@ export const UpdateEmailLayout = () => {
   useStepBackOverride<UpdateEmailFormFields, LogInStackParamList>(useUpdateEmailFlow, navigation, false, isOnAuthCodeStep);
   useKeyboardAware();
 
+  const headerLeft = useCallback(
+    () => (
+      <Icon
+        icon={'down'}
+        style={{ transform: [{ rotate: '90deg' }] }}
+        onPress={() => (isFirstStep ? navigation.goBack() : moveToPreviousValidStep())}
+      />
+    ),
+    [isFirstStep, moveToPreviousValidStep, navigation],
+  );
+
   useLayoutEffect(() => {
     if (isOnAuthCodeStep) {
       navigation.setOptions({
         header: DarkScreenHeader,
         title: 'logo',
+        headerLeft,
       });
     }
-  }, [isOnAuthCodeStep, navigation]);
+  }, [headerLeft, isOnAuthCodeStep, navigation]);
 
   return (
     <>
@@ -48,6 +62,7 @@ export const UpdateEmailLayout = () => {
             route={route}
             options={{
               title: isOnAuthCodeStep ? 'logo' : 'Email Address',
+              headerLeft,
             }}
             showGradient={true}
           />
