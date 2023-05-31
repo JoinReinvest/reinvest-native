@@ -117,11 +117,15 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
         }),
       );
 
+      const queriesToInvalidate = ['getAccountsOverview'];
+
       if (accountType === AccountType.Corporate) {
-        queryClient.invalidateQueries(['getCorporateAccount']);
+        queriesToInvalidate.push('getCorporateAccount');
       } else if (accountType === AccountType.Trust) {
-        queryClient.invalidateQueries(['getTrustAccount']);
+        queriesToInvalidate.push('getTrustAccount');
       }
+
+      queryClient.invalidateQueries(queriesToInvalidate);
 
       moveToNextStep();
     };

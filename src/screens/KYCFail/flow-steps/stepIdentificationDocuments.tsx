@@ -5,14 +5,14 @@ import { DocumentPickerResponse } from 'react-native-document-picker';
 import { Asset } from 'react-native-image-picker';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
 import { useUpdateProfileForVerification } from 'reinvest-app-common/src/services/queries/updateProfileForVerification';
-import { ActionName, AddressInput, UpdateProfileForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { AccountOverview, ActionName, AddressInput, UpdateProfileForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
-import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { FilePicker } from '../../../components/FilePicker';
@@ -20,6 +20,7 @@ import { FormTitle } from '../../../components/Forms/FormTitle';
 import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { palette } from '../../../constants/theme';
+import { currentAccount, useAtom } from '../../../store/atoms';
 import { documentReducer } from '../../../utils/documentReducer';
 import { AssetWithPreloadedFiles } from '../../Onboarding/types';
 import { Identifiers } from '../identifiers';
@@ -43,9 +44,12 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
     const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
     const { mutateAsync: updateProfile, isLoading: isUpdatingProfile } = useUpdateProfileForVerification(getApiClient);
+    const [activeAccount, setCurrentAccount] = useAtom(currentAccount);
+    const { refetch: refetchProfile } = useGetUserProfile(getApiClient);
+    const { refetch: refetchAccount } = useGetAccountsOverview(getApiClient);
 
     const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const convertFiles = async () => {
       if (!didFilesChange) {
         return [];
@@ -100,7 +104,11 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       };
 
       await updateProfile({ input });
-      queryClient.invalidateQueries(['getProfile']);
+
+      await refetchProfile();
+      const { data: updatedAccounts } = await refetchAccount();
+      const updatedAccount = updatedAccounts?.find(acc => acc?.id === activeAccount.id);
+      setCurrentAccount(updatedAccount as AccountOverview);
 
       return moveToNextStep();
     };
