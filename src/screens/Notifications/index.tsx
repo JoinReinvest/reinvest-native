@@ -7,7 +7,6 @@ import { useGetNotifications } from 'reinvest-app-common/src/services/queries/ge
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
 import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/queries/markNotificationAsRead';
 import { Notification as BaseNotification, Query } from 'reinvest-app-common/src/types/graphql';
-import { unreadNotificationsCount } from 'store/atoms';
 
 import { getApiClient } from '../../api/getApiClient';
 import { queryClient } from '../../App';
@@ -19,6 +18,7 @@ import { StyledText } from '../../components/typography/StyledText';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
+import { unreadNotificationsCount } from '../../store/atoms';
 import { styles } from './styles';
 
 export type UseApiQuery<QueryKey extends keyof Query> = (getClient: GetApiClient) => UseInfiniteQueryResult<Query[QueryKey]>;
