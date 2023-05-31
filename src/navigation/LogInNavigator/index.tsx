@@ -132,7 +132,10 @@ export const LogInNavigator: React.FC = () => {
     <BottomSheetModalProvider>
       <SafeAreaProvider>
         <DialogProvider dark={false}>
-          <LogInStack.Navigator initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}>
+          <LogInStack.Navigator
+            screenOptions={{ gestureEnabled: false }}
+            initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}
+          >
             <LogInStack.Screen
               options={{ headerShown: false }}
               name={Screens.BottomNavigator}
