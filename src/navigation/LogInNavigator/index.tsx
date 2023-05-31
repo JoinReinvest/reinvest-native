@@ -99,7 +99,7 @@ const stackOptions: Record<
 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
-  const { data: accounts, isLoading: accountLoading } = useGetAccountsOverview(getApiClient);
+  const { data: accounts, isLoading: accountLoading, isRefetching } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
 
   useLayoutEffect(() => {
@@ -108,12 +108,12 @@ export const LogInNavigator: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!account.id && !accountLoading) {
+    if (!account.id && !accountLoading && !isRefetching) {
       const defaultAccount = { ...accounts?.[0] };
       setAccount(defaultAccount);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountLoading, accounts]);
+  }, [accountLoading, accounts, isRefetching]);
 
   if (!data) {
     return (

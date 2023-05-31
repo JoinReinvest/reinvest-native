@@ -113,7 +113,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const validateAndStart = async () => {
       const response = await validateAccount({ accountId });
 
-      const feesValue = investmentSummary?.investmentFees?.value ?? 10;
+      const feesValue = investmentSummary?.investmentFees?.value ?? 0;
 
       if (oneTimeInvestmentId || recurringInvestmentId) {
         if (response?.canUserContinueTheInvestment && !feesValue) {
