@@ -78,8 +78,8 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
         return;
       }
 
-      const { name: updatedName, dateOfBirth: updatedDateOfBirth, ssn: updatedSSN, address: updatedAddress } = storeFields;
-      const { firstName, middleName, lastName, dateOfBirth, ssn, address } = userProfile.details;
+      const { name: updatedName, dateOfBirth: updatedDateOfBirth, address: updatedAddress } = storeFields;
+      const { firstName, middleName, lastName, dateOfBirth, address } = userProfile.details;
       const name = { firstName, middleName, lastName };
 
       const formattedUpdatedDateOfBirth = updatedDateOfBirth ? formatDate(updatedDateOfBirth, 'API', { currentFormat: 'DEFAULT' }) : undefined;
@@ -87,14 +87,12 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       // send only changed fields
       const shouldUpdateName = !isEqual(updatedName, name);
       const shouldUpdateDateOfBirth = !!(formattedUpdatedDateOfBirth && formattedUpdatedDateOfBirth !== dateOfBirth);
-      const shouldUpdateSSN = !!(updatedSSN && updatedSSN !== ssn);
       const shouldUpdateAddress = updatedAddress && address ? !isEqual({ ...updatedAddress, country: 'USA' }, { ...address }) : false;
       const idScan = await convertFiles();
 
       const input: UpdateProfileForVerificationInput = {
         ...(shouldUpdateName ? { name: updatedName } : {}),
         ...(shouldUpdateDateOfBirth ? { dateOfBirth: { dateOfBirth: formattedUpdatedDateOfBirth } } : {}),
-        ...(shouldUpdateSSN ? { ssn: { ssn: updatedSSN } } : {}),
         ...(shouldUpdateAddress ? { address: { ...updatedAddress, country: 'USA' } as AddressInput } : {}),
         ...(didFilesChange && idScan.length ? { idScan } : {}),
       };

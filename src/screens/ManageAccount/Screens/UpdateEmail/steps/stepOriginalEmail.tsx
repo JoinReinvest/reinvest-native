@@ -35,7 +35,12 @@ export const StepOriginalEmail: StepParams<UpdateEmailFormFields> = {
           {email ? <StyledText variant="paragraphEmp">{email}</StyledText> : <Loader />}
         </Box>
         <Box fw>
-          <Button onPress={moveToNextStep}>Update Email Address</Button>
+          <Button
+            onPress={moveToNextStep}
+            disabled={!email}
+          >
+            Update Email Address
+          </Button>
         </Box>
       </Box>
     );
