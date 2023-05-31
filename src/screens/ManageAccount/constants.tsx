@@ -8,6 +8,7 @@ import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
+import { UpdatePassword } from './Screens/UpdatePassword';
 
 export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNode }> = {
   INVESTMENT_HISTORY: <InvestmentHistory />,
@@ -17,4 +18,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   ADDRESS: <Address />,
   NAME: <UpdateName />,
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
+  CHANGE_PASSWORD: <UpdatePassword />,
 };
