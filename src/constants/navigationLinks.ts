@@ -13,9 +13,10 @@ export enum NavigationIdentifiers {
   NAME = 'NAME',
   PROFILE_PICTURE = 'PROFILE_PICTURE',
   ADDRESS = 'ADDRESS',
+  REMOVE_BENEFICIARY = 'REMOVE_BENEFICIARY',
 }
 
-export const MANAGE_ACCOUNT_INVESTING: Link[] = [
+export const BASE_MANAGE_ACCOUNT_INVESTING: Link[] = [
   {
     identifier: NavigationIdentifiers.INVESTMENT_HISTORY,
     label: 'Investment History',
@@ -41,6 +42,25 @@ export const MANAGE_ACCOUNT_INVESTING: Link[] = [
   {
     identifier: NavigationIdentifiers.ACCOUNT_ACTIVITY,
     label: 'Account Activity',
+  },
+];
+
+export const BASE_MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
+  {
+    identifier: NavigationIdentifiers.NAME,
+    label: 'Name',
+  },
+  {
+    identifier: NavigationIdentifiers.PROFILE_PICTURE,
+    label: 'Profile Picture',
+  },
+];
+
+export const MANAGE_ACCOUNT_BENEFICIARY_INVESTING: Link[] = [
+  ...BASE_MANAGE_ACCOUNT_INVESTING,
+  {
+    identifier: NavigationIdentifiers.REMOVE_BENEFICIARY,
+    label: 'Remove Account',
   },
 ];
 
@@ -72,6 +92,10 @@ export const MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
     identifier: NavigationIdentifiers.PROFILE_PICTURE,
     label: 'Profile Picture',
   },
+];
+
+export const MANAGE_ACCOUNT_PROFILE_INFO_WITH_ADDRESS: Link[] = [
+  ...BASE_MANAGE_ACCOUNT_PROFILE_INFO,
   {
     identifier: NavigationIdentifiers.ADDRESS,
     label: 'Address',
