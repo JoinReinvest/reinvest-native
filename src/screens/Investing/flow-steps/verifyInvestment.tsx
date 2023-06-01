@@ -11,6 +11,7 @@ import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verif
 import { VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { queryClient } from '../../../App';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { DialogItem, InvestSuccess } from '../../../components/Modals/ModalContent/InvestmentSuccess';
@@ -108,6 +109,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
       }
 
       showSuccessDialog();
+      queryClient.invalidateQueries(['getAccountStats']);
     }, [accountId, oneTimeInvestmentId, recurringInvestmentId, showSuccessDialog, startInvestment, startRecurring]);
 
     const validateAndStart = async () => {
