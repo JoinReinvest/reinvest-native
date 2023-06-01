@@ -54,8 +54,10 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     };
 
     const onSubmit = async () => {
+      if (!amount) return;
+
       if (validateInput()) {
-        const investmentId = await mutateAsync({ amount: { value: amount }, accountId });
+        const investmentId = await mutateAsync({ amount: { value: amount * 100 }, accountId });
         const { data: config } = await refetchConfig();
         const { data: activeRecurring } = await refetchActiveRecurring();
         await updateStoreFields({
