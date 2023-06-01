@@ -4,6 +4,7 @@ import { NavigationIdentifiers } from '../../constants/navigationLinks';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
 import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
+import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
@@ -15,4 +16,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   EMAIL_ADDRESS: <UpdateEmail />,
   ADDRESS: <Address />,
   NAME: <UpdateName />,
+  REMOVE_BENEFICIARY: <RemoveBeneficiary />,
 };
