@@ -20,7 +20,8 @@ import { AuthProvider } from './providers/AuthProvider';
     tracesSampleRate: 1.0,
   });
 
-const apiEnvs = {
+export const apiEnvs = {
+  'https://phkocyrquh.execute-api.us-east-1.amazonaws.com': 'Development',
   'https://s129aec8m7.execute-api.us-east-1.amazonaws.com': 'Integration',
   'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com': 'Staging',
 } as const;
