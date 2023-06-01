@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { NavigationIdentifiers } from '../../constants/navigationLinks';
+import { CompanyDocuments } from './Screens/CompanyDocuments';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
 import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
@@ -19,4 +20,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   NAME: <UpdateName />,
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
   CHANGE_PASSWORD: <UpdatePassword />,
+  COMPANY_DOCUMENTS: <CompanyDocuments />,
 };

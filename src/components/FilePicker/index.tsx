@@ -26,11 +26,10 @@ const permissionAlert = () =>
   ]);
 
 export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark = true, selectionLimit = 3, ...rest }: PropsWithChildren<FilePickerProps>) => {
-  const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>([...state]);
+  const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>(state);
   const existingIds = useRef<Set<string | undefined>>(new Set([]));
   const [choosingMode, setChoosingMode] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const openChoosingMode = async () => setChoosingMode(true);
 
   const closeChoosingMode = () => setChoosingMode(false);
@@ -202,6 +201,7 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
           <Button
             dark={dark}
             variant="draft"
+            labelStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
             endIcon={
               <Icon
                 icon="trash"

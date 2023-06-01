@@ -4,14 +4,7 @@ import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { apiEnvs } from '../../App';
 import { Box } from '../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
-import {
-  BASE_MANAGE_ACCOUNT_INVESTING,
-  BASE_MANAGE_ACCOUNT_PROFILE_INFO,
-  MANAGE_ACCOUNT_BENEFICIARY_INVESTING,
-  MANAGE_ACCOUNT_PROFILE_INFO_WITH_ADDRESS,
-  MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY,
-  NavigationIdentifiers,
-} from '../../constants/navigationLinks';
+import { MANAGE_ACCOUNT_LINKS, NavigationIdentifiers } from '../../constants/navigationLinks';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
@@ -31,6 +24,8 @@ export const ManageAccountMainScreen = () => {
     }
   };
 
+  const { investing, security, profile } = MANAGE_ACCOUNT_LINKS[activeAccount.type || AccountType.Individual];
+
   return (
     <PaddedScrollView
       style={[styles.container]}
@@ -42,7 +37,7 @@ export const ManageAccountMainScreen = () => {
       >
         <LinksSegment
           heading="Investing"
-          links={activeAccount.type === AccountType.Beneficiary ? MANAGE_ACCOUNT_BENEFICIARY_INVESTING : BASE_MANAGE_ACCOUNT_INVESTING}
+          links={investing}
           onPress={navigate}
           size="l"
         />
@@ -51,7 +46,7 @@ export const ManageAccountMainScreen = () => {
         <Box fw>
           <LinksSegment
             heading="Sign in & Security"
-            links={MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY}
+            links={security}
             onPress={navigate}
             size="l"
           />
@@ -60,7 +55,7 @@ export const ManageAccountMainScreen = () => {
       <Box fw>
         <LinksSegment
           heading="Profile Information"
-          links={activeAccount.type === AccountType.Beneficiary ? BASE_MANAGE_ACCOUNT_PROFILE_INFO : MANAGE_ACCOUNT_PROFILE_INFO_WITH_ADDRESS}
+          links={profile}
           disableSeparator
           onPress={navigate}
           size="l"
