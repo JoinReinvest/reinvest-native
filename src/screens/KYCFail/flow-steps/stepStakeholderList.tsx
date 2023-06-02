@@ -2,12 +2,13 @@ import isEqual from 'lodash.isequal';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow/interfaces';
+import { useGetCorporateAccount } from 'reinvest-app-common/src/services/queries/getCorporateAccount';
+import { useGetTrustAccount } from 'reinvest-app-common/src/services/queries/getTrustAccount';
 import { useUpdateStakeholderForVerification } from 'reinvest-app-common/src/services/queries/updateStakeholderForVerification';
 import { AccountType, ActionName, UpdateStakeholderForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
-import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -18,7 +19,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
-import { mapApplicantToApiStakeholder } from '../../../utils/mappers';
+import { apiStakeholderToApplicant, mapApplicantToApiStakeholder } from '../../../utils/mappers';
 import { lowerCaseWithoutSpacesGenerator } from '../../../utils/optionValueGenerators';
 import { Applicant, IndexedSchema } from '../../Onboarding/types';
 import { getDefaultValuesForApplicantWithoutIdentification } from '../../Onboarding/utilities';
@@ -44,6 +45,18 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
     const { mutateAsync: updateStakeholderMutate } = useUpdateStakeholderForVerification(getApiClient);
     const applicantsRef = useRef<Applicant[]>(stakeholders ?? []);
     const updatedApplicantsRef = useRef<Applicant[]>([]);
+    const { refetch: refetchTrustAccount } = useGetTrustAccount(getApiClient, {
+      accountId,
+      config: {
+        enabled: accountType === AccountType.Trust,
+      },
+    });
+    const { refetch: refetchCorporateAccount } = useGetCorporateAccount(getApiClient, {
+      accountId,
+      config: {
+        enabled: accountType === AccountType.Corporate,
+      },
+    });
 
     const { openDialog, closeDialog } = useDialog();
 
@@ -95,10 +108,6 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
         stakeholders: applicantsRef.current,
       });
 
-      if (typeof applicantIndex === 'number') {
-        submittedApplicant.id = indexedStakeholderApplicants[applicantIndex]?.id;
-      }
-
       closeDialog();
     };
 
@@ -117,15 +126,17 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
         }),
       );
 
-      const queriesToInvalidate = ['getAccountsOverview'];
+      let stakeholders: Applicant[] = [];
 
       if (accountType === AccountType.Corporate) {
-        queriesToInvalidate.push('getCorporateAccount');
+        const { data } = await refetchCorporateAccount();
+        stakeholders = data?.details?.stakeholders?.map(apiStakeholderToApplicant) ?? [];
       } else if (accountType === AccountType.Trust) {
-        queriesToInvalidate.push('getTrustAccount');
+        const { data } = await refetchTrustAccount();
+        stakeholders = data?.details?.stakeholders?.map(apiStakeholderToApplicant) ?? [];
       }
 
-      queryClient.invalidateQueries(queriesToInvalidate);
+      await updateStoreFields({ stakeholders });
 
       moveToNextStep();
     };
