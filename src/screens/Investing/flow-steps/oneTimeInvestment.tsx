@@ -16,6 +16,8 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
 import { useCurrentAccountConfig } from '../../../hooks/useActiveAccountConfig';
+import { useLogInNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -31,6 +33,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     storeFields: { bankAccount, investAmount, accountId, accountType, initialInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
+    const { navigate } = useLogInNavigation();
     const schema = useMemo(() => generateInvestmentSchema({ accountType: accountType || AccountType.Individual }), [accountType]);
     const [amount, setAmount] = useState<number | undefined>(investAmount);
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
@@ -70,7 +73,16 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
       }
     };
 
-    const handleSkip = () => {
+    const handleSkip = async () => {
+      const { data: activeRecurring } = await refetchActiveRecurring();
+
+      if (activeRecurring?.status === RecurringInvestmentStatus.Active) {
+        return navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+      }
+
+      await updateStoreFields({
+        _shouldDisplayRecurringInvestment: true,
+      });
       moveToNextStep();
     };
 
