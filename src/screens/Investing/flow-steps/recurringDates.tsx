@@ -29,7 +29,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
       if (recurringInvestment?.interval) {
         const { id, subscriptionAgreementId } = await createInvestment({
           accountId,
-          amount: { value: recurringInvestment?.recurringAmount || 0 },
+          amount: { value: (recurringInvestment?.recurringAmount ?? 0) * 100 },
           schedule: { startDate: startingDate, frequency: recurringInvestment.interval },
         });
         await updateStoreFields({ recurringInvestmentId: id, subscriptionAgreementId });
