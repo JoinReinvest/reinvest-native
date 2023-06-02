@@ -23,7 +23,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
   const calendarDays = useMemo(() => getCalendarDays(currentDate), [currentDate]);
 
   const { refetch } = useGetScheduleSimulation(getApiClient, {
-    schedule: { frequency: autoSelectionPeriod, startDate: startingDate || '' },
+    schedule: { frequency: autoSelectionPeriod, startDate: startingDate ? formatDate(startingDate.toDate(), 'API') : '' },
     config: { enabled: !!startingDate },
   });
 
@@ -33,7 +33,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
         const { data } = await refetch();
 
         if (data) {
-          recurringDatesRef.current = data?.map(date => dayjs(date));
+          recurringDatesRef.current = data?.map(date => dayjs(date)).slice(1); // skip already selected date
           onSelect({
             startingDate: formatDate(startingDate.toDate(), 'API'),
             recurringDates: data,
