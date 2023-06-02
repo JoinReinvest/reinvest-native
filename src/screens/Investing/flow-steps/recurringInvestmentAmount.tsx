@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
+import { RECURRING_INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 import { generateRecurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
@@ -29,8 +30,9 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
     storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, bankAccount, accountId },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
+    const presets = RECURRING_INVESTMENT_PRESET_AMOUNTS[accountType ?? AccountType.Individual];
     const [error, setError] = useState<string | undefined>();
-    const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount);
+    const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount ?? +(presets[0]?.value ?? 0));
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
     const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: accountType || undefined }), [accountType]);
@@ -78,6 +80,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             <StyledText variant="h5">{investingHeadlines.recurring}</StyledText>
           </Box>
           <InvestingAmountTable
+            presetAmounts={presets}
             isRecurring
             accountId={accountId}
             error={error}

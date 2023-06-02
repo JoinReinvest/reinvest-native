@@ -1,5 +1,4 @@
 import { API_URL } from '@env';
-import { useCurrentAccount } from 'hooks/useActiveAccount';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { apiEnvs } from '../../App';
@@ -13,6 +12,7 @@ import {
   MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY,
   NavigationIdentifiers,
 } from '../../constants/navigationLinks';
+import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { Link } from '../../types/link';

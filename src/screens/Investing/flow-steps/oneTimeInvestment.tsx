@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
+import { INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 import { generateInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateInvestment } from 'reinvest-app-common/src/services/queries/createInvestment';
@@ -33,9 +34,11 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     storeFields: { bankAccount, investAmount, accountId, accountType, initialInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
+    const presets = INVESTMENT_PRESET_AMOUNTS[accountType ?? AccountType.Individual];
+
     const { navigate } = useLogInNavigation();
     const schema = useMemo(() => generateInvestmentSchema({ accountType: accountType || AccountType.Individual }), [accountType]);
-    const [amount, setAmount] = useState<number | undefined>(investAmount);
+    const [amount, setAmount] = useState<number | undefined>(investAmount ?? +(presets[0]?.value ?? 0));
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
     const { refetch: refetchConfig, isLoading: configRefetching } = useCurrentAccountConfig(accountId);
     const { refetch: refetchActiveRecurring, isLoading: activeRecurringRefetching } = useGetActiveRecurringInvestment(getApiClient, {
@@ -99,6 +102,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
           </Box>
           {createAccountError && <ErrorMessagesHandler error={createAccountError} />}
           <InvestingAmountTable
+            presetAmounts={presets}
             accountId={accountId}
             accountType={accountType || AccountType.Individual}
             error={error}

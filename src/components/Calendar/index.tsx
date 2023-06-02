@@ -23,12 +23,8 @@ export const Calendar = ({ autoSelectionPeriod, onSelect, defaultStartingDate }:
   const isShowingCurrentMonth = currentDate.month() === dayjs().month();
   const calendarDays = useMemo(() => getCalendarDays(currentDate), [currentDate]);
 
-  const {
-    data: scheduledDates,
-    refetch,
-    isLoading,
-  } = useGetScheduleSimulation(getApiClient, {
-    schedule: { frequency: autoSelectionPeriod, startDate: startingDate ?? defaultStartingDate ?? '' },
+  const { refetch } = useGetScheduleSimulation(getApiClient, {
+    schedule: { frequency: autoSelectionPeriod, startDate: startingDate ? formatDate(startingDate.toDate(), 'API') : defaultStartingDate ?? '' },
     config: { enabled: !!startingDate || !!defaultStartingDate },
   });
 
@@ -38,7 +34,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect, defaultStartingDate }:
         const { data } = await refetch();
 
         if (data) {
-          setRecurringDates(data.map(date => dayjs(date)));
+          setRecurringDates(data.slice(1).map(date => dayjs(date)));
           onSelect({
             startingDate: formatDate(startingDate.toDate(), 'API'),
             recurringDates: data,
@@ -47,12 +43,6 @@ export const Calendar = ({ autoSelectionPeriod, onSelect, defaultStartingDate }:
       })();
     }
   }, [onSelect, refetch, startingDate]);
-
-  useEffect(() => {
-    if (!isLoading && scheduledDates) {
-      setRecurringDates(scheduledDates.map(date => dayjs(date)));
-    }
-  }, [isLoading, scheduledDates]);
 
   const selectDay = async (date: dayjs.Dayjs | undefined) => {
     if (!date || date.isBefore(dayjs(), 'day')) {
