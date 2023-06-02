@@ -7,4 +7,5 @@ export interface Props {
   amount?: number;
   bankAccount?: string;
   error?: string;
+  isRecurring?: boolean;
 }

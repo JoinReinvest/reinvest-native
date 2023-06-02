@@ -78,6 +78,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             <StyledText variant="h5">{investingHeadlines.recurring}</StyledText>
           </Box>
           <InvestingAmountTable
+            isRecurring
             accountId={accountId}
             error={error}
             amount={amount}

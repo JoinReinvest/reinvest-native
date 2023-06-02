@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { TextInput } from 'react-native';
-import { AmountsOption, INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
+import { AmountsOption, INVESTMENT_PRESET_AMOUNTS, RECURRING_INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 
 import { Box } from '../../../../components/Containers/Box/Box';
 import { Row } from '../../../../components/Containers/Row';
@@ -11,8 +11,8 @@ import Screens from '../../../../navigation/screens';
 import { styles } from './styles';
 import { Props } from './types';
 
-export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType, accountId }: Props) => {
-  const presets = INVESTMENT_PRESET_AMOUNTS[accountType];
+export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, accountType, accountId, isRecurring }: Props) => {
+  const presets = isRecurring ? RECURRING_INVESTMENT_PRESET_AMOUNTS[accountType] : INVESTMENT_PRESET_AMOUNTS[accountType];
   const optionValue = presets.find(option => option.value === amount?.toString());
   const [customAmount, setCustomAmount] = useState((!optionValue && amount) || '');
   const { navigate } = useLogInNavigation();
