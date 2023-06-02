@@ -4,11 +4,13 @@ import DocumentPicker, { DocumentPickerResponse, isInProgress } from 'react-nati
 import { Asset, ImagePickerResponse } from 'react-native-image-picker';
 
 import { palette } from '../../constants/theme';
+import { useDialog } from '../../providers/DialogProvider';
 import { IdentificationDocument } from '../../screens/Onboarding/types';
 import { Button } from '../Button';
 import { Box } from '../Containers/Box/Box';
 import { Icon } from '../Icon';
 import { ImagePicker } from '../ImagePicker';
+import { ConfirmDelete } from '../Modals/ModalContent/ConfirmDelete';
 import { FilePickerProps } from './types';
 
 export const isDocumentPickerResource = (file: DocumentPickerResponse | Asset): file is DocumentPickerResponse =>
@@ -25,12 +27,22 @@ const permissionAlert = () =>
     },
   ]);
 
-export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark = true, selectionLimit = 3, ...rest }: PropsWithChildren<FilePickerProps>) => {
+export const FilePicker = ({
+  state = [],
+  onSelect,
+  label,
+  type = 'single',
+  dark = true,
+  selectionLimit = 3,
+  showConfirmDialog = false,
+  ...rest
+}: PropsWithChildren<FilePickerProps>) => {
   const [results, setResults] = React.useState<(DocumentPickerResponse | Asset)[]>(state);
   const existingIds = useRef<Set<string | undefined>>(new Set([]));
   const [choosingMode, setChoosingMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const openChoosingMode = async () => setChoosingMode(true);
+  const { openDialog } = useDialog();
 
   const closeChoosingMode = () => setChoosingMode(false);
 
@@ -86,9 +98,40 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
     }
   };
 
-  const deleteFile = ({ uri, id }: { id: string; uri: string }) => {
+  const deleteFile = ({ uri, id, fileName }: { fileName: string | undefined; id: string; uri: string }) => {
+    const heading = `Are you sure you want to delete “${fileName}”?`;
+
     if (uri) {
+      if (showConfirmDialog) {
+        openDialog(
+          <ConfirmDelete
+            heading={heading}
+            onSuccess={() => releaseFile(uri)}
+          />,
+          { closeIcon: false },
+          'sheet',
+        );
+
+        return;
+      }
+
       return releaseFile(uri);
+    }
+
+    if (showConfirmDialog) {
+      openDialog(
+        <ConfirmDelete
+          heading={heading}
+          onSuccess={() => {
+            const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== id) || [...results];
+            setResults(filteredFiles);
+          }}
+        />,
+        { closeIcon: false },
+        'sheet',
+      );
+
+      return;
     }
 
     const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== id) || [...results];
@@ -126,9 +169,9 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
     }
   };
 
-  const getName = (file: Asset | DocumentPickerResponse) => {
+  const getName = (file: Asset | DocumentPickerResponse): string | undefined => {
     if (isDocumentPickerResource(file)) {
-      return file.name;
+      return file.name ?? undefined;
     }
 
     return file.fileName?.split('.').shift()?.substring(0, 30);
@@ -197,21 +240,27 @@ export const FilePicker = ({ state = [], onSelect, label, type = 'single', dark 
     >
       {mainSegment}
       {results &&
-        results.map(file => (
-          <Button
-            dark={dark}
-            variant="draft"
-            labelStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
-            endIcon={
-              <Icon
-                icon="trash"
-                color={dark ? palette.pureWhite : palette.pureBlack}
-              />
-            }
-            key={file.uri || (file as IdentificationDocument).id}
-            onPress={() => deleteFile({ uri: file.uri ? file.uri : '', id: (file as IdentificationDocument).id })}
-          >{`${getName(file)}`}</Button>
-        ))}
+        results.map(file => {
+          const fileName = getName(file);
+
+          return (
+            <Button
+              dark={dark}
+              variant="draft"
+              labelStyle={{ justifyContent: 'space-between', paddingHorizontal: 16 }}
+              endIcon={
+                <Icon
+                  icon="trash"
+                  color={dark ? palette.pureWhite : palette.pureBlack}
+                />
+              }
+              key={file.uri || (file as IdentificationDocument).id}
+              onPress={() => deleteFile({ fileName, uri: file.uri ? file.uri : '', id: (file as IdentificationDocument).id })}
+            >
+              {fileName}
+            </Button>
+          );
+        })}
     </Box>
   );
 };

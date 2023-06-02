@@ -10,5 +10,6 @@ export interface FilePickerProps extends BoxProps {
   type: 'single' | 'multi';
   dark?: boolean;
   selectionLimit?: number;
+  showConfirmDialog?: boolean;
   state?: (DocumentPickerResponse | Asset | IdentificationDocument)[];
 }
