@@ -25,6 +25,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
   Component: ({ moveToNextStep, updateStoreFields, storeFields: { accountId, recurringInvestment } }: StepComponentProps<InvestFormFields>) => {
     const [startingDate, setStartingDate] = useState<undefined | string>(recurringInvestment?.startingDate);
     const { mutateAsync: createInvestment, isLoading, error } = useCreateRecurringInvestment(getApiClient);
+
     const handleContinue = async () => {
       if (recurringInvestment?.interval) {
         const { id, subscriptionAgreementId } = await createInvestment({
@@ -50,6 +51,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
           </Box>
           {error && <ErrorMessagesHandler error={error} />}
           <Calendar
+            defaultStartingDate={recurringInvestment?.startingDate}
             autoSelectionPeriod={recurringInvestment?.interval || RecurringInvestmentFrequency.Weekly}
             onSelect={async selectedData => {
               setStartingDate(selectedData.startingDate);

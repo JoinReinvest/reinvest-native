@@ -3,4 +3,5 @@ import { RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/grap
 export interface CalendarProps {
   autoSelectionPeriod: RecurringInvestmentFrequency;
   onSelect: (dates: { recurringDates: string[]; startingDate: string }) => void;
+  defaultStartingDate?: string;
 }
