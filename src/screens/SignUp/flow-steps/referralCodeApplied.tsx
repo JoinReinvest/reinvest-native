@@ -27,7 +27,10 @@ export const StepReferralCodeApplied: StepParams<RegisterFormFields> = {
           title="Referral code applied"
           dark
         />
-        <Box fw>
+        <Box
+          fw
+          px="default"
+        >
           <Button onPress={moveToNextStep}>Continue</Button>
         </Box>
       </View>
