@@ -188,7 +188,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
     if (isListAccountTypesUserCanOpenLoading) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.centeredContent}>
           <Loader
             size="xl"
             color={palette.pureWhite}

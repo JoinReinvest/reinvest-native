@@ -111,7 +111,6 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   fiduciaryEntityInformation: undefined,
   corporationLegalName: undefined,
   ein: undefined,
-  domicile: undefined,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({

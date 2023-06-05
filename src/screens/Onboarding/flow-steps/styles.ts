@@ -42,4 +42,5 @@ export const styles = StyleSheet.create({
   },
   removeMargin: { marginBottom: 0 },
   stakeholderRow: { columnGap: 27, justifyContent: 'space-between', alignItems: 'center' },
+  centeredContent: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
