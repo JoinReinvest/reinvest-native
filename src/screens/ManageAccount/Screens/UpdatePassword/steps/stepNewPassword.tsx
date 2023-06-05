@@ -11,6 +11,7 @@ import { Box } from '../../../../../components/Containers/Box/Box';
 import { Row } from '../../../../../components/Containers/Row';
 import { FormMessage } from '../../../../../components/Forms/FormMessage';
 import { MainWrapper } from '../../../../../components/MainWrapper';
+import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
 import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
@@ -42,14 +43,14 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
   },
 
   Component: ({ storeFields: { currentPassword } }: StepComponentProps<UpdatePasswordFormFields>) => {
-    const { navigate } = useLogInNavigation();
+    const { goBack } = useLogInNavigation();
 
     const { user } = useAuth();
     const { control, handleSubmit, formState, setFocus, watch } = useForm({
       mode: 'onBlur',
       resolver: zodResolver(schema),
     });
-    const { openDialog, closeDialog } = useDialog();
+    const { openDialog } = useDialog();
     const [error, setError] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -78,28 +79,12 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
           setError('');
           setIsUpdating(false);
 
-          // TODO: Update to success modal
-          openDialog(
-            <MainWrapper bottomSafe>
-              <PaddedScrollView style={{ marginTop: 24 }}>
-                <StyledText>Success</StyledText>
-              </PaddedScrollView>
-              <Box
-                fw
-                px="default"
-              >
-                <Button
-                  onPress={() => {
-                    navigate(Screens.ManageAccountMainScreen);
-                    closeDialog();
-                  }}
-                >
-                  Dashboard
-                </Button>
-              </Box>
-            </MainWrapper>,
-            { showLogo: true, header: <HeaderWithLogo onClose={() => navigate(Screens.ManageAccountMainScreen)} /> },
-          );
+          const header = <HeaderWithLogo onClose={goBack} />;
+          openDialog(<UpdateSuccess info="Your password is updated" />, {
+            showLogo: true,
+            header,
+            closeIcon: false,
+          });
         }
       });
     };
