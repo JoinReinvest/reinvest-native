@@ -3,10 +3,12 @@ import { View } from 'react-native';
 import { RECURRING_INVESTMENT_PRESET_AMOUNTS } from 'reinvest-app-common/src/constants/investment-amounts';
 import { generateRecurringInvestmentSchema } from 'reinvest-app-common/src/form-schemas/investment';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
 import { InvestingAmountTable } from '../ components/InvestingAmountTable';
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
@@ -27,12 +29,13 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
 
   Component: ({
     moveToNextStep,
-    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, bankAccount, accountId },
+    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, accountId },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const presets = RECURRING_INVESTMENT_PRESET_AMOUNTS[accountType ?? AccountType.Individual];
     const [error, setError] = useState<string | undefined>();
     const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount ?? +(presets[0]?.value ?? 0));
+    const { data: bankData } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
     const { goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
     const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: accountType || undefined }), [accountType]);
@@ -86,7 +89,7 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
             error={error}
             amount={amount}
             accountType={accountType || AccountType.Individual}
-            bankAccount={bankAccount?.accountNumber || ''}
+            bankAccount={bankData?.accountNumber || ''}
             setAmount={value => {
               setError(undefined);
               setAmount(parseFloat(value));

@@ -5,6 +5,7 @@ import { generateInvestmentSchema } from 'reinvest-app-common/src/form-schemas/i
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateInvestment } from 'reinvest-app-common/src/services/queries/createInvestment';
 import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 import { AccountType, RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
@@ -31,7 +32,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
 
   Component: ({
     moveToNextStep,
-    storeFields: { bankAccount, investAmount, accountId, accountType, initialInvestment },
+    storeFields: { investAmount, accountId, accountType, initialInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const presets = INVESTMENT_PRESET_AMOUNTS[accountType ?? AccountType.Individual];
@@ -39,6 +40,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
     const { navigate } = useLogInNavigation();
     const schema = useMemo(() => generateInvestmentSchema({ accountType: accountType || AccountType.Individual }), [accountType]);
     const [amount, setAmount] = useState<number | undefined>(investAmount ?? +(presets[0]?.value ?? 0));
+    const { data: bankData } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
     const { mutateAsync, isLoading, error: createAccountError } = useCreateInvestment(getApiClient);
     const { refetch: refetchConfig, isLoading: configRefetching } = useCurrentAccountConfig(accountId);
     const { refetch: refetchActiveRecurring, isLoading: activeRecurringRefetching } = useGetActiveRecurringInvestment(getApiClient, {
@@ -107,7 +109,7 @@ export const OneTimeInvestment: StepParams<InvestFormFields> = {
             accountType={accountType || AccountType.Individual}
             error={error}
             amount={amount}
-            bankAccount={bankAccount?.accountNumber || ''}
+            bankAccount={bankData?.accountNumber || ''}
             setAmount={value => {
               setError(undefined);
               setAmount(parseFloat(value));

@@ -12,6 +12,7 @@ import { PlaidLogo } from '../../../components/Icon/icons/PlaidLogo';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { HEADER_HEIGHT } from '../../../constants/styles';
+import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
 import { BankAccountFormFields } from '../types';
 import { styles } from './styles';
@@ -19,8 +20,9 @@ import { styles } from './styles';
 export const PlaidInformation: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.PLAID_INFORMATION,
 
-  Component: ({ moveToNextStep }: StepComponentProps<BankAccountFormFields>) => {
+  Component: ({ moveToNextStep, storeFields }: StepComponentProps<BankAccountFormFields>) => {
     const { top } = useSafeAreaInsets();
+    const { pop } = useLogInNavigation();
     const handleContinue = async () => {
       moveToNextStep();
     };
@@ -82,6 +84,16 @@ export const PlaidInformation: StepParams<BankAccountFormFields> = {
             </Box>
           </Box>
         </PaddedScrollView>
+        {storeFields.isUpdatingAccount && (
+          <View style={[styles.headerLessCloseButton, { top }]}>
+            <Icon
+              icon={'hamburgerClose'}
+              onPress={() => {
+                return pop();
+              }}
+            />
+          </View>
+        )}
         <View
           key="buttons_section"
           style={styles.buttonsSection}

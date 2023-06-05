@@ -29,7 +29,7 @@ export const InvestingAmountTable = ({ setAmount, amount, bankAccount, error, pr
   };
 
   const openPlaid = () => {
-    navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, isUpdatingAccount: true, accountId });
+    navigate(Screens.BankAccount, { isUpdatingAccount: true, accountId });
   };
 
   return (

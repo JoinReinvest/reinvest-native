@@ -9,13 +9,12 @@ import { BankAccountFlowProvider, bankAccountInitialSteps } from './flow-steps';
 
 export const BankAccount = ({ route }: NativeStackScreenProps<LogInStackParamList, Screens.BankAccount>) => {
   const [account] = useAtom(currentAccount);
-  const { sourceScreen, isUpdatingAccount, accountId } = route.params;
+  const { isUpdatingAccount, accountId } = route.params;
 
   return (
     <BankAccountFlowProvider
       initialStoreFields={{
         ...bankAccountInitialSteps,
-        sourceScreen,
         isUpdatingAccount,
         accountId: accountId || account.id || '',
       }}

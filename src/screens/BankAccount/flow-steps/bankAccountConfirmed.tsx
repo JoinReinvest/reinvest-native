@@ -1,7 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
@@ -14,12 +16,11 @@ import { styles } from './styles';
 export const BankAccountConfirmed: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.BANK_ACCOUNT_CONFIRMED,
 
-  Component: ({ storeFields: { bankAccount, sourceScreen } }: StepComponentProps<BankAccountFormFields>) => {
-    const { navigate } = useLogInNavigation();
+  Component: ({ storeFields: { accountId } }: StepComponentProps<BankAccountFormFields>) => {
+    const { pop } = useLogInNavigation();
+    const { data } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
     const handleContinue = async () => {
-      if (sourceScreen) {
-        navigate(sourceScreen, { bankAccount });
-      }
+      pop();
     };
 
     return (
@@ -35,7 +36,7 @@ export const BankAccountConfirmed: StepParams<BankAccountFormFields> = {
             justifyContent="flex-start"
           >
             <Box py="8">
-              <StyledText variant={'h5'}>{`Your bank account ending in ${bankAccount?.accountNumber} has been added.`} </StyledText>
+              <StyledText variant={'h5'}>{`Your bank account ending in ${data?.accountNumber} has been added.`} </StyledText>
             </Box>
           </StatusCircle>
         </Box>

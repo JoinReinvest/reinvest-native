@@ -19,7 +19,7 @@ export const ManageBankAccount = () => {
   const { data, isLoading } = useReadBankAccount(getApiClient, { accountId: activeAccount.id || '' });
 
   const onPress = async () => {
-    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', sourceScreen: Screens.ManageAccount, isUpdatingAccount: true });
+    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: true });
   };
 
   const onRemove = async () => {
