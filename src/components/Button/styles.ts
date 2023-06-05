@@ -86,4 +86,16 @@ export const styles = StyleSheet.create({
   darkLabel: {
     color: palette.pureWhite,
   },
+  warning: {
+    backgroundColor: palette.error,
+  },
+  warningLabel: {
+    color: palette.pureWhite,
+  },
+  warningDisabled: {
+    backgroundColor: palette.lightGray,
+  },
+  warningLabelDisabled: {
+    color: palette.dark3,
+  },
 });

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { PressableProps } from 'react-native';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'combo' | 'draft';
+type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'combo' | 'draft' | 'warning';
 
 export interface ButtonProps extends PressableProps {
   dark?: boolean;
