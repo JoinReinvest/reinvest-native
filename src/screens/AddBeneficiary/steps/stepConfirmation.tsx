@@ -47,12 +47,12 @@ export const StepConfirmation: StepParams<BeneficiaryCreationFormFields> = {
     const onSubmit = async () => {
       const beneficiaryAccount = accounts?.find(account => account?.id === storeFields.id);
 
-      if (beneficiaryAccount) {
+      if (beneficiaryAccount && beneficiaryAccount.id) {
         await setActiveAccount(beneficiaryAccount);
+        replace(Screens.Investing, { accountId: beneficiaryAccount.id });
       }
 
       // As an option we can parametrize navigation , to get account id in invest flow  (if we will skip setting current account globally)
-      replace(Screens.Investing, {});
     };
 
     return (

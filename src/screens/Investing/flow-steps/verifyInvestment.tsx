@@ -31,7 +31,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Component: ({
-    storeFields: { accountId, oneTimeInvestmentId, investAmount, recurringInvestment, recurringInvestmentId },
+    storeFields: { accountId, oneTimeInvestmentId, investAmount, recurringInvestment, recurringInvestmentId, initialInvestment },
   }: StepComponentProps<InvestFormFields>) => {
     const { openDialog } = useDialog();
     const {
@@ -40,7 +40,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
 
     const { setActiveAccount, activeAccount } = useCurrentAccount();
     const { data: accounts } = useGetAccountsOverview(getApiClient);
-    const { navigate, pop } = useLogInNavigation();
+    const { navigate, reset, pop } = useLogInNavigation();
     const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
@@ -72,6 +72,10 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
           if (account) {
             setActiveAccount(account);
           }
+        }
+
+        if (initialInvestment) {
+          return reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
         }
 
         pop(accounts && accounts?.length > 1 ? 2 : 1);

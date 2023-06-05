@@ -19,8 +19,6 @@ export const ManageAccountMainScreen = () => {
   const navigate = (options: Partial<Link>) => {
     const currentEnv = apiEnvs[API_URL as keyof typeof apiEnvs];
 
-    console.log('=>(index.tsx:28) options', options);
-
     if (currentEnv === 'Integration' || currentEnv === 'Development' || options.identifier === NavigationIdentifiers.DIVIDEND_REINVESTING) {
       navigation.navigate(Screens.ManageAccount, { options });
     }
