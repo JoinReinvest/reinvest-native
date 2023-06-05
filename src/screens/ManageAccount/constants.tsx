@@ -6,6 +6,7 @@ import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
 import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
+import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
 import { UpdatePassword } from './Screens/UpdatePassword';
@@ -19,4 +20,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   NAME: <UpdateName />,
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
   CHANGE_PASSWORD: <UpdatePassword />,
+  COMPANY_DOCUMENTS: <UpdateCompanyDocuments />,
 };

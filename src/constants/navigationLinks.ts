@@ -1,3 +1,5 @@
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
+
 import { Link } from '../types/link';
 
 export enum NavigationIdentifiers {
@@ -14,9 +16,10 @@ export enum NavigationIdentifiers {
   PROFILE_PICTURE = 'PROFILE_PICTURE',
   ADDRESS = 'ADDRESS',
   REMOVE_BENEFICIARY = 'REMOVE_BENEFICIARY',
+  COMPANY_DOCUMENTS = 'COMPANY_DOCUMENTS',
 }
 
-export const BASE_MANAGE_ACCOUNT_INVESTING: Link[] = [
+export const BASE_INVESTING_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.INVESTMENT_HISTORY,
     label: 'Investment History',
@@ -45,26 +48,7 @@ export const BASE_MANAGE_ACCOUNT_INVESTING: Link[] = [
   },
 ];
 
-export const BASE_MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
-  {
-    identifier: NavigationIdentifiers.NAME,
-    label: 'Name',
-  },
-  {
-    identifier: NavigationIdentifiers.PROFILE_PICTURE,
-    label: 'Profile Picture',
-  },
-];
-
-export const MANAGE_ACCOUNT_BENEFICIARY_INVESTING: Link[] = [
-  ...BASE_MANAGE_ACCOUNT_INVESTING,
-  {
-    identifier: NavigationIdentifiers.REMOVE_BENEFICIARY,
-    label: 'Remove Account',
-  },
-];
-
-export const MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY: Link[] = [
+export const SECURITY_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.EMAIL_ADDRESS,
     label: 'Email Address',
@@ -82,7 +66,43 @@ export const MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY: Link[] = [
   },
 ];
 
-export const MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
+const BASE_PROFILE_INFO_LINKS: Link[] = [
+  {
+    identifier: NavigationIdentifiers.NAME,
+    label: 'Name',
+    title: 'Edit Name',
+    headerShown: false,
+  },
+  {
+    identifier: NavigationIdentifiers.ADDRESS,
+    label: 'Address',
+    headerShown: false,
+    cancellable: true,
+  },
+  {
+    identifier: NavigationIdentifiers.PROFILE_PICTURE,
+    label: 'Profile Picture',
+  },
+];
+
+const CORPORATE_PROFILE_INFO_LINKS: Link[] = [
+  {
+    identifier: NavigationIdentifiers.COMPANY_DOCUMENTS,
+    label: 'Documents',
+  },
+  {
+    identifier: NavigationIdentifiers.ADDRESS,
+    label: 'Address',
+    headerShown: false,
+    cancellable: true,
+  },
+  {
+    identifier: NavigationIdentifiers.PROFILE_PICTURE,
+    label: 'Profile Picture',
+  },
+];
+
+const BENEFICIARY_PROFILE_INFO_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.NAME,
     label: 'Name',
@@ -95,12 +115,25 @@ export const MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
   },
 ];
 
-export const MANAGE_ACCOUNT_PROFILE_INFO_WITH_ADDRESS: Link[] = [
-  ...BASE_MANAGE_ACCOUNT_PROFILE_INFO,
-  {
-    identifier: NavigationIdentifiers.ADDRESS,
-    label: 'Address',
-    headerShown: false,
-    cancellable: true,
+export const MANAGE_ACCOUNT_LINKS: { [key in AccountType]: { investing: Link[]; profile: Link[]; security: Link[] } } = {
+  [AccountType.Individual]: {
+    investing: BASE_INVESTING_LINKS,
+    security: SECURITY_LINKS,
+    profile: BASE_PROFILE_INFO_LINKS,
   },
-];
+  [AccountType.Corporate]: {
+    investing: BASE_INVESTING_LINKS,
+    security: SECURITY_LINKS,
+    profile: BASE_PROFILE_INFO_LINKS,
+  },
+  [AccountType.Trust]: {
+    investing: BASE_INVESTING_LINKS,
+    security: SECURITY_LINKS,
+    profile: CORPORATE_PROFILE_INFO_LINKS,
+  },
+  [AccountType.Beneficiary]: {
+    investing: BASE_INVESTING_LINKS,
+    security: [],
+    profile: BENEFICIARY_PROFILE_INFO_LINKS,
+  },
+};
