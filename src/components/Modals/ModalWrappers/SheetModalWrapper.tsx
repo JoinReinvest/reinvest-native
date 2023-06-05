@@ -17,7 +17,7 @@ export const SheetModalWrapper = ({ dialogContent, children }: PropsWithChildren
 
   return (
     <Box
-      style={[styles.fh, { backgroundColor: hexToRgbA(palette.pureBlack, 0.6), paddingTop: top + HEADER_HEIGHT }]}
+      style={[styles.fh, { backgroundColor: hexToRgbA(palette.pureBlack, 0.5), paddingTop: top + HEADER_HEIGHT }]}
       onPress={closeDialog}
     >
       {dialogContent || children}

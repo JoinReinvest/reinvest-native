@@ -75,5 +75,7 @@ export const MANAGE_ACCOUNT_PROFILE_INFO: Link[] = [
   {
     identifier: NavigationIdentifiers.ADDRESS,
     label: 'Address',
+    headerShown: false,
+    cancellable: true,
   },
 ];

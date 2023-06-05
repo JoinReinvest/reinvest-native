@@ -23,7 +23,7 @@ interface SearchViewProps extends InputProps {
   value?: string;
 }
 
-export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, dark = true, value, noPadding = false, ...rest }: SearchViewProps) => {
+export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, dark, value, noPadding = false, ...rest }: SearchViewProps) => {
   const inputRef = useRef<TextInput>(null);
   const [searchValue, setSearchValue] = useState<string>(value || '');
   const [list, setList] = useState<AddressAsOption[]>([]);
@@ -79,7 +79,7 @@ export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, d
         fw={noPadding}
       >
         <Input
-          dark
+          dark={dark}
           ref={inputRef}
           onChangeText={setSearchValue}
           value={searchValue}
@@ -111,12 +111,12 @@ export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, d
             {list.map((el, idx) => {
               return (
                 <Box
-                  style={[list.length > idx + 1 && styles.bottomBordered]}
+                  style={[list.length > idx + 1 && styles.bottomBordered, !dark && styles.borderLight]}
                   py={'12'}
                   key={el.fullAddress}
                 >
                   <StyledText
-                    color="pureWhite"
+                    color={dark ? 'pureWhite' : 'pureBlack'}
                     onPress={() => parseDetails(el.placeId)}
                   >
                     {el.fullAddress}

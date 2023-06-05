@@ -84,6 +84,7 @@ export const StepPermanentAddress: StepParams<KYCFailedFormFields> = {
     const showSearchDialog = useCallback(() => {
       return openDialog(
         <SearchDialog
+          dark={true}
           value={addressWatched || ''}
           placeholder={placeholders.addressLine1}
           fillDetailsCallback={fillFieldsFromPrediction}

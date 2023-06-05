@@ -43,7 +43,7 @@ export const BlackLayout = ({ shouldShowFooter = true }: Props) => {
       const response = await refetch();
 
       // hide add another account when necessary:
-      queryClient.invalidateQueries(['listAccountTypesUserCanOpen']);
+      await queryClient.invalidateQueries(['listAccountTypesUserCanOpen']);
 
       if (!response.data?.isCompleted) {
         return;

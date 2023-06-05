@@ -1,12 +1,13 @@
 import { useRoute } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect } from 'react';
+import React, { useCallback } from 'react';
 
 import { Box } from '../../../../../components/Containers/Box/Box';
-import { DarkScreenHeader, ScreenHeader } from '../../../../../components/CustomHeader';
+import { ScreenHeader } from '../../../../../components/CustomHeader';
 import { HeaderCancel } from '../../../../../components/HeaderCancel';
 import { Icon } from '../../../../../components/Icon';
 import { MainWrapper } from '../../../../../components/MainWrapper';
 import { TermsFooter } from '../../../../../components/TermsFooter';
+import { palette } from '../../../../../constants/theme';
 import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
@@ -29,29 +30,19 @@ export const UpdateEmailLayout = () => {
   useStepBackOverride<UpdateEmailFormFields, LogInStackParamList>(useUpdateEmailFlow, navigation, false, isOnAuthCodeStep);
   useKeyboardAware();
 
+  const headerRight = useCallback(() => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} />, [navigation]);
+
   const headerLeft = useCallback(
     () => (
       <Icon
+        color={isOnAuthCodeStep ? palette.pureWhite : palette.pureBlack}
         icon={'down'}
         style={{ transform: [{ rotate: '90deg' }] }}
         onPress={() => (isFirstStep ? navigation.goBack() : moveToPreviousValidStep())}
       />
     ),
-    [isFirstStep, moveToPreviousValidStep, navigation],
+    [isFirstStep, isOnAuthCodeStep, moveToPreviousValidStep, navigation],
   );
-
-  const headerRight = useCallback(() => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} />, [navigation]);
-
-  useLayoutEffect(() => {
-    if (isOnAuthCodeStep) {
-      navigation.setOptions({
-        header: DarkScreenHeader,
-        title: 'logo',
-        headerLeft,
-        headerRight: undefined,
-      });
-    }
-  }, [headerLeft, headerRight, isOnAuthCodeStep, navigation]);
 
   return (
     <>
