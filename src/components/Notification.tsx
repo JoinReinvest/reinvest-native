@@ -13,10 +13,11 @@ import { StyledText } from './typography/StyledText';
 
 interface NotificationProps extends BaseNotification {
   id: string;
+  showIcon: boolean;
   onPress?: (notification: Pick<BaseNotification, 'id' | 'notificationType'>) => void;
 }
 
-export const Notification = ({ id, header, body, date, isRead, notificationType, onPress }: NotificationProps) => {
+export const Notification = ({ id, header, body, date, isRead, notificationType, showIcon, onPress }: NotificationProps) => {
   const parsedBody = markdownBold(body);
 
   return (
@@ -43,7 +44,7 @@ export const Notification = ({ id, header, body, date, isRead, notificationType,
         </Box>
         <StyledText variant="paragraph">{formatDateForNotification(date)}</StyledText>
       </View>
-      <Icon icon="arrowRight" />
+      {showIcon && <Icon icon="arrowRight" />}
     </Pressable>
   );
 };

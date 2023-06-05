@@ -9,7 +9,6 @@ import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/quer
 import { Notification as BaseNotification, Query } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
-import { queryClient } from '../../App';
 import { Row } from '../../components/Containers/Row';
 import { Icon } from '../../components/Icon';
 import { MainWrapper } from '../../components/MainWrapper';
@@ -19,6 +18,7 @@ import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { unreadNotificationsCount } from '../../store/atoms';
+import { ACTIONABLE_NOTIFICATIONS } from './constants';
 import { styles } from './styles';
 
 export type UseApiQuery<QueryKey extends keyof Query> = (getClient: GetApiClient) => UseInfiniteQueryResult<Query[QueryKey]>;
@@ -32,17 +32,17 @@ export const Notifications = () => {
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
-
   const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
+
   const list = useMemo(() => data?.pages.map(el => el.getNotifications).flat() || [], [data]);
 
-  const onPressHandler = (notification: BaseNotification) => {
-    if (notification.isDismissible) {
-      markRead({ notificationId: notification.id });
-      queryClient.invalidateQueries(['getNotifications']);
-    }
+  const onPressHandler = async (notification: BaseNotification) => {
+    markRead({ notificationId: notification.id });
+    await refetch();
 
-    navigate(Screens.NotificationDetails, { notification });
+    if (ACTIONABLE_NOTIFICATIONS.includes(notification.notificationType)) {
+      navigate(Screens.NotificationDetails, { notification });
+    }
   };
 
   useEffect(() => {
@@ -83,6 +83,7 @@ export const Notifications = () => {
           <Notification
             onPress={() => onPressHandler(item)}
             key={item.id}
+            showIcon={ACTIONABLE_NOTIFICATIONS.includes(item.notificationType)}
             {...item}
           />
         )}
