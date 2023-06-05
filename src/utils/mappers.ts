@@ -16,6 +16,7 @@ export const apiStakeholderToApplicant = (app: Maybe<Stakeholder>) =>
   } as Applicant);
 
 export const mapApplicantToApiStakeholder = (applicant: Applicant): StakeholderInput => ({
+  id: applicant.id,
   name: {
     firstName: applicant.firstName,
     lastName: applicant.lastName,

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { useGetScheduleSimulation } from 'reinvest-app-common/src/services/queries/getScheduleSimulation';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
@@ -13,18 +14,18 @@ import { styles } from './styles';
 import { CalendarProps } from './types';
 import { getCalendarDays } from './utilities';
 
-export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
-  const [startingDate, setStartingDate] = useState<dayjs.Dayjs | null>(null);
+export const Calendar = ({ autoSelectionPeriod, onSelect, defaultStartingDate }: CalendarProps) => {
+  const [startingDate, setStartingDate] = useState<dayjs.Dayjs | null>(defaultStartingDate ? dayjs(defaultStartingDate) : null);
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const recurringDatesRef = useRef<dayjs.Dayjs[]>([]);
+  const [recurringDates, setRecurringDates] = useState<dayjs.Dayjs[]>([]);
 
   const calendarLabel = formatDate(currentDate.toDate(), 'DATE_PICKER', { currentFormat: 'DATE_PICKER' });
   const isShowingCurrentMonth = currentDate.month() === dayjs().month();
   const calendarDays = useMemo(() => getCalendarDays(currentDate), [currentDate]);
 
   const { refetch } = useGetScheduleSimulation(getApiClient, {
-    schedule: { frequency: autoSelectionPeriod, startDate: startingDate ? formatDate(startingDate.toDate(), 'API') : '' },
-    config: { enabled: !!startingDate },
+    schedule: { frequency: autoSelectionPeriod, startDate: startingDate ? formatDate(startingDate.toDate(), 'API') : defaultStartingDate ?? '' },
+    config: { enabled: !!startingDate || !!defaultStartingDate },
   });
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
         const { data } = await refetch();
 
         if (data) {
-          recurringDatesRef.current = data?.map(date => dayjs(date)).slice(1); // skip already selected date
+          setRecurringDates(data.slice(1).map(date => dayjs(date)));
           onSelect({
             startingDate: formatDate(startingDate.toDate(), 'API'),
             recurringDates: data,
@@ -48,6 +49,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
       return;
     }
 
+    setRecurringDates([]);
     setStartingDate(date);
   };
 
@@ -88,7 +90,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect }: CalendarProps) => {
         style={[styles.container, styles.noBorderTop, styles.grid]}
       >
         {calendarDays?.map((date, index) => {
-          const isAutoSelected = !!recurringDatesRef.current.find(autoSelectedDate => autoSelectedDate.isSame(date));
+          const isAutoSelected = !!recurringDates.find(autoSelectedDate => autoSelectedDate.isSame(date));
           const isSelectedAsStartingDate = date && date.isSame(startingDate);
           const shouldBeDisabled = date?.isBefore(dayjs(), 'day');
 

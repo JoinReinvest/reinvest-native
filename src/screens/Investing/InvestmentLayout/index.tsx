@@ -1,10 +1,14 @@
 import React, { useCallback, useLayoutEffect } from 'react';
+import { useAbortInvestment } from 'reinvest-app-common/src/services/queries/abortInvestment';
+import { useGetDraftRecurringInvestment } from 'reinvest-app-common/src/services/queries/getDraftRecurringInvestment';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { HeaderAvatar } from '../../../components/HeaderAvatar';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
 import { StyledText } from '../../../components/typography/StyledText';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useStepBackOverride } from '../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../navigation/hooks';
@@ -33,8 +37,15 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
     resetStoreFields,
     CurrentStepView,
     meta: { currentStepIdentifier },
+    moveToPreviousValidStep,
   } = useInvestFlow();
+  const { activeAccount } = useCurrentAccount();
   const navigation = useLogInNavigation();
+  const { mutateAsync: abortInvestment } = useAbortInvestment(getApiClient);
+  const { refetch: refetchRecurringInvestmentDraft } = useGetDraftRecurringInvestment(getApiClient, {
+    accountId: activeAccount.id ?? '',
+    config: { enabled: !!activeAccount.id },
+  });
 
   useStepBackOverride<InvestFormFields, LogInStackParamList>(
     useInvestFlow,
@@ -59,12 +70,31 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
       );
     }
 
+    // abort recurring investment when going back from deposit schedule
+    if (currentStepIdentifier === Identifiers.RECURRING_DEPOSIT_SCHEDULE) {
+      return () => (
+        <Icon
+          icon={'down'}
+          style={{ transform: [{ rotate: '90deg' }] }}
+          onPress={async () => {
+            const { data } = await refetchRecurringInvestmentDraft();
+
+            if (data?.id) {
+              await abortInvestment({ investmentId: data.id });
+            }
+
+            moveToPreviousValidStep();
+          }}
+        />
+      );
+    }
+
     if (stepsWithoutBack.includes(currentStepIdentifier as Identifiers)) {
       return () => null;
     }
 
     return undefined;
-  }, [initialInvestment, navigation, currentStepIdentifier]);
+  }, [initialInvestment, currentStepIdentifier, navigation, refetchRecurringInvestmentDraft, moveToPreviousValidStep, abortInvestment]);
 
   const getRightHeader = useCallback(() => {
     if (stepsWithCancelOption.includes(currentStepIdentifier as Identifiers)) {
