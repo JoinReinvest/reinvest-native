@@ -21,7 +21,7 @@ export const Button = ({
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
-    if (!disabled && isLoading) {
+    if (isLoading) {
       return (
         <Loader
           align={'center'}

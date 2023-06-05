@@ -6,12 +6,24 @@ import { Icon } from '../Icon';
 import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 
-export const CheckItem = ({ isChecked, label }: { isChecked: boolean; label: string }) => {
+export const CheckItem = ({ isChecked, label, dark = true }: { isChecked: boolean; label: string; dark?: boolean }) => {
+  const getTextColor = () => {
+    if (!dark && isChecked) {
+      return 'pureBlack';
+    }
+
+    if (dark && isChecked) {
+      return 'pureWhite';
+    }
+
+    return 'dark3';
+  };
+
   return (
     <View style={styles.itemWrapper}>
       <StyledText
         variant="paragraphLarge"
-        color={isChecked ? 'pureWhite' : 'dark3'}
+        color={getTextColor()}
       >
         {label}
       </StyledText>

@@ -78,6 +78,7 @@ export const MANAGE_ACCOUNT_SIGN_IN_AND_SECURITY: Link[] = [
   {
     identifier: NavigationIdentifiers.CHANGE_PASSWORD,
     label: 'Change Password',
+    headerShown: false,
   },
 ];
 

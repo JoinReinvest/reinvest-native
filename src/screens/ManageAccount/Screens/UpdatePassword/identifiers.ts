@@ -1,0 +1,4 @@
+export enum Identifiers {
+  CURRENT_PASSWORD = 'CURRENT_PASSWORD',
+  NEW_PASSWORD = 'NEW_PASSWORD',
+}
