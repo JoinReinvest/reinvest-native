@@ -82,6 +82,7 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
           onProceed={setCurrentAccountAfterSuccess}
           type="invest"
           dialogItems={investments}
+          buttonLabel="Dashboard"
           disclaimer={InvestingDialogDisclaimers.invest}
         />,
         {
