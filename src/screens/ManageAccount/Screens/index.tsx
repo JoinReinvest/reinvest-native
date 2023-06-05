@@ -10,7 +10,7 @@ import { SCREENS_CONTENT } from '../constants';
 
 export const ManageAccountScreen = ({ navigation, route }: NativeStackScreenProps<LogInStackParamList, Screens.ManageAccount>) => {
   const {
-    options: { headerShown = true, cancellable = true, label = 'Manage Account', identifier, title },
+    options: { headerShown = true, cancellable, label = 'Manage Account', identifier, title },
   } = route.params;
 
   const getRightHeader = useMemo(

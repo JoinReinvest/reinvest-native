@@ -19,6 +19,7 @@ export const Button = ({
   dark,
   style,
   labelStyle,
+  isDestructive,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
   const renderButtonLabel = () => {
@@ -39,7 +40,7 @@ export const Button = ({
   return (
     <Pressable
       pointerEvents={!vessel ? 'auto' : 'none'}
-      style={[styles.button, styles[`${variant}`], disabled && styles[`${variant}Disabled`], style]}
+      style={[styles.button, styles[`${variant}`], disabled && styles[`${variant}Disabled`], isDestructive && styles[`${variant}Destructive`], style]}
       disabled={disabled}
       {...rest}
     >

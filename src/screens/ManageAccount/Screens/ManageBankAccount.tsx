@@ -1,8 +1,13 @@
 import React from 'react';
+import { Alert } from 'react-native';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 
+import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
-import { PaddedScrollView } from '../../../components/PaddedScrollView';
+import { Loader } from '../../../components/Loader';
+import { MainWrapper } from '../../../components/MainWrapper';
+import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
@@ -11,19 +16,44 @@ export const ManageBankAccount = () => {
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
 
+  const { data, isLoading } = useReadBankAccount(getApiClient, { accountId: activeAccount.id || '' });
+
   const onPress = async () => {
-    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', sourceScreen: Screens.ManageAccount });
+    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', sourceScreen: Screens.ManageAccount, isUpdatingAccount: true });
+  };
+
+  const onRemove = async () => {
+    Alert.alert('Removing bank account');
   };
 
   return (
-    <>
-      <PaddedScrollView></PaddedScrollView>
+    <MainWrapper bottomSafe>
       <Box
-        px="default"
+        flex={1}
         fw
       >
-        <Button onPress={onPress}>Edit Bank Account</Button>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <StyledText variant="paragraphEmp">{`${data?.accountType} ${data?.accountNumber}`} </StyledText>
+            <Box pt="16">
+              <StyledText variant="paragraph">
+                {`REINVEST allows only 1 bank account to be linked to an account at a time. \n \n If you remove your bank account, it will be removed from your beneficiary account as well.`}
+              </StyledText>
+            </Box>
+          </>
+        )}
       </Box>
-    </>
+
+      <Button onPress={onPress}>Change</Button>
+      <Button
+        isDestructive
+        variant="outlined"
+        onPress={onRemove}
+      >
+        Remove
+      </Button>
+    </MainWrapper>
   );
 };

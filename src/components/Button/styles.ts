@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
   primaryDisabled: {
     backgroundColor: palette.lightGray,
   },
+  primaryDestructive: { backgroundColor: palette.error },
   primaryLabelDisabled: {
     color: palette.dark3,
   },
@@ -37,6 +38,7 @@ export const styles = StyleSheet.create({
   comboLabel: {
     color: palette.deepGreen,
   },
+  comboDestructive: {},
   comboDisabled: {
     backgroundColor: palette.lightGray,
   },
@@ -52,10 +54,12 @@ export const styles = StyleSheet.create({
   secondaryLabel: {
     color: palette.deepGreen,
   },
+  secondaryDestructive: {},
   secondaryLabelDisabled: {
     color: palette.dark3,
   },
   draftDisabled: {},
+  draftDestructive: {},
   draft: {
     backgroundColor: palette.transparent,
     borderStyle: 'dashed',
@@ -82,6 +86,10 @@ export const styles = StyleSheet.create({
   outlinedLabelDisabled: {
     color: palette.darkerGray,
   },
+  outlinedDestructive: {
+    borderColor: palette.error,
+  },
+
   pill: {},
   darkLabel: {
     color: palette.pureWhite,
