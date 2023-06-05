@@ -127,7 +127,6 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
           style={styles.buttonsSection}
         >
           <Button
-            variant="outlined"
             onPress={onReinvest}
             disabled={reinvestLoading || withdrawLoading}
             isLoading={reinvestLoading}
@@ -135,6 +134,7 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
             Reinvest
           </Button>
           <Button
+            variant="outlined"
             disabled={reinvestLoading || withdrawLoading}
             onPress={onWithdraw}
             isLoading={withdrawLoading}
