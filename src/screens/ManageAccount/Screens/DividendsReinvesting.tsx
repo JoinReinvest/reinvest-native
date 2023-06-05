@@ -41,7 +41,7 @@ export const DividendsReinvesting = () => {
     );
   };
 
-  const status = accountConfig?.automaticDividendReinvestmentAgreement.signed ? 'Active' : 'Inactive';
+  const status = accountConfig?.automaticDividendReinvestmentAgreement?.signed ? 'Active' : 'Inactive';
 
   return (
     <MainWrapper

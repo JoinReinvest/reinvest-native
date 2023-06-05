@@ -6,6 +6,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'combo' | 'draft' | 
 export interface ButtonProps extends PressableProps {
   dark?: boolean;
   endIcon?: ReactNode;
+  isDestructive?: boolean;
   isLoading?: boolean;
   isPill?: boolean;
   labelStyle?: StyleProp<ViewStyle>;

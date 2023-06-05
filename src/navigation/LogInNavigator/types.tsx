@@ -6,8 +6,6 @@ import { Link } from '../../types/link';
 import { BottomTabsParamsBase } from '../BottomTabsNavigator/types';
 import Screens from '../screens';
 
-export type BankAccountSourceScreens = Screens.Investing | Screens.ManageAccount;
-
 export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;
   [Screens.Onboarding]: undefined;
@@ -17,7 +15,7 @@ export type LogInStackParamList = {
   [Screens.Settings]: undefined;
   [Screens.ManageAccountMainScreen]: undefined;
   [Screens.ManageAccount]: { options: Partial<Link> };
-  [Screens.BankAccount]: { sourceScreen: BankAccountSourceScreens; accountId?: string; isUpdatingAccount?: boolean };
+  [Screens.BankAccount]: { accountId?: string; isUpdatingAccount?: boolean };
   [Screens.KYCFail]: { actions: VerificationAction[]; fees?: Usd; oneTimeInvestmentId?: string; recurringInvestmentId?: string };
   [Screens.Locked]: { action: VerificationAction; accountType?: AccountType };
   [Screens.NotificationDetails]: { notification: BaseNotification };

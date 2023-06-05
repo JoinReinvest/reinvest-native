@@ -26,7 +26,7 @@ export const Initialise: StepParams<InvestFormFields> = {
 
     useEffect(() => {
       if (error) {
-        navigate(Screens.BankAccount, { sourceScreen: Screens.Investing, accountId: storeFields.accountId });
+        navigate(Screens.BankAccount, { accountId: storeFields.accountId });
       }
 
       if (data) {
@@ -38,7 +38,7 @@ export const Initialise: StepParams<InvestFormFields> = {
     }, [data, error, moveToNextStep, navigate, storeFields.accountId, updateStoreFields]);
 
     useEffect(() => {
-      if (params?.bankAccount) {
+      if (data?.accountNumber) {
         (async () => {
           await updateStoreFields({
             bankAccount: params.bankAccount,
@@ -46,7 +46,7 @@ export const Initialise: StepParams<InvestFormFields> = {
           moveToNextStep();
         })();
       }
-    }, [moveToNextStep, params, updateStoreFields]);
+    }, [data?.accountNumber, moveToNextStep, params, updateStoreFields]);
 
     return isLoading ? (
       <Box

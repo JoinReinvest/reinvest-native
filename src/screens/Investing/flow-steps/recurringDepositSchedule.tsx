@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetDraftRecurringInvestment } from 'reinvest-app-common/src/services/queries/getDraftRecurringInvestment';
+import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 import { RecurringInvestmentFrequency } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
@@ -33,8 +34,10 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
     return !!fields.isRecurringInvestment && requiredFields;
   },
 
-  Component: ({ moveToNextStep, storeFields: { recurringInvestment, bankAccount, source, accountId } }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields: { recurringInvestment, source, accountId } }: StepComponentProps<InvestFormFields>) => {
     const { data, isLoading } = useGetDraftRecurringInvestment(getApiClient, { accountId });
+    const { data: bankData } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
+
     const handleContinue = async () => {
       moveToNextStep();
     };
@@ -60,7 +63,7 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
             <Box>
               <SummaryDetail
                 label="From"
-                value={`${source}\n${bankAccount?.accountNumber || ''}`}
+                value={`${source}\n${bankData?.accountNumber || ''}`}
               />
               {!!recurringInvestment?.interval && (
                 <SummaryDetail
