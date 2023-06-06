@@ -14,7 +14,7 @@ import { styles } from '../styles';
 export const StepPenalties: StepParams<WithdrawalFundsFormFields> = {
   identifier: Identifiers.PENALTIES,
 
-  Component: ({ moveToNextStep }: StepComponentProps<WithdrawalFundsFormFields>) => {
+  Component: ({ storeFields: { _accountValue }, moveToNextStep }: StepComponentProps<WithdrawalFundsFormFields>) => {
     const { openDialog } = useDialog();
 
     const openEligibleFundsDialog = () =>
@@ -39,7 +39,7 @@ export const StepPenalties: StepParams<WithdrawalFundsFormFields> = {
             <Row mb="8">
               <StyledText variant="h6">Account Value</StyledText>
             </Row>
-            <StyledText variant="dividend">$500.00</StyledText>
+            <StyledText variant="dividend">{_accountValue}</StyledText>
           </Box>
           <Box style={{ rowGap: 24 }}>
             <Row
@@ -47,7 +47,7 @@ export const StepPenalties: StepParams<WithdrawalFundsFormFields> = {
               style={styles.row}
             >
               <StyledText variant="paragraphLarge">$ Eligible Funds for Withdrawal</StyledText>
-              <StyledText variant="h6">$500.00</StyledText>
+              <StyledText variant="h6">{_accountValue}</StyledText>
             </Row>
             <Row
               justifyContent="space-between"
@@ -72,7 +72,7 @@ export const StepPenalties: StepParams<WithdrawalFundsFormFields> = {
         </Box>
         <Box fw>
           <Button
-            variant="warning"
+            isDestructive
             onPress={moveToNextStep}
           >
             Request Fund Withdrawal

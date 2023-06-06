@@ -10,7 +10,7 @@ import { Identifiers } from '../identifiers';
 export const StepRequestWithdrawal: StepParams<WithdrawalFundsFormFields> = {
   identifier: Identifiers.REQUEST_WITHDRAWAL,
 
-  Component: ({ moveToNextStep }: StepComponentProps<WithdrawalFundsFormFields>) => {
+  Component: ({ storeFields: { _accountValue }, moveToNextStep }: StepComponentProps<WithdrawalFundsFormFields>) => {
     return (
       <Box
         fw
@@ -25,7 +25,7 @@ export const StepRequestWithdrawal: StepParams<WithdrawalFundsFormFields> = {
             <Row mb="8">
               <StyledText variant="h6">Account Value</StyledText>
             </Row>
-            <StyledText variant="dividend">$500.00</StyledText>
+            <StyledText variant="dividend">{_accountValue}</StyledText>
           </Box>
           <Box>
             <StyledText variant="paragraphLarge">
@@ -39,7 +39,7 @@ export const StepRequestWithdrawal: StepParams<WithdrawalFundsFormFields> = {
         </Box>
         <Box fw>
           <Button
-            variant="warning"
+            isDestructive
             onPress={moveToNextStep}
           >
             Request Fund Withdrawal

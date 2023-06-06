@@ -38,7 +38,7 @@ export const StepReason: StepParams<WithdrawalFundsFormFields> = {
         </Box>
         <Box fw>
           <Button
-            variant="warning"
+            isDestructive
             onPress={onSubmit}
           >
             Continue
