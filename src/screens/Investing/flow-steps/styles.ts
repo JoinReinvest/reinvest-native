@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { MAIN_WRAPPER_PADDING_HORIZONTAL } from '../../../constants/styles';
+import { palette } from '../../../constants/theme';
 import { yScale } from '../../../utils/scale';
 
 export const styles = StyleSheet.create({
@@ -16,4 +17,5 @@ export const styles = StyleSheet.create({
   },
   scrollViewPaddingTop: { paddingTop: 24 },
   scrollView: { width: '100%' },
+  lastSummaryDetail: { borderBottomWidth: 1, borderBottomColor: palette.lightGray },
 });

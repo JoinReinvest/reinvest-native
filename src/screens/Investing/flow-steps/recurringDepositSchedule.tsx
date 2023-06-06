@@ -15,7 +15,6 @@ import { FormDisclaimer } from '../../../components/FormDisclaimer';
 import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -34,7 +33,7 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
     return !!fields.isRecurringInvestment && requiredFields;
   },
 
-  Component: ({ moveToNextStep, storeFields: { recurringInvestment, source, accountId } }: StepComponentProps<InvestFormFields>) => {
+  Component: ({ moveToNextStep, storeFields: { recurringInvestment, accountId } }: StepComponentProps<InvestFormFields>) => {
     const { data, isLoading } = useGetDraftRecurringInvestment(getApiClient, { accountId });
     const { data: bankData } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
 
@@ -63,7 +62,7 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
             <Box>
               <SummaryDetail
                 label="From"
-                value={`${source}\n${bankData?.accountNumber || ''}`}
+                value={`${bankData?.bankName}\n${bankData?.accountNumber || ''}`}
               />
               {!!recurringInvestment?.interval && (
                 <SummaryDetail
@@ -111,15 +110,15 @@ const SummaryDetail = ({ label, value, isLast }: { label: string; value: string;
     <Row
       py="16"
       justifyContent="space-between"
-      style={[!isLast && { borderBottomWidth: 1, borderBottomColor: palette.lightGray }]}
+      style={[!isLast && styles.lastSummaryDetail]}
     >
+      <StyledText variant="paragraphLarge">{label}</StyledText>
       <StyledText
-        textAlign="right"
-        variant="paragraphLarge"
+        textAlign={'right'}
+        variant={'paragraphEmp'}
       >
-        {label}
+        {value}
       </StyledText>
-      <StyledText variant={'paragraphEmp'}>{value}</StyledText>
     </Row>
   );
 };
