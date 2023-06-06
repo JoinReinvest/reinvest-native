@@ -3,7 +3,6 @@ import { AccountType, BankAccount, RecurringInvestmentFrequency } from 'reinvest
 
 export interface InvestFormFields {
   accountId: string;
-  source: string;
   _shouldDisplayRecurringInvestment?: boolean;
   accountSelectable?: boolean;
   accountType?: Maybe<AccountType>;
