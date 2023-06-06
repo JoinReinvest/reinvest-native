@@ -74,6 +74,7 @@ Change flavour in android studio or schema to build proper version
 - Project is using xCode cloud for iOS deployment 
 - In order to change any values in env secrets , there is a need to convert desired .env file into base64 and overwrite xcode cloud secret.
   - there are separate workflows for staging and integration environments
+  - don't obfuscate secret for ENV_FILE since it will lead to improper decoded values
 - All necessary certs and profiles for production deployment can be delivered by your supervisor
 
 ### Android (TBD)

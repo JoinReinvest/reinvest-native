@@ -75,10 +75,17 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
         }
 
         if (initialInvestment) {
-          return reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
-        }
+          /*
+            moving this to event loop we are sure that painting of dashboard is ended.
+            Unknown race condition with repainting next screen sometimes occurs causing app crash
+           */
 
-        pop(accounts && accounts?.length > 1 ? 2 : 1);
+          setTimeout(() => {
+            reset({ index: 0, routes: [{ name: Screens.BottomNavigator }] });
+          }, 0);
+        } else {
+          pop(accounts && accounts?.length > 1 ? 2 : 1);
+        }
       };
 
       openDialog(

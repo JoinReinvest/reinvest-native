@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+import { palette } from '../../../../constants/theme';
 import { yScale } from '../../../../utils/scale';
 
 export const styles = StyleSheet.create({
@@ -39,4 +40,6 @@ export const styles = StyleSheet.create({
     width: 48,
     marginTop: 0,
   },
+  separator: { borderBottomColor: palette.lightGray, borderBottomWidth: 1 },
+  icon: { transform: [{ rotate: '180deg' }] },
 });
