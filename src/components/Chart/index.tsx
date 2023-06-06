@@ -38,7 +38,7 @@ export const Chart = ({ compact }: ChartProps) => {
 
   const gridPosition = [0, 1, 2, 3].map(count => 48 * 0.8 * count);
 
-  if ((isLoading || isRefetching) && !chartData.length) {
+  if (isLoading && !chartData.length) {
     <Box
       height={yScale(48) * 4}
       style={[styles.wrapper, compact && styles.compact]}
