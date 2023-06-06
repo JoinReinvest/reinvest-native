@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
   inputWrapper: {
     height: '100%',
     textAlignVertical: 'top',
-    color: '#fff',
     paddingTop: 18,
   },
   inputStyle: {

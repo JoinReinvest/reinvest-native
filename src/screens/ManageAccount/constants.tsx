@@ -10,6 +10,7 @@ import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
 import { UpdatePassword } from './Screens/UpdatePassword';
+import { WithdrawalFunds } from './Screens/WithdrawalFunds';
 
 export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNode }> = {
   INVESTMENT_HISTORY: <InvestmentHistory />,
@@ -21,4 +22,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
   CHANGE_PASSWORD: <UpdatePassword />,
   COMPANY_DOCUMENTS: <UpdateCompanyDocuments />,
+  WITHDRAW_FUNDS: <WithdrawalFunds />,
 };
