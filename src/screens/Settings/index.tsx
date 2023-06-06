@@ -47,16 +47,19 @@ export const Settings = () => {
 
   const handleSelectAccount = async (value: string) => {
     const account = accounts?.find(account => account?.id === value) ?? accounts?.[0];
-    const response = await verifyAccountMutate({ accountId: account?.id ?? '' });
 
-    const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
-      ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
-    );
+    if (account?.type !== AccountType.Beneficiary) {
+      const response = await verifyAccountMutate({ accountId: account?.id ?? '' });
 
-    if (bannedAction) {
-      bottomSheetRef.current?.dismiss();
+      const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
+        ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
+      );
 
-      return navigate(Screens.Locked, { action: bannedAction, accountType: account?.type as AccountType });
+      if (bannedAction) {
+        bottomSheetRef.current?.dismiss();
+
+        return navigate(Screens.Locked, { action: bannedAction, accountType: account?.type as AccountType });
+      }
     }
 
     setAccountAtom(account as AccountOverview);
