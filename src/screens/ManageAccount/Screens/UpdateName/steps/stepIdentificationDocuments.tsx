@@ -109,6 +109,7 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
             type="multi"
             selectionLimit={5}
             state={selectedFiles}
+            showConfirmDialog
           />
           <Row
             mt="24"

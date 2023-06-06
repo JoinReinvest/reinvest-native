@@ -4,12 +4,12 @@ import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { apiEnvs } from '../../App';
 import { Box } from '../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
-import { MANAGE_ACCOUNT_LINKS, NavigationIdentifiers } from '../../constants/navigationLinks';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { Link } from '../../types/link';
 import { LinksSegment } from './components/LinksSegment';
+import { MANAGE_ACCOUNT_LINKS, NavigationIdentifiers } from './navigationLinks';
 import { styles } from './styles';
 
 export const ManageAccountMainScreen = () => {
