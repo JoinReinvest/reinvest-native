@@ -37,6 +37,8 @@ export const BASE_INVESTING_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.WITHDRAW_FUNDS,
     label: 'Withdraw Funds',
+    cancellable: true,
+    headerShown: false,
   },
   {
     identifier: NavigationIdentifiers.BANK_ACCOUNT,

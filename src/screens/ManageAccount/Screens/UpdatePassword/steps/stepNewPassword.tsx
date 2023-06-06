@@ -10,14 +10,12 @@ import { PasswordChecklist } from '../../../../../components/CheckList/PasswordC
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { Row } from '../../../../../components/Containers/Row';
 import { FormMessage } from '../../../../../components/Forms/FormMessage';
-import { MainWrapper } from '../../../../../components/MainWrapper';
 import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
 import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
-import Screens from '../../../../../navigation/screens';
 import { useAuth } from '../../../../../providers/AuthProvider';
 import { useDialog } from '../../../../../providers/DialogProvider';
 import { UpdatePasswordFormFields } from '../form-fields';

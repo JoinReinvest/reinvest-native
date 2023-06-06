@@ -14,7 +14,14 @@ import { Icon } from '../../../Icon';
 import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
-export const DividendReinvestModal = () => {
+interface Props {
+  amount?: string;
+  footer?: string;
+  headline?: string;
+  info?: string;
+}
+
+export const DividendReinvestModal = ({ headline = 'Thank you for reinvesting', info = 'Successfully reinvested.', footer = '', amount = '' }: Props) => {
   const { closeDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
@@ -31,7 +38,7 @@ export const DividendReinvestModal = () => {
           variant="h4"
           textAlign="center"
         >
-          Thank you for reinvesting
+          {headline}
         </StyledText>
         <Box
           fw
@@ -54,7 +61,7 @@ export const DividendReinvestModal = () => {
               variant="dividend"
               style={{ fontFamily: Fonts.GTAmericaMedium }}
             >
-              $10.00
+              {amount}
             </StyledText>
           </Box>
           <Box
@@ -72,9 +79,19 @@ export const DividendReinvestModal = () => {
               variant="paragraph"
               color="dark2"
             >
-              Successfully reinvested.
+              {info}
             </StyledText>
           </Box>
+          {footer && (
+            <Box mt="32">
+              <StyledText
+                variant="paragraphLarge"
+                textAlign="center"
+              >
+                {footer}
+              </StyledText>
+            </Box>
+          )}
         </Box>
       </View>
       <Box
