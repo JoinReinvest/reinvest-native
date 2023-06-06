@@ -89,21 +89,11 @@ export const styles = StyleSheet.create({
   outlinedDestructive: {
     borderColor: palette.error,
   },
-
   pill: {},
   darkLabel: {
     color: palette.pureWhite,
   },
-  warning: {
-    backgroundColor: palette.error,
-  },
-  warningLabel: {
+  destructiveFilledLabel: {
     color: palette.pureWhite,
-  },
-  warningDisabled: {
-    backgroundColor: palette.lightGray,
-  },
-  warningLabelDisabled: {
-    color: palette.dark3,
   },
 });

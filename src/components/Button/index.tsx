@@ -40,7 +40,7 @@ export const Button = ({
   return (
     <Pressable
       pointerEvents={!vessel ? 'auto' : 'none'}
-      style={[styles.button, styles[`${variant}`], disabled && styles[`${variant}Disabled`], isDestructive && styles[`${variant}Destructive`], style]}
+      style={[styles.button, styles[`${variant}`], isDestructive && styles[`${variant}Destructive`], disabled && styles[`${variant}Disabled`], style]}
       disabled={disabled}
       {...rest}
     >
@@ -52,6 +52,7 @@ export const Button = ({
           style={[
             { maxWidth: labelWidth },
             styles[`${variant}Label`],
+            !!isDestructive && variant === 'primary' && styles.destructiveFilledLabel,
             disabled && styles[`${variant}LabelDisabled`],
             (variant === 'outlined' || variant === 'draft') && dark && styles.darkLabel,
           ]}

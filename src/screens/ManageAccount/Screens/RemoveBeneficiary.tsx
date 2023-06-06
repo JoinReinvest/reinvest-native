@@ -80,7 +80,7 @@ export const RemoveBeneficiary = () => {
         <Button
           isLoading={isLoading}
           disabled={isLoading}
-          variant="warning"
+          isDestructive
           onPress={deleteAccount}
         >
           Remove Account

@@ -134,7 +134,7 @@ export const MANAGE_ACCOUNT_LINKS: { [key in AccountType]: { investing: Link[]; 
     profile: CORPORATE_PROFILE_INFO_LINKS,
   },
   [AccountType.Beneficiary]: {
-    investing: BASE_INVESTING_LINKS,
+    investing: [...BASE_INVESTING_LINKS, { identifier: NavigationIdentifiers.REMOVE_BENEFICIARY, cancellable: true, label: 'Remove Account' }],
     security: [],
     profile: BENEFICIARY_PROFILE_INFO_LINKS,
   },
