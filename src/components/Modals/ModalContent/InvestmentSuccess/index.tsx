@@ -49,12 +49,12 @@ export const InvestSuccess = ({ disclaimer, dialogItems, type, onProceed, button
       navigation.navigate(Screens.Dashboard);
     }
 
-    onProceed?.();
     closeDialog();
+    onProceed?.();
   };
 
   return (
-    <View style={[styles.center, styles.container, { paddingBottom: bottom }]}>
+    <View style={[styles.center, styles.container, { paddingBottom: bottom || 16 }]}>
       <PaddedScrollView contentContainerStyle={[styles.center]}>
         <StyledText
           textAlign="center"
@@ -69,7 +69,7 @@ export const InvestSuccess = ({ disclaimer, dialogItems, type, onProceed, button
               {idx !== dialogItems.length - 1 && (
                 <Box
                   fw
-                  style={{ borderBottomColor: palette.lightGray, borderBottomWidth: 1 }}
+                  style={styles.separator}
                 />
               )}
             </React.Fragment>
@@ -79,7 +79,6 @@ export const InvestSuccess = ({ disclaimer, dialogItems, type, onProceed, button
       </PaddedScrollView>
       <Box
         fw
-        pb="24"
         px="default"
       >
         <Button onPress={returnToDashboard}>{buttonLabel}</Button>
@@ -103,7 +102,7 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogItem) 
         <Icon
           color={palette.success}
           icon={!isRecurring ? 'down' : 'refresh'}
-          style={{ transform: [{ rotate: '180deg' }] }}
+          style={styles.icon}
         />
         <StyledText
           numberOfLines={1}

@@ -35,6 +35,7 @@ type StackOptionsParametrized = ({ navigation }: { navigation: NativeStackNaviga
 const stackOptions: Record<
   Extract<
     Screens,
+    | Screens.BottomNavigator
     | Screens.Onboarding
     | Screens.ManageAccount
     | Screens.ManageAccountMainScreen
@@ -50,6 +51,9 @@ const stackOptions: Record<
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
+  [Screens.BottomNavigator]: {
+    headerShown: false,
+  },
   [Screens.Onboarding]: {
     title: 'logo',
     header: DarkScreenHeader,
@@ -137,7 +141,7 @@ export const LogInNavigator: React.FC = () => {
             initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}
           >
             <LogInStack.Screen
-              options={{ headerShown: false }}
+              options={stackOptions[Screens.BottomNavigator]}
               name={Screens.BottomNavigator}
               component={BottomTabsNavigator}
             />
