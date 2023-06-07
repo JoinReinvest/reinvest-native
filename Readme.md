@@ -78,3 +78,8 @@ Change flavour in android studio or schema to build proper version
 - All necessary certs and profiles for production deployment can be delivered by your supervisor
 
 ### Android (TBD)
+- Project uses local.properties to store credentials to release.keystore, ask supervisor for those two files
+  - local.properties  this should be placed in `./android/` folder
+  - release.keystore this should be placed in `./android/app` folder
+- Since whole deployment should be handled by cicd pipeline , this should be used only while manually deployment process , and should be avoided
+- For development debug.keystore is provided
