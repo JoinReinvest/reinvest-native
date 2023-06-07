@@ -33,6 +33,7 @@ export type TextVariants =
   | 'avatarInitialsMedium'
   | 'avatarInitialsSmall'
   | 'today'
+  | 'todayCondensed'
   | 'tableHeading'
   | 'subheading'
   | 'dividend';
