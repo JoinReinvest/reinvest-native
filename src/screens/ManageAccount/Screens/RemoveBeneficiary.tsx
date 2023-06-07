@@ -50,7 +50,7 @@ export const RemoveBeneficiary = () => {
     openDialog(
       <BeneficiaryRemoveSuccess
         individualAccountId={individualAccount.id ?? ''}
-        beneficiaryAccountValue={accountStats?.accountValue ?? ''}
+        beneficiaryAccountValue={accountStats?.accountValue ?? '0'}
         onClose={handleDialogClose}
       />,
       { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },

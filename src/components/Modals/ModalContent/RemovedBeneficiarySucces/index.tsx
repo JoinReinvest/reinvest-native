@@ -19,7 +19,9 @@ interface Props {
   onClose: () => void;
 }
 
-const parseAmountToNumber = (amount: string): number => +amount.replace('$', '');
+const regex = /[$,]/g;
+
+const parseAmountToNumber = (amount: string): number => +amount.replaceAll(regex, '');
 
 export const BeneficiaryRemoveSuccess = ({ individualAccountId, beneficiaryAccountValue, onClose }: Props) => {
   const { closeDialog } = useDialog();
