@@ -7,13 +7,6 @@ import { Button } from '../../../Button';
 import { Box } from '../../../Containers/Box/Box';
 import { StatusCircle } from '../../../StatusCircle';
 
-export type DialogItem = {
-  amount: number;
-  headline: string;
-  date?: string;
-  isRecurring?: boolean;
-};
-
 interface Props {
   info: string;
   buttonLabel?: string;

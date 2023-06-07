@@ -109,6 +109,10 @@ const styles = StyleSheet.create({
   today: {
     fontSize: 10,
   },
+  todayCondensed: {
+    fontSize: 10,
+    letterSpacing: -0.9,
+  },
   tableHeading: {
     fontFamily: Fonts.GTAmericaRegular,
     fontSize: 20,

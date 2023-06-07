@@ -167,10 +167,12 @@ export const BottomTabsNavigator: React.FC = () => {
           header: props => <ScreenHeader {...props} />,
           tabBarIcon: ({ focused }) => (
             <Box style={styles.notificationWrapper}>
-              <Box style={styles.notificationBadge}>
+              <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
                 <StyledText
+                  adjustsFontSizeToFit
+                  style={styles.count}
                   color="pureWhite"
-                  variant="today"
+                  variant="todayCondensed"
                 >
                   {currentNotificationsCount}
                 </StyledText>

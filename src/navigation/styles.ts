@@ -15,14 +15,19 @@ export const styles = StyleSheet.create({
   notificationBadge: {
     position: 'absolute',
     backgroundColor: 'red',
-    top: -5,
-    right: -5,
+    top: -4,
+    right: -4,
     height: 14,
-    width: 14,
+    minWidth: 14,
     borderRadius: 14,
+    paddingLeft: 0,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 1,
     zIndex: 1,
   },
+  threeDigitsBadge: {
+    right: -7,
+  },
+  count: { textAlign: 'center' },
 });
