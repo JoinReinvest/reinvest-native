@@ -7,6 +7,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { AccountUpdateConfirmation } from '../../../components/Modals/ModalContent/AccountUpdateConfirmation';
+import { ConfirmDelete } from '../../../components/Modals/ModalContent/ConfirmDelete';
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
@@ -26,7 +27,7 @@ export const ManageBankAccount = () => {
     navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: !!data?.accountNumber });
   };
 
-  const showAccountRemovedDialog = () => {
+  const showAccountRemovedScreen = () => {
     openDialog(
       <AccountUpdateConfirmation
         accountNumber={removedAccountRef.current}
@@ -46,11 +47,26 @@ export const ManageBankAccount = () => {
     );
   };
 
+  const removeAccount = () => {
+    setTimeout(() => {
+      showAccountRemovedScreen();
+    }, 1000);
+  };
+
+  const showConfirmationDialog = () => {
+    openDialog(
+      <ConfirmDelete
+        heading={'Are you sure you want to remove the bank account?'}
+        onSuccess={removeAccount}
+      />,
+      { closeIcon: false, safeTop: false },
+      'sheet',
+    );
+  };
+
   const onRemove = async () => {
     removedAccountRef.current = data?.accountNumber || '';
-    setTimeout(() => {
-      showAccountRemovedDialog();
-    }, 1000);
+    showConfirmationDialog();
   };
 
   return (
@@ -73,7 +89,6 @@ export const ManageBankAccount = () => {
         )}
       </Box>
 
-      <Button onPress={onPress}>Change</Button>
       <Button
         disabled={!data}
         isDestructive
@@ -82,6 +97,7 @@ export const ManageBankAccount = () => {
       >
         Remove
       </Button>
+      <Button onPress={onPress}>Change</Button>
     </MainWrapper>
   );
 };

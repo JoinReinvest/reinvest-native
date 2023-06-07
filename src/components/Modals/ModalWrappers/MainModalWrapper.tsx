@@ -2,20 +2,20 @@ import React, { PropsWithChildren, ReactNode } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Box } from '../../../components/Containers/Box/Box';
-import { Sygnet } from '../../../components/Icon/icons';
 import { isIOS } from '../../../constants/common';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
 import { xScale, yScale } from '../../../utils/scale';
+import { Box } from '../../Containers/Box/Box';
 import { Icon } from '../../Icon';
+import { Sygnet } from '../../Icon/icons';
 import { styles } from './styles';
 
 export interface MainModalWrapperProps {
   closeIcon?: boolean;
   dark?: boolean;
   dialogContent?: ReactNode;
-  header?: JSX.Element | null;
+  header?: ReactNode | null;
   showLogo?: boolean;
 }
 
