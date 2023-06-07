@@ -17,8 +17,8 @@ export const ConfirmDelete = ({ heading, onSuccess, onCancel }: Props) => {
   const { closeDialog } = useDialog();
 
   const handleSuccess = () => {
-    onSuccess();
     closeDialog();
+    onSuccess();
   };
 
   const handleCancel = () => {

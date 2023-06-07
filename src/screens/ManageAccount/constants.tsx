@@ -4,6 +4,7 @@ import { NavigationIdentifiers } from '../../constants/navigationLinks';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
 import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
+import { RecurringInvestments } from './Screens/RecurringInvestments';
 import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
@@ -23,4 +24,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   CHANGE_PASSWORD: <UpdatePassword />,
   COMPANY_DOCUMENTS: <UpdateCompanyDocuments />,
   WITHDRAW_FUNDS: <WithdrawalFunds />,
+  RECURRING_INVESTMENT: <RecurringInvestments />,
 };
