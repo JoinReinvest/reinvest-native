@@ -11,8 +11,8 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { useLogOutNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { formValidationRules } from '../../../utils/formValidationRules';
-import { useRegisterFormFlow } from '../flow-steps';
 import { RegisterFormFields } from '../types';
+import { useRegisterFormFlow } from './index';
 import { styles } from './styles';
 
 type Fields = Pick<RegisterFormFields, 'email'>;
@@ -40,11 +40,11 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
     resolver: zodResolver(schema),
   });
 
-  const navigation = useLogOutNavigation();
+  const { navigate } = useLogOutNavigation();
 
   const onSubmit: SubmitHandler<Fields> = async fields => {
     updateStoreFields(fields);
-    navigation.navigate(Screens.BlackForm);
+    navigate(Screens.BlackForm);
   };
 
   return (
@@ -56,7 +56,7 @@ export const StepOutsideFlow = ({ initialSteps }: Props) => {
         inputProps={{ placeholder: 'Email Address', keyboardType: 'email-address' }}
       />
       <StyledText
-        onPress={() => navigation.navigate(Screens.SignIn)}
+        onPress={() => navigate(Screens.SignIn)}
         variant="link"
         color="pureWhite"
         style={styles.firstStepLink}

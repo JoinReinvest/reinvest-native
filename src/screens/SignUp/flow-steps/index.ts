@@ -14,6 +14,7 @@ export const formFieldsInitialState = {
   referralCode: '',
   password: '',
   authenticationCode: '',
+  passwordConfirmation: '',
 };
 
 const [useRegisterFormFlow, RegisterFormFlowProvider] = createFormFlow<RegisterFormFields>({
