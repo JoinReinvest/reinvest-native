@@ -36,7 +36,7 @@ import { useDialog } from '../../../providers/DialogProvider';
 import { apiStakeholderToApplicant } from '../../../utils/mappers';
 import { Identifiers } from '../identifiers';
 import { IdentificationDocuments, OnboardingFormFields } from '../types';
-import { useOnboardingFormFlow } from '.';
+import { onboardingTCRelatedFields, useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
 export const StepAccountType: StepParams<OnboardingFormFields> = {
@@ -171,7 +171,7 @@ export const StepAccountType: StepParams<OnboardingFormFields> = {
 
       const response = await createDraftAccount({ type: selectedAccountType as DraftAccountType });
 
-      await updateStoreFields({ accountType: selectedAccountType, accountId: response?.id ?? '' });
+      await updateStoreFields({ ...onboardingTCRelatedFields, accountType: selectedAccountType, accountId: response?.id ?? '' });
       moveToNextStep();
     };
 

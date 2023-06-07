@@ -83,6 +83,13 @@ export const FLOW_STEPS = [
   StepCongratulations,
 ];
 
+export const onboardingTCRelatedFields: Partial<OnboardingFormFields> = {
+  businessAddress: undefined,
+  ein: undefined,
+  fiduciaryEntityInformation: undefined,
+  isAuthorizedSignatoryEntity: undefined,
+};
+
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   address: null,
   isCompletedProfile: false,
@@ -105,12 +112,10 @@ export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
   identificationDocument: undefined,
   _didDocumentIdentificationValidationSucceed: false,
   isAccreditedInvestor: undefined,
-  isAuthorizedSignatoryEntity: undefined,
   seniorPoliticalFigure: undefined,
   corporationType: undefined,
-  fiduciaryEntityInformation: undefined,
   corporationLegalName: undefined,
-  ein: undefined,
+  ...onboardingTCRelatedFields,
 };
 
 const [useOnboardingFormFlow, OnboardingFormFlowProvider] = createFormFlow<OnboardingFormFields>({
