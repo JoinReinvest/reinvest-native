@@ -4,6 +4,8 @@ project.ext.envConfigFiles = [
   integrationdebug: ".env.development",
   stagingdebug: ".env.staging",
   stagingrelease: ".env.staging",
+  productiondebug: ".env.production",
+  productionrelease: ".env.production"
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: "com.facebook.react"
@@ -96,9 +98,16 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+String getLocalProp(String key) {
+  def propFile = rootProject.file("./local.properties")
+  def properties = new Properties()
+  properties.load(new FileInputStream(propFile))
+  return properties[key]
+}
+
+
 android {
     ndkVersion rootProject.ext.ndkVersion
-
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.reinvestnative"
@@ -125,6 +134,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release.keystore')
+            storePassword getLocalProp("storePassword")
+            keyAlias getLocalProp("keyAlias")
+            keyPassword getLocalProp("keyPassword")
+        }
     }
     buildTypes {
         debug {
@@ -135,7 +150,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -149,6 +164,10 @@ android {
     }
     staging {
       resValue "string", "app_name", "stgRE-INVEST"
+      applicationId "com.reinvestcommunity.app"
+    }
+    production {
+      resValue "string", "app_name", "RE-INVEST"
       applicationId "com.reinvestcommunity.app"
     }
   }
