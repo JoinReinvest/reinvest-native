@@ -39,15 +39,17 @@ export const Chart = ({ compact }: ChartProps) => {
   const gridPosition = [0, 1, 2, 3].map(count => 48 * 0.8 * count);
 
   if (isLoading && !chartData.length) {
-    <Box
-      height={yScale(48) * 4}
-      style={[styles.wrapper, compact && styles.compact]}
-      justifyContent="center"
-      alignItems="center"
-      px="48"
-    >
-      <Loader />
-    </Box>;
+    return (
+      <Box
+        height={yScale(48) * 4}
+        style={[styles.wrapper, compact && styles.compact]}
+        justifyContent="center"
+        alignItems="center"
+        px="48"
+      >
+        <Loader />
+      </Box>
+    );
   }
 
   if (!isLoading && !isRefetching && !chartData.length) {
@@ -115,10 +117,7 @@ export const Chart = ({ compact }: ChartProps) => {
             yDomain={{ min: 0, max: yMax * 1.25 }}
           >
             <Area theme={{ gradient: { from: { color: palette.frostGreen, opacity: 1 }, to: { color: palette.frostGreen, opacity: 0.1 } } }} />
-            <Line
-              smoothing={'cubic-spline'}
-              theme={{ stroke: { color: palette.pureBlack, width: compact ? 1 : 2 } }}
-            />
+            <Line theme={{ stroke: { color: palette.pureBlack, width: compact ? 1 : 2 } }} />
           </ChartOverload>
         ) : null}
       </Box>
