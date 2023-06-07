@@ -35,67 +35,44 @@ type StackOptionsParametrized = ({ navigation }: { navigation: NativeStackNaviga
 const stackOptions: Record<
   Extract<
     Screens,
-    | Screens.BottomNavigator
     | Screens.Onboarding
     | Screens.ManageAccount
-    | Screens.ManageAccountMainScreen
     | Screens.Investing
     | Screens.AddBeneficiary
-    | Screens.KYCFail
     | Screens.BankAccount
     | Screens.Locked
     | Screens.NotificationDetails
     | Screens.TradeSummary
-    | Screens.DividendsPayout
     | Screens.InvestingAccountSelection
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
-  [Screens.BottomNavigator]: {
-    headerShown: false,
-  },
   [Screens.Onboarding]: {
     title: 'logo',
-    header: DarkScreenHeader,
+  },
+  [Screens.Locked]: {
+    title: 'logo',
   },
   [Screens.Investing]: {
     title: 'Investing',
-    headerShown: false,
   },
   [Screens.BankAccount]: {
     title: 'logo',
-    headerShown: false,
-  },
-  [Screens.ManageAccountMainScreen]: {
-    title: 'Manage Account',
   },
   [Screens.ManageAccount]: {
     title: 'Manage Account',
-    headerShown: false,
   },
   [Screens.AddBeneficiary]: ({ navigation }) => ({
     title: 'Add Beneficiary',
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
-  [Screens.KYCFail]: {
-    headerShown: false,
-  },
-  [Screens.Locked]: {
-    title: 'logo',
-    header: DarkScreenHeader,
-  },
   [Screens.NotificationDetails]: ({ navigation }) => ({
-    header: ScreenHeader,
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
   [Screens.TradeSummary]: {
-    headerShown: false,
-  },
-  [Screens.DividendsPayout]: {
-    headerShown: false,
+    title: 'Investment History',
   },
   [Screens.InvestingAccountSelection]: ({ navigation }) => ({
-    header: ScreenHeader,
     title: 'Investing',
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
@@ -140,30 +117,10 @@ export const LogInNavigator: React.FC = () => {
             screenOptions={{ gestureEnabled: false }}
             initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}
           >
-            <LogInStack.Screen
-              options={stackOptions[Screens.BottomNavigator]}
-              name={Screens.BottomNavigator}
-              component={BottomTabsNavigator}
-            />
-            <LogInStack.Screen
-              name={Screens.Onboarding}
-              options={stackOptions[Screens.Onboarding]}
-              component={Onboarding}
-            />
-            <LogInStack.Group screenOptions={{ header: ScreenHeader }}>
+            <LogInStack.Group screenOptions={{ headerShown: false }}>
               <LogInStack.Screen
-                name={Screens.Settings}
-                component={Settings}
-              />
-              <LogInStack.Screen
-                options={stackOptions[Screens.ManageAccountMainScreen]}
-                name={Screens.ManageAccountMainScreen}
-                component={ManageAccountMainScreen}
-              />
-              <LogInStack.Screen
-                name={Screens.Investing}
-                options={stackOptions[Screens.Investing]}
-                component={Investing}
+                name={Screens.BottomNavigator}
+                component={BottomTabsNavigator}
               />
               <LogInStack.Screen
                 name={Screens.BankAccount}
@@ -171,46 +128,68 @@ export const LogInNavigator: React.FC = () => {
                 component={BankAccount}
               />
               <LogInStack.Screen
+                name={Screens.Investing}
+                options={stackOptions[Screens.Investing]}
+                component={Investing}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.ManageAccount]}
+                name={Screens.ManageAccount}
+                component={ManageAccountScreen}
+              />
+              <LogInStack.Screen
+                name={Screens.KYCFail}
+                component={KYCFail}
+              />
+              <LogInStack.Screen
+                name={Screens.DividendsPayout}
+                component={DividendsPayoutScreen}
+              />
+            </LogInStack.Group>
+            <LogInStack.Group screenOptions={{ header: ScreenHeader }}>
+              <LogInStack.Screen
+                name={Screens.Settings}
+                component={Settings}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.ManageAccount]}
+                name={Screens.ManageAccountMainScreen}
+                component={ManageAccountMainScreen}
+              />
+
+              <LogInStack.Screen
                 name={Screens.AddBeneficiary}
                 options={stackOptions[Screens.AddBeneficiary]}
                 component={AddBeneficiary}
               />
+              <LogInStack.Screen
+                options={stackOptions[Screens.TradeSummary]}
+                name={Screens.TradeSummary}
+                component={TradeSummary}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.NotificationDetails]}
+                name={Screens.NotificationDetails}
+                component={NotificationDetails}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.InvestingAccountSelection]}
+                name={Screens.InvestingAccountSelection}
+                component={InvestingAccountSelection}
+              />
             </LogInStack.Group>
-            <LogInStack.Screen
-              options={stackOptions[Screens.ManageAccount]}
-              name={Screens.ManageAccount}
-              component={ManageAccountScreen}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.KYCFail]}
-              name={Screens.KYCFail}
-              component={KYCFail}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.Locked]}
-              name={Screens.Locked}
-              component={BannedScreen}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.NotificationDetails]}
-              name={Screens.NotificationDetails}
-              component={NotificationDetails}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.TradeSummary]}
-              name={Screens.TradeSummary}
-              component={TradeSummary}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.DividendsPayout]}
-              name={Screens.DividendsPayout}
-              component={DividendsPayoutScreen}
-            />
-            <LogInStack.Screen
-              options={stackOptions[Screens.InvestingAccountSelection]}
-              name={Screens.InvestingAccountSelection}
-              component={InvestingAccountSelection}
-            />
+            <LogInStack.Group screenOptions={{ header: DarkScreenHeader }}>
+              <LogInStack.Screen
+                options={stackOptions[Screens.Locked]}
+                name={Screens.Locked}
+                component={BannedScreen}
+              />
+              <LogInStack.Screen
+                name={Screens.Onboarding}
+                options={stackOptions[Screens.Onboarding]}
+                component={Onboarding}
+              />
+            </LogInStack.Group>
           </LogInStack.Navigator>
         </DialogProvider>
       </SafeAreaProvider>

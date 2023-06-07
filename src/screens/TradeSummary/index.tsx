@@ -1,17 +1,14 @@
-import { useRoute } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
 import { InvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
-import { ScreenHeader } from '../../components/CustomHeader';
 import { Loader } from '../../components/Loader';
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
-import { useLogInNavigation } from '../../navigation/hooks';
-import { LogInProps, LogInRouteProps } from '../../navigation/LogInNavigator/types';
+import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { styles } from './styles';
 
@@ -45,24 +42,10 @@ const STATUS_LABEL: { [key in InvestmentStatus]: string } = {
 
 export const TradeSummary = ({
   route: {
-    params: { investmentId, investmentSummary, heading = 'Manage Account' },
+    params: { investmentId, investmentSummary },
   },
 }: LogInProps<Screens.TradeSummary>) => {
   const { data: summary, isLoading } = useGetInvestmentSummary(getApiClient, { investmentId: investmentId ?? '', config: { enabled: !investmentId } });
-  const navigation = useLogInNavigation();
-  const route = useRoute<LogInRouteProps<Screens.TradeSummary>>();
-
-  const getRightHeader = useCallback(
-    () => (
-      <StyledText
-        variant="h6"
-        onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
-      >
-        Cancel
-      </StyledText>
-    ),
-    [navigation],
-  );
 
   if (!investmentSummary && (isLoading || !summary)) {
     return (
@@ -83,14 +66,6 @@ export const TradeSummary = ({
 
   return (
     <>
-      <ScreenHeader
-        navigation={navigation}
-        route={route}
-        options={{
-          title: heading,
-          headerRight: getRightHeader,
-        }}
-      />
       <MainWrapper style={styles.container}>
         <Box
           fw
