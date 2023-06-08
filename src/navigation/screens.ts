@@ -22,6 +22,7 @@ enum Screens {
   KYCFail = 'KYCFail',
   Locked = 'Locked',
   NotificationDetails = 'NotificationDetails',
+  PropertyDetails = 'PropertyDetails',
   TradeSummary = 'TradeSummary',
   DividendsPayout = 'DividendsPayout',
   InvestingAccountSelection = 'InvestingAccountSelection',

@@ -23,6 +23,7 @@ import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
 import { NotificationDetails } from '../../screens/NotificationDetails';
 import { Onboarding } from '../../screens/Onboarding';
+import { PropertyDetails } from '../../screens/PropertyDetails';
 import { Settings } from '../../screens/Settings';
 import { TradeSummary } from '../../screens/TradeSummary';
 import { currentAccount, useAtom } from '../../store/atoms';
@@ -42,6 +43,7 @@ const stackOptions: Record<
     | Screens.BankAccount
     | Screens.Locked
     | Screens.NotificationDetails
+    | Screens.PropertyDetails
     | Screens.TradeSummary
     | Screens.InvestingAccountSelection
   >,
@@ -61,6 +63,9 @@ const stackOptions: Record<
   },
   [Screens.ManageAccount]: {
     title: 'Manage Account',
+  },
+  [Screens.PropertyDetails]: {
+    title: 'Community REIT',
   },
   [Screens.AddBeneficiary]: ({ navigation }) => ({
     title: 'Add Beneficiary',
@@ -176,6 +181,11 @@ export const LogInNavigator: React.FC = () => {
                 options={stackOptions[Screens.InvestingAccountSelection]}
                 name={Screens.InvestingAccountSelection}
                 component={InvestingAccountSelection}
+              />
+              <LogInStack.Screen
+                options={stackOptions[Screens.PropertyDetails]}
+                name={Screens.PropertyDetails}
+                component={PropertyDetails}
               />
             </LogInStack.Group>
             <LogInStack.Group screenOptions={{ header: DarkScreenHeader }}>
