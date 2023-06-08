@@ -10,7 +10,7 @@ import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../components/CustomHeader';
 import { HeaderAvatar } from '../../components/HeaderAvatar';
-import { Sygnet } from '../../components/Icon/icons';
+import { HeaderSignet } from '../../components/HeaderSignet';
 import { DashboardIcon } from '../../components/Icon/icons/TabNavigtionIcons/DashboardIcon';
 import { EducationIcon } from '../../components/Icon/icons/TabNavigtionIcons/EducationIcon';
 import { NotificationIcon } from '../../components/Icon/icons/TabNavigtionIcons/NotificationsIcon';
@@ -34,15 +34,6 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
   [Screens.Dashboard]: {
     title: 'Dashboard',
     tabBarIcon: ({ focused }) => <DashboardIcon focused={focused} />,
-    headerLeft: () => (
-      <Box
-        m="8"
-        width={32}
-        height={32}
-      >
-        <Sygnet color={palette.pureBlack} />
-      </Box>
-    ),
   },
   [Screens.REIT]: {
     title: 'Community REIT',
@@ -51,18 +42,11 @@ const stackOptions: Record<Extract<Screens, Screens.Dashboard | Screens.REIT | S
   [Screens.EducationStack]: {
     title: 'Education',
     tabBarIcon: ({ focused }) => <EducationIcon focused={focused} />,
+    headerShown: false,
   },
   [Screens.Notifications]: {
     title: 'Notifications',
-    headerLeft: () => (
-      <Box
-        m="8"
-        width={32}
-        height={32}
-      >
-        <Sygnet color={palette.pureBlack} />
-      </Box>
-    ),
+    headerShown: true,
   },
 };
 
@@ -81,7 +65,6 @@ export const BottomTabsNavigator: React.FC = () => {
   const { reset, navigate } = useLogInNavigation();
   const { mutateAsync: verifyAccountMutate, isLoading: isVerifying } = useVerifyAccount(getApiClient);
   const [account] = useAtom(currentAccount);
-  const [currentNotificationsCount] = useAtom(unreadNotificationsCount);
 
   useEffect(() => {
     (async () => {
@@ -131,7 +114,9 @@ export const BottomTabsNavigator: React.FC = () => {
         tabBarInactiveTintColor: palette.dark3,
         tabBarLabelStyle: { marginTop: -12 },
         tabBarLabel: ({ focused, children }) => getLabel(focused, children),
-        headerShown: false,
+        headerLeft: HeaderSignet,
+        headerRight: () => <HeaderAvatar />,
+        header: ScreenHeader,
       }}
     >
       <Tab.Screen
@@ -139,9 +124,6 @@ export const BottomTabsNavigator: React.FC = () => {
         component={Dashboard}
         options={() => ({
           ...stackOptions[Screens.Dashboard],
-          headerRight: HeaderAvatar,
-          headerShown: true,
-          header: ScreenHeader,
         })}
       />
       <Tab.Screen
@@ -163,26 +145,29 @@ export const BottomTabsNavigator: React.FC = () => {
         component={Notifications}
         options={() => ({
           ...stackOptions[Screens.Notifications],
-          headerShown: true,
-          header: props => <ScreenHeader {...props} />,
-          tabBarIcon: ({ focused }) => (
-            <Box style={styles.notificationWrapper}>
-              <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
-                <StyledText
-                  adjustsFontSizeToFit
-                  style={styles.count}
-                  color="pureWhite"
-                  variant="todayCondensed"
-                >
-                  {currentNotificationsCount}
-                </StyledText>
-              </Box>
-              <NotificationIcon focused={focused} />
-            </Box>
-          ),
-          headerRight: HeaderAvatar,
+          tabBarIcon: NotificationBarIcon,
         })}
       />
     </Tab.Navigator>
+  );
+};
+
+const NotificationBarIcon = ({ focused }: { focused: boolean }) => {
+  const [currentNotificationsCount] = useAtom(unreadNotificationsCount);
+
+  return (
+    <Box style={styles.notificationWrapper}>
+      <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
+        <StyledText
+          adjustsFontSizeToFit
+          style={styles.count}
+          color="pureWhite"
+          variant="todayCondensed"
+        >
+          {currentNotificationsCount}
+        </StyledText>
+      </Box>
+      <NotificationIcon focused={focused} />
+    </Box>
   );
 };

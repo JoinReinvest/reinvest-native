@@ -3,7 +3,7 @@ import Svg, { Path, SvgProps } from 'react-native-svg';
 
 import { palette } from '../../../constants/theme';
 
-export const Sygnet = ({ color = palette.frostGreen, ...rest }: SvgProps) => {
+export const Signet = ({ color = palette.frostGreen, ...rest }: SvgProps) => {
   return (
     <Svg
       width="100%"

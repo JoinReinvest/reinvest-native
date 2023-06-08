@@ -9,7 +9,7 @@ import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { Box } from '../../Containers/Box/Box';
-import { Sygnet } from '../../Icon/icons';
+import { Signet } from '../../Icon/icons';
 import { MainWrapper } from '../../MainWrapper';
 import { PaddedScrollView } from '../../PaddedScrollView';
 import { StyledText } from '../../typography/StyledText';
@@ -40,7 +40,7 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
           contentContainerStyle={[styles.scrollContainer, styles.fw]}
         >
           <View style={styles.signet}>
-            <Sygnet />
+            <Signet />
           </View>
           <View style={styles.descriptionSegment}>
             <StyledText
