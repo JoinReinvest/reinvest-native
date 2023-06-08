@@ -1,24 +1,24 @@
-import { PropsWithChildren, useCallback } from 'react';
+import { ComponentProps } from 'react';
 import FastImage from 'react-native-fast-image';
 
-import { PADDED_SAFE_WIDTH } from '../../constants/styles';
 import { styles } from '../../screens/Education/components/BlogCard/styles';
 import { Box } from '../Containers/Box/Box';
 
-export const ImageCard = ({ children, uri, onPress }: PropsWithChildren<{ onPress: () => void; uri: string }>) => {
-  const getImageDimensions = useCallback(() => {
-    return { width: '100%', height: (PADDED_SAFE_WIDTH * 9) / 16 };
-  }, []);
+interface Props extends ComponentProps<typeof Box> {
+  onPress: () => void;
+  uri?: string;
+}
 
+export const ImageCard = ({ children, uri, onPress, style }: Props) => {
   return (
     <Box
-      style={[styles.card]}
+      style={[styles.card, style]}
       onPress={onPress}
     >
       {uri && (
         <FastImage
           source={{ uri }}
-          style={getImageDimensions()}
+          style={styles.image}
         />
       )}
       <Box

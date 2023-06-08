@@ -6,7 +6,7 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
-import { PropertyCard } from './PropertyCard';
+import { PropertyCard } from './components/PropertyCard';
 import { styles } from './styles';
 import { mock, PropertyMock } from './types';
 
