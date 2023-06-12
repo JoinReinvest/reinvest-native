@@ -40,6 +40,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
   Component: ({ storeFields, moveToNextStep }: StepComponentProps<KYCFailedFormFields>) => {
     const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.identificationDocument as AssetWithPreloadedFiles[]) || []);
     const [didFilesChange, setDidFilesChange] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { data: userProfile } = useGetUserProfile(getApiClient);
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
     const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
@@ -82,6 +83,8 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
         return;
       }
 
+      setIsLoading(true);
+
       const { name: updatedName, dateOfBirth: updatedDateOfBirth, address: updatedAddress } = storeFields;
       const { firstName, middleName, lastName, dateOfBirth, address } = userProfile.details;
       const name = { firstName, middleName, lastName };
@@ -107,6 +110,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       const { data: updatedAccounts } = await refetchAccount();
       const updatedAccount = updatedAccounts?.find(acc => acc?.id === activeAccount.id);
       setCurrentAccount(updatedAccount as AccountOverview);
+      setIsLoading(false);
 
       return moveToNextStep();
     };
@@ -116,7 +120,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
       setDidFilesChange(true);
     };
 
-    if (isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading || isUpdatingProfile) {
+    if (isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading || isUpdatingProfile || isLoading) {
       return (
         <View style={{ flex: 1 }}>
           <Box

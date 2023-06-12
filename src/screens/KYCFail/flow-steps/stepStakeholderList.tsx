@@ -120,8 +120,8 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
 
       await Promise.all(
         stakeholdersIdsRequiringUpdate.map(async stakeholderId => {
-          const stakeholderToUpdate = (stakeholdersToUpdate.find(stakeholder => stakeholder.id === stakeholderId) ??
-            {}) as UpdateStakeholderForVerificationInput;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { id, ...stakeholderToUpdate } = stakeholdersToUpdate.find(stakeholder => stakeholder.id === stakeholderId) ?? {};
           await updateStakeholderMutate({ accountId, stakeholderId: stakeholderId ?? '', input: stakeholderToUpdate });
         }),
       );
@@ -152,6 +152,7 @@ export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
             applicantId={applicant.id}
             onSubmit={updateApplicants}
             onClose={closeDialog}
+            isKYC
           />,
           {
             animationType: 'none',
