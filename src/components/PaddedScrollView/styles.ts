@@ -7,4 +7,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL,
   },
+  noPadding: {
+    paddingHorizontal: 0,
+  },
 });
