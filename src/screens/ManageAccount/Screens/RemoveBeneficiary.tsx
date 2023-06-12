@@ -10,7 +10,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
-import { BeneficiaryRemoveSuccess } from '../../../components/Modals/ModalContent/RemovedBeneficiarySucces';
+import { AmountUpdate } from '../../../components/Modals/ModalContent/AmountUpdate';
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -19,19 +19,32 @@ import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
 import { currentAccount, useAtom } from '../../../store/atoms';
 
+const regex = /[$,]/g;
+
+const parseAmountToNumber = (amount?: string): number => (amount ? +amount.replaceAll(regex, '') : 0);
+
 export const RemoveBeneficiary = () => {
   const [activeAccount, setActiveAccount] = useAtom(currentAccount);
   const { openDialog } = useDialog();
   const { navigate } = useLogInNavigation();
   const { data: accounts, isLoading: isLoadingAccounts } = useGetAccountsOverview(getApiClient);
-  const { data: accountStats, isLoading: isLoadingStats } = useGetAccountStats(getApiClient, {
+  const { data: beneficiaryAccountStats, isLoading: isLoadingBeneficiaryAccountStats } = useGetAccountStats(getApiClient, {
     accountId: activeAccount.id ?? '',
     config: {
       enabled: activeAccount.type === AccountType.Beneficiary,
     },
   });
 
-  const isLoading = isLoadingAccounts || isLoadingStats;
+  const individualAccountId = accounts?.find(acc => acc?.type === AccountType.Individual)?.id ?? '';
+
+  const { data: individualAccountStats, isLoading: isLoadingIndividualAccountStats } = useGetAccountStats(getApiClient, {
+    accountId: individualAccountId,
+    config: {
+      enabled: !!individualAccountId,
+    },
+  });
+
+  const isLoading = isLoadingAccounts || isLoadingBeneficiaryAccountStats || isLoadingIndividualAccountStats;
   const individualAccount = accounts?.find(account => account?.type === AccountType.Individual);
 
   if (!individualAccount) {
@@ -46,11 +59,17 @@ export const RemoveBeneficiary = () => {
     navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
   };
 
-  const deleteAccount = () => {
+  const deleteAccount = async () => {
+    const totalAmount = parseAmountToNumber(individualAccountStats?.accountValue) + parseAmountToNumber(beneficiaryAccountStats?.accountValue);
+
     openDialog(
-      <BeneficiaryRemoveSuccess
-        individualAccountId={individualAccount.id ?? ''}
-        beneficiaryAccountValue={accountStats?.accountValue ?? '0'}
+      <AmountUpdate
+        amount={{
+          value: totalAmount,
+          formatted: totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+        }}
+        headline="Beneficiary Account Removed"
+        disclaimer="Updated Individual Account Value."
         onClose={handleDialogClose}
       />,
       { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
@@ -68,7 +87,7 @@ export const RemoveBeneficiary = () => {
           <Row mb="8">
             <StyledText variant="paragraphEmp">Account Value</StyledText>
           </Row>
-          {isLoading ? <Loader /> : <StyledText variant="dividend">{accountStats?.accountValue}</StyledText>}
+          {isLoading ? <Loader /> : <StyledText variant="dividend">{beneficiaryAccountStats?.accountValue}</StyledText>}
         </Box>
         <StyledText variant="paragraphLarge">Are you sure you’d like to remove Nellie Brewer as an account beneficiary?</StyledText>
         <StyledText variant="paragraphLarge">Removing Nellie Brewer will re-allocate all their investments into your main account. </StyledText>
