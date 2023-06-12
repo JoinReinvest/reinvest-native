@@ -9,6 +9,7 @@ import {
   ArrowUp,
   Bank,
   Calendar,
+  Car,
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
@@ -37,6 +38,7 @@ import {
   Percent,
   RecurringBig,
   Refresh,
+  School,
   Search,
   Share,
   SignOut,
@@ -94,6 +96,8 @@ export const icons = {
   gift: Gift,
   copy: Copy,
   recurringBig: RecurringBig,
+  school: School,
+  car: Car,
 };
 
 export const sizes = {

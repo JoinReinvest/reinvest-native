@@ -9,14 +9,14 @@ import { StyledText } from '../typography/StyledText';
 import { INDICATOR_SIZE, SnapIndicators } from './SnapIndicators';
 
 interface Props {
-  items: string[];
   height?: number;
+  items?: string[];
   title?: string;
 }
 export const Carousel = ({ items, title, height = 240 }: Props) => {
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
 
-  return (
+  return items?.length ? (
     <Box
       fw
       height={yScale(height)}
@@ -57,5 +57,5 @@ export const Carousel = ({ items, title, height = 240 }: Props) => {
         currentIndex={currentCarouselIndex}
       />
     </Box>
-  );
+  ) : null;
 };

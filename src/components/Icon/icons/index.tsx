@@ -8,6 +8,7 @@ import { ArrowRight } from './ArrowRight';
 import { ArrowUp } from './ArrowUp';
 import { Bank } from './Bank';
 import { Calendar } from './Calendar';
+import { Car } from './Car';
 import { Checkbox } from './Checkbox';
 import { CheckboxUnchecked } from './CheckboxUnchecked';
 import { CircleAlert } from './CircleAlert';
@@ -38,6 +39,7 @@ import { NotificationBell } from './NotificationBell';
 import { Percent } from './Percent';
 import { RecurringBig } from './RecurringBig';
 import { Refresh } from './Refresh';
+import { School } from './School';
 import { Search } from './Search';
 import { Share } from './Share';
 import { Signet } from './Signet';
@@ -59,6 +61,7 @@ export {
   ArrowUp,
   Bank,
   Calendar,
+  Car,
   Checkbox,
   CheckboxUnchecked,
   CircleAlert,
@@ -89,6 +92,7 @@ export {
   Percent,
   RecurringBig,
   Refresh,
+  School,
   Search,
   Share,
   Signet,

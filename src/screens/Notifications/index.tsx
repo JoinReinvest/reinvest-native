@@ -56,7 +56,10 @@ export const Notifications = () => {
       isLoading={isLoading}
       noPadding
     >
-      <Box flex={1}>
+      <Box
+        fw
+        flex={1}
+      >
         <FlashList<BaseNotification>
           ListEmptyComponent={!isLoading ? <EmptyListComponent /> : null}
           estimatedItemSize={132}
