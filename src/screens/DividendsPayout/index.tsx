@@ -76,17 +76,16 @@ export const DividendsPayoutScreen = () => {
           style={{ paddingBottom: bottom }}
         >
           <Button
-            variant="primary"
-            onPress={openReinvestingDialog}
-          >
-            Reinvest
-          </Button>
-
-          <Button
             variant="outlined"
             onPress={() => Alert.alert('Withdraw', undefined, [{ text: 'OK', onPress: goBack }])}
           >
             Withdraw
+          </Button>
+          <Button
+            variant="primary"
+            onPress={openReinvestingDialog}
+          >
+            Reinvest
           </Button>
         </Box>
       </MainWrapper>

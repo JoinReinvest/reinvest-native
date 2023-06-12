@@ -126,19 +126,19 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
           px="default"
         >
           <Button
-            onPress={onReinvest}
-            disabled={reinvestLoading || withdrawLoading}
-            isLoading={reinvestLoading}
-          >
-            Reinvest
-          </Button>
-          <Button
             variant="outlined"
             disabled={reinvestLoading || withdrawLoading}
             onPress={onWithdraw}
             isLoading={withdrawLoading}
           >
             Withdraw
+          </Button>
+          <Button
+            onPress={onReinvest}
+            disabled={reinvestLoading || withdrawLoading}
+            isLoading={reinvestLoading}
+          >
+            Reinvest
           </Button>
         </Box>
       )}
