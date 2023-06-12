@@ -13,14 +13,15 @@ export const PaddedScrollView = ({
   safeInset = false,
   isLoading,
   style,
+  noPadding = false,
   ...props
-}: PropsWithChildren<ScrollViewProps & { dark?: boolean; isLoading?: boolean; safeInset?: boolean }>) => {
+}: PropsWithChildren<ScrollViewProps & { dark?: boolean; isLoading?: boolean; noPadding?: boolean; safeInset?: boolean }>) => {
   const { bottom } = useSafeAreaInsets();
 
   return (
     <>
       <ScrollView
-        style={[styles.wrapper, style && style]}
+        style={[styles.wrapper, noPadding && styles.noPadding, style && style]}
         indicatorStyle={dark ? 'white' : 'default'}
         {...props}
         contentContainerStyle={[props.contentContainerStyle, safeInset && { paddingBottom: bottom }]}

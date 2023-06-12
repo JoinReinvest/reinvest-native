@@ -3,6 +3,7 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
+import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { TextArea } from '../../../../../components/TextArea';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { WithdrawalFundsFormFields } from '../form-fields';
@@ -25,17 +26,16 @@ export const StepReason: StepParams<WithdrawalFundsFormFields> = {
         flex={1}
       >
         <StyledText variant="h5">Why are you requesting to withdraw funds?</StyledText>
-        <Box
-          fw
-          flex={1}
-          mt="24"
+        <PaddedScrollView
+          noPadding
+          style={{ marginTop: 24 }}
         >
           <TextArea
             placeholder="Reason"
             value={reason}
             onChangeText={setReason}
           />
-        </Box>
+        </PaddedScrollView>
         <Box fw>
           <Button
             isDestructive

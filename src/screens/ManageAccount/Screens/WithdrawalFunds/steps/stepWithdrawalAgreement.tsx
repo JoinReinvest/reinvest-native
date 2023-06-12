@@ -62,7 +62,7 @@ export const StepWithdrawalAgreement: StepParams<WithdrawalFundsFormFields> = {
               variant="link"
               onPress={openAgreement}
             >
-              Recurring Investment Agreement
+              Withdrawal request Agreement
             </StyledText>
           </RadioButton>
         </Box>
