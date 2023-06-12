@@ -45,7 +45,10 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
     const { data: investmentSummary, isLoading: isLoadingInvestmentSummary } = useGetInvestmentSummary(getApiClient, {
-      investmentId: oneTimeInvestmentId ?? recurringInvestmentId ?? '',
+      investmentId: oneTimeInvestmentId ?? '',
+      config: {
+        enabled: !!oneTimeInvestmentId,
+      },
     });
     const isAlreadyStarted = useRef(false);
 
@@ -144,11 +147,11 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     };
 
     useLayoutEffect(() => {
-      if (!isLoadingInvestmentSummary && !validationSuccess && !isAlreadyStarted.current) {
+      if ((!isLoadingInvestmentSummary && !validationSuccess && !isAlreadyStarted.current) || !oneTimeInvestmentId) {
         validateAndStart();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoadingInvestmentSummary, validationSuccess]);
+    }, [isLoadingInvestmentSummary, validationSuccess, oneTimeInvestmentId]);
 
     useEffect(() => {
       /*
