@@ -45,6 +45,7 @@ export const Box = ({
   flexGrow,
   alignSelf,
   onPress,
+  position,
   fw,
   fh,
   colorOpacity = 1,
@@ -76,6 +77,7 @@ export const Box = ({
           flexGrow,
           flexShrink,
           alignSelf,
+          position,
         },
         style,
       ]}

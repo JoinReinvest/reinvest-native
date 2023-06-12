@@ -48,6 +48,7 @@ export type FlexPosition = {
   flexGrow?: ViewStyle['flexGrow'];
   flexShrink?: ViewStyle['flexShrink'];
   justifyContent?: ViewStyle['justifyContent'];
+  position?: ViewStyle['position'];
 };
 
 export type Sizes = { height?: ViewStyle['height']; width?: ViewStyle['width'] };
