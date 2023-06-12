@@ -1,6 +1,6 @@
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
-import { Link } from '../types/link';
+import { Link } from '../../types/link';
 
 export enum NavigationIdentifiers {
   INVESTMENT_HISTORY = 'INVESTMENT_HISTORY',
@@ -127,7 +127,7 @@ export const MANAGE_ACCOUNT_LINKS: { [key in AccountType]: { investing: Link[]; 
   [AccountType.Corporate]: {
     investing: BASE_INVESTING_LINKS,
     security: SECURITY_LINKS,
-    profile: BASE_PROFILE_INFO_LINKS,
+    profile: CORPORATE_PROFILE_INFO_LINKS,
   },
   [AccountType.Trust]: {
     investing: BASE_INVESTING_LINKS,

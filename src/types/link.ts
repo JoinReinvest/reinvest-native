@@ -1,5 +1,5 @@
 import { Icons } from '../components/Icon/types';
-import { NavigationIdentifiers } from '../constants/navigationLinks';
+import { NavigationIdentifiers } from '../screens/ManageAccount/navigationLinks';
 
 export interface Link {
   identifier: NavigationIdentifiers;

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { NavigationIdentifiers } from '../../constants/navigationLinks';
+import { NavigationIdentifiers } from './navigationLinks';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
 import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
