@@ -164,7 +164,7 @@ const NotificationBarIcon = ({ focused }: { focused: boolean }) => {
           color="pureWhite"
           variant="todayCondensed"
         >
-          {currentNotificationsCount}
+          {currentNotificationsCount > 99 ? '99+' : currentNotificationsCount}
         </StyledText>
       </Box>
       <NotificationIcon focused={focused} />
