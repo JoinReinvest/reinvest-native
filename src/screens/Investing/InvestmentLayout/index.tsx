@@ -5,6 +5,7 @@ import { useGetDraftRecurringInvestment } from 'reinvest-app-common/src/services
 import { getApiClient } from '../../../api/getApiClient';
 import { HeaderAvatar } from '../../../components/HeaderAvatar';
 import { Icon } from '../../../components/Icon';
+import { IconProps } from '../../../components/Icon/types';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { TermsFooter } from '../../../components/TermsFooter';
 import { StyledText } from '../../../components/typography/StyledText';
@@ -27,6 +28,16 @@ interface Props {
 /*
  * Add identifiers for skipping cancel element Probably will be Identifiers.PLAID , Identifiers.ACCOUNT_SELECTION
  */
+
+const BackIcon = (props: Partial<IconProps>) => {
+  return (
+    <Icon
+      {...props}
+      icon={'down'}
+      style={{ transform: [{ rotate: '90deg' }] }}
+    />
+  );
+};
 
 const stepsWithCancelOption: Identifiers[] = [];
 const stepsWithoutHeader: Identifiers[] = [Identifiers.PLAID_INFORMATION, Identifiers.PLAID, Identifiers.INITIALISE];
@@ -73,9 +84,7 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
     // abort recurring investment when going back from deposit schedule
     if (currentStepIdentifier === Identifiers.RECURRING_DEPOSIT_SCHEDULE) {
       return () => (
-        <Icon
-          icon={'down'}
-          style={{ transform: [{ rotate: '90deg' }] }}
+        <BackIcon
           onPress={async () => {
             const { data } = await refetchRecurringInvestmentDraft();
 
@@ -93,7 +102,13 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
       return () => null;
     }
 
-    return undefined;
+    return () => (
+      <BackIcon
+        onPress={async () => {
+          navigation.pop();
+        }}
+      />
+    );
   }, [initialInvestment, currentStepIdentifier, navigation, refetchRecurringInvestmentDraft, moveToPreviousValidStep, abortInvestment]);
 
   const getRightHeader = useCallback(() => {
