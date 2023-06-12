@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Image } from 'react-native';
+import { Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BorderedDescription } from '../../components/BorderedDescription';
@@ -7,11 +7,11 @@ import { Button } from '../../components/Button';
 import { Carousel } from '../../components/Carousel';
 import { Box } from '../../components/Containers/Box/Box';
 import { MainWrapper } from '../../components/MainWrapper';
+import { Map } from '../../components/Map';
 import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
-import { yScale } from '../../utils/scale';
 import { Characteristic } from './components/Characteristic';
 import { Metrics } from './components/Metrics';
 import { Section } from './components/Section';
@@ -27,7 +27,7 @@ export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) 
   useEffect(() => {
     setTimeout(() => {
       setPropertyDetails(propertyMock);
-    }, 1500);
+    }, 1000);
   }, []);
 
   const investNow = () => {
@@ -65,12 +65,8 @@ export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) 
         {propertyDetails && (
           <Section headline="About the Neighborhood">
             <Box my="16">
-              {/* Temporary */}
-              <Image
-                source={require('../../assets/images/mapsample.png')}
-                style={{ width: '100%', height: yScale(212) }}
-                resizeMode={'cover'}
-              />
+              <Map location={propertyDetails.location} />
+
               <BorderedDescription alignItems="center">
                 <StyledText
                   variant="bonusHeading"

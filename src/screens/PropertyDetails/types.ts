@@ -4,7 +4,17 @@ const imagesMock = [
   'https://img.freepik.com/premium-photo/geometric-facades-residential-building_294094-27.jpg',
   'https://images.unsplash.com/photo-1503951458645-643d53bfd90f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80',
 ];
+
+export enum CharacteristicType {
+  education = 'education',
+  transport = 'transport',
+}
+
 export const propertyMock = {
+  location: {
+    latitude: 37.78825,
+    longitude: -122.4324,
+  },
   meta: {
     images: imagesMock,
     metrics: {
@@ -13,8 +23,8 @@ export const propertyMock = {
     },
   },
   characteristics: [
-    { type: 'transport', value: 'Vehicle-Dependant', info: 'Some public transit available' },
-    { type: 'education', value: 'Good Schools', info: 'Good Schools and education oppertunities' },
+    { type: CharacteristicType.transport, value: 'Vehicle-Dependant', info: 'Some public transit available' },
+    { type: CharacteristicType.education, value: 'Good Schools', info: 'Good Schools and education oppertunities' },
   ],
   updates: [
     {
@@ -45,6 +55,10 @@ export const propertyMock = {
 
 export interface PropertyDetailsT {
   characteristics: CharacteristicT[];
+  location: {
+    latitude: number;
+    longitude: number;
+  };
   meta: {
     images: string[];
     metrics: { impactMetrics: ImpactMetrics; keyMetrics: KeyMetrics };
@@ -52,11 +66,11 @@ export interface PropertyDetailsT {
   updates: UpdateT[];
 }
 
-export type CharacteristicType = 'education' | 'transport';
+// export type CharacteristicType = 'education' | 'transport';
 
 export type CharacteristicT = {
   info: string;
-  type: 'education' | 'transport';
+  type: CharacteristicType;
   value: string;
 };
 

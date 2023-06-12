@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import Animated, { Easing, FadeInUp, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { CurvedTransition, Easing, FadeInUp, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { BorderedDescription } from '../../../components/BorderedDescription';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -34,7 +34,7 @@ export const Metrics = ({ metrics, location }: PropsWithChildren<{ location: str
             easing: Easing.linear,
           }),
         },
-      ],
+      ] as never,
     };
   });
 
@@ -77,7 +77,8 @@ export const Metrics = ({ metrics, location }: PropsWithChildren<{ location: str
       </Row>
       {isExpanded && (
         <Animated.View
-          entering={FadeInUp.duration(150)}
+          entering={FadeInUp.duration(150).delay(80)}
+          layout={CurvedTransition.duration(100)}
           style={styles.metrics}
         >
           <BorderedDescription px="default">
