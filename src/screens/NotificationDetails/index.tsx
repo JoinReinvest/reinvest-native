@@ -1,5 +1,4 @@
 import React, { useCallback, useLayoutEffect } from 'react';
-import { View } from 'react-native';
 import { useGetDividend } from 'reinvest-app-common/src/services/queries/getDividend';
 import { useReinvestDividends } from 'reinvest-app-common/src/services/queries/reinvestDividends';
 import { useWithdrawDividends } from 'reinvest-app-common/src/services/queries/withdrawDividends';
@@ -20,7 +19,6 @@ import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
-import { styles } from './styles';
 
 const configStrings = {
   [NotificationType.DividendReceived]: { navHeader: 'Dividends', headline: 'Manage Dividends', type: 'Dividend' },
@@ -122,9 +120,10 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
         )}
       </Box>
       {notificationWithReinvestOption.includes(notification.notificationType) && (
-        <View
+        <Box
+          fw
           key="buttons_section"
-          style={styles.buttonsSection}
+          px="default"
         >
           <Button
             onPress={onReinvest}
@@ -141,7 +140,7 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
           >
             Withdraw
           </Button>
-        </View>
+        </Box>
       )}
     </MainWrapper>
   );
