@@ -1,8 +1,8 @@
 import { ComponentProps } from 'react';
 import FastImage from 'react-native-fast-image';
 
-import { styles } from '../../screens/Education/components/BlogCard/styles';
 import { Box } from '../Containers/Box/Box';
+import { styles } from './styles';
 
 interface Props extends ComponentProps<typeof Box> {
   onPress: () => void;
