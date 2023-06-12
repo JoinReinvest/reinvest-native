@@ -519,6 +519,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = reinvestNative/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -552,6 +553,7 @@
 				DEVELOPMENT_TEAM = 8MK5M674MM;
 				INFOPLIST_FILE = reinvestNative/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

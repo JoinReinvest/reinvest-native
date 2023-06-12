@@ -2,11 +2,17 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
+#import <GoogleMaps/GoogleMaps.h>
+#import "RNCConfig.h"
 
 @implementation AppDelegate
 
+// when using static maps remove this line
+NSString *googleApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:googleApiKey];
   self.moduleName = @"reinvestNative";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
