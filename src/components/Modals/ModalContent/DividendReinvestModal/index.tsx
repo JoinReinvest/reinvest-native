@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '../../../../constants/theme';
@@ -7,7 +7,7 @@ import { useLogInNavigation } from '../../../../navigation/hooks';
 import Screens from '../../../../navigation/screens';
 import { useDialog } from '../../../../providers/DialogProvider';
 import { Fonts } from '../../../../types/fonts';
-import { yScale } from '../../../../utils/scale';
+import { NAVBAR_HEIGHT, yScale } from '../../../../utils/scale';
 import { Button } from '../../../Button';
 import { Box } from '../../../Containers/Box/Box';
 import { Icon } from '../../../Icon';
@@ -31,9 +31,22 @@ export const DividendReinvestModal = ({ headline = 'Thank you for reinvesting', 
     closeDialog();
   };
 
+  const bottomSafeStyle = useMemo(() => {
+    const minBottom = bottom ? bottom : 16;
+
+    return Platform.select({
+      ios: { paddingBottom: minBottom },
+      android: { paddingBottom: 16 + NAVBAR_HEIGHT },
+    });
+  }, [bottom]);
+
   return (
-    <>
-      <View style={[styles.center, styles.container, { paddingBottom: bottom }]}>
+    <Box
+      flex={1}
+      fw
+      style={bottomSafeStyle}
+    >
+      <View style={[styles.center, styles.container]}>
         <StyledText
           variant="h4"
           textAlign="center"
@@ -100,6 +113,6 @@ export const DividendReinvestModal = ({ headline = 'Thank you for reinvesting', 
       >
         <Button onPress={returnToDashboard}>Dashboard</Button>
       </Box>
-    </>
+    </Box>
   );
 };

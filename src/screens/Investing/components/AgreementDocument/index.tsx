@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AgreementSection as AgreementSectionType, SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
+import { AgreementSection as AgreementSectionType, FundsWithdrawalAgreement, SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
 
 import { Box } from '../../../../components/Containers/Box/Box';
 import { Icon } from '../../../../components/Icon';
@@ -9,7 +9,7 @@ import { StyledText } from '../../../../components/typography/StyledText';
 import { palette } from '../../../../constants/theme';
 import { markdownBold } from '../../../../utils/markdownBold';
 
-export const AgreementDetails = ({ agreement }: { agreement: SubscriptionAgreement }) => {
+export const AgreementDetails = ({ agreement }: { agreement: SubscriptionAgreement | FundsWithdrawalAgreement }) => {
   const { top, bottom } = useSafeAreaInsets();
 
   return (

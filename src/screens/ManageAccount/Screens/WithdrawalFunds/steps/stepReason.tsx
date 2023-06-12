@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useCreateFundsWithdrawalAgreement } from 'reinvest-app-common/src/services/queries/createFundsWithdrawalAgreement';
 
+import { getApiClient } from '../../../../../api/getApiClient';
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { TextArea } from '../../../../../components/TextArea';
 import { StyledText } from '../../../../../components/typography/StyledText';
+import { useCurrentAccount } from '../../../../../hooks/useActiveAccount';
 import { WithdrawalFundsFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
 
@@ -14,9 +17,13 @@ export const StepReason: StepParams<WithdrawalFundsFormFields> = {
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<WithdrawalFundsFormFields>) => {
     const [reason, setReason] = useState(storeFields.reason ?? '');
+    const { activeAccount } = useCurrentAccount();
+    const { mutateAsync: createFundsWithdrawalAgreement } = useCreateFundsWithdrawalAgreement(getApiClient);
 
     const onSubmit = async () => {
-      await updateStoreFields({ reason });
+      const agreement = await createFundsWithdrawalAgreement({ accountId: activeAccount.id ?? '' });
+
+      await updateStoreFields({ reason, agreement });
       moveToNextStep();
     };
 
