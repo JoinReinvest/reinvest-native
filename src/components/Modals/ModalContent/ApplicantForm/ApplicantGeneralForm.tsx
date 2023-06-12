@@ -26,7 +26,7 @@ export const schema = z.object({
   domicile: z.enum(STAKEHOLDER_RESIDENCY_STATUS_LABELS),
 });
 
-export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: ApplicantFormStepProps) => {
+export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue, isKYC = false }: ApplicantFormStepProps) => {
   const { control, formState, handleSubmit } = useForm<ApplicantFormFields>({
     mode: 'onBlur',
     resolver: zodResolver(schema),
@@ -77,20 +77,30 @@ export const ApplicantGeneralForm = ({ isVisible, defaultValues, onContinue }: A
           onSubmit={handleSubmit(onSubmit)}
           control={control}
           fieldName="socialSecurityNumber"
-          inputProps={{ placeholder: 'SSN', maskedPlaceholder: '000-00-0000', maxLength: 11, dark: true, mask: SSN_MASK, keyboardType: 'numeric' }}
-        />
-        <Controller
-          type="dropdown"
-          onSubmit={handleSubmit(onSubmit)}
-          control={control}
-          fieldName="domicile"
-          dropdownProps={{
-            placeholder: 'Domicile',
+          inputProps={{
+            placeholder: 'SSN',
+            maskedPlaceholder: '000-00-0000',
+            maxLength: 11,
             dark: true,
-            data: STAKEHOLDER_RESIDENCY_STATUS_OPTIONS,
-            defaultValue: defaultValues?.domicile,
+            mask: SSN_MASK,
+            keyboardType: 'numeric',
+            disabled: isKYC,
           }}
         />
+        {!isKYC && (
+          <Controller
+            type="dropdown"
+            onSubmit={handleSubmit(onSubmit)}
+            control={control}
+            fieldName="domicile"
+            dropdownProps={{
+              placeholder: 'Domicile',
+              dark: true,
+              data: STAKEHOLDER_RESIDENCY_STATUS_OPTIONS,
+              defaultValue: defaultValues?.domicile,
+            }}
+          />
+        )}
       </PaddedScrollView>
       <View style={{ paddingHorizontal: MAIN_WRAPPER_PADDING_HORIZONTAL }}>
         <Button

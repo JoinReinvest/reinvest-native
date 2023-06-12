@@ -79,7 +79,7 @@ export const BannedScreen = ({
         pb="8"
       >
         <Button onPress={() => Linking.openURL('mailto:support@reinvestcommunity.com')}>Contact Us</Button>
-        {!isProfileBanned && accountsUserCanOpenWithoutBeneficiary?.length && (
+        {!isProfileBanned && accountsUserCanOpenWithoutBeneficiary?.length ? (
           <Button
             dark
             variant="outlined"
@@ -87,7 +87,7 @@ export const BannedScreen = ({
           >
             Add New Account
           </Button>
-        )}
+        ) : null}
       </Box>
       <TermsFooter />
     </MainWrapper>

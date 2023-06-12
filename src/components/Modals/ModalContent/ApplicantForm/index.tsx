@@ -23,9 +23,10 @@ interface Props {
   onSubmit: (applicant: Applicant, applicantIndex: number | undefined) => Promise<void>;
   applicantId?: string;
   applicantIndex?: number;
+  isKYC?: boolean;
 }
 
-export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onClose, defaultValues }: PropsWithChildren<Props>) => {
+export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onClose, defaultValues, isKYC = false }: PropsWithChildren<Props>) => {
   const route = useRoute();
   const navigation = useLogInNavigation();
   const [currentStep, setCurrentStep] = useState(0);
@@ -88,6 +89,7 @@ export const ApplicantFormModal = ({ applicantIndex, applicantId, onSubmit, onCl
           onContinue={onContinue}
           isVisible={currentStep === 0}
           defaultValues={defaultValues}
+          isKYC={isKYC}
         />
         <ApplicantAddressForm
           isVisible={currentStep === 1}
