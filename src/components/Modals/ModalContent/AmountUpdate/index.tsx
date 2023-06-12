@@ -57,7 +57,7 @@ export const AmountUpdate = ({ headline, amount, disclaimer, onClose }: Props) =
             <StyledText
               numberOfLines={1}
               adjustsFontSizeToFit
-              variant="h1"
+              variant="dividendEmp"
             >
               {amount.formatted}
             </StyledText>
