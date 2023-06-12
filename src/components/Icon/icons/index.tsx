@@ -40,8 +40,8 @@ import { RecurringBig } from './RecurringBig';
 import { Refresh } from './Refresh';
 import { Search } from './Search';
 import { Share } from './Share';
+import { Signet } from './Signet';
 import { SignOut } from './SignOut';
-import { Sygnet } from './Sygnet';
 import { Tick } from './Tick';
 import { Trash } from './Trash';
 import { Trophy } from './Trophy';
@@ -91,8 +91,8 @@ export {
   Refresh,
   Search,
   Share,
+  Signet,
   SignOut,
-  Sygnet,
   Tick,
   Trash,
   Trophy,

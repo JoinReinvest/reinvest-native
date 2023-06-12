@@ -1,11 +1,9 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
 
-import { Box } from '../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../components/CustomHeader';
 import { HeaderAvatar } from '../../components/HeaderAvatar';
-import { Sygnet } from '../../components/Icon/icons';
-import { palette } from '../../constants/theme';
+import { HeaderSignet } from '../../components/HeaderSignet';
 import Screens from '../../navigation/screens';
 import { BlogScreen } from './Screens/BlogScreen';
 import { EducationMainScreen } from './Screens/EducationMainScreen';
@@ -18,15 +16,7 @@ const stackOptions: Record<Extract<Screens, Screens.EducationMainScreen | Screen
   [Screens.EducationMainScreen]: {
     title: 'Education',
     header: ScreenHeader,
-    headerLeft: () => (
-      <Box
-        m="8"
-        width={32}
-        height={32}
-      >
-        <Sygnet color={palette.pureBlack} />
-      </Box>
-    ),
+    headerLeft: HeaderSignet,
   },
   [Screens.WebViewContent]: {
     title: 'Education',

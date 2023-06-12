@@ -8,7 +8,7 @@ import { useDialog } from '../../../providers/DialogProvider';
 import { xScale, yScale } from '../../../utils/scale';
 import { Box } from '../../Containers/Box/Box';
 import { Icon } from '../../Icon';
-import { Sygnet } from '../../Icon/icons';
+import { Signet } from '../../Icon/icons';
 import { styles } from './styles';
 
 export interface MainModalWrapperProps {
@@ -34,7 +34,7 @@ export const MainModalWrapper = ({
     <View style={[styles.mainWrapper, dark && styles.dark]}>
       {showLogo && (
         <View style={{ position: 'absolute', height: yScale(459), width: yScale(459), opacity: 0.4, bottom: yScale(-29), left: xScale(53) }}>
-          <Sygnet color={palette.lightGray} />
+          <Signet color={palette.lightGray} />
         </View>
       )}
       {!!header && (
