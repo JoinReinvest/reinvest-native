@@ -4,12 +4,19 @@ import { InvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../api/getApiClient';
+import { queryClient } from '../../App';
+import { Button } from '../../components/Button';
 import { Box } from '../../components/Containers/Box/Box';
 import { Loader } from '../../components/Loader';
 import { MainWrapper } from '../../components/MainWrapper';
+import { AmountUpdate } from '../../components/Modals/ModalContent/AmountUpdate';
+import { ConfirmDelete } from '../../components/Modals/ModalContent/ConfirmDelete';
+import { HeaderWithLogo } from '../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../components/typography/StyledText';
+import { useLogInNavigation } from '../../navigation/hooks';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
+import { useDialog } from '../../providers/DialogProvider';
 import { styles } from './styles';
 
 const Item = ({ title, value, showBorder = true }: { title: string; value: string; showBorder?: boolean }) => {
@@ -34,7 +41,7 @@ const STATUS_LABEL: { [key in InvestmentStatus]: string } = {
   [InvestmentStatus.Failed]: 'Failed',
   [InvestmentStatus.Finished]: 'Finished',
   [InvestmentStatus.Funded]: 'Funded',
-  [InvestmentStatus.InProgress]: 'In Progress',
+  [InvestmentStatus.InProgress]: 'Pending',
   [InvestmentStatus.WaitingForFeesApproval]: 'Waiting For Fees Approval',
   [InvestmentStatus.WaitingForInvestmentStart]: 'Waiting For Investment Start',
   [InvestmentStatus.WaitingForSubscriptionAgreement]: 'Waiting For Subscription Agreement',
@@ -45,7 +52,12 @@ export const TradeSummary = ({
     params: { investmentId, investmentSummary },
   },
 }: LogInProps<Screens.TradeSummary>) => {
-  const { data: summary, isLoading } = useGetInvestmentSummary(getApiClient, { investmentId: investmentId ?? '', config: { enabled: !investmentId } });
+  const { openDialog } = useDialog();
+  const { navigate } = useLogInNavigation();
+  const { data: summary, isLoading } = useGetInvestmentSummary(getApiClient, {
+    investmentId: investmentId ?? '',
+    config: { enabled: !!investmentId || !investmentSummary },
+  });
 
   if (!investmentSummary && (isLoading || !summary)) {
     return (
@@ -64,9 +76,43 @@ export const TradeSummary = ({
   const createdAt = investmentSummary?.createdAt ?? summary?.createdAt;
   const amount = investmentSummary?.amount ?? summary?.amount;
 
+  const handleDialogClose = () => {
+    queryClient.invalidateQueries(['getAccountStats', 'getAccountsOverview']);
+
+    navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+  };
+
+  const cancelTransaction = () => {
+    if (!amount) {
+      return;
+    }
+
+    openDialog(
+      <ConfirmDelete
+        heading="Are you sure you want to cancel this transaction?"
+        onSuccess={() =>
+          openDialog(
+            <AmountUpdate
+              amount={{ ...amount, value: -amount.value }}
+              headline={`Trade ${tradeId} cancelled`}
+              disclaimer="Please expect funds to be returned to your bank account within 3-5 business days."
+              onClose={handleDialogClose}
+            />,
+            { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
+          )
+        }
+      />,
+      undefined,
+      'sheet',
+    );
+  };
+
   return (
     <>
-      <MainWrapper style={styles.container}>
+      <MainWrapper
+        style={styles.container}
+        bottomSafe
+      >
         <Box
           fw
           mb="16"
@@ -85,6 +131,7 @@ export const TradeSummary = ({
         </Box>
         <Box
           fw
+          flex={1}
           style={styles.tradeDetailsList}
         >
           <Item
@@ -107,6 +154,17 @@ export const TradeSummary = ({
             value="123456123456"
             showBorder={false}
           />
+        </Box>
+        <Box fw>
+          {status === InvestmentStatus.InProgress && (
+            <Button
+              variant="outlined"
+              isDestructive
+              onPress={cancelTransaction}
+            >
+              Cancel Transaction{' '}
+            </Button>
+          )}
         </Box>
       </MainWrapper>
     </>

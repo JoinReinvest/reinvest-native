@@ -36,4 +36,5 @@ export type TextVariants =
   | 'todayCondensed'
   | 'tableHeading'
   | 'subheading'
-  | 'dividend';
+  | 'dividend'
+  | 'dividendEmp';

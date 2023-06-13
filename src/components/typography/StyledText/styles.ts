@@ -127,6 +127,11 @@ const styles = StyleSheet.create({
     fontSize: 48,
     lineHeight: 48 * 1.1,
   },
+  dividendEmp: {
+    fontFamily: Fonts.GTAmericaMedium,
+    fontSize: 48,
+    lineHeight: 48 * 1.1,
+  },
 });
 
 export default styles;
