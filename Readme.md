@@ -76,4 +76,9 @@ Use .env.example as a blueprint for this file
   - local.properties  this should be placed in `./android/` folder
   - release.keystore this should be placed in `./android/app` folder
 - Since whole deployment should be handled by cicd pipeline , this should be used only while manually deployment process , and should be avoided
+- Pipelines are triggered by pushing 
+  - main branch - production env ( **IMPORTANT!!!** __*production env file is not ready - it needed to be applied to github actions*__)
+  - staging branch - staging env
+  - development - integration env
 - For development debug.keystore is provided
+- In needed recreate keystore with gpg -c —armor release.keystore and paste binary string as secret  (update config should be used)

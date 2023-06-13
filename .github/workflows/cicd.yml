@@ -1,0 +1,111 @@
+name: Build and Publish Test Builds
+
+on:
+  push:
+    branches:
+      - android-cicd
+      - development
+      - staging
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository.
+        with:
+          ssh-private-key: |
+            ${{secrets.SSH_KEY}}
+          repo-mappings: |
+            github.com/JoinReinvest/reinvest-fe-common
+      - name: ===> Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: |
+          echo "::set-output name=dir::$(yarn cache dir)"
+      - name: ===> Cache JS dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: ===> Authenticate with private NPM package
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMRCTOKEN }}" > ~/.npmrc
+
+
+      - name: ===> 'Create integration env file'
+        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
+        run: |
+          echo "INTEGRATION VARIABLES ${{github.ref}}"
+          echo "${{ secrets.ENV_INTEGRATION }}" > .env
+
+      - name: ===> 'Create staging env file'
+        if: github.ref == 'refs/heads/staging' || github.event.pull_request.base.ref == 'staging'
+        run: |
+          echo "STAGING VARIABLES ${{github.ref}}"
+          echo "${{ secrets.ENV_STAGING }}" > .env
+
+      - name: ===> 'Create production env file'
+        if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
+        run: |
+          echo "PRODUCTION VARIABLES ${{github.ref}}"
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
+          
+          
+      - name: ===> 'Create test env file'
+        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'android-cicd'
+        run: |
+          echo "PRODUCTION VARIABLES ${{github.ref}}"
+          echo "${{ secrets.ENV_INTEGRATION }}" > .env
+
+      - name: ===> Install dependencies
+        run: |
+          yarn install
+          echo "CURRENT WORKING DIRECTORY  ${GITHUB_WORKSPACE}"
+          echo "$(pwd)"
+
+      - name: ===> Set Secret Properties
+        env:
+          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+        run: |
+          cd android
+          echo "$LOCAL_PROPERTIES" > ./local.properties
+
+      - name: ===> Prepare release keystore
+        run: |
+          cd android
+          echo "CURRENT working in : $(pwd)"
+          echo "${{ secrets.ANDROID_BASE_64_SIGNING_KEY }}" > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release.keystore.asc > app/release.keystore
+
+      - name: ===> Assemble Release Bundle
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: cd android && ./gradlew bundleRelease
+        
+      - name: ====>> Check current dir
+        run: |
+          echo "$(pwd)"
+          cd android/app/build/outputs
+          echo "$(pwd)"
+          echo "$(ls)"
+          cd bundle
+          echo "$(ls)"
+
+      - name: Deploy to Play Store internal testing
+        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'android-cicd'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+          packageName: com.reinvestcommunity.app
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal # Change to desired track (internal, alpha, beta, production)

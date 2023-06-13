@@ -153,21 +153,20 @@ export const BottomTabsNavigator: React.FC = () => {
 
 const NotificationBarIcon = ({ focused }: { focused: boolean }) => {
   const [currentNotificationsCount] = useAtom(unreadNotificationsCount);
+  const isMoreThan99notifications = currentNotificationsCount > 99;
 
   return (
     <Box style={styles.notificationWrapper}>
-      {!!currentNotificationsCount && (
-        <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
-          <StyledText
-            adjustsFontSizeToFit
-            style={styles.count}
-            color="pureWhite"
-            variant="todayCondensed"
-          >
-            {currentNotificationsCount > 99 ? '99+' : currentNotificationsCount}
-          </StyledText>
-        </Box>
-      )}
+      <Box style={[styles.notificationBadge, isMoreThan99notifications && styles.threeDigitsBadge]}>
+        <StyledText
+          adjustsFontSizeToFit
+          style={styles.count}
+          color="pureWhite"
+          variant="todayCondensed"
+        >
+          {isMoreThan99notifications ? '+99' : currentNotificationsCount}
+        </StyledText>
+      </Box>
       <NotificationIcon focused={focused} />
     </Box>
   );
