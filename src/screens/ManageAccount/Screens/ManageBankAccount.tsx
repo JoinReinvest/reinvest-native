@@ -6,19 +6,29 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
+import { ConfirmDelete } from '../../../components/Modals/ModalContent/ConfirmDelete';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
+import { useDialog } from '../../../providers/DialogProvider';
 
 export const ManageBankAccount = () => {
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
+  const { openDialog } = useDialog();
 
   const { data, isLoading } = useReadBankAccount(getApiClient, { accountId: activeAccount.id || '' });
-  const onPress = async () => {
-    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: !!data?.accountNumber });
-  };
+
+  const openConfirmDialog = () =>
+    openDialog(
+      <ConfirmDelete
+        heading="Are you sure you want to change the bank account?"
+        onSuccess={() => navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: !!data?.accountNumber })}
+      />,
+      undefined,
+      'sheet',
+    );
 
   return (
     <MainWrapper bottomSafe>
@@ -39,7 +49,7 @@ export const ManageBankAccount = () => {
           </>
         )}
       </Box>
-      <Button onPress={onPress}>Change</Button>
+      <Button onPress={openConfirmDialog}>Change</Button>
     </MainWrapper>
   );
 };
