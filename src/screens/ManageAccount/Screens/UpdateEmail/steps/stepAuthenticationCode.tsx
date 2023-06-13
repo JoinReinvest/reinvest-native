@@ -11,11 +11,13 @@ import { Box } from '../../../../../components/Containers/Box/Box';
 import { Row } from '../../../../../components/Containers/Row';
 import { FormMessage } from '../../../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../../../components/Forms/FormTitle';
+import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
+import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
-import Screens from '../../../../../navigation/screens';
 import { useAuth } from '../../../../../providers/AuthProvider';
+import { useDialog } from '../../../../../providers/DialogProvider';
 import { UpdateEmailFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
 type Fields = Pick<UpdateEmailFormFields, 'authenticationCode'>;
@@ -32,7 +34,8 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
       authenticationCode: formValidationRules.authenticationCode,
     });
     const { user } = useAuth();
-    const { navigate } = useLogInNavigation();
+    const { openDialog } = useDialog();
+    const { goBack } = useLogInNavigation();
     const [error, setError] = useState<string | undefined>();
     const [infoMessage, setInfoMessage] = useState<string | undefined>();
 
@@ -47,7 +50,13 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
     const onSubmit: SubmitHandler<Fields> = fields =>
       user?.verifyAttribute('email', fields.authenticationCode ?? '', {
         onSuccess() {
-          navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+          openDialog(
+            <UpdateSuccess
+              info="Your email is updated"
+              buttonLabel="Dashboard"
+            />,
+            { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> },
+          );
         },
         onFailure(err) {
           setError(err.message);
