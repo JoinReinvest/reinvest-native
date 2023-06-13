@@ -27,7 +27,6 @@ export const BASE_INVESTING_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.RECURRING_INVESTMENT,
     label: 'Recurring Investment',
-    headerShown: false,
   },
   {
     identifier: NavigationIdentifiers.DIVIDEND_REINVESTING,

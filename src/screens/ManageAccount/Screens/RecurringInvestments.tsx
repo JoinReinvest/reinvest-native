@@ -1,4 +1,3 @@
-import { useRoute } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
@@ -6,10 +5,9 @@ import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/rea
 import { RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
+import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
-import { ScreenHeader } from '../../../components/CustomHeader';
-import { HeaderCancel } from '../../../components/HeaderCancel';
 import { Icon } from '../../../components/Icon';
 import { MainWrapper } from '../../../components/MainWrapper';
 import { ConfirmDelete } from '../../../components/Modals/ModalContent/ConfirmDelete';
@@ -20,6 +18,7 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
 
 const INVESTMENT_STATUS_LABELS: { [key in RecurringInvestmentStatus]: string } = {
@@ -31,8 +30,7 @@ const INVESTMENT_STATUS_LABELS: { [key in RecurringInvestmentStatus]: string } =
 };
 
 export const RecurringInvestments = () => {
-  const route = useRoute();
-  const navigation = useLogInNavigation();
+  const { goBack, navigate } = useLogInNavigation();
   const { activeAccount } = useCurrentAccount();
   const { openDialog } = useDialog();
 
@@ -51,7 +49,7 @@ export const RecurringInvestments = () => {
         />,
         {
           showLogo: true,
-          header: <HeaderWithLogo onClose={navigation.goBack} />,
+          header: <HeaderWithLogo onClose={goBack} />,
         },
         'main',
       );
@@ -65,38 +63,26 @@ export const RecurringInvestments = () => {
       undefined,
       'sheet',
     );
-  }, [navigation.goBack, openDialog]);
+  }, [goBack, openDialog]);
 
-  const headerLeft = () => (
-    <Icon
-      onPress={navigation.goBack}
-      icon="down"
-      style={{ transform: [{ rotate: '90deg' }] }}
-      color={palette.pureBlack}
-    />
-  );
-
-  const headerRight = () => <HeaderCancel onPress={openCancelDialog} />;
+  const openReinstateDialog = () => {
+    openDialog(<UpdateSuccess info="Your recurring investment is reinstated" />, {
+      showLogo: true,
+      header: <HeaderWithLogo onClose={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    });
+  };
 
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
   const formattedBankAccount = `${bankData?.bankName?.toUpperCase()} ${bankData?.accountNumber?.slice(9).replace(' ', '')}`;
 
   return (
     <>
-      <ScreenHeader
-        navigation={navigation}
-        route={route}
-        options={{
-          headerLeft,
-          headerRight,
-          title: 'Recurring Investment',
-        }}
-      />
       <MainWrapper isLoading={isLoading}>
         {recurringInvestment && (
           <Box
             fw
             mt="24"
+            flex={1}
           >
             <Box
               fw
@@ -137,6 +123,25 @@ export const RecurringInvestments = () => {
             />
           </Box>
         )}
+        <Box fw>
+          {recurringInvestment?.status === RecurringInvestmentStatus.Active && (
+            <Button
+              variant="outlined"
+              isDestructive
+              onPress={openCancelDialog}
+            >
+              Cancel Transaction
+            </Button>
+          )}
+          {recurringInvestment?.status === RecurringInvestmentStatus.Suspended && (
+            <Button
+              variant="primary"
+              onPress={openReinstateDialog}
+            >
+              Reinstate
+            </Button>
+          )}
+        </Box>
       </MainWrapper>
     </>
   );
