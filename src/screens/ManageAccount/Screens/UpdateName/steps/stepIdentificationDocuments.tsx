@@ -12,9 +12,13 @@ import { FilePicker } from '../../../../../components/FilePicker';
 import { FormTitle } from '../../../../../components/Forms/FormTitle';
 import { Icon } from '../../../../../components/Icon';
 import { Loader } from '../../../../../components/Loader';
+import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
+import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { palette } from '../../../../../constants/theme';
+import { useLogInNavigation } from '../../../../../navigation/hooks';
+import { useDialog } from '../../../../../providers/DialogProvider';
 import { documentReducer } from '../../../../../utils/documentReducer';
 import { AssetWithPreloadedFiles } from '../../../../Onboarding/types';
 import { UpdateNameFormFields } from '../form-fields';
@@ -29,9 +33,9 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
 
   Component: ({ storeFields: { firstName, middleName, lastName, identificationDocument } }: StepComponentProps<UpdateNameFormFields>) => {
     const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((identificationDocument as AssetWithPreloadedFiles[]) || []);
-
+    const { openDialog } = useDialog();
+    const { goBack } = useLogInNavigation();
     const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
-
     const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
 
     const onSubmit = async () => {
@@ -54,6 +58,8 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
         });
         idScan.push(...scans);
         const identificationDocuments = [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))];
+
+        openDialog(<UpdateSuccess info="Your name is updated" />, { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> });
 
         console.log('UPDATE API: ', {
           name: {

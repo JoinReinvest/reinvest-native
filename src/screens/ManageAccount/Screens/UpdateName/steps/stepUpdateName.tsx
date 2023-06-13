@@ -92,7 +92,7 @@ export const StepUpdateName: StepParams<UpdateNameFormFields> = {
           px="default"
         >
           <Button
-            onPress={moveToNextStep}
+            onPress={handleSubmit(onSubmit)}
             disabled={shouldButtonBeDisabled}
           >
             Confirm
