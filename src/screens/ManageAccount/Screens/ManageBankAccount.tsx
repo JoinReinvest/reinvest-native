@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -6,9 +6,7 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Loader } from '../../../components/Loader';
 import { MainWrapper } from '../../../components/MainWrapper';
-import { AccountUpdateConfirmation } from '../../../components/Modals/ModalContent/AccountUpdateConfirmation';
 import { ConfirmDelete } from '../../../components/Modals/ModalContent/ConfirmDelete';
-import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
@@ -19,55 +17,18 @@ export const ManageBankAccount = () => {
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
   const { openDialog } = useDialog();
-  const { goBack } = useLogInNavigation();
 
   const { data, isLoading } = useReadBankAccount(getApiClient, { accountId: activeAccount.id || '' });
-  const removedAccountRef = useRef(data?.accountNumber || '');
-  const onPress = async () => {
-    navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: !!data?.accountNumber });
-  };
 
-  const showAccountRemovedScreen = () => {
-    openDialog(
-      <AccountUpdateConfirmation
-        accountNumber={removedAccountRef.current}
-        disclaimer="You will need to add an account to make future investments"
-      />,
-      {
-        showLogo: true,
-        header: (
-          <HeaderWithLogo
-            onClose={() => {
-              goBack();
-            }}
-          />
-        ),
-        closeIcon: false,
-      },
-    );
-  };
-
-  const removeAccount = () => {
-    setTimeout(() => {
-      showAccountRemovedScreen();
-    }, 1000);
-  };
-
-  const showConfirmationDialog = () => {
+  const openConfirmDialog = () =>
     openDialog(
       <ConfirmDelete
-        heading={'Are you sure you want to remove the bank account?'}
-        onSuccess={removeAccount}
+        heading="Are you sure you want to change the bank account?"
+        onSuccess={() => navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: !!data?.accountNumber })}
       />,
-      { closeIcon: false, safeTop: false },
+      undefined,
       'sheet',
     );
-  };
-
-  const onRemove = async () => {
-    removedAccountRef.current = data?.accountNumber || '';
-    showConfirmationDialog();
-  };
 
   return (
     <MainWrapper bottomSafe>
@@ -88,16 +49,7 @@ export const ManageBankAccount = () => {
           </>
         )}
       </Box>
-
-      <Button
-        disabled={!data}
-        isDestructive
-        variant="outlined"
-        onPress={onRemove}
-      >
-        Remove
-      </Button>
-      <Button onPress={onPress}>Change</Button>
+      <Button onPress={openConfirmDialog}>Change</Button>
     </MainWrapper>
   );
 };
