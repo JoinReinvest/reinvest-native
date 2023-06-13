@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { NavigationIdentifiers } from './navigationLinks';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
@@ -12,6 +12,7 @@ import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
 import { UpdatePassword } from './Screens/UpdatePassword';
+import { UpdatePhoneNumber } from './Screens/UpdatePhoneNumber';
 import { WithdrawalFunds } from './Screens/WithdrawalFunds';
 
 export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNode }> = {
@@ -27,4 +28,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   WITHDRAW_FUNDS: <WithdrawalFunds />,
   RECURRING_INVESTMENT: <RecurringInvestments />,
   BENEFICIARY_NAME: <UpdateBeneficiaryName />,
+  PHONE_NUMBER: <UpdatePhoneNumber />,
 };

@@ -38,7 +38,7 @@ const schema = z.object({
   number: formValidationRules.phone,
 });
 
-const OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
+export const CALLING_CODE_OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODES.map(({ callingCode }: { callingCode: string }) => ({
   label: callingCode,
   value: callingCode,
 }));
@@ -73,8 +73,8 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
     const shouldButtonBeDisabled = isLoading;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
-      fields.number = fields.number.replaceAll('-', '');
-      fields.countryCode = OPTIONS.find(callingCode => callingCode.label === fields.countryCode)?.value ?? '';
+      fields.number = fields.number.split('-').join('');
+      fields.countryCode = CALLING_CODE_OPTIONS.find(callingCode => callingCode.label === fields.countryCode)?.value ?? '';
       await setPhoneNumberMutate({ countryCode: fields.countryCode, phoneNumber: fields.number });
       await updateStoreFields({ phone: fields });
     };
@@ -122,7 +122,7 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
                 dropdownProps={{
                   prefix: '+',
                   dark: true,
-                  data: OPTIONS,
+                  data: CALLING_CODE_OPTIONS,
                   predefined: true,
                 }}
               />
