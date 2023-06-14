@@ -12,7 +12,8 @@ export enum NavigationIdentifiers {
   EMAIL_ADDRESS = 'EMAIL_ADDRESS',
   PHONE_NUMBER = 'PHONE_NUMBER',
   CHANGE_PASSWORD = 'CHANGE_PASSWORD',
-  NAME = 'NAME',
+  PROFILE_NAME = 'PROFILE_NAME',
+  BENEFICIARY_NAME = 'BENEFICIARY_NAME',
   PROFILE_PICTURE = 'PROFILE_PICTURE',
   ADDRESS = 'ADDRESS',
   REMOVE_BENEFICIARY = 'REMOVE_BENEFICIARY',
@@ -68,9 +69,9 @@ export const SECURITY_LINKS: Link[] = [
   },
 ];
 
-const BASE_PROFILE_INFO_LINKS: Link[] = [
+const PROFILE_INFO_LINKS: Link[] = [
   {
-    identifier: NavigationIdentifiers.NAME,
+    identifier: NavigationIdentifiers.PROFILE_NAME,
     label: 'Name',
     title: 'Edit Name',
     headerShown: false,
@@ -106,10 +107,10 @@ const CORPORATE_PROFILE_INFO_LINKS: Link[] = [
 
 const BENEFICIARY_PROFILE_INFO_LINKS: Link[] = [
   {
-    identifier: NavigationIdentifiers.NAME,
+    identifier: NavigationIdentifiers.BENEFICIARY_NAME,
     label: 'Name',
     title: 'Edit Name',
-    headerShown: false,
+    cancellable: true,
   },
   {
     identifier: NavigationIdentifiers.PROFILE_PICTURE,
@@ -121,7 +122,7 @@ export const MANAGE_ACCOUNT_LINKS: { [key in AccountType]: { investing: Link[]; 
   [AccountType.Individual]: {
     investing: BASE_INVESTING_LINKS,
     security: SECURITY_LINKS,
-    profile: BASE_PROFILE_INFO_LINKS,
+    profile: PROFILE_INFO_LINKS,
   },
   [AccountType.Corporate]: {
     investing: BASE_INVESTING_LINKS,
