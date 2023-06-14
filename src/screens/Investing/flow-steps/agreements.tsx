@@ -7,7 +7,6 @@ import { useSignRecurringInvestmentSubscriptionAgreement } from 'reinvest-app-co
 import { useSignSubscriptionAgreement } from 'reinvest-app-common/src/services/queries/signSubscriptionAgreement';
 import { SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
 
-import { AgreementDetails } from '../ components/AgreementDocument';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -16,6 +15,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { RadioButton } from '../../../components/RadioButton';
 import { StyledText } from '../../../components/typography/StyledText';
 import { useDialog } from '../../../providers/DialogProvider';
+import { AgreementDetails } from '../components/AgreementDocument';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';

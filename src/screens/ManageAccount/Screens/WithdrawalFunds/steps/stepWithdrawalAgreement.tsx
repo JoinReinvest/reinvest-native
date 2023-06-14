@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { SubscriptionAgreement, SubscriptionAgreementStatus, SubscriptionAgreementType } from 'reinvest-app-common/src/types/graphql';
+import { AgreementStatus, SubscriptionAgreement, SubscriptionAgreementType } from 'reinvest-app-common/src/types/graphql';
 
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
@@ -10,7 +10,7 @@ import { RadioButton } from '../../../../../components/RadioButton';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { useDialog } from '../../../../../providers/DialogProvider';
-import { AgreementDetails } from '../../../../Investing/ components/AgreementDocument';
+import { AgreementDetails } from '../../../../Investing/components/AgreementDocument';
 import { WithdrawalFundsFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
 import { styles } from '../styles';
@@ -104,6 +104,6 @@ const agreementMock: SubscriptionAgreement = {
   ],
   createdAt: new Date(),
   id: '0',
-  status: SubscriptionAgreementStatus.WaitingForSignature,
+  status: AgreementStatus.WaitingForSignature,
   type: SubscriptionAgreementType.DirectDeposit,
 };

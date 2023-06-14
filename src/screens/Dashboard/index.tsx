@@ -26,6 +26,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { activeAccount } = useCurrentAccount();
   const { data: stats } = useGetAccountStats(getApiClient, {
     accountId: activeAccount.id ?? '',
+    config: { enabled: !!activeAccount.id },
   });
   const { data: notifications } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id ?? '',

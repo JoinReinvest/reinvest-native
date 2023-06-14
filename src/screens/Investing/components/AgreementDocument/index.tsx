@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SubscriptionAgreement, SubscriptionAgreementSection } from 'reinvest-app-common/src/types/graphql';
+import { AgreementSection as AgreementSectionType, SubscriptionAgreement } from 'reinvest-app-common/src/types/graphql';
 
 import { Box } from '../../../../components/Containers/Box/Box';
 import { Icon } from '../../../../components/Icon';
@@ -30,7 +30,7 @@ export const AgreementDetails = ({ agreement }: { agreement: SubscriptionAgreeme
   );
 };
 
-export const AgreementSection = ({ section }: { section: SubscriptionAgreementSection }) => {
+export const AgreementSection = ({ section }: { section: AgreementSectionType }) => {
   return (
     <>
       <Box py={'8'}>
