@@ -1,9 +1,8 @@
 import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
 import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cognito-identity-js';
-import React, { createContext, ReactNode, Suspense, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState, useTransition } from 'react';
 
 import { queryClient } from '../App';
-import { Loader } from '../components/Loader';
 import AuthService from '../services/amplify.service';
 
 export enum ChallengeName {
@@ -50,6 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState<CognitoUser | null>(null);
+  const [, startTransition] = useTransition();
   const [error, setError] = useState<Error | string | undefined>();
 
   const checkTwoFactorAuthentication = (challengeName: CognitoChallengeName | undefined) => setLoggedIn(!challengeName);
@@ -124,9 +124,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const cognitoUser: CognitoUser = await Auth.currentAuthenticatedUser();
       checkTwoFactorAuthentication(cognitoUser.challengeName);
-      setUser(cognitoUser);
+      startTransition(() => setUser(cognitoUser));
     } catch (err) {
-      setUser(null);
+      startTransition(() => setUser(null));
     } finally {
       setLoading(false);
     }
@@ -168,7 +168,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
-    getCurrentUser();
+    (async () => {
+      await getCurrentUser();
+    })();
   }, [getCurrentUser]);
 
   const ctx = useMemo(() => {
@@ -192,11 +194,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, user]);
 
-  return (
-    <Suspense fallback={<Loader size="xxl" />}>
-      <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>
-    </Suspense>
-  );
+  return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);
