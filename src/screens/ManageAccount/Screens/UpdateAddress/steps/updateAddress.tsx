@@ -94,9 +94,7 @@ export const UpdateAddress: StepParams<AddressFields> = {
     };
 
     const onSubmit: SubmitHandler<AddressFields> = async address => {
-      const selectedStateCode = STATES_AS_SELECT_OPTION.find(({ label }) => label === address?.state)?.value || '';
-
-      const { addressLine1, addressLine2, city, zip, state } = address;
+      const { addressLine1, city, zip, state } = address;
 
       await updateStoreFields({ ...address });
 

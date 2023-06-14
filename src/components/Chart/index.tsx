@@ -32,6 +32,9 @@ export const Chart = ({ compact }: ChartProps) => {
   const { data, isLoading, isRefetching } = useGetEVSChart(getApiClient, {
     accountId: account.id ?? '',
     resolution: selectedOption?.resolution ?? EvsChartResolution.Day,
+    config: {
+      enabled: !!account.id,
+    },
   });
 
   const chartData = useMemo(() => (data?.dataPoints ? data.dataPoints.map((point, index) => ({ x: index, y: point?.usd ?? 0 })) : []), [data?.dataPoints]);

@@ -5,7 +5,7 @@ import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services
 import { useGetCorporateAccount } from 'reinvest-app-common/src/services/queries/getCorporateAccount';
 import { useGetTrustAccount } from 'reinvest-app-common/src/services/queries/getTrustAccount';
 import { useUpdateStakeholderForVerification } from 'reinvest-app-common/src/services/queries/updateStakeholderForVerification';
-import { AccountType, ActionName, UpdateStakeholderForVerificationInput, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, ActionName, VerificationObjectType } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../../api/getApiClient';
