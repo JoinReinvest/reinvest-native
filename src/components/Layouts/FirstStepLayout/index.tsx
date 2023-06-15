@@ -1,6 +1,6 @@
-import { API_URL, NODE_ENV } from '@env';
 import React, { PropsWithChildren } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
+import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { apiEnvs } from '../../../App';
@@ -59,11 +59,11 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
           {children}
         </PaddedScrollView>
       </MainWrapper>
-      {NODE_ENV === 'development' && (
-        <Box style={{ position: 'absolute', top: 40, right: 24 }}>
-          <StyledText color={'error'}>{`ENV. : ${apiEnvs[API_URL as keyof typeof apiEnvs]}`}</StyledText>
-        </Box>
-      )}
+      {/*{ENV === 'development' && (*/}
+      <Box style={{ position: 'absolute', top: 40, right: 24 }}>
+        <StyledText color={'error'}>{`ENV. : ${apiEnvs[Config.API_URL as keyof typeof apiEnvs]}`}</StyledText>
+      </Box>
+      {/*)}*/}
     </>
   );
 };

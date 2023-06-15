@@ -1,5 +1,5 @@
-declare module '@env' {
-  export const NODE_ENV: string;
+declare module 'react-native-config' {
+  export const ENV: string;
   export const API_URL: string;
   export const AWS_COGNITO_USER_POOL_ID: string;
   export const AWS_COGNITO_CLIENT_ID: string;

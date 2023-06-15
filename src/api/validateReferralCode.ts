@@ -1,9 +1,9 @@
-import { API_URL } from '@env';
 import axios from 'axios';
+import Config from 'react-native-config';
 
 export const validateReferralCode = async (token: string) => {
   const { data } = await axios.post(
-    `${API_URL}/incentive-token`,
+    `${Config.API_URL}/incentive-token`,
     { token },
     {
       headers: {
