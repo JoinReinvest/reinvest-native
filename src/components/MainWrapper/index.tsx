@@ -1,8 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { ScrollView, StatusBar, View } from 'react-native';
+import React, { PropsWithChildren, useMemo } from 'react';
+import { Platform, ScrollView, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { palette } from '../../constants/theme';
+import { NAVBAR_HEIGHT } from '../../utils/scale';
 import { ContainerOverlay } from '../Containers/ContainerOverlay';
 import { Loader } from '../Loader';
 import { styles } from './styles';
@@ -27,8 +28,17 @@ export const MainWrapper = ({
     </ContainerOverlay>
   );
 
+  const bottomSafeStyle = useMemo(() => {
+    const minBottom = bottom ? bottom : 16;
+
+    return Platform.select({
+      ios: { paddingBottom: minBottom },
+      android: { paddingBottom: 16 + NAVBAR_HEIGHT },
+    });
+  }, [bottom]);
+
   return (
-    <View style={[!dark ? styles.light : styles.dark, styles.flex, bottomSafe && { paddingBottom: bottom }, topSafe && { paddingTop: top }]}>
+    <View style={[!dark ? styles.light : styles.dark, styles.flex, bottomSafe && bottomSafeStyle, topSafe && { paddingTop: top }]}>
       <StatusBar
         hidden={false}
         backgroundColor="transparent"

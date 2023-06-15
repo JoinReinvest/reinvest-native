@@ -22,19 +22,6 @@ export const Button = ({
   isDestructive,
   ...rest
 }: PropsWithChildren<ButtonProps>) => {
-  const renderButtonLabel = () => {
-    if (isLoading) {
-      return (
-        <Loader
-          align={'center'}
-          color={variant === 'primary' ? palette.deepGreen : palette.frostGreen}
-        />
-      );
-    }
-
-    return children;
-  };
-
   const labelWidth = !startIcon && !endIcon ? '90%' : startIcon && endIcon ? '70%' : '80%';
 
   return (
@@ -44,23 +31,30 @@ export const Button = ({
       disabled={disabled}
       {...rest}
     >
-      <View style={[styles.labelWrapper, isPill && styles.pillLabel, labelStyle]}>
-        {startIcon}
-        <StyledText
-          variant={variant === 'combo' ? 'h5' : 'button'}
-          numberOfLines={1}
-          style={[
-            { maxWidth: labelWidth },
-            styles[`${variant}Label`],
-            !!isDestructive && variant === 'primary' && styles.destructiveFilledLabel,
-            disabled && styles[`${variant}LabelDisabled`],
-            (variant === 'outlined' || variant === 'draft') && dark && styles.darkLabel,
-          ]}
-        >
-          {renderButtonLabel()}
-        </StyledText>
-        {endIcon}
-      </View>
+      {isLoading ? (
+        <Loader
+          align={'center'}
+          color={variant === 'primary' ? palette.deepGreen : palette.frostGreen}
+        />
+      ) : (
+        <View style={[styles.labelWrapper, isPill && styles.pillLabel, labelStyle]}>
+          {startIcon}
+          <StyledText
+            variant={variant === 'combo' ? 'h5' : 'button'}
+            numberOfLines={1}
+            style={[
+              { maxWidth: labelWidth },
+              styles[`${variant}Label`],
+              !!isDestructive && variant === 'primary' && styles.destructiveFilledLabel,
+              disabled && styles[`${variant}LabelDisabled`],
+              (variant === 'outlined' || variant === 'draft') && dark && styles.darkLabel,
+            ]}
+          >
+            {children}
+          </StyledText>
+          {endIcon}
+        </View>
+      )}
     </Pressable>
   );
 };

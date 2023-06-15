@@ -100,7 +100,6 @@ export const Settings = () => {
 
   return (
     <MainWrapper
-      bottomSafe
       noPadding
       isLoading={signOutLoading}
     >
@@ -205,7 +204,7 @@ export const Settings = () => {
       >
         <Box
           fw
-          pb={Math.max(NAVBAR_HEIGHT, bottom, yScale(16))}
+          pb={Math.max(NAVBAR_HEIGHT + 16, bottom, yScale(16))}
         >
           <SwitchAccountsList
             value={account?.id || ''}

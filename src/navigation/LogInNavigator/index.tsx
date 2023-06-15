@@ -128,16 +128,6 @@ export const LogInNavigator: React.FC = () => {
                 component={BottomTabsNavigator}
               />
               <LogInStack.Screen
-                name={Screens.BankAccount}
-                options={stackOptions[Screens.BankAccount]}
-                component={BankAccount}
-              />
-              <LogInStack.Screen
-                name={Screens.Investing}
-                options={stackOptions[Screens.Investing]}
-                component={Investing}
-              />
-              <LogInStack.Screen
                 options={stackOptions[Screens.ManageAccount]}
                 name={Screens.ManageAccount}
                 component={ManageAccountScreen}
@@ -152,6 +142,16 @@ export const LogInNavigator: React.FC = () => {
               />
             </LogInStack.Group>
             <LogInStack.Group screenOptions={{ header: ScreenHeader }}>
+              <LogInStack.Screen
+                name={Screens.BankAccount}
+                options={stackOptions[Screens.BankAccount]}
+                component={BankAccount}
+              />
+              <LogInStack.Screen
+                name={Screens.Investing}
+                options={stackOptions[Screens.Investing]}
+                component={Investing}
+              />
               <LogInStack.Screen
                 name={Screens.Settings}
                 component={Settings}
