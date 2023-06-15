@@ -19,7 +19,7 @@ export const Loader = ({ size = 'm', color, align = 'center' }: LoaderProps) => 
       transform: [
         {
           rotate: `${rotation.value}deg`,
-        },
+        } as never,
       ],
     };
   }, [rotation.value]);

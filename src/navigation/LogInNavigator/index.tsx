@@ -11,6 +11,7 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { HeaderCancel } from '../../components/HeaderCancel';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
+import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
@@ -87,6 +88,7 @@ export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
   const { data: accounts, isLoading: accountLoading, isRefetching } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
+  const { FCMToken } = usePushNotifications();
 
   useLayoutEffect(() => {
     refetch();
@@ -100,6 +102,12 @@ export const LogInNavigator: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountLoading, accounts, isRefetching]);
+
+  useEffect(() => {
+    if (FCMToken) {
+      console.log('Setup token on BE');
+    }
+  }, [FCMToken]);
 
   if (!data) {
     return (
