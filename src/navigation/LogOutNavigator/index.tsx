@@ -1,6 +1,7 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
 
+import { DarkScreenHeader } from '../../components/CustomHeader';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { ResetPassword } from '../../screens/ResetPassword';
 import { SignIn } from '../../screens/SignIn';
@@ -24,15 +25,14 @@ const stackOptions: Record<Extract<Screens, Screens.SignUp | Screens.SignIn | Sc
     ...stackOptionsCommon,
   },
   [Screens.ResetPassword]: {
-    title: 'Reset Password',
-    ...stackOptionsCommon,
+    title: 'logo',
   },
 };
 
 export const LogOutNavigator = () => {
   return (
     <DialogProvider dark>
-      <LogOutStack.Navigator screenOptions={{ gestureEnabled: false }}>
+      <LogOutStack.Navigator screenOptions={{ gestureEnabled: false, header: DarkScreenHeader }}>
         <LogOutStack.Screen
           options={stackOptions[Screens.SignUp]}
           name={Screens.SignUp}
