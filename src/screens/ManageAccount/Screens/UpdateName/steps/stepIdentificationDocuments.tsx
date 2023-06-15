@@ -1,7 +1,12 @@
+import { useAtom } from 'jotai';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { useUpdateProfile } from 'reinvest-app-common/src/services/queries/updateProfile';
+import { UpdateProfileInput } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
@@ -18,7 +23,9 @@ import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { palette } from '../../../../../constants/theme';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
+import Screens from '../../../../../navigation/screens';
 import { useDialog } from '../../../../../providers/DialogProvider';
+import { currentAccount } from '../../../../../store/atoms';
 import { documentReducer } from '../../../../../utils/documentReducer';
 import { AssetWithPreloadedFiles } from '../../../../Onboarding/types';
 import { UpdateNameFormFields } from '../form-fields';
@@ -32,13 +39,20 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
   },
 
   Component: ({ storeFields: { firstName, middleName, lastName, identificationDocument } }: StepComponentProps<UpdateNameFormFields>) => {
+    const [account, setAccountAtom] = useAtom(currentAccount);
     const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((identificationDocument as AssetWithPreloadedFiles[]) || []);
     const { openDialog } = useDialog();
     const { goBack } = useLogInNavigation();
-    const { isLoading: isCreateDocumentsFileLinksLoading, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
-    const { isLoading: isSendDocumentToS3AndGetScanIdsLoading, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
+    const { mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
+    const { mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
+    const { mutateAsync: updateProfile } = useUpdateProfile(getApiClient);
+    const { refetch: refetchAccountsOverview } = useGetAccountsOverview(getApiClient);
+    const { refetch: refetchProfile } = useGetUserProfile(getApiClient);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const { navigate } = useLogInNavigation();
 
     const onSubmit = async () => {
+      setIsUpdating(true);
       const preloadedFiles = documentReducer(selectedFiles);
 
       const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
@@ -49,26 +63,42 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
       }
 
       try {
-        const idScan = [];
-
         const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
-        const scans = await sendDocumentsToS3AndGetScanIdsMutate({
+        const idScan = await sendDocumentsToS3AndGetScanIdsMutate({
           documentsFileLinks: documentsFileLinks as PutFileLink[],
           identificationDocument: preloadedFiles.forUpload,
         });
-        idScan.push(...scans);
-        const identificationDocuments = [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))];
 
-        openDialog(<UpdateSuccess info="Your name is updated" />, { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> });
-
-        console.log('UPDATE API: ', {
+        const input: Partial<UpdateProfileInput> = {
           name: {
             firstName,
             middleName,
             lastName,
           },
-          identificationDocument: identificationDocuments,
-        });
+          idScan,
+        };
+
+        await updateProfile({ input });
+        await refetchProfile();
+        const { data } = await refetchAccountsOverview();
+
+        const currentAccount = data?.find(acc => acc?.id === account.id);
+
+        if (!currentAccount) {
+          return;
+        }
+
+        setAccountAtom(currentAccount);
+
+        openDialog(
+          <UpdateSuccess
+            info="Your name is updated"
+            buttonLabel="Dashboard"
+            onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+          />,
+          { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> },
+        );
+        setIsUpdating(false);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('-> e', e);
@@ -77,7 +107,7 @@ export const StepIdentificationDocuments: StepParams<UpdateNameFormFields> = {
 
     const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;
 
-    if (isCreateDocumentsFileLinksLoading || isSendDocumentToS3AndGetScanIdsLoading) {
+    if (isUpdating) {
       return (
         <View style={{ flex: 1 }}>
           <Box
