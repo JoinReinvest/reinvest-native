@@ -7,7 +7,6 @@ import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/rea
 import { AccountType } from 'reinvest-app-common/src/types/graphql';
 import { ZodError } from 'zod';
 
-import { InvestingAmountTable } from '../ components/InvestingAmountTable';
 import { getApiClient } from '../../../api/getApiClient';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -15,6 +14,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
 import { useLogInNavigation } from '../../../navigation/hooks';
+import { InvestingAmountTable } from '../components/InvestingAmountTable';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { useInvestFlow } from './index';
