@@ -25,6 +25,7 @@ import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
+import { maskPhoneNumber } from '../../../utils/phoneNumber';
 
 type Fields = Pick<OnboardingFormFields, 'phoneNumberAuthenticationCode'>;
 
@@ -111,7 +112,10 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
           <FormTitle
             dark
             headline="Check Your Phone"
-            description={`Enter the SMS authentication code sent to your phone (xx) xxx-xxx-x${storeFields.phone?.number?.slice(-2)}.`}
+            description={`Enter the SMS authentication code sent to your phone ${maskPhoneNumber(
+              storeFields.phone?.countryCode ?? '',
+              storeFields.phone?.number ?? '',
+            )}.`}
           />
           {error && (
             <FormMessage

@@ -61,6 +61,7 @@ export const SECURITY_LINKS: Link[] = [
   {
     identifier: NavigationIdentifiers.PHONE_NUMBER,
     label: 'Phone Number',
+    headerShown: false,
   },
   {
     identifier: NavigationIdentifiers.CHANGE_PASSWORD,
