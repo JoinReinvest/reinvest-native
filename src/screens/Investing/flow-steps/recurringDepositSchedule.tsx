@@ -79,7 +79,7 @@ export const RecurringDepositSchedule: StepParams<InvestFormFields> = {
               )}
               <SummaryDetail
                 label="Starting on "
-                value={formatDate(data.schedule.startDate, 'INVESTMENT_RECURRENT', { currentFormat: 'DEFAULT' })}
+                value={formatDate(data.schedule.startDate, 'INVESTMENT_RECURRENT', { currentFormat: 'API' })}
               />
               <SummaryDetail
                 isLast
