@@ -7,6 +7,7 @@ import { ManageBankAccount } from './Screens/ManageBankAccount';
 import { RecurringInvestments } from './Screens/RecurringInvestments';
 import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
+import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateName } from './Screens/UpdateName';
@@ -19,10 +20,11 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   BANK_ACCOUNT: <ManageBankAccount />,
   EMAIL_ADDRESS: <UpdateEmail />,
   ADDRESS: <Address />,
-  NAME: <UpdateName />,
+  PROFILE_NAME: <UpdateName />,
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
   CHANGE_PASSWORD: <UpdatePassword />,
   COMPANY_DOCUMENTS: <UpdateCompanyDocuments />,
   WITHDRAW_FUNDS: <WithdrawalFunds />,
   RECURRING_INVESTMENT: <RecurringInvestments />,
+  BENEFICIARY_NAME: <UpdateBeneficiaryName />,
 };
