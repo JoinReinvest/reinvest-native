@@ -1,6 +1,6 @@
-import { CLOUDFRONT_DEV, CLOUDFRONT_INT, CLOUDFRONT_STG } from '@env';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import Config from 'react-native-config';
 
 import { useAuth } from '../providers/AuthProvider';
 import { LogInNavigator } from './LogInNavigator';
@@ -14,7 +14,15 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['https://reinvest.com', 'reinvest://', 'https://*.reinvest.com', 'http://*.reinvest.com', CLOUDFRONT_STG, CLOUDFRONT_INT, CLOUDFRONT_DEV],
+  prefixes: [
+    'https://reinvest.com',
+    'reinvest://',
+    'https://*.reinvest.com',
+    'http://*.reinvest.com',
+    Config.CLOUDFRONT_STG,
+    Config.CLOUDFRONT_INT,
+    Config.CLOUDFRONT_DEV,
+  ],
   config,
 };
 

@@ -1,12 +1,4 @@
 apply plugin: "com.android.application"
-project.ext.envConfigFiles = [
-  integrationrelease: ".env.development",
-  integrationdebug: ".env.development",
-  stagingdebug: ".env.staging",
-  stagingrelease: ".env.staging",
-  productiondebug: ".env.production",
-  productionrelease: ".env.production"
-]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: "com.facebook.react"
 
@@ -105,7 +97,6 @@ String getLocalProp(String key) {
   return properties[key]
 }
 
-
 android {
     ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -115,9 +106,10 @@ android {
         applicationId "com.reinvestcommunity.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.0.5"
+        versionCode 2
+        versionName "1.0.0"
         manifestPlaceholders = [GOOGLE_MAPS_API_KEY:"${project.env.get("GOOGLE_MAPS_API_KEY")}"]
+        resValue "string", "build_config_package", "com.reinvestnative"
     }
 
     splits {
@@ -156,22 +148,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-
-  flavorDimensions "default"
-  productFlavors {
-    integration {
-      resValue "string", "app_name", "devRE-INVEST"
-      applicationId "com.reinvestcommunity.dev"
-    }
-    staging {
-      resValue "string", "app_name", "stgRE-INVEST"
-      applicationId "com.reinvestcommunity.app"
-    }
-    production {
-      resValue "string", "app_name", "RE-INVEST"
-      applicationId "com.reinvestcommunity.app"
-    }
-  }
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->

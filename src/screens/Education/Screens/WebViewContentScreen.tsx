@@ -1,6 +1,6 @@
-import { REINVEST_SITE_URL } from '@env';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import Config from 'react-native-config';
 import { WebView } from 'react-native-webview';
 
 import { Loader } from '../../../components/Loader';
@@ -43,7 +43,7 @@ export const WebViewContentScreen = ({ route: { params } }: EducationStackProps<
           scalesPageToFit={isIOS}
           javaScriptEnabled
           onLoadEnd={() => setIsLoading(false)}
-          source={{ uri: `${REINVEST_SITE_URL}${params.uri}` }}
+          source={{ uri: `${Config.REINVEST_SITE_URL}${params.uri}` }}
         />
       )}
       {isLoading && (

@@ -1,3 +1,3 @@
-import { NODE_ENV } from '@env';
+import Config from 'react-native-config';
 
-export const isStaging = NODE_ENV === 'staging';
+export const isStaging = Config.ENV === 'staging';
