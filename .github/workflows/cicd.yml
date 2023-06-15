@@ -3,7 +3,6 @@ name: Build and Publish Test Builds
 on:
   push:
     branches:
-      - android-cicd
       - development
       - staging
       - main
@@ -59,13 +58,6 @@ jobs:
         run: |
           echo "PRODUCTION VARIABLES ${{github.ref}}"
           echo "${{ secrets.ENV_PRODUCTION }}" > .env
-          
-          
-      - name: ===> 'Create test env file'
-        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'android-cicd'
-        run: |
-          echo "PRODUCTION VARIABLES ${{github.ref}}"
-          echo "${{ secrets.ENV_INTEGRATION }}" > .env
 
       - name: ===> Install dependencies
         run: |
@@ -91,24 +83,31 @@ jobs:
         env:
           VERSION_CODE: ${{ github.run_number }}
         run: cd android && ./gradlew bundleRelease
-        
-      - name: ====>> Check current dir
-        run: |
-          echo "$(pwd)"
-          cd android/app/build/outputs
-          echo "$(pwd)"
-          echo "$(ls)"
-          cd bundle
-          echo "$(ls)"
-          
+
       - name: Create service_account.json FROM secrets.SERVICE_ACCOUNT_JSON
+        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
         run: echo '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}' > service_account.json
 
+      ## this step is placeholder for forthcoming JSON configuration
+      - name: Create service_account.json FROM secrets.SERVICE_ACCOUNT_JSON_APP
+        if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main' || 'refs/heads/staging' || github.event.pull_request.base.ref == 'staging'
+        run: echo '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON_APP }}' > service_account.json
+
       - name: Deploy to Play Store internal testing
-        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'android-cicd'
+        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: service_account.json
           packageName: com.reinvestcommunity.dev
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal # Change to desired track (internal, alpha, beta, production)
+
+      # !!!!!!!!!!!!!  we need to add proper json file to upload to this app adn provide secret
+      - name: Deploy to Play Store internal testing
+        if: github.ref == 'refs/heads/staging' || github.event.pull_request.base.ref == 'staging'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: com.reinvestcommunity.app
           releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
           track: internal # Change to desired track (internal, alpha, beta, production)
