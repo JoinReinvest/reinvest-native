@@ -1,8 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { formValidationRules } from 'reinvest-app-common/src/form-schemas';
+import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetBeneficiaryAccount } from 'reinvest-app-common/src/services/queries/getBeneficiaryAccount';
+import { useUpdateBeneficiaryAccount } from 'reinvest-app-common/src/services/queries/updateBeneficiaryAccount';
 import z from 'zod';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -15,10 +18,10 @@ import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWi
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { Controller } from '../../../components/typography/Controller';
 import { StyledText } from '../../../components/typography/StyledText';
-import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
+import { currentAccount } from '../../../store/atoms';
 
 interface Fields {
   firstName: string;
@@ -31,8 +34,10 @@ const schema = z.object({
 });
 
 const UpdateBeneficiaryName = () => {
-  const { activeAccount } = useCurrentAccount();
+  const [activeAccount, setActiveAccount] = useAtom(currentAccount);
   const { data: beneficiaryAccount, isLoading, status } = useGetBeneficiaryAccount(getApiClient, { accountId: activeAccount.id ?? '' });
+  const { mutateAsync: updateBeneficiary, isLoading: isUpdating } = useUpdateBeneficiaryAccount(getApiClient);
+  const { refetch: refetchAccountsOverview, isRefetching: isRefetchingAccounts } = useGetAccountsOverview(getApiClient);
   const { openDialog } = useDialog();
   const { goBack, navigate } = useLogInNavigation();
   const {
@@ -49,7 +54,22 @@ const UpdateBeneficiaryName = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<Fields> = () => {
+  const onSubmit: SubmitHandler<Fields> = async fields => {
+    await updateBeneficiary({
+      accountId: activeAccount.id ?? '',
+      input: {
+        name: fields,
+      },
+    });
+    const { data: accounts } = await refetchAccountsOverview();
+    const currentAccount = accounts?.find(acc => acc?.id === activeAccount.id);
+
+    if (!currentAccount) {
+      return;
+    }
+
+    setActiveAccount(currentAccount);
+
     openDialog(
       <UpdateSuccess
         info="Beneficiary name is updated"
@@ -76,6 +96,7 @@ const UpdateBeneficiaryName = () => {
     <MainWrapper
       isLoading={isLoading}
       noPadding
+      bottomSafe
     >
       <PaddedScrollView>
         <Row mb="16">
@@ -99,6 +120,7 @@ const UpdateBeneficiaryName = () => {
         px="default"
       >
         <Button
+          isLoading={isUpdating || isRefetchingAccounts}
           onPress={handleSubmit(onSubmit)}
           disabled={shouldButtonBeDisabled}
         >

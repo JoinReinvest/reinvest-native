@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CALLING_CODES } from 'reinvest-app-common/src/constants/country-codes';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { parsePhoneNumber } from 'reinvest-app-common/src/utilities/phoneNumber';
 
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
@@ -9,7 +9,6 @@ import { StyledText } from '../../../../../components/typography/StyledText';
 import { useAuth } from '../../../../../providers/AuthProvider';
 import { UpdatePhoneNumberFormFields } from '../form-fields';
 import { Identifiers } from '../identifiers';
-import { parsePhoneNumber } from 'reinvest-app-common/src/utilities/phoneNumber';
 
 export const StepOriginalPhoneNumber: StepParams<UpdatePhoneNumberFormFields> = {
   identifier: Identifiers.ORIGINAL_PHONE_NUMBER,

@@ -21,11 +21,11 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { onBoardingDisclaimers, onBoardingModalHeadlines } from '../../../constants/strings';
 import { useDialog } from '../../../providers/DialogProvider';
 import { formValidationRules } from '../../../utils/formValidationRules';
+import { maskPhoneNumber } from '../../../utils/phoneNumber';
 import { Identifiers } from '../identifiers';
 import { OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
-import { maskPhoneNumber } from '../../../utils/phoneNumber';
 
 type Fields = Pick<OnboardingFormFields, 'phoneNumberAuthenticationCode'>;
 
