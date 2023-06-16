@@ -28,6 +28,7 @@ export const StepUpdateName: StepParams<UpdateNameFormFields> = {
   identifier: Identifiers.UPDATE_NAME,
 
   Component: ({ storeFields, moveToNextStep, updateStoreFields }: StepComponentProps<UpdateNameFormFields>) => {
+    // const [account, setAccountAtom] = useAtom(currentAccount);
     const { handleSubmit, control, formState } = useForm({
       mode: 'onBlur',
       resolver: zodResolver(schema),
