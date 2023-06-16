@@ -1,10 +1,10 @@
 import React from 'react';
+import { useArchiveBeneficiaryAccount } from 'reinvest-app-common/src/services/queries/archiveBeneficiaryAccount';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
+import { AccountType, Usd } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
-import { queryClient } from '../../../App';
 import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -19,15 +19,12 @@ import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
 import { currentAccount, useAtom } from '../../../store/atoms';
 
-const regex = /[$,]/g;
-
-const parseAmountToNumber = (amount?: string): number => (amount ? +amount.replaceAll(regex, '') : 0);
-
 export const RemoveBeneficiary = () => {
   const [activeAccount, setActiveAccount] = useAtom(currentAccount);
   const { openDialog } = useDialog();
   const { navigate } = useLogInNavigation();
   const { data: accounts, isLoading: isLoadingAccounts } = useGetAccountsOverview(getApiClient);
+  const { mutateAsync: archiveBeneficiary } = useArchiveBeneficiaryAccount(getApiClient);
   const { data: beneficiaryAccountStats, isLoading: isLoadingBeneficiaryAccountStats } = useGetAccountStats(getApiClient, {
     accountId: activeAccount.id ?? '',
     config: {
@@ -36,44 +33,41 @@ export const RemoveBeneficiary = () => {
   });
 
   const individualAccountId = accounts?.find(acc => acc?.type === AccountType.Individual)?.id ?? '';
-
-  const { data: individualAccountStats, isLoading: isLoadingIndividualAccountStats } = useGetAccountStats(getApiClient, {
+  const { refetch: refetchIndividualAccountStats } = useGetAccountStats(getApiClient, {
     accountId: individualAccountId,
     config: {
       enabled: !!individualAccountId,
     },
   });
 
-  const isLoading = isLoadingAccounts || isLoadingBeneficiaryAccountStats || isLoadingIndividualAccountStats;
+  const isLoading = isLoadingAccounts || isLoadingBeneficiaryAccountStats;
   const individualAccount = accounts?.find(account => account?.type === AccountType.Individual);
 
   if (!individualAccount) {
     throw new Error('No Individual account found, cannot remove beneficiary!');
   }
 
-  const handleDialogClose = () => {
-    // when removed switch to individual account:
+  const handleDialogClose = async () => {
+    // update individual stats with updated total value and switch to individual account
+    await refetchIndividualAccountStats();
     setActiveAccount(individualAccount);
-    queryClient.invalidateQueries(['getAccountStats', 'getAccountsOverview']);
-
     navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
   };
 
   const deleteAccount = async () => {
-    const totalAmount = parseAmountToNumber(individualAccountStats?.accountValue) + parseAmountToNumber(beneficiaryAccountStats?.accountValue);
+    const { archived, parentAccountUpdatedValue } = await archiveBeneficiary({ accountId: activeAccount.id ?? '' });
 
-    openDialog(
-      <AmountUpdate
-        amount={{
-          value: totalAmount,
-          formatted: totalAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
-        }}
-        headline="Beneficiary Account Removed"
-        disclaimer="Updated Individual Account Value."
-        onClose={handleDialogClose}
-      />,
-      { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
-    );
+    if (archived) {
+      openDialog(
+        <AmountUpdate
+          amount={(parentAccountUpdatedValue as Usd) ?? undefined}
+          headline="Beneficiary Account Removed"
+          disclaimer="Updated Individual Account Value."
+          onClose={handleDialogClose}
+        />,
+        { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
+      );
+    }
   };
 
   return (

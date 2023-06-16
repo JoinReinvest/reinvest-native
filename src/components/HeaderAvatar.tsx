@@ -1,5 +1,6 @@
 import { HeaderBackButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { useLogInNavigation } from '../navigation/hooks';
 import Screens from '../navigation/screens';
@@ -21,6 +22,7 @@ export const HeaderAvatar = ({ disabled }: { disabled?: boolean } & Partial<Head
       }
       uri={account?.avatar?.url || ''}
       initials={account?.avatar?.initials || ''}
+      variant={account?.type as AccountType}
     />
   );
 };
