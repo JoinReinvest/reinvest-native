@@ -10,10 +10,10 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
 import { xScale } from '../../../utils/scale';
-import { UpdatesT } from '../types';
+import { UpdateT } from '../types';
 
 const UPDATE_CONTENT_WIDTH = PADDED_SAFE_WIDTH - 44 - xScale(28);
-export const Update = ({ update: { author, date, content } }: { update: UpdatesT }) => {
+export const Update = ({ update: { author, date, content } }: { update: UpdateT }) => {
   return (
     <Row
       pb="24"

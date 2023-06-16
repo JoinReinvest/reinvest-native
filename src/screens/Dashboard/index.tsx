@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
+import { NotificationFilter } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { AccountOverview } from '../../components/AccountOverview';
@@ -30,6 +31,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   });
   const { data: notifications } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id ?? '',
+    filter: NotificationFilter.Unread,
     config: { enabled: !!activeAccount.id },
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

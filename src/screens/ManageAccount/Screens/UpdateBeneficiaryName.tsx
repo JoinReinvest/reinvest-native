@@ -96,6 +96,7 @@ const UpdateBeneficiaryName = () => {
     <MainWrapper
       isLoading={isLoading}
       noPadding
+      bottomSafe
     >
       <PaddedScrollView>
         <Row mb="16">

@@ -77,7 +77,10 @@ export const RecurringInvestments = () => {
 
   return (
     <>
-      <MainWrapper isLoading={isLoading}>
+      <MainWrapper
+        isLoading={isLoading}
+        bottomSafe
+      >
         {recurringInvestment && (
           <Box
             fw
