@@ -30,7 +30,15 @@ export const UpdatePhoneNumberLayout = () => {
   useStepBackOverride<UpdatePhoneNumberFormFields, LogInStackParamList>(useUpdatePhoneNumberFlow, navigation, false, isOnAuthCodeStep);
   useKeyboardAware();
 
-  const headerRight = useCallback(() => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} />, [navigation]);
+  const headerRight = useCallback(
+    () => (
+      <HeaderCancel
+        dark={isOnAuthCodeStep}
+        onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)}
+      />
+    ),
+    [isOnAuthCodeStep, navigation],
+  );
 
   const headerLeft = useCallback(
     () => (

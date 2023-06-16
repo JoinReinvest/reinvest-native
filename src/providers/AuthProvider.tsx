@@ -1,6 +1,6 @@
 import { Auth, CognitoUser, SignUpParams } from '@aws-amplify/auth';
 import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cognito-identity-js';
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState, useTransition } from 'react';
+import React, { createContext, ReactNode, Suspense, useCallback, useContext, useEffect, useMemo, useState, useTransition } from 'react';
 
 import { queryClient } from '../App';
 import AuthService from '../services/amplify.service';
@@ -194,7 +194,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, user]);
 
-  return <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>;
+  return (
+    <Suspense>
+      <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>
+    </Suspense>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
