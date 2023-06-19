@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCompleteTrustDraftAccount } from 'reinvest-app-common/src/services/queries/completeTrustDraftAccount';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DocumentFileLinkInput, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
@@ -20,7 +20,7 @@ import { palette } from '../../../constants/theme';
 import { documentReducer } from '../../../utils/documentReducer';
 import { MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
-import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, IdentificationDocument, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -55,33 +55,38 @@ export const StepDocumentsForTrust: StepParams<OnboardingFormFields> = {
     const { mutateAsync: completeTrustDraftAccount, isSuccess, error, isLoading } = useCompleteTrustDraftAccount(getApiClient);
     const [selectedFiles, setSelectedFiles] = useState<AssetWithPreloadedFiles[]>((storeFields.documentsForTrust as AssetWithPreloadedFiles[]) || []);
 
+    const getRemovedFiles = (updatedFiles: IdentificationDocument[]): DocumentFileLinkInput[] =>
+      (storeFields.documentsForTrust?.filter(file => !updatedFiles.some(f => f.id === file?.id)) as DocumentFileLinkInput[]) ?? [];
+
     const handleContinue = async () => {
-      if (!storeFields.accountId) {
+      if (!storeFields.accountId || !selectedFiles.length) {
         return;
       }
 
       const preloadedFiles = documentReducer(selectedFiles);
-      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const filesToUploadUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const removeDocuments = getRemovedFiles(preloadedFiles.uploaded);
+      const companyDocuments = [...preloadedFiles.uploaded];
 
       try {
-        const idScan = [];
-
-        if (selectedFilesUris.length) {
-          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+        if (filesToUploadUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: filesToUploadUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
             documentsFileLinks: documentsFileLinks as PutFileLink[],
             identificationDocument: preloadedFiles.forUpload,
           });
-          idScan.push(...scans);
-          await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
+          companyDocuments.push(...scans);
         }
 
-        await updateStoreFields({ documentsForTrust: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
+        await completeTrustDraftAccount({ accountId: storeFields.accountId, input: { companyDocuments, removeDocuments } });
+        await updateStoreFields({
+          documentsForTrust: companyDocuments,
+        });
 
         /*
          No files to upload
          */
-        if (!selectedFilesUris.length) {
+        if (!filesToUploadUris.length) {
           moveToNextStep();
         }
       } catch (e) {

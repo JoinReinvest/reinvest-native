@@ -3,21 +3,24 @@ import { View } from 'react-native';
 import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useCompleteCorporateDraftAccount } from 'reinvest-app-common/src/services/queries/completeCorporateDraftAccount';
 import { useCreateDocumentsFileLinks } from 'reinvest-app-common/src/services/queries/createDocumentsFileLinks';
-import { DraftAccountType } from 'reinvest-app-common/src/types/graphql';
+import { DocumentFileLinkInput, DraftAccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { PutFileLink, useSendDocumentsToS3AndGetScanIds } from '../../../api/hooks/useSendDocumentsToS3AndGetScanIds';
 import { Button } from '../../../components/Button';
+import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { FilePicker } from '../../../components/FilePicker';
 import { FormTitle } from '../../../components/Forms/FormTitle';
+import { Loader } from '../../../components/Loader';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { ProgressBar } from '../../../components/ProgressBar';
 import { StyledText } from '../../../components/typography/StyledText';
+import { palette } from '../../../constants/theme';
 import { documentReducer } from '../../../utils/documentReducer';
 import { MINIMUM_CORPORATION_FILES_COUNT } from '../../../utils/formValidationRules';
 import { Identifiers } from '../identifiers';
-import { AssetWithPreloadedFiles, OnboardingFormFields } from '../types';
+import { AssetWithPreloadedFiles, IdentificationDocument, OnboardingFormFields } from '../types';
 import { useOnboardingFormFlow } from '.';
 import { styles } from './styles';
 
@@ -40,35 +43,39 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
     const { isLoading: creatingFileLinks, mutateAsync: createDocumentsFileLinksMutate } = useCreateDocumentsFileLinks(getApiClient);
     const { isLoading: uploadingToS3, mutateAsync: sendDocumentsToS3AndGetScanIdsMutate } = useSendDocumentsToS3AndGetScanIds();
     const { isLoading: updatingAccount, isSuccess, error, mutateAsync: updateCorporate } = useCompleteCorporateDraftAccount(getApiClient);
+
+    const getRemovedFiles = (updatedFiles: IdentificationDocument[]): DocumentFileLinkInput[] =>
+      (storeFields.documentsForCorporation?.filter(file => !updatedFiles.some(f => f.id === file?.id)) as DocumentFileLinkInput[]) ?? [];
+
     const handleContinue = async () => {
-      if (!storeFields.accountId) {
+      if (!storeFields.accountId || !selectedFiles.length) {
         return;
       }
 
       const preloadedFiles = documentReducer(selectedFiles);
-      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const filesToUploadUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const removeDocuments = getRemovedFiles(preloadedFiles.uploaded);
+      const companyDocuments = [...preloadedFiles.uploaded];
 
       try {
-        const idScan = [];
-
-        if (selectedFilesUris.length) {
-          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+        if (filesToUploadUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: filesToUploadUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
             documentsFileLinks: documentsFileLinks as PutFileLink[],
             identificationDocument: preloadedFiles.forUpload,
           });
-          idScan.push(...scans);
-          await updateCorporate({ accountId: storeFields.accountId, input: { companyDocuments: idScan } });
+          companyDocuments.push(...scans);
         }
 
+        await updateCorporate({ accountId: storeFields.accountId, input: { companyDocuments, removeDocuments } });
         await updateStoreFields({
-          documentsForCorporation: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))],
+          documentsForCorporation: companyDocuments,
         });
 
         /*
          No files to upload
          */
-        if (!selectedFilesUris.length) {
+        if (!filesToUploadUris.length) {
           moveToNextStep();
         }
       } catch (e) {
@@ -85,6 +92,25 @@ export const StepDocumentsForCorporation: StepParams<OnboardingFormFields> = {
         moveToNextStep();
       }
     }, [isSuccess, moveToNextStep]);
+
+    if (updatingAccount || creatingFileLinks || uploadingToS3) {
+      return (
+        <Box
+          flex={1}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          <Loader
+            size="xl"
+            color={palette.pureWhite}
+          />
+          <FormTitle
+            dark
+            headline={`Uploading Your Document${selectedFiles.length > 1 ? 's' : ''}`}
+          />
+        </Box>
+      );
+    }
 
     return (
       <>
