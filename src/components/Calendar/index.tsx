@@ -25,7 +25,7 @@ export const Calendar = ({ autoSelectionPeriod, onSelect, defaultStartingDate }:
 
   const { refetch } = useGetScheduleSimulation(getApiClient, {
     schedule: { frequency: autoSelectionPeriod, startDate: startingDate ? formatDate(startingDate.toDate(), 'API') : defaultStartingDate ?? '' },
-    config: { enabled: !!startingDate || !!defaultStartingDate },
+    config: { enabled: !!startingDate || !!defaultStartingDate || !!autoSelectionPeriod },
   });
 
   useEffect(() => {
