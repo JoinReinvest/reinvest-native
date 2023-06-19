@@ -1,4 +1,4 @@
-import { InvestmentSummary } from 'reinvest-app-common/src/types/graphql';
+import { InvestmentOverview } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { Box } from '../../../components/Containers/Box/Box';
@@ -9,8 +9,8 @@ import { palette } from '../../../constants/theme';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 
-export const InvestmentItem = (props: InvestmentSummary) => {
-  const { tradeId, createdAt, amount } = props;
+export const InvestmentItem = (props: InvestmentOverview) => {
+  const { id: investmentId, tradeId, createdAt, amount } = props;
   const { navigate } = useLogInNavigation();
 
   return (
@@ -19,7 +19,7 @@ export const InvestmentItem = (props: InvestmentSummary) => {
       py="16"
       justifyContent="space-between"
       style={{ borderBottomWidth: 1, borderBottomColor: palette.lightGray }}
-      onPress={() => navigate(Screens.TradeSummary, { investmentSummary: props, heading: 'Investment History' })}
+      onPress={() => navigate(Screens.TradeSummary, { investmentId, heading: 'Investment History' })}
     >
       <Box>
         <StyledText variant="button">Trade ID {tradeId}</StyledText>
