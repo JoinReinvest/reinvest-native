@@ -115,17 +115,16 @@ export const FilePicker = ({
         return;
       }
 
-      return releaseFile(uri);
+      releaseFile(uri);
+
+      return;
     }
 
-    if (showConfirmDialog) {
+    if (showConfirmDialog && !uri) {
       openDialog(
         <ConfirmDelete
           heading={heading}
-          onSuccess={() => {
-            const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== id) || [...results];
-            setResults(filteredFiles);
-          }}
+          onSuccess={() => releaseFileWithoutUri(id)}
         />,
         { closeIcon: false },
         'sheet',
@@ -134,12 +133,13 @@ export const FilePicker = ({
       return;
     }
 
-    const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== id) || [...results];
-    setResults(filteredFiles);
+    releaseFileWithoutUri(id);
+  };
 
-    // TODO add removing file from server
-    // eslint-disable-next-line no-console
-    return console.log('ADD REMOVING ASSET FROM SERVER');
+  const releaseFileWithoutUri = (fileToRemoveId: string) => {
+    const filteredFiles = results?.filter(file => (file as IdentificationDocument).id !== fileToRemoveId) || [...results];
+    setResults(filteredFiles);
+    onSelect(filteredFiles);
   };
 
   const releaseFile = useCallback(
