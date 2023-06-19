@@ -50,27 +50,27 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
     const { refetch: refetchAccount } = useGetAccountsOverview(getApiClient);
 
     const shouldButtonBeDisabled = !selectedFiles.length || selectedFiles.length > 5;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     const convertFiles = async () => {
       if (!didFilesChange) {
         return [];
       }
 
       const preloadedFiles = documentReducer(selectedFiles);
-      const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const filesForUploadUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const idScans = [...preloadedFiles.uploaded];
 
       try {
-        if (selectedFilesUris.length) {
-          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
+        if (filesForUploadUris.length) {
+          const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: filesForUploadUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
             documentsFileLinks: documentsFileLinks as PutFileLink[],
             identificationDocument: preloadedFiles.forUpload,
           });
-
-          return scans;
+          idScans.push(...scans);
         }
 
-        return [];
+        return idScans;
       } catch (e) {
         console.log('-> e', e);
 
@@ -101,7 +101,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
         ...(shouldUpdateName ? { name: updatedName } : {}),
         ...(shouldUpdateDateOfBirth ? { dateOfBirth: { dateOfBirth: formattedUpdatedDateOfBirth } } : {}),
         ...(shouldUpdateAddress ? { address: { ...updatedAddress, country: 'USA' } as AddressInput } : {}),
-        ...(didFilesChange && idScan.length ? { idScan } : {}),
+        ...(didFilesChange ? { idScan } : {}),
       };
 
       await updateProfile({ input });
