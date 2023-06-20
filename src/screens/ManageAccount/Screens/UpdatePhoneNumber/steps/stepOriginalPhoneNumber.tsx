@@ -25,6 +25,7 @@ export const StepOriginalPhoneNumber: StepParams<UpdatePhoneNumberFormFields> = 
       <Box
         fw
         flex={1}
+        px="default"
       >
         <Box
           fw

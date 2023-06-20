@@ -11,6 +11,7 @@ import { getApiClient } from '../../../../../api/getApiClient';
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { Row } from '../../../../../components/Containers/Row';
+import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { PHONE_MASK } from '../../../../../constants/masks';
@@ -61,10 +62,7 @@ export const StepUpdatePhoneNumber: StepParams<UpdatePhoneNumberFormFields> = {
         fw
         flex={1}
       >
-        <Box
-          fw
-          flex={1}
-        >
+        <PaddedScrollView>
           <Box mb="16">
             <StyledText>Add a new phone number</StyledText>
           </Box>
@@ -98,8 +96,8 @@ export const StepUpdatePhoneNumber: StepParams<UpdatePhoneNumberFormFields> = {
               />
             </View>
           </Row>
-        </Box>
-        <Box>
+        </PaddedScrollView>
+        <Box px="default">
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
