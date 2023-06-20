@@ -157,16 +157,18 @@ const NotificationBarIcon = ({ focused }: { focused: boolean }) => {
 
   return (
     <Box style={styles.notificationWrapper}>
-      <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
-        <StyledText
-          adjustsFontSizeToFit
-          style={styles.count}
-          color="pureWhite"
-          variant="todayCondensed"
-        >
-          {currentNotificationsCount > 99 ? '99+' : currentNotificationsCount}
-        </StyledText>
-      </Box>
+      {!!currentNotificationsCount && (
+        <Box style={[styles.notificationBadge, currentNotificationsCount > 99 && styles.threeDigitsBadge]}>
+          <StyledText
+            adjustsFontSizeToFit
+            style={styles.count}
+            color="pureWhite"
+            variant="todayCondensed"
+          >
+            {currentNotificationsCount > 99 ? '99+' : currentNotificationsCount}
+          </StyledText>
+        </Box>
+      )}
       <NotificationIcon focused={focused} />
     </Box>
   );
