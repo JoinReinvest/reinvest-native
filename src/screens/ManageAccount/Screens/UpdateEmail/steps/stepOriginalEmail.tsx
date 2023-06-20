@@ -24,6 +24,7 @@ export const StepOriginalEmail: StepParams<UpdateEmailFormFields> = {
       <Box
         fw
         flex={1}
+        px="default"
       >
         <Box
           fw

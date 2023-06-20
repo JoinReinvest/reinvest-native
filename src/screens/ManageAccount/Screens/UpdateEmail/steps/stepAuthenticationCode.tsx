@@ -15,6 +15,7 @@ import { FormMessage } from '../../../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../../../components/Forms/FormTitle';
 import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
 import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
+import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
@@ -92,10 +93,7 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
 
     return (
       <>
-        <Box
-          fw
-          flex={1}
-        >
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Check Your Email"
@@ -144,8 +142,8 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
               Get Help
             </StyledText>
           </Row>
-        </Box>
-        <Box>
+        </PaddedScrollView>
+        <Box px="default">
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}

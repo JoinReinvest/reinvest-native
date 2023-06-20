@@ -7,6 +7,7 @@ import z from 'zod';
 
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
+import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useAuth } from '../../../../../providers/AuthProvider';
@@ -50,10 +51,7 @@ export const StepUpdateEmail: StepParams<UpdateEmailFormFields> = {
         fw
         flex={1}
       >
-        <Box
-          fw
-          flex={1}
-        >
+        <PaddedScrollView>
           <Box mb="16">
             <StyledText>Add Email Address</StyledText>
           </Box>
@@ -63,8 +61,8 @@ export const StepUpdateEmail: StepParams<UpdateEmailFormFields> = {
             fieldName="email"
             inputProps={{ placeholder: 'Email Address' }}
           />
-        </Box>
-        <Box>
+        </PaddedScrollView>
+        <Box px="default">
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
