@@ -50,10 +50,9 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
       const preloadedFiles = documentReducer(selectedFiles);
 
       const selectedFilesUris = preloadedFiles.forUpload.map(({ uri }) => uri ?? '');
+      const idScan = [...preloadedFiles.uploaded];
 
       try {
-        const idScan = [];
-
         if (selectedFilesUris.length) {
           const documentsFileLinks = (await createDocumentsFileLinksMutate({ numberOfLinks: selectedFilesUris.length })) as PutFileLink[];
           const scans = await sendDocumentsToS3AndGetScanIdsMutate({
@@ -61,10 +60,10 @@ export const StepIdentificationDocuments: StepParams<OnboardingFormFields> = {
             identificationDocument: preloadedFiles.forUpload,
           });
           idScan.push(...scans);
-          await completeProfileMutate({ input: { idScan } });
         }
 
-        await updateStoreFields({ identificationDocument: [...preloadedFiles.uploaded, ...idScan.map((scan, idx) => ({ ...scan, uri: selectedFiles[idx] }))] });
+        await completeProfileMutate({ input: { idScan } });
+        await updateStoreFields({ identificationDocument: idScan });
 
         /*
          No files to upload
