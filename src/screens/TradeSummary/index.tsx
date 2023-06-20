@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCancelInvestment } from 'reinvest-app-common/src/services/queries/cancel-investment';
 import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
 import { InvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
@@ -58,6 +59,7 @@ export const TradeSummary = ({
     investmentId: investmentId ?? '',
     config: { enabled: !!investmentId || !investmentSummary },
   });
+  const { mutateAsync: cancelInvestment } = useCancelInvestment(getApiClient);
 
   if (!investmentSummary && (isLoading || !summary)) {
     return (
@@ -76,6 +78,7 @@ export const TradeSummary = ({
   const createdAt = investmentSummary?.createdAt ?? summary?.createdAt;
   const amount = investmentSummary?.amount ?? summary?.amount;
   const bankAccount = investmentSummary?.bankAccount?.accountNumber ?? summary?.bankAccount?.accountNumber;
+  const isInProgress = status === InvestmentStatus.Funded || status === InvestmentStatus.InProgress;
 
   const handleDialogClose = () => {
     queryClient.invalidateQueries(['getAccountStats', 'getAccountsOverview']);
@@ -83,30 +86,32 @@ export const TradeSummary = ({
     navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
   };
 
-  const cancelTransaction = () => {
-    if (!amount) {
+  const handleSuccess = async () => {
+    if (!amount || !investmentId) {
       return;
     }
 
+    await cancelInvestment({ investmentId });
+    openDialog(
+      <AmountUpdate
+        amount={{ ...amount, value: -amount.value }}
+        headline={`Trade ${tradeId} cancelled`}
+        disclaimer="Please expect funds to be returned to your bank account within 3-5 business days."
+        onClose={handleDialogClose}
+      />,
+      { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
+    );
+  };
+
+  const cancelTransaction = () =>
     openDialog(
       <ConfirmDelete
         heading="Are you sure you want to cancel this transaction?"
-        onSuccess={() =>
-          openDialog(
-            <AmountUpdate
-              amount={{ ...amount, value: -amount.value }}
-              headline={`Trade ${tradeId} cancelled`}
-              disclaimer="Please expect funds to be returned to your bank account within 3-5 business days."
-              onClose={handleDialogClose}
-            />,
-            { showLogo: true, header: <HeaderWithLogo onClose={handleDialogClose} /> },
-          )
-        }
+        onSuccess={handleSuccess}
       />,
       undefined,
       'sheet',
     );
-  };
 
   return (
     <>
@@ -121,7 +126,7 @@ export const TradeSummary = ({
           <Box mb="12">
             <StyledText variant="h5">Trade ID {tradeId}</StyledText>
           </Box>
-          {status && (
+          {isInProgress && (
             <StyledText
               variant="h6"
               color="dark3"
@@ -156,13 +161,13 @@ export const TradeSummary = ({
           />
         </Box>
         <Box fw>
-          {status === InvestmentStatus.InProgress && (
+          {isInProgress && (
             <Button
               variant="outlined"
               isDestructive
               onPress={cancelTransaction}
             >
-              Cancel Transaction{' '}
+              Cancel Transaction
             </Button>
           )}
         </Box>
