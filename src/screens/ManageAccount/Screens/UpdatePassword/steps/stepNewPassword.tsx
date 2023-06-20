@@ -16,6 +16,7 @@ import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
+import Screens from '../../../../../navigation/screens';
 import { useAuth } from '../../../../../providers/AuthProvider';
 import { useDialog } from '../../../../../providers/DialogProvider';
 import { UpdatePasswordFormFields } from '../form-fields';
@@ -41,7 +42,7 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
   },
 
   Component: ({ storeFields: { currentPassword } }: StepComponentProps<UpdatePasswordFormFields>) => {
-    const { goBack } = useLogInNavigation();
+    const { goBack, navigate } = useLogInNavigation();
 
     const { user } = useAuth();
     const { control, handleSubmit, formState, setFocus, watch } = useForm({
@@ -54,12 +55,6 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
 
     const onSubmit: SubmitHandler<Fields> = async ({ newPassword, confirmNewPassword }) => {
       if (!newPassword || !confirmNewPassword || !currentPassword) {
-        return;
-      }
-
-      if (newPassword === currentPassword) {
-        setError('New password cannot be same as the old one!');
-
         return;
       }
 
@@ -78,11 +73,18 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
           setIsUpdating(false);
 
           const header = <HeaderWithLogo onClose={goBack} />;
-          openDialog(<UpdateSuccess info="Your password is updated" />, {
-            showLogo: true,
-            header,
-            closeIcon: false,
-          });
+          openDialog(
+            <UpdateSuccess
+              info="Your password is updated"
+              buttonLabel="Dashboard"
+              onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+            />,
+            {
+              showLogo: true,
+              header,
+              closeIcon: false,
+            },
+          );
         }
       });
     };
@@ -93,10 +95,7 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
     const watchedConfirmNewPassword = watch('confirmNewPassword');
 
     return (
-      <Box
-        fw
-        flex={1}
-      >
+      <>
         <PaddedScrollView>
           <Row mb="16">
             <StyledText variant="paragraphEmp">Type your new password</StyledText>
@@ -143,7 +142,7 @@ export const StepNewPassword: StepParams<UpdatePasswordFormFields> = {
             Confirm
           </Button>
         </Box>
-      </Box>
+      </>
     );
   },
 };
