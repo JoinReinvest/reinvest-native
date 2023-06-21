@@ -1,6 +1,14 @@
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AccountType, BankAccount, InvestmentSummary, Notification as BaseNotification, Usd, VerificationAction } from 'reinvest-app-common/src/types/graphql';
+import {
+  AccountType,
+  BankAccount,
+  InvestmentSummary,
+  Notification as BaseNotification,
+  Property,
+  Usd,
+  VerificationAction,
+} from 'reinvest-app-common/src/types/graphql';
 
 import { PropertyMock } from '../../screens/REIT/types';
 import { Link } from '../../types/link';
@@ -20,7 +28,7 @@ export type LogInStackParamList = {
   [Screens.KYCFail]: { actions: VerificationAction[]; fees?: Usd; oneTimeInvestmentId?: string; recurringInvestmentId?: string };
   [Screens.Locked]: { action: VerificationAction; accountType?: AccountType; canGoBack?: boolean };
   [Screens.NotificationDetails]: { notification: BaseNotification };
-  [Screens.PropertyDetails]: { property: PropertyMock };
+  [Screens.PropertyDetails]: { property: Property };
   [Screens.TradeSummary]: { heading?: string; investmentId?: string; investmentSummary?: InvestmentSummary };
   [Screens.DividendsPayout]: undefined;
   [Screens.InvestingAccountSelection]: undefined;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Property } from 'reinvest-app-common/src/types/graphql';
 
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
@@ -10,21 +11,20 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../constants/styles';
 import { gradients, palette } from '../../../constants/theme';
 import { yScale } from '../../../utils/scale';
-import { PropertyMock } from '../types';
 import { styles } from './styles';
 
 export const ESTIMATED_CARD_SIZE_BASE = (PADDED_SAFE_WIDTH * 9) / 16 + yScale(24);
 
 type Props = {
-  onPress: (item: PropertyMock) => void;
-  property: PropertyMock;
+  onPress: (item: Property) => void;
+  property: Property;
 };
 export const PropertyCard = ({ property, onPress }: Props) => {
   return (
     <ImageCard
       style={styles.card}
       onPress={() => onPress(property)}
-      uri={property.image}
+      uri={property.image ?? ''}
     >
       <Row justifyContent="space-between">
         <Box>
@@ -34,7 +34,7 @@ export const PropertyCard = ({ property, onPress }: Props) => {
             variant="paragraphSmall"
             color="dark3"
           >
-            {property.address}
+            {Object.values(property.address ?? {}).join(' ')}
           </StyledText>
         </Box>
         <Icon
@@ -54,7 +54,7 @@ export const PropertyCard = ({ property, onPress }: Props) => {
           >
             Project Return:
           </StyledText>
-          <StyledText variant="paragraphSmall"> {property.returnValue}</StyledText>
+          <StyledText variant="paragraphSmall"> {property.keyMetrics?.projectReturn}</StyledText>
         </Row>
         <Box
           height={yScale(18)}
@@ -72,7 +72,7 @@ export const PropertyCard = ({ property, onPress }: Props) => {
           <StyledText
             variant="today"
             textAlign={'center'}
-          >{`Rating ${property.rating}`}</StyledText>
+          >{`Rating ${property.keyMetrics?.rating}`}</StyledText>
         </Box>
       </Row>
     </ImageCard>
