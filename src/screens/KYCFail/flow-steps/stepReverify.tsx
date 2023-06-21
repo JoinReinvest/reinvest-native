@@ -32,7 +32,10 @@ export const StepReverify: StepParams<KYCFailedFormFields> = {
     const { navigate } = useLogInNavigation();
     const { mutateAsync: abortInvestment } = useAbortInvestment(getApiClient);
     const { data: investmentSummary, isLoading: isLoadingInvestmentSummary } = useGetInvestmentSummary(getApiClient, {
-      investmentId: _oneTimeInvestmentId ?? _recurringInvestmentId ?? '',
+      investmentId: _oneTimeInvestmentId ?? '',
+      config: {
+        enabled: !!_oneTimeInvestmentId,
+      },
     });
 
     const isLoading = isVerifying || isLoadingInvestmentSummary;
