@@ -20,6 +20,7 @@ export const KYCFail = ({ route: { params } }: LogInProps<Screens.KYCFail>) => {
         ...initialKYCFailedFormFields,
         _bannedAction,
         fees: params.fees,
+        _skipStakeholders: true,
         _forceManualReviewScreen: !!params.fees && !canUserAutomaticallyUpdate, // if fees were provided go straight to manual review step,
         _oneTimeInvestmentId: params.oneTimeInvestmentId,
         _recurringInvestmentId: params.recurringInvestmentId,

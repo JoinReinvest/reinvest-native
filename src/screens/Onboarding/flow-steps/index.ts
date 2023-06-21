@@ -91,6 +91,7 @@ export const onboardingTCRelatedFields: Partial<OnboardingFormFields> = {
 };
 
 export const onBoardingFormFieldsInitialState: OnboardingFormFields = {
+  _skipStakeholders: true,
   address: null,
   isCompletedProfile: false,
   accountType: undefined,

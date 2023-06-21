@@ -30,6 +30,7 @@ export interface OnboardingFormFields {
   _isPhoneCompleted?: boolean;
   _isSocialSecurityNumberAlreadyAssigned?: boolean;
   _isSocialSecurityNumberBanned?: boolean;
+  _skipStakeholders?: boolean;
   _willHaveMajorStakeholderApplicants?: boolean;
   _willHaveTrustTrusteesGrantorsOrProtectors?: boolean;
   accountId?: string;
