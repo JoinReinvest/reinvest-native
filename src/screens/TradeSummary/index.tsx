@@ -75,6 +75,7 @@ export const TradeSummary = ({
   const status = investmentSummary?.status ?? summary?.status;
   const createdAt = investmentSummary?.createdAt ?? summary?.createdAt;
   const amount = investmentSummary?.amount ?? summary?.amount;
+  const bankAccount = investmentSummary?.bankAccount?.accountNumber ?? summary?.bankAccount?.accountNumber;
 
   const handleDialogClose = () => {
     queryClient.invalidateQueries(['getAccountStats', 'getAccountsOverview']);
@@ -148,10 +149,9 @@ export const TradeSummary = ({
               value={STATUS_LABEL[status]}
             />
           )}
-          {/* TODO: Replace bank account when implemented on backend */}
           <Item
             title="Bank Account"
-            value="123456123456"
+            value={bankAccount ?? ''}
             showBorder={false}
           />
         </Box>
