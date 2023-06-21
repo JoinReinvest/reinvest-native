@@ -52,7 +52,7 @@ export const RecurringDates: StepParams<InvestFormFields> = {
           {error && <ErrorMessagesHandler error={error} />}
           <Calendar
             defaultStartingDate={recurringInvestment?.startingDate}
-            autoSelectionPeriod={recurringInvestment?.interval || RecurringInvestmentFrequency.Weekly}
+            autoSelectionPeriod={recurringInvestment?.interval as RecurringInvestmentFrequency}
             onSelect={async selectedData => {
               setStartingDate(selectedData.startingDate);
               await updateStoreFields({ recurringInvestment: { ...recurringInvestment, ...selectedData } });
