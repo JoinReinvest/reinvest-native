@@ -155,7 +155,7 @@ export const UpdateCompanyDocuments = () => {
             showConfirmDialog
             dark={false}
             selectionLimit={5}
-            label={selectedFiles ? 'Add Additional Files' : 'Upload Files'}
+            label={selectedFiles.length ? 'Add Additional Files' : 'Upload Files'}
             onSelect={setSelectedFiles}
             type="multi"
             state={selectedFiles}
