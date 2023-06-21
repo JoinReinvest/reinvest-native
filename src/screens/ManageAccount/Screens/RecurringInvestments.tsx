@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
+import { useDeactivateRecurringInvestment } from 'reinvest-app-common/src/services/queries/deactivateRecurringInvestment';
 import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
 import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
+import { useUnsuspendRecurringInvestment } from 'reinvest-app-common/src/services/queries/unsuspendRecurringInvestment';
 import { RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -39,20 +41,27 @@ export const RecurringInvestments = () => {
     config: { enabled: !!activeAccount.id },
   });
   const { data: bankData, isLoading: isLoadingBankAccount } = useReadBankAccount(getApiClient, { accountId: activeAccount.id || '' });
+  const { mutateAsync: deactivateRecurringInvestment } = useDeactivateRecurringInvestment(getApiClient);
+  const { mutateAsync: unsuspendRecurringInvestment } = useUnsuspendRecurringInvestment(getApiClient);
 
   const openCancelDialog = useCallback(() => {
-    const handleSuccess = () => {
-      openDialog(
-        <UpdateSuccess
-          info="Your recurring investments are canceled"
-          buttonLabel="Dashboard"
-        />,
-        {
-          showLogo: true,
-          header: <HeaderWithLogo onClose={goBack} />,
-        },
-        'main',
-      );
+    const handleSuccess = async () => {
+      const response = await deactivateRecurringInvestment({ accountId: activeAccount.id ?? '' });
+
+      if (response) {
+        openDialog(
+          <UpdateSuccess
+            info="Your recurring investments are canceled"
+            buttonLabel="Dashboard"
+            onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+          />,
+          {
+            showLogo: true,
+            header: <HeaderWithLogo onClose={goBack} />,
+          },
+          'main',
+        );
+      }
     };
 
     openDialog(
@@ -63,13 +72,17 @@ export const RecurringInvestments = () => {
       undefined,
       'sheet',
     );
-  }, [goBack, openDialog]);
+  }, [activeAccount.id, deactivateRecurringInvestment, goBack, navigate, openDialog]);
 
-  const openReinstateDialog = () => {
-    openDialog(<UpdateSuccess info="Your recurring investment is reinstated" />, {
-      showLogo: true,
-      header: <HeaderWithLogo onClose={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
-    });
+  const openReinstateDialog = async () => {
+    const response = await unsuspendRecurringInvestment({ accountId: activeAccount.id ?? '' });
+
+    if (response) {
+      openDialog(<UpdateSuccess info="Your recurring investment is reinstated" />, {
+        showLogo: true,
+        header: <HeaderWithLogo onClose={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+      });
+    }
   };
 
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
