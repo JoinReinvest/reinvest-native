@@ -79,7 +79,7 @@ export const BottomTabsNavigator: React.FC = () => {
       );
 
       if (bannedAction) {
-        return navigate(Screens.Locked, { action: bannedAction });
+        return navigate(Screens.Locked, { action: bannedAction, canGoBack: false });
       }
 
       if (!data?.isCompleted) {

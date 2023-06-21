@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
 import { useLayoutEffect } from 'react';
 import { Linking } from 'react-native';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
@@ -26,7 +27,7 @@ const ACCOUNT_LOCKED_HEADLINES: { [key in AccountType]: string } = {
 
 export const BannedScreen = ({
   route: {
-    params: { action, accountType },
+    params: { action, accountType, canGoBack = true },
   },
 }: NativeStackScreenProps<LogInStackParamList, Screens.Locked>) => {
   const { data: accountsUserCanOpen } = useGetListAccountTypesUserCanOpen(getApiClient);
@@ -50,10 +51,10 @@ export const BannedScreen = ({
   };
 
   useLayoutEffect(() => {
-    if (isProfileBanned && getState().index !== 0) {
+    if ((isProfileBanned || !canGoBack) && getState().index !== 0) {
       reset({ index: 0, routes: [{ name: Screens.Locked, params: { action } }] });
     }
-  }, [action, getState, isProfileBanned, reset]);
+  }, [action, canGoBack, getState, isProfileBanned, reset]);
 
   return (
     <MainWrapper
