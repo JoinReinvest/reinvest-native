@@ -56,7 +56,7 @@ export const UpdatePhoneNumberLayout = () => {
     <>
       <MainWrapper
         noPadding
-        bottomSafe={!isOnAuthCodeStep}
+        bottomSafe
         dark={isOnAuthCodeStep}
       >
         <Box fw>
@@ -75,12 +75,11 @@ export const UpdatePhoneNumberLayout = () => {
         <Box
           fw
           flex={1}
-          px="default"
           mt="24"
         >
           <CurrentStepView />
         </Box>
-        {isOnAuthCodeStep && <TermsFooter />}
+        {isOnAuthCodeStep && <TermsFooter noPadding />}
       </MainWrapper>
     </>
   );

@@ -16,9 +16,11 @@ import { FormMessage } from '../../../../../components/Forms/FormMessage';
 import { FormTitle } from '../../../../../components/Forms/FormTitle';
 import { UpdateSuccess } from '../../../../../components/Modals/ModalContent/UpdateSuccess';
 import { HeaderWithLogo } from '../../../../../components/Modals/ModalHeaders/HeaderWithLogo';
+import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
+import Screens from '../../../../../navigation/screens';
 import { useDialog } from '../../../../../providers/DialogProvider';
 import { maskPhoneNumber } from '../../../../../utils/phoneNumber';
 import { UpdatePhoneNumberFormFields } from '../form-fields';
@@ -39,7 +41,7 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
 
   Component: ({ storeFields }: StepComponentProps<UpdatePhoneNumberFormFields>) => {
     const [error, setError] = useState<string | undefined>();
-    const { goBack } = useLogInNavigation();
+    const { goBack, navigate } = useLogInNavigation();
     const { mutate: verifyPhoneNumber, isSuccess, isLoading: verificationLoading } = useVerifyPhoneNumber(getApiClient);
     const { mutateAsync: setPhoneNumberMutate } = useSetPhoneNumber(getApiClient);
     const { openDialog } = useDialog();
@@ -73,17 +75,21 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
 
     useEffect(() => {
       if (isSuccess) {
-        openDialog(<UpdateSuccess info="Your phone number is updated" />, { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> });
+        openDialog(
+          <UpdateSuccess
+            info="Your phone number is updated"
+            buttonLabel="Dashboard"
+            onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
+          />,
+          { showLogo: true, header: <HeaderWithLogo onClose={goBack} /> },
+        );
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess]);
 
     return (
       <>
-        <Box
-          fw
-          flex={1}
-        >
+        <PaddedScrollView>
           <FormTitle
             dark
             headline="Check Your Phone"
@@ -129,8 +135,8 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
               Get Help
             </StyledText>
           </Row>
-        </Box>
-        <Box>
+        </PaddedScrollView>
+        <Box px="default">
           <Button
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
