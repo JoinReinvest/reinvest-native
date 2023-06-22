@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { NavigationIdentifiers } from './navigationLinks';
+import { AccountActivity } from './Screens/AccountActivity';
 import { DividendsReinvesting } from './Screens/DividendsReinvesting';
 import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
@@ -29,4 +30,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   RECURRING_INVESTMENT: <RecurringInvestments />,
   BENEFICIARY_NAME: <UpdateBeneficiaryName />,
   PHONE_NUMBER: <UpdatePhoneNumber />,
+  ACCOUNT_ACTIVITY: <AccountActivity />,
 };
