@@ -1,12 +1,8 @@
 import React from 'react';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import { Location } from 'reinvest-app-common/src/types/graphql';
 
 import { styles } from './styles';
-
-const mock = {
-  latitude: 37.78825,
-  longitude: -122.4324,
-};
 
 const regionDeltas = {
   latitudeDelta: 0.01,
@@ -14,19 +10,24 @@ const regionDeltas = {
 };
 
 interface Props {
-  location: Pick<Region, 'latitude' | 'longitude'>;
   description?: string;
+  location?: Location;
   title?: string;
 }
-export const Map = ({ location = mock, title, description }: Props) => {
+export const Map = ({ location, title, description }: Props) => {
+  const loc = {
+    latitude: +(location?.lat ?? 0),
+    longitude: +(location?.lng ?? 0),
+  };
+
   return (
     <MapView
       provider={'google'}
-      initialRegion={{ ...regionDeltas, ...location }}
+      initialRegion={{ ...regionDeltas, ...loc }}
       style={styles.container}
     >
       <Marker
-        coordinate={{ latitude: location.latitude, longitude: location.longitude }}
+        coordinate={loc}
         title={title}
         description={description}
       />

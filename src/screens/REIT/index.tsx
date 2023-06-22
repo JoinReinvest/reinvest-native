@@ -1,6 +1,9 @@
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
+import { useGetPropertyDetails } from 'reinvest-app-common/src/services/queries/getPortfolioDetails';
+import { Property } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
 import { MainWrapper } from '../../components/MainWrapper';
 import { StyledText } from '../../components/typography/StyledText';
@@ -9,7 +12,6 @@ import Screens from '../../navigation/screens';
 import { yScale } from '../../utils/scale';
 import { ESTIMATED_CARD_SIZE_BASE, PropertyCard } from './components/PropertyCard';
 import { styles } from './styles';
-import { mock, PropertyMock } from './types';
 
 /*
   Base + bottom margin + content (paragraphSmall + bonusHeading + pill)
@@ -18,8 +20,9 @@ const estimatedItemSize = ESTIMATED_CARD_SIZE_BASE + yScale(24) + yScale(8) + 34
 
 export const ReitScreen = () => {
   const { navigate } = useLogInNavigation();
+  const { data } = useGetPropertyDetails(getApiClient);
 
-  const showDetails = (property: PropertyMock) => {
+  const showDetails = (property: Property) => {
     navigate(Screens.PropertyDetails, { property });
   };
 
@@ -29,7 +32,7 @@ export const ReitScreen = () => {
         fw
         flex={1}
       >
-        <FlashList<PropertyMock>
+        <FlashList<Property>
           estimatedItemSize={estimatedItemSize}
           ListHeaderComponent={() => (
             <Box
@@ -40,8 +43,8 @@ export const ReitScreen = () => {
             </Box>
           )}
           contentContainerStyle={styles.listWrapper}
-          data={mock}
-          keyExtractor={({ id }) => id}
+          data={(data?.properties as Property[]) ?? []}
+          keyExtractor={({ name }, index) => name ?? index.toString()}
           renderItem={({ item }) => (
             <PropertyCard
               property={item}

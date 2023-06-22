@@ -1,41 +1,35 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
+import { Poi } from 'reinvest-app-common/src/types/graphql';
 
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
-import { Icon } from '../../../components/Icon';
-import { Icons } from '../../../components/Icon/types';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
-import { CharacteristicT, CharacteristicType } from '../types';
 
 interface Props {
-  char: CharacteristicT;
+  poi: Poi;
   underlined?: boolean;
 }
 
-const typeToIcon = {
-  education: 'school',
-  transport: 'car',
-} as Record<CharacteristicType, Icons>;
-export const Characteristic = ({ char, underlined }: Props) => {
+export const Characteristic = ({ poi, underlined }: Props) => {
   return (
     <Row
       py="16"
       style={[underlined && styles.separator]}
       alignItems="center"
     >
-      <Icon
-        icon={typeToIcon[char.type]}
-        size={'xl'}
+      <Image
+        style={{ height: 52, width: 52 }}
+        source={{ uri: poi.image ?? '' }}
       />
       <Box pl="12">
-        <StyledText variant="button">{char.value}</StyledText>
+        <StyledText variant="button">{poi.name}</StyledText>
         <StyledText
           color="dark2"
           variant="paragraphSmall"
         >
-          {char.info}
+          {poi.description}
         </StyledText>
       </Box>
     </Row>

@@ -1,6 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { CurvedTransition, Easing, FadeInUp, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { ImpactMetrics, KeyMetrics } from 'reinvest-app-common/src/types/graphql';
 
 import { BorderedDescription } from '../../../components/BorderedDescription';
 import { Box } from '../../../components/Containers/Box/Box';
@@ -10,15 +11,15 @@ import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/For
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
-import type { ImpactMetrics, KeyMetrics, MetricsT } from '../types';
 import { MetricSegment, type MetricT } from './MetricSegment';
 
 const getMetrics = (metrics: KeyMetrics | ImpactMetrics): { key: MetricT; value: string | number }[] => {
-  return Object.entries(metrics).map(metric => ({ key: metric[0] as MetricT, value: metric[1] }));
+  return Object.entries(metrics).map(metric => ({ key: metric[0] as MetricT as MetricT, value: metric[1] as string | number }));
 };
 
 const CHEVRON_ROTATION = 180;
-export const Metrics = ({ metrics, location }: PropsWithChildren<{ location: string; metrics: MetricsT }>) => {
+
+export const Metrics = ({ keyMetrics, impactMetrics, name }: PropsWithChildren<{ impactMetrics?: ImpactMetrics; keyMetrics?: KeyMetrics; name?: string }>) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { openDialog } = useDialog();
 
@@ -41,9 +42,7 @@ export const Metrics = ({ metrics, location }: PropsWithChildren<{ location: str
   const toggleList = () => {
     statusSharedValue.value = isExpanded ? 0 : 1;
     setIsExpanded(prev => !prev);
-    //we need to return con
   };
-  const { keyMetrics, impactMetrics } = metrics;
 
   const openDisclaimerDialog = (key: MetricT) => {
     openDialog(<FormModalDisclaimer headline={` ${key} metric`} />);
@@ -55,10 +54,16 @@ export const Metrics = ({ metrics, location }: PropsWithChildren<{ location: str
         px="default"
         py={'16'}
         justifyContent="space-between"
+        alignItems="center"
         style={styles.mainPart}
       >
         <Box>
-          <StyledText variant="h5">{location}</StyledText>
+          <StyledText
+            variant="h5"
+            adjustsFontSizeToFit
+          >
+            {name}
+          </StyledText>
           <StyledText variant="paragraph">Location</StyledText>
         </Box>
         <Box
