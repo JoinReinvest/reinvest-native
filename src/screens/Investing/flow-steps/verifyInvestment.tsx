@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
+import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
 import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
 import { useInitiateRecurringInvestment } from 'reinvest-app-common/src/services/queries/initiateRecurringInvestment';
 import { useStartInvestment } from 'reinvest-app-common/src/services/queries/startInvestment';
@@ -44,24 +45,36 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
     const { mutateAsync: validateAccount } = useVerifyAccount(getApiClient);
     const { mutateAsync: startInvestment } = useStartInvestment(getApiClient);
     const { mutateAsync: startRecurring } = useInitiateRecurringInvestment(getApiClient);
-    const { data: investmentSummary, isLoading: isLoadingInvestmentSummary } = useGetInvestmentSummary(getApiClient, {
+    const {
+      data: investmentSummary,
+      isLoading: isLoadingInvestmentSummary,
+      refetch: refetchOneTimeInvestmentSummary,
+    } = useGetInvestmentSummary(getApiClient, {
       investmentId: oneTimeInvestmentId ?? '',
       config: {
         enabled: !!oneTimeInvestmentId,
       },
     });
+
+    const { refetch: refetchRecurringInvestmentSummary } = useGetActiveRecurringInvestment(getApiClient, {
+      accountId,
+      config: { enabled: !!recurringInvestmentId },
+    });
+
     const isAlreadyStarted = useRef(false);
 
-    const showSuccessDialog = useCallback(() => {
+    const showSuccessDialog = useCallback(async () => {
       const investments: DialogItem[] = [];
 
       if (oneTimeInvestmentId && !!investAmount) {
-        investments.push({ amount: investAmount, date: dayjs().format('YYYY-MM-DD'), headline: `One Time investment` });
+        const { data } = await refetchOneTimeInvestmentSummary();
+        investments.push({ amount: data?.amount, date: dayjs().format('YYYY-MM-DD'), headline: `One Time investment` });
       }
 
       if (recurringInvestmentId && recurringInvestment && recurringInvestment.interval) {
+        const { data } = await refetchRecurringInvestmentSummary();
         investments.push({
-          amount: recurringInvestment.recurringAmount || 0,
+          amount: data?.amount,
           date: recurringInvestment.startingDate || '',
           headline: `Recurring ${RECURRING_INVESTMENT_INTERVAL_LABELS.get(recurringInvestment.interval)} investment`,
           isRecurring: true,

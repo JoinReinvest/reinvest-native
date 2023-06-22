@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Usd } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { palette } from '../../../../constants/theme';
@@ -17,7 +18,7 @@ import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
 export type DialogItem = {
-  amount: number;
+  amount: Usd | undefined;
   headline: string;
   date?: string;
   isRecurring?: boolean;
@@ -109,7 +110,7 @@ const InvestSuccessInfo = ({ headline, amount, date, isRecurring }: DialogItem) 
           adjustsFontSizeToFit
           variant="h1"
         >
-          {amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+          {amount?.formatted}
         </StyledText>
       </Row>
       <StyledText
