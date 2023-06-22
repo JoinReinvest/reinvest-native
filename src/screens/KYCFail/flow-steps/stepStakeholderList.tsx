@@ -30,11 +30,18 @@ import { styles } from './styles';
 export const StepStakeholderList: StepParams<KYCFailedFormFields> = {
   identifier: Identifiers.STAKEHOLDER_LIST,
 
-  doesMeetConditionFields({ _actions, accountType, _forceManualReviewScreen, _bannedAction }) {
+  doesMeetConditionFields({ _actions, accountType, _forceManualReviewScreen, _bannedAction, _skipStakeholders }) {
     const stakeholderVerificationAction = _actions?.find(({ onObject: { type } }) => type === VerificationObjectType.Stakeholder);
     const doesRequireManualReview = stakeholderVerificationAction?.action === ActionName.RequireManualReview ?? false;
 
-    return !!stakeholderVerificationAction && !doesRequireManualReview && accountType !== AccountType.Individual && !_forceManualReviewScreen && !_bannedAction;
+    return (
+      !!stakeholderVerificationAction &&
+      !doesRequireManualReview &&
+      accountType !== AccountType.Individual &&
+      !_forceManualReviewScreen &&
+      !_bannedAction &&
+      !_skipStakeholders
+    );
   },
 
   Component: ({

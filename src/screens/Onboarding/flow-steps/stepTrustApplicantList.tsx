@@ -38,7 +38,7 @@ export const StepTrustApplicantList: StepParams<OnboardingFormFields> = {
   doesMeetConditionFields(fields) {
     const requiredFields = [fields.accountType, fields.name?.firstName, fields.name?.lastName, fields.dateOfBirth, fields.residency];
 
-    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust;
+    return allRequiredFieldsExists(requiredFields) && fields.accountType === DraftAccountType.Trust && !fields._skipStakeholders;
   },
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { trustTrusteesGrantorsOrProtectors, trustLegalName } = storeFields;

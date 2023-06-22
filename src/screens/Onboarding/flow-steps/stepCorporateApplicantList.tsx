@@ -36,7 +36,7 @@ export const StepCorporateApplicantList: StepParams<OnboardingFormFields> = {
   },
 
   doesMeetConditionFields: fields => {
-    return fields.accountType === DraftAccountType.Corporate;
+    return fields.accountType === DraftAccountType.Corporate && !fields._skipStakeholders;
   },
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
