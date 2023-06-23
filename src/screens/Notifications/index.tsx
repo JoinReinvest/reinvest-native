@@ -10,11 +10,9 @@ import { Notification as BaseNotification, NotificationType, Query } from 'reinv
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
-import { Row } from '../../components/Containers/Row';
-import { Icon } from '../../components/Icon';
+import { EmptyListComponent } from '../../components/EmptyList';
 import { MainWrapper } from '../../components/MainWrapper';
 import { Notification } from '../../components/Notification';
-import { StyledText } from '../../components/typography/StyledText';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
@@ -68,7 +66,7 @@ export const Notifications = () => {
         flex={1}
       >
         <FlashList<BaseNotification>
-          ListEmptyComponent={!isLoading ? <EmptyListComponent /> : null}
+          ListEmptyComponent={!isLoading ? <EmptyListComponent headline="No Notifications" /> : null}
           estimatedItemSize={132}
           refreshing={isLoading}
           onRefresh={refetch}
@@ -88,19 +86,5 @@ export const Notifications = () => {
         />
       </Box>
     </MainWrapper>
-  );
-};
-
-const EmptyListComponent = () => {
-  return (
-    <Row
-      mt="24"
-      fw
-      px="default"
-      alignItems="center"
-    >
-      <Icon icon="info" />
-      <StyledText variant="h6">No Notifications</StyledText>
-    </Row>
   );
 };
