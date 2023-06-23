@@ -26,7 +26,7 @@ export type LogInStackParamList = {
   [Screens.ManageAccount]: { options: Partial<Link> };
   [Screens.BankAccount]: { accountId?: string; isUpdatingAccount?: boolean };
   [Screens.KYCFail]: { actions: VerificationAction[]; fees?: Usd; oneTimeInvestmentId?: string; recurringInvestmentId?: string };
-  [Screens.Locked]: { action: VerificationAction; accountType?: AccountType; canGoBack?: boolean };
+  [Screens.Locked]: { accountType?: AccountType; canGoBack?: boolean; isBannedAccount?: boolean; isBannedProfile?: boolean };
   [Screens.NotificationDetails]: { notification: BaseNotification };
   [Screens.PropertyDetails]: { property: Property };
   [Screens.TradeSummary]: { heading?: string; investmentId?: string; investmentSummary?: InvestmentSummary };

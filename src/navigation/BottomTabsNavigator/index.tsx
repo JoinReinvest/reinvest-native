@@ -3,8 +3,6 @@ import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
-import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
-import { ActionName, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
@@ -61,9 +59,8 @@ const getLabel = (focused: boolean, children: string) => (
 
 export const BottomTabsNavigator: React.FC = () => {
   const { bottom } = useSafeAreaInsets();
-  const { data, isLoading: isLoadingUserProfile } = useGetUserProfile(getApiClient);
+  const { data, isLoading: isLoadingUserProfile, error } = useGetUserProfile(getApiClient);
   const { reset, navigate } = useLogInNavigation();
-  const { mutateAsync: verifyAccountMutate, isLoading: isVerifying } = useVerifyAccount(getApiClient);
   const [account] = useAtom(currentAccount);
 
   useEffect(() => {
@@ -72,23 +69,15 @@ export const BottomTabsNavigator: React.FC = () => {
         return;
       }
 
-      const response = await verifyAccountMutate({ accountId: account.id });
-
-      const bannedAction = (response?.requiredActions as VerificationAction[])?.find(
-        ({ action }) => action === ActionName.BanProfile || action === ActionName.BanAccount,
-      );
-
-      if (bannedAction) {
-        return navigate(Screens.Locked, { action: bannedAction, canGoBack: false });
-      }
-
       if (!data?.isCompleted) {
         reset({ index: 0, routes: [{ name: Screens.Onboarding }] });
       }
     })();
-  }, [account.id, data?.isCompleted, navigate, reset, verifyAccountMutate]);
+  }, [account.id, account.isBanned, data?.isCompleted, navigate, reset]);
 
-  if (isLoadingUserProfile || isVerifying)
+  const isBannedProfile = error instanceof Error && (error.message === 'Profile is banned' || error.name === 'Profile is banned');
+
+  if (isLoadingUserProfile)
     return (
       <Box
         flex={1}
@@ -99,6 +88,16 @@ export const BottomTabsNavigator: React.FC = () => {
         <Loader color={palette.pureBlack} />
       </Box>
     );
+
+  if (account.isBanned || isBannedProfile) {
+    navigate(Screens.Locked, {
+      isBannedAccount: account.isBanned ?? false,
+      isBannedProfile,
+      canGoBack: false,
+    });
+
+    return null;
+  }
 
   return (
     <Tab.Navigator

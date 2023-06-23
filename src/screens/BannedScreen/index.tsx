@@ -3,7 +3,7 @@ import React from 'react';
 import { useLayoutEffect } from 'react';
 import { Linking } from 'react-native';
 import { useGetListAccountTypesUserCanOpen } from 'reinvest-app-common/src/services/queries/getListAccountTypesUserCanOpen';
-import { AccountType, ActionName } from 'reinvest-app-common/src/types/graphql';
+import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Button } from '../../components/Button';
@@ -27,7 +27,7 @@ const ACCOUNT_LOCKED_HEADLINES: { [key in AccountType]: string } = {
 
 export const BannedScreen = ({
   route: {
-    params: { action, accountType, canGoBack = true },
+    params: { isBannedAccount = false, isBannedProfile = false, accountType, canGoBack = true },
   },
 }: NativeStackScreenProps<LogInStackParamList, Screens.Locked>) => {
   const { data: accountsUserCanOpen } = useGetListAccountTypesUserCanOpen(getApiClient);
@@ -36,10 +36,8 @@ export const BannedScreen = ({
 
   const accountsUserCanOpenWithoutBeneficiary = accountsUserCanOpen?.filter(account => account !== AccountType.Beneficiary);
 
-  const isProfileBanned = action.action === ActionName.BanProfile;
-
   const getHeadline = () => {
-    if (isProfileBanned) {
+    if (isBannedProfile) {
       return 'Your profile has been locked.';
     }
 
@@ -51,10 +49,10 @@ export const BannedScreen = ({
   };
 
   useLayoutEffect(() => {
-    if ((isProfileBanned || !canGoBack) && getState().index !== 0) {
-      reset({ index: 0, routes: [{ name: Screens.Locked, params: { action } }] });
+    if ((isBannedProfile || !canGoBack) && getState().index !== 0) {
+      reset({ index: 0, routes: [{ name: Screens.Locked, params: { isBannedAccount, isBannedProfile, canGoBack, accountType } }] });
     }
-  }, [action, canGoBack, getState, isProfileBanned, reset]);
+  }, [accountType, canGoBack, getState, isBannedAccount, isBannedProfile, reset]);
 
   return (
     <MainWrapper
@@ -80,7 +78,7 @@ export const BannedScreen = ({
         pb="8"
       >
         <Button onPress={() => Linking.openURL('mailto:support@reinvestcommunity.com')}>Contact Us</Button>
-        {!isProfileBanned && accountsUserCanOpenWithoutBeneficiary?.length ? (
+        {!isBannedProfile && accountsUserCanOpenWithoutBeneficiary?.length ? (
           <Button
             dark
             variant="outlined"
