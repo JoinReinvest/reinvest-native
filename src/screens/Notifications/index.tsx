@@ -39,14 +39,17 @@ export const Notifications = () => {
     markRead({ notificationId: notification.id });
     await refetch();
 
-    if (notification.notificationType === NotificationType.InvestmentFailed) {
-      navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.BANK_ACCOUNT, title: 'Bank Account' } });
-
-      return;
-    }
-
-    if (ACTIONABLE_NOTIFICATIONS.includes(notification.notificationType)) {
-      navigate(Screens.NotificationDetails, { notification });
+    switch (notification.notificationType) {
+      case NotificationType.RecurringInvestmentFailed:
+        return navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.RECURRING_INVESTMENT, label: 'Recurring Investment' } });
+      case NotificationType.InvestmentFailed:
+        return navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.BANK_ACCOUNT, label: 'Bank Account' } });
+      case NotificationType.DividendReceived:
+      case NotificationType.RewardDividendReceived:
+        return navigate(Screens.NotificationDetails, { notification });
+      default: {
+        return;
+      }
     }
   };
 
