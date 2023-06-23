@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
 import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/queries/markNotificationAsRead';
-import { Notification as BaseNotification, Query } from 'reinvest-app-common/src/types/graphql';
+import { Notification as BaseNotification, NotificationType, Query } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
@@ -19,6 +19,7 @@ import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { unreadNotificationsCount } from '../../store/atoms';
+import { NavigationIdentifiers } from '../ManageAccount/navigationLinks';
 import { ACTIONABLE_NOTIFICATIONS } from './constants';
 
 export type UseApiQuery<QueryKey extends keyof Query> = (getClient: GetApiClient) => UseInfiniteQueryResult<Query[QueryKey]>;
@@ -39,6 +40,12 @@ export const Notifications = () => {
   const onPressHandler = async (notification: BaseNotification) => {
     markRead({ notificationId: notification.id });
     await refetch();
+
+    if (notification.notificationType === NotificationType.InvestmentFailed) {
+      navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.BANK_ACCOUNT, title: 'Bank Account' } });
+
+      return;
+    }
 
     if (ACTIONABLE_NOTIFICATIONS.includes(notification.notificationType)) {
       navigate(Screens.NotificationDetails, { notification });

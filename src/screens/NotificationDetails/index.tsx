@@ -45,7 +45,7 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
   const showSuccessDialog = useCallback(
     (variant: 'reinvest' | 'withdrawal') => {
       const dialogItems: DialogItem[] = [];
-      dialogItems.push({ amount: dividend?.amount.value, headline: `Amount` });
+      dialogItems.push({ amount: dividend?.amount, headline: `Amount` });
 
       openDialog(
         <InvestSuccess
