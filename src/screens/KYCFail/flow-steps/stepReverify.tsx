@@ -51,57 +51,69 @@ export const StepReverify: StepParams<KYCFailedFormFields> = {
     }, [_oneTimeInvestmentId, _recurringInvestmentId, abortInvestment]);
 
     const verifyAccount = useCallback(async () => {
-      const verificationResponse = await mutateAsync({ accountId });
+      try {
+        const verificationResponse = await mutateAsync({ accountId });
 
-      // verification failed (banned profile or account) -> abort investment and re navigate to locked screen
-      const bannedAction = verificationResponse?.requiredActions?.find(
-        action => action?.action === ActionName.BanAccount || action?.action === ActionName.BanProfile,
-      );
+        // verification failed (banned profile or account) -> abort investment and re navigate to locked screen
+        const bannedAction = verificationResponse?.requiredActions?.find(
+          action => action?.action === ActionName.BanAccount || action?.action === ActionName.BanProfile,
+        );
 
-      if (bannedAction) {
-        await cancelInvestment();
+        if (bannedAction) {
+          await cancelInvestment();
 
-        return navigate(Screens.Locked, { action: bannedAction });
-      }
-
-      // additional fees required and not yet accepted by user -> show require manual review screen
-      if (investmentSummary?.investmentFees && investmentSummary.investmentFees.value > 0 && !_approvedFees) {
-        await updateStoreFields({ fees: investmentSummary.investmentFees ?? undefined });
-
-        return moveToStepByIdentifier(Identifiers.MANUAL_REVIEW);
-      }
-
-      // additional fees accepted by user, verification succeeded  -> return to investing:
-      if (verificationResponse?.canUserContinueTheInvestment || verificationResponse?.isAccountVerified) {
-        return navigate(Screens.Investing, { validationSuccess: true });
-      }
-
-      // additional fees accepted by user, verification failed, updates required -> rerun kyc flows
-      const automaticUpdateActions = (verificationResponse?.requiredActions?.filter(
-        action => action?.action === ActionName.UpdateMember || action?.action === ActionName.UpdateMemberAgain,
-      ) ?? []) as VerificationAction[];
-
-      if (automaticUpdateActions.length) {
-        await updateStoreFields({ _actions: automaticUpdateActions });
-
-        const failedVerificationObjects = automaticUpdateActions.map(action => action?.onObject.type);
-
-        if (failedVerificationObjects.includes(VerificationObjectType.Profile)) {
-          return moveToStepByIdentifier(Identifiers.PROFILE_VERIFICATION_FAILED);
+          return navigate(Screens.Locked, {
+            isBannedAccount: bannedAction.action === ActionName.BanAccount,
+            isBannedProfile: bannedAction.action === ActionName.BanProfile,
+            canGoBack: false,
+          });
         }
 
-        if (failedVerificationObjects.includes(VerificationObjectType.Stakeholder)) {
-          if (accountType === AccountType.Corporate) {
-            return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+        // additional fees required and not yet accepted by user -> show require manual review screen
+        if (investmentSummary?.investmentFees && investmentSummary.investmentFees.value > 0 && !_approvedFees) {
+          await updateStoreFields({ fees: investmentSummary.investmentFees ?? undefined });
+
+          return moveToStepByIdentifier(Identifiers.MANUAL_REVIEW);
+        }
+
+        // additional fees accepted by user, verification succeeded  -> return to investing:
+        if (verificationResponse?.canUserContinueTheInvestment || verificationResponse?.isAccountVerified) {
+          return navigate(Screens.Investing, { validationSuccess: true });
+        }
+
+        // additional fees accepted by user, verification failed, updates required -> rerun kyc flows
+        const automaticUpdateActions = (verificationResponse?.requiredActions?.filter(
+          action => action?.action === ActionName.UpdateMember || action?.action === ActionName.UpdateMemberAgain,
+        ) ?? []) as VerificationAction[];
+
+        if (automaticUpdateActions.length) {
+          await updateStoreFields({ _actions: automaticUpdateActions });
+
+          const failedVerificationObjects = automaticUpdateActions.map(action => action?.onObject.type);
+
+          if (failedVerificationObjects.includes(VerificationObjectType.Profile)) {
+            return moveToStepByIdentifier(Identifiers.PROFILE_VERIFICATION_FAILED);
           }
 
-          return moveToStepByIdentifier(Identifiers.TRUSTEES_VERIFICATION_FAILED);
+          if (failedVerificationObjects.includes(VerificationObjectType.Stakeholder)) {
+            if (accountType === AccountType.Corporate) {
+              return moveToStepByIdentifier(Identifiers.STAKEHOLDER_VERIFICATION_FAILED);
+            }
+
+            return moveToStepByIdentifier(Identifiers.TRUSTEES_VERIFICATION_FAILED);
+          }
+        }
+
+        // additional fees accepted by user, verification failed, updates not allowed -> return to dashboard and abort the investment
+        navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
+        await cancelInvestment();
+      } catch (err) {
+        await cancelInvestment();
+
+        if (err instanceof Error && (err.message === 'Profile is banned' || err.name === 'Profile is Banned')) {
+          navigate(Screens.Locked, { isBannedProfile: true, canGoBack: false });
         }
       }
-
-      // additional fees accepted by user, verification failed, updates not allowed -> return to dashboard and abort the investment
-      navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
-      await cancelInvestment();
     }, [
       mutateAsync,
       accountId,
