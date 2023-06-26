@@ -11,6 +11,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { ErrorMessagesHandler } from '../../../components/ErrorMessagesHandler';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
+import { RECURRING_INVESTMENT_SCHEDULE_SUBTITLES } from '../../../constants/recurringInvestments';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
 import { styles } from './styles';
@@ -47,7 +48,9 @@ export const RecurringDates: StepParams<InvestFormFields> = {
             pb="16"
           >
             <StyledText variant="h5">Select your 1st investment date</StyledText>
-            <StyledText variant="paragraphLarge">This will repeat on the same day each week.</StyledText>
+            <StyledText variant="paragraphLarge">
+              {RECURRING_INVESTMENT_SCHEDULE_SUBTITLES.get(recurringInvestment?.interval as RecurringInvestmentFrequency)}
+            </StyledText>
           </Box>
           {error && <ErrorMessagesHandler error={error} />}
           <Calendar
