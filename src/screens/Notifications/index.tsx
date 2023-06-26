@@ -36,8 +36,11 @@ export const Notifications = () => {
   const list = useMemo(() => data?.pages.map(el => el.getNotifications).flat() || [], [data]);
 
   const onPressHandler = async (notification: BaseNotification) => {
+    if (notification.isRead) {
+      return;
+    }
+
     markRead({ notificationId: notification.id });
-    await refetch();
 
     if (notification.notificationType === NotificationType.InvestmentFailed) {
       navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.BANK_ACCOUNT, title: 'Bank Account' } });

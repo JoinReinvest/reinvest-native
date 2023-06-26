@@ -1,5 +1,6 @@
 import React, { useCallback, useLayoutEffect } from 'react';
 import { useGetDividend } from 'reinvest-app-common/src/services/queries/getDividend';
+import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { useReinvestDividends } from 'reinvest-app-common/src/services/queries/reinvestDividends';
 import { useWithdrawDividends } from 'reinvest-app-common/src/services/queries/withdrawDividends';
 import { NotificationType } from 'reinvest-app-common/src/types/graphql';
@@ -37,6 +38,9 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
   const { mutateAsync: withdraw, isLoading: withdrawLoading, error: withdrawError } = useWithdrawDividends(getApiClient);
   const { openDialog } = useDialog();
   const { activeAccount } = useCurrentAccount();
+  const { refetch: refetchNotifications } = useGetNotifications(getApiClient, {
+    accountId: activeAccount.id || '',
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({ title: configStrings[notification.notificationType]?.navHeader });
@@ -68,6 +72,7 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
   const onReinvest = async () => {
     if (notification.onObject) {
       await reinvest({ accountId: activeAccount.id ?? '', dividendIds: [notification.onObject.id] });
+      await refetchNotifications();
       showSuccessDialog('reinvest');
     }
   };
@@ -75,6 +80,7 @@ export const NotificationDetails = ({ route, navigation }: LogInProps<Screens.No
   const onWithdraw = async () => {
     if (notification.onObject) {
       await withdraw({ accountId: activeAccount.id ?? '', dividendIds: [notification.onObject.id] });
+      await refetchNotifications();
       showSuccessDialog('withdrawal');
     }
   };

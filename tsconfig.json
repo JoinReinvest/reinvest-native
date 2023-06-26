@@ -1,9 +1,8 @@
 {
   "extends": "@hookooekoo/configs-tsconfig/tsconfig-react-native.json",
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"],
-    "baseUrl": "./src"
+    "lib": ["ES2021", "DOM"]
   },
   "include": ["./src/**/*.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
-  "exclude": ["./out/**/*", "./node_modules/**/*"],
+  "exclude": ["./out/**/*", "./node_modules/**/*"]
 }

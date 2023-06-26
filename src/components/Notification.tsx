@@ -44,7 +44,7 @@ export const Notification = ({ id, header, body, date, isRead, notificationType,
         </Box>
         <StyledText variant="paragraph">{formatDateForNotification(date)}</StyledText>
       </View>
-      {showIcon && <Icon icon="arrowRight" />}
+      {showIcon && !isRead && <Icon icon="arrowRight" />}
     </Pressable>
   );
 };
