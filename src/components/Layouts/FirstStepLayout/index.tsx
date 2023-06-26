@@ -1,14 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
-import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { apiEnvs } from '../../../App';
 import { palette } from '../../../constants/theme';
 import { useKeyboardAware } from '../../../hooks/useKeyboardAware';
 import { styles } from '../../../screens/SignIn/styles';
 import { hexToRgbA } from '../../../utils/hexToRgb';
-import { Box } from '../../Containers/Box/Box';
 import { Signet } from '../../Icon/icons';
 import { MainWrapper } from '../../MainWrapper';
 import { PaddedScrollView } from '../../PaddedScrollView';
@@ -59,11 +56,6 @@ export const FirstStepLayout = ({ headline, description, children }: PropsWithCh
           {children}
         </PaddedScrollView>
       </MainWrapper>
-      {/*{ENV === 'development' && (*/}
-      <Box style={{ position: 'absolute', top: 40, right: 24 }}>
-        <StyledText color={'error'}>{`ENV. : ${apiEnvs[Config.API_URL as keyof typeof apiEnvs]}`}</StyledText>
-      </Box>
-      {/*)}*/}
     </>
   );
 };
