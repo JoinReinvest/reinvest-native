@@ -1,5 +1,4 @@
 import React from 'react';
-import { Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ImpactMetrics, KeyMetrics, Location, Poi } from 'reinvest-app-common/src/types/graphql';
 
@@ -11,6 +10,7 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { Map } from '../../components/Map';
 import { StyledText } from '../../components/typography/StyledText';
 import { palette } from '../../constants/theme';
+import { useLogInNavigation } from '../../navigation/hooks';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { Characteristic } from './components/Characteristic';
@@ -22,9 +22,10 @@ import { propertyMock } from './types';
 export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) => {
   const { property } = route.params;
   const { bottom } = useSafeAreaInsets();
+  const { navigate } = useLogInNavigation();
 
   const investNow = () => {
-    Alert.alert(`Investing ${property.name} `);
+    navigate(Screens.Investing, { initialInvestment: false });
   };
 
   const propertyDetails = propertyMock;
