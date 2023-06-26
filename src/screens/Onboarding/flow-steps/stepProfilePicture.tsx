@@ -37,8 +37,15 @@ const schema = z.object({
   profilePicture: z.string().optional(),
 });
 
-const getInitials = (value: string) => {
-  return `${value.charAt(0)}${value.split(' ')[1]?.charAt(0) || ''}`.toUpperCase();
+const getCompanyInitials = (accountType: DraftAccountType) => {
+  switch (accountType) {
+    case DraftAccountType.Corporate:
+      return 'C';
+    case DraftAccountType.Trust:
+      return 'T';
+    default:
+      return '';
+  }
 };
 export const StepProfilePicture: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PROFILE_PICTURE,
@@ -221,7 +228,7 @@ export const StepProfilePicture: StepParams<OnboardingFormFields> = {
     const initials =
       accountType === DraftAccountType.Individual
         ? `${name?.firstName.charAt(0)}${name?.lastName.charAt(0)}`.toUpperCase()
-        : getInitials(storeFields.corporationLegalName || storeFields.trustLegalName || '');
+        : getCompanyInitials(accountType as DraftAccountType);
 
     return (
       <>
