@@ -72,6 +72,7 @@ export const StepIdentificationDocuments: StepParams<KYCFailedFormFields> = {
 
         return idScans;
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.log('-> e', e);
 
         return [];

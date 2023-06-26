@@ -37,9 +37,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
+
       - name: ===> Authenticate with private NPM package
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMRCTOKEN }}" > ~/.npmrc
-
 
       - name: ===> 'Create integration env file'
         if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'

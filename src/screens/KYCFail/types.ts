@@ -3,7 +3,6 @@ import { AccountType, Address, PersonName, Usd, VerificationAction } from 'reinv
 import { Applicant, IdentificationDocuments } from '../Onboarding/types';
 
 export interface KYCFailedFormFields {
-  _skipStakeholders?: boolean;
   _actions: VerificationAction[] | null;
   accountId: string;
   accountType: AccountType | null;
@@ -17,6 +16,7 @@ export interface KYCFailedFormFields {
   _forceManualReviewScreen?: boolean;
   _oneTimeInvestmentId?: string;
   _recurringInvestmentId?: string;
+  _skipStakeholders?: boolean;
   dateOfBirth?: string;
   fees?: Usd;
   identificationDocument?: IdentificationDocuments;

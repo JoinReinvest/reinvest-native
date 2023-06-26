@@ -10,7 +10,6 @@ import {
   VerificationAction,
 } from 'reinvest-app-common/src/types/graphql';
 
-import { PropertyMock } from '../../screens/REIT/types';
 import { Link } from '../../types/link';
 import { BottomTabsParamsBase } from '../BottomTabsNavigator/types';
 import Screens from '../screens';
