@@ -17,23 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository.
         with:
           ssh-private-key: |
             ${{secrets.SSH_KEY}}
           repo-mappings: |
             github.com/JoinReinvest/reinvest-fe-common
-      - name: ===> Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: |
-          echo "::set-output name=dir::$(yarn cache dir)"
-      - name: ===> Cache JS dependencies
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - uses: actions/setup-node@v3
         with:
@@ -85,7 +75,7 @@ jobs:
           VERSION_CODE: ${{ github.run_number }}
         run: cd android && ./gradlew bundleRelease
 
-      - name: Create service_account.json FROM secrets.SERVICE_ACCOUNT_JSON
+      - name: Create service_account.json FROM secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON
         if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'development'
         run: echo '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}' > service_account.json
 
@@ -93,7 +83,7 @@ jobs:
         if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'development'
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
           packageName: com.reinvestcommunity.dev
           releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
           track: internal # Change to desired track (internal, alpha, beta, production)
