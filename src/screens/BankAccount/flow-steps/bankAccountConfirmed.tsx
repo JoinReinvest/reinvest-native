@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
+import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 
 import { getApiClient } from '../../../api/getApiClient';
@@ -8,6 +9,7 @@ import { Button } from '../../../components/Button';
 import { Box } from '../../../components/Containers/Box/Box';
 import { StatusCircle } from '../../../components/StatusCircle';
 import { StyledText } from '../../../components/typography/StyledText';
+import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import { Identifiers } from '../identifiers';
 import { BankAccountFormFields } from '../types';
@@ -17,9 +19,15 @@ export const BankAccountConfirmed: StepParams<BankAccountFormFields> = {
   identifier: Identifiers.BANK_ACCOUNT_CONFIRMED,
 
   Component: ({ storeFields: { accountId } }: StepComponentProps<BankAccountFormFields>) => {
+    const { activeAccount } = useCurrentAccount();
     const { pop } = useLogInNavigation();
     const { data } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
+    const { refetch: refetchNotifications } = useGetNotifications(getApiClient, {
+      accountId: activeAccount.id || '',
+    });
+
     const handleContinue = async () => {
+      await refetchNotifications();
       pop();
     };
 

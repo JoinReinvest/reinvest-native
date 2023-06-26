@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { useDeactivateRecurringInvestment } from 'reinvest-app-common/src/services/queries/deactivateRecurringInvestment';
 import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
+import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { useReadBankAccount } from 'reinvest-app-common/src/services/queries/readBankAccount';
 import { useUnsuspendRecurringInvestment } from 'reinvest-app-common/src/services/queries/unsuspendRecurringInvestment';
 import { RecurringInvestmentStatus } from 'reinvest-app-common/src/types/graphql';
@@ -35,6 +36,9 @@ export const RecurringInvestments = () => {
   const { goBack, navigate } = useLogInNavigation();
   const { activeAccount } = useCurrentAccount();
   const { openDialog } = useDialog();
+  const { refetch: refetchNotifications } = useGetNotifications(getApiClient, {
+    accountId: activeAccount.id || '',
+  });
 
   const { data: recurringInvestment, isLoading: isLoadingRecurringInvestment } = useGetActiveRecurringInvestment(getApiClient, {
     accountId: activeAccount.id ?? '',
@@ -49,6 +53,7 @@ export const RecurringInvestments = () => {
       const response = await deactivateRecurringInvestment({ accountId: activeAccount.id ?? '' });
 
       if (response) {
+        await refetchNotifications();
         openDialog(
           <UpdateSuccess
             info="Your recurring investments are canceled"
@@ -72,12 +77,14 @@ export const RecurringInvestments = () => {
       undefined,
       'sheet',
     );
-  }, [activeAccount.id, deactivateRecurringInvestment, goBack, navigate, openDialog]);
+  }, [activeAccount.id, deactivateRecurringInvestment, goBack, navigate, openDialog, refetchNotifications]);
 
   const openReinstateDialog = async () => {
     const response = await unsuspendRecurringInvestment({ accountId: activeAccount.id ?? '' });
 
     if (response) {
+      await refetchNotifications();
+
       openDialog(<UpdateSuccess info="Your recurring investment is reinstated" />, {
         showLogo: true,
         header: <HeaderWithLogo onClose={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
