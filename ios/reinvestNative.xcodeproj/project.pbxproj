@@ -17,6 +17,8 @@
 		8363576B6581BAFA8FF3D957 /* libPods-reinvestNative-reinvestNativeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5BBF659DFCAEE0AFC2E812 /* libPods-reinvestNative-reinvestNativeTests.a */; };
 		BD0D61946149452886DE4382 /* GTAmerica-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = FBF53B73CF3345059B48BF7F /* GTAmerica-Medium.otf */; };
 		D583D301FFE5EF9FAFC9A148 /* libPods-reinvestNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F773F641EA3539C01BE441E /* libPods-reinvestNative.a */; };
+		E621FC5A2A4B12A7006D2C23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E621FC592A4B12A7006D2C23 /* GoogleService-Info.plist */; };
+		E621FC5B2A4B12A7006D2C23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E621FC592A4B12A7006D2C23 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = reinvestNative/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F773F641EA3539C01BE441E /* libPods-reinvestNative.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-reinvestNative.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D806A84BE3BDADE6E226AB1C /* Pods-reinvestNative-reinvestNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-reinvestNative-reinvestNativeTests.release.xcconfig"; path = "Target Support Files/Pods-reinvestNative-reinvestNativeTests/Pods-reinvestNative-reinvestNativeTests.release.xcconfig"; sourceTree = "<group>"; };
+		E621FC592A4B12A7006D2C23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FBF53B73CF3345059B48BF7F /* GTAmerica-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "GTAmerica-Medium.otf"; path = "../assets/fonts/GTAmerica-Medium.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +96,7 @@
 		13B07FAE1A68108700A75B9A /* reinvestNative */ = {
 			isa = PBXGroup;
 			children = (
+				E621FC592A4B12A7006D2C23 /* GoogleService-Info.plist */,
 				1B9600E629DBED3000BE04CA /* reinvestNative.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -255,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E621FC5B2A4B12A7006D2C23 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +272,7 @@
 				BD0D61946149452886DE4382 /* GTAmerica-Medium.otf in Resources */,
 				4F98A5F0F1A1427D83E6E0C8 /* GTAmerica-Regular.otf in Resources */,
 				7A18DAFC5E0643E6A9D8A8B7 /* Extended.otf in Resources */,
+				E621FC5A2A4B12A7006D2C23 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
