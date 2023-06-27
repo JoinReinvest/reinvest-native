@@ -3,9 +3,9 @@ name: Build and Publish Test Builds
 on:
   push:
     branches:
-      - development
-      - staging
-      - main
+      #- development
+      #- staging
+      #- main
       - android-cicd
 
 concurrency:
