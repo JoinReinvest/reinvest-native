@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
@@ -12,6 +13,7 @@ NSString *googleApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
   [GMSServices provideAPIKey:googleApiKey];
   self.moduleName = @"reinvestNative";
   // You can add your custom initial props in the dictionary below.
