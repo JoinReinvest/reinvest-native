@@ -40,6 +40,7 @@
     "react-native": "0.71.10",
     "react-native-avoid-softinput": "3.1.5",
     "react-native-config": "^1.5.1",
+    "react-native-device-info": "^10.6.0",
     "react-native-document-picker": "9.0.1",
     "react-native-fast-image": "8.6.3",
     "react-native-gesture-handler": "^2.10.0",
