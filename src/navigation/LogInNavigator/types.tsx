@@ -1,6 +1,7 @@
 import { NavigatorScreenParams, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
+  AccountActivity,
   AccountType,
   BankAccount,
   InvestmentSummary,
@@ -31,6 +32,7 @@ export type LogInStackParamList = {
   [Screens.TradeSummary]: { heading?: string; investmentId?: string; investmentSummary?: InvestmentSummary };
   [Screens.DividendsPayout]: undefined;
   [Screens.InvestingAccountSelection]: undefined;
+  [Screens.AccountActivityDetails]: { activity: AccountActivity };
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;

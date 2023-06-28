@@ -22,6 +22,7 @@ import { InvestingAccountSelection } from '../../screens/InvestingAccountSelecti
 import { KYCFail } from '../../screens/KYCFail';
 import { ManageAccountMainScreen } from '../../screens/ManageAccount';
 import { ManageAccountScreen } from '../../screens/ManageAccount/Screens';
+import { AccountActivityDetails } from '../../screens/ManageAccount/Screens/AccountActivity/AccountActivityDetails';
 import { NotificationDetails } from '../../screens/NotificationDetails';
 import { Onboarding } from '../../screens/Onboarding';
 import { PropertyDetails } from '../../screens/PropertyDetails';
@@ -47,6 +48,7 @@ const stackOptions: Record<
     | Screens.PropertyDetails
     | Screens.TradeSummary
     | Screens.InvestingAccountSelection
+    | Screens.AccountActivityDetails
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -82,6 +84,9 @@ const stackOptions: Record<
     title: 'Investing',
     headerRight: ({ canGoBack }) => <HeaderCancel onPress={() => canGoBack && navigation.goBack()} />,
   }),
+  [Screens.AccountActivityDetails]: {
+    title: 'Account Activity',
+  },
 };
 
 export const LogInNavigator: React.FC = () => {
@@ -194,6 +199,11 @@ export const LogInNavigator: React.FC = () => {
                 options={stackOptions[Screens.PropertyDetails]}
                 name={Screens.PropertyDetails}
                 component={PropertyDetails}
+              />
+              <LogInStack.Screen
+                name={Screens.AccountActivityDetails}
+                component={AccountActivityDetails}
+                options={stackOptions[Screens.AccountActivityDetails]}
               />
             </LogInStack.Group>
             <LogInStack.Group screenOptions={{ header: DarkScreenHeader }}>
