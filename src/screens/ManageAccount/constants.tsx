@@ -21,7 +21,7 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   DIVIDEND_REINVESTING: <DividendsReinvesting />,
   BANK_ACCOUNT: <ManageBankAccount />,
   EMAIL_ADDRESS: <UpdateEmail />,
-  ADDRESS: <Address />,
+  PROFILE_ADDRESS: <Address />,
   PROFILE_NAME: <UpdateName />,
   REMOVE_BENEFICIARY: <RemoveBeneficiary />,
   CHANGE_PASSWORD: <UpdatePassword />,
