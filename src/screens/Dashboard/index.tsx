@@ -1,8 +1,11 @@
 import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
+import Config from 'react-native-config';
+import { getUniqueId } from 'react-native-device-info';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
+import { useRegisterPushNotificationDevices } from 'reinvest-app-common/src/services/queries/registerDeviceForPushNotificatinos';
 import { NotificationFilter } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -34,6 +37,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
     filter: NotificationFilter.Unread,
     config: { enabled: !!activeAccount.id },
   });
+  const { mutate } = useRegisterPushNotificationDevices(getApiClient);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
 
@@ -86,6 +90,13 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
       setUnreadNotificationsCount(notifications.pages[0]?.unreadCount ?? 0);
     }
   }, [notifications, setUnreadNotificationsCount]);
+
+  useEffect(() => {
+    (async () => {
+      const deviceId = await getUniqueId();
+      mutate({ deviceId, deviceToken: Config.FIREBASE_TOKEN });
+    })();
+  }, [mutate]);
 
   return (
     <MainWrapper noPadding>
