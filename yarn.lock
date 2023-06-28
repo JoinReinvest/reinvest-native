@@ -3,9 +3,9 @@
 
 
 "@aashutoshrathi/word-wrap@^1.2.3":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.5.tgz#383aeebd5c176c320d6364fb869669559bbdbac9"
-  integrity sha512-plhoNEfSVdHMKXQyAxvH0Zyv3/4NL8r6pwgMQdmHR2vBUXn2t74PN2pBRppqKUa6RMT0yldyvOHG5Dbjwy2mBQ==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
+  integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
 "@ampproject/remapping@^2.2.0":
   version "2.2.1"
@@ -8697,7 +8697,7 @@ regjsparser@^0.9.1:
 
 "reinvest-app-common@git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git":
   version "0.0.2"
-  resolved "git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#30de426e9a8f2dc266ea5f7575b3c684820f21df"
+  resolved "git+ssh://git@github.com:JoinReinvest/reinvest-fe-common.git#502d93363657af276a87a2a7c3b859bb2f3bf66d"
   dependencies:
     "@graphql-codegen/cli" "^3.3.1"
     "@graphql-codegen/typescript" "^3.0.4"

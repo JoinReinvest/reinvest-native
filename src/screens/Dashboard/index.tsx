@@ -94,7 +94,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   useEffect(() => {
     (async () => {
       const deviceId = await getUniqueId();
-      mutate({ deviceId, deviceToken: Config.FIREBASE_TOKEN });
+      mutate({ deviceId });
     })();
   }, [mutate]);
 
