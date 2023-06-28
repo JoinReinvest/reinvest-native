@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:705739093077:android:8c87baa9513e4b876d90dc",
+        "mobilesdk_app_id": "1:705739093077:android:6a8a57d00749d6be6d90dc",
         "android_client_info": {
-          "package_name": "com.reinvestcommunity.app"
+          "package_name": "com.reinvestnative"
         }
       },
       "oauth_client": [
