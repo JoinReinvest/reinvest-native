@@ -14,10 +14,8 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
-import { StyledText } from '../../components/typography/StyledText';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
-import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
@@ -38,7 +36,6 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
-  const { FCMToken } = usePushNotifications();
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
     if (!stats) return '';
@@ -92,7 +89,6 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
 
   return (
     <MainWrapper noPadding>
-      <StyledText>{FCMToken}</StyledText>
       <PaddedScrollView>
         <AccountOverview summaryValue={stats?.accountValue ?? ''} />
         <Chart />
