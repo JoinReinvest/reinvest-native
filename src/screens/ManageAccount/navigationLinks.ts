@@ -110,7 +110,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
     identifier: NavigationIdentifiers.COMPLIANCES,
     label: 'Compliances',
   },
-  EMPLOYMENT_DETAILS: { identifier: NavigationIdentifiers.EMPLOYMENT_DETAILS, label: 'Employment Details' },
+  EMPLOYMENT_DETAILS: { identifier: NavigationIdentifiers.EMPLOYMENT_DETAILS, label: 'Employment Details', headerShown: false },
   NET_INCOME_AND_WORTH: {
     identifier: NavigationIdentifiers.NET_INCOME_AND_WORTH,
     label: 'Net Income And Worth',
