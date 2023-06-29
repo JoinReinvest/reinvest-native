@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Animated, { useAnimatedStyle, useDerivedValue, withSpring } from 'react-native-reanimated';
+import { ViewStyle } from 'react-native';
+import Animated, { AnimatedStyleProp, useAnimatedStyle, useDerivedValue, withSpring } from 'react-native-reanimated';
 
 import { xScale, yScale } from '../../../utils/scale';
 import { Box } from '../../Containers/Box/Box';
@@ -24,9 +25,10 @@ export const RangeSelector = ({ onSelect, resolution }: ChartProps) => {
   };
 
   const animatedStyles = useAnimatedStyle(
-    () => ({
-      transform: [{ translateX: withSpring(animatedValue.value * blockWidth, { damping: 10, mass: 0.5 }) }],
-    }),
+    () =>
+      ({
+        transform: [{ translateX: withSpring(animatedValue.value * blockWidth, { damping: 10, mass: 0.5 }) }],
+      } as AnimatedStyleProp<ViewStyle>),
     [selected],
   );
 

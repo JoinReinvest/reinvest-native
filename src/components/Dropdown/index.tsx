@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useState } from 'react';
-import { FlatList, Keyboard, LayoutRectangle, Modal, Pressable, TextInput, View } from 'react-native';
-import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { FlatList, Keyboard, LayoutRectangle, Modal, Pressable, TextInput, View, ViewStyle } from 'react-native';
+import Animated, { AnimatedStyleProp, Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SelectOption } from 'reinvest-app-common/src/types/select-option';
 
 import { INPUT_HEIGHT } from '../../constants/styles';
@@ -34,7 +34,7 @@ export const Dropdown = forwardRef<TextInput, DropdownProps>(({ prefix, data, on
           }),
         },
       ],
-    };
+    } as AnimatedStyleProp<ViewStyle>;
   });
 
   const expandListAnimationStyles = useAnimatedStyle(() => {

@@ -1,7 +1,7 @@
 import React, { forwardRef, useEffect, useMemo, useState } from 'react';
-import { LayoutChangeEvent, Pressable, TextInput, View } from 'react-native';
+import { LayoutChangeEvent, Pressable, TextInput, View, ViewStyle } from 'react-native';
 import MaskInput from 'react-native-mask-input';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { AnimatedStyleProp, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { palette } from '../../constants/theme';
 import { useForwardRef } from '../../hooks/useForwardRef';
@@ -67,21 +67,24 @@ export const Input = forwardRef<TextInput, InputProps>(
       stateHandler(false);
     };
 
-    const animatedStyle = useAnimatedStyle(() => ({
-      transform: [
-        {
-          translateY: withTiming(interpolate(sharedValue.value, [0, 1], [18, 6]), { duration: 200 }),
-        },
-        {
-          translateX: withTiming(interpolate(sharedValue.value, [0, 1], [0, (-placeholderWidth / 2) * 0.2]), { duration: 200 }),
-        },
-        {
-          scale: withTiming(interpolate(sharedValue.value, [0, 1], [1, 0.8]), {
-            duration: 200,
-          }),
-        },
-      ],
-    }));
+    const animatedStyle = useAnimatedStyle(
+      () =>
+        ({
+          transform: [
+            {
+              translateY: withTiming(interpolate(sharedValue.value, [0, 1], [18, 6]), { duration: 200 }),
+            },
+            {
+              translateX: withTiming(interpolate(sharedValue.value, [0, 1], [0, (-placeholderWidth / 2) * 0.2]), { duration: 200 }),
+            },
+            {
+              scale: withTiming(interpolate(sharedValue.value, [0, 1], [1, 0.8]), {
+                duration: 200,
+              }),
+            },
+          ],
+        } as AnimatedStyleProp<ViewStyle>),
+    );
 
     const onPressFocusHandler = () => {
       inputRef.current?.focus();
