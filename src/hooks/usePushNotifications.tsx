@@ -9,11 +9,17 @@ export const usePushNotifications = () => {
   const [FCMToken, setFCMToken] = useState<string | null>(null);
   const { mutateAsync: registerPushNotificationDevices } = useRegisterPushNotificationDevices(getApiClient);
   useEffect(() => {
-    if (FCMToken) {
-      messaging().onMessage(message => {
-        handleNotification(message);
-      });
+    if (!FCMToken) {
+      return;
     }
+
+    const unsubscribe = messaging().onMessage(message => {
+      handleNotification(message);
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, [FCMToken]);
 
   useEffect(() => {
@@ -21,6 +27,7 @@ export const usePushNotifications = () => {
       const token = await checkPermissionsAndGetToken(async deviceToken => {
         await registerPushNotificationDevices({ deviceId: deviceToken });
       });
+      console.log('TOKEN: ', token);
       setFCMToken(token);
     })();
   }, [registerPushNotificationDevices]);

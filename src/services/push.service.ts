@@ -9,7 +9,7 @@ const MessagingService = {
 
     if (Platform.OS === 'android') {
       setTimeout(() => {
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION as Permission);
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS as Permission);
       }, 500);
     }
 
