@@ -9,7 +9,7 @@ const MessagingService = {
 
     if (Platform.OS === 'android') {
       setTimeout(() => {
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATION as Permission);
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS as Permission);
       }, 500);
     }
 
@@ -21,12 +21,13 @@ const MessagingService = {
   },
 };
 
-export const checkPermissionsAndGetToken = async () => {
+export const checkPermissionsAndGetToken = async (onSuccess: (deviceToken: string) => Promise<void>) => {
   const arePushNotificationsGranted = await MessagingService.requestUserPermission();
 
   if (arePushNotificationsGranted) {
     const FCMToken = await MessagingService.getFCMToken();
-    // Set fcm token on BE
+
+    onSuccess(FCMToken);
 
     return FCMToken;
   }

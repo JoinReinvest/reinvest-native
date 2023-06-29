@@ -7,15 +7,17 @@ import { useGetAccountActivity } from 'reinvest-app-common/src/services/queries/
 import { AccountActivity as AccountActivityT } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
-import { getApiClient } from '../../../api/getApiClient';
-import { Box } from '../../../components/Containers/Box/Box';
-import { Row } from '../../../components/Containers/Row';
-import { EmptyListComponent } from '../../../components/EmptyList';
-import { Icon } from '../../../components/Icon';
-import { MainWrapper } from '../../../components/MainWrapper';
-import { StyledText } from '../../../components/typography/StyledText';
-import { palette } from '../../../constants/theme';
-import { useCurrentAccount } from '../../../hooks/useActiveAccount';
+import { getApiClient } from '../../../../api/getApiClient';
+import { Box } from '../../../../components/Containers/Box/Box';
+import { Row } from '../../../../components/Containers/Row';
+import { EmptyListComponent } from '../../../../components/EmptyList';
+import { Icon } from '../../../../components/Icon';
+import { MainWrapper } from '../../../../components/MainWrapper';
+import { StyledText } from '../../../../components/typography/StyledText';
+import { palette } from '../../../../constants/theme';
+import { useCurrentAccount } from '../../../../hooks/useActiveAccount';
+import { useLogInNavigation } from '../../../../navigation/hooks';
+import Screens from '../../../../navigation/screens';
 
 export const AccountActivity = () => {
   const { activeAccount } = useCurrentAccount();
@@ -43,13 +45,17 @@ export const AccountActivity = () => {
           onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.3}
           contentContainerStyle={{ paddingTop: top }}
-          renderItem={({ item }) => <AccountActivityItem item={item} />}
+          renderItem={({ item }) => <AccountActivityItem activity={item} />}
         />
       </Box>
     </MainWrapper>
   );
 };
-const AccountActivityItem = ({ item: { activityName, date } }: { item: AccountActivityT }) => {
+const AccountActivityItem = ({ activity }: { activity: AccountActivityT }) => {
+  const { navigate } = useLogInNavigation();
+
+  const { activityName, date } = activity;
+
   return (
     <Pressable
       style={{
@@ -60,6 +66,7 @@ const AccountActivityItem = ({ item: { activityName, date } }: { item: AccountAc
         borderBottomWidth: 1,
         borderColor: palette.lightGray,
       }}
+      onPress={() => navigate(Screens.AccountActivityDetails, { activity })}
     >
       <Box>
         <Row mb="4">
