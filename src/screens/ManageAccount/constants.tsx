@@ -11,6 +11,7 @@ import { Address } from './Screens/UpdateAddress';
 import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateEmail } from './Screens/UpdateEmail';
+import { UpdateIncomeAndNetWorth } from './Screens/UpdateIncomeAndNetWorth';
 import { UpdateName } from './Screens/UpdateName';
 import { UpdatePassword } from './Screens/UpdatePassword';
 import { UpdatePhoneNumber } from './Screens/UpdatePhoneNumber';
@@ -31,4 +32,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   BENEFICIARY_NAME: <UpdateBeneficiaryName />,
   PHONE_NUMBER: <UpdatePhoneNumber />,
   ACCOUNT_ACTIVITY: <AccountActivity />,
+  NET_INCOME_AND_WORTH: <UpdateIncomeAndNetWorth />,
 };

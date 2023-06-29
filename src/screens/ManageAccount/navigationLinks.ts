@@ -114,6 +114,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
   NET_INCOME_AND_WORTH: {
     identifier: NavigationIdentifiers.NET_INCOME_AND_WORTH,
     label: 'Net Income And Worth',
+    headerShown: false,
   },
 };
 
