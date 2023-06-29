@@ -1,11 +1,8 @@
 import { useAtom } from 'jotai';
 import React, { useEffect } from 'react';
-import Config from 'react-native-config';
-import { getUniqueId } from 'react-native-device-info';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useGetAccountStats } from 'reinvest-app-common/src/services/queries/getAccountStats';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
-import { useRegisterPushNotificationDevices } from 'reinvest-app-common/src/services/queries/registerDeviceForPushNotificatinos';
 import { NotificationFilter } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
@@ -17,8 +14,10 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormModalDisclaimer';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
+import { StyledText } from '../../components/typography/StyledText';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
+import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
@@ -37,9 +36,9 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
     filter: NotificationFilter.Unread,
     config: { enabled: !!activeAccount.id },
   });
-  const { mutate } = useRegisterPushNotificationDevices(getApiClient);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
+  const { FCMToken } = usePushNotifications();
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
     if (!stats) return '';
@@ -91,15 +90,9 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
     }
   }, [notifications, setUnreadNotificationsCount]);
 
-  useEffect(() => {
-    (async () => {
-      const deviceId = await getUniqueId();
-      mutate({ deviceId });
-    })();
-  }, [mutate]);
-
   return (
     <MainWrapper noPadding>
+      <StyledText>{FCMToken}</StyledText>
       <PaddedScrollView>
         <AccountOverview summaryValue={stats?.accountValue ?? ''} />
         <Chart />

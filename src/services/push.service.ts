@@ -21,12 +21,13 @@ const MessagingService = {
   },
 };
 
-export const checkPermissionsAndGetToken = async () => {
+export const checkPermissionsAndGetToken = async (onSuccess: (deviceToken: string) => Promise<void>) => {
   const arePushNotificationsGranted = await MessagingService.requestUserPermission();
 
   if (arePushNotificationsGranted) {
     const FCMToken = await MessagingService.getFCMToken();
-    // Set fcm token on BE
+
+    onSuccess(FCMToken);
 
     return FCMToken;
   }

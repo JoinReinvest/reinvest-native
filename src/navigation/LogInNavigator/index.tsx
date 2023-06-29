@@ -93,7 +93,7 @@ export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
   const { data: accounts, isLoading: accountLoading, isRefetching } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
-  const { FCMToken } = usePushNotifications();
+  usePushNotifications();
 
   useLayoutEffect(() => {
     refetch();
@@ -107,12 +107,6 @@ export const LogInNavigator: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountLoading, accounts, isRefetching]);
-
-  useEffect(() => {
-    if (FCMToken) {
-      console.log('Setup token on BE');
-    }
-  }, [FCMToken]);
 
   if (!data) {
     return (
