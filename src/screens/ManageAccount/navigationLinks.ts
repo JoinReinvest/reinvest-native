@@ -105,7 +105,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
     label: 'Documents',
   },
   DOMICILE: { identifier: NavigationIdentifiers.DOMICILE, label: 'Domicile' },
-  EXPERIENCE_LEVEL: { identifier: NavigationIdentifiers.EXPERIENCE_LEVEL, label: 'Investor Experience Level' },
+  EXPERIENCE_LEVEL: { identifier: NavigationIdentifiers.EXPERIENCE_LEVEL, label: 'Investor Experience Level', headerShown: false },
   COMPLIANCES: {
     identifier: NavigationIdentifiers.COMPLIANCES,
     label: 'Compliances',
@@ -114,6 +114,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
   NET_INCOME_AND_WORTH: {
     identifier: NavigationIdentifiers.NET_INCOME_AND_WORTH,
     label: 'Net Income And Worth',
+    headerShown: false,
   },
 };
 

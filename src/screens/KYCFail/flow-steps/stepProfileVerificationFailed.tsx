@@ -62,8 +62,11 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
     useEffect(() => {
       (async () => {
         // if user got banned navigate immediately to locked screen;
-        if (_bannedAction) {
-          navigate(Screens.Locked, { action: _bannedAction });
+        const isBannedAccount = !!_actions?.some(({ action }) => action === ActionName.BanAccount);
+        const isBannedProfile = !!_actions?.some(({ action }) => action === ActionName.BanProfile);
+
+        if (isBannedAccount) {
+          navigate(Screens.Locked, { isBannedAccount, isBannedProfile });
           await cancelInvestment();
 
           return;
@@ -76,7 +79,7 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
           return;
         }
       })();
-    }, [_bannedAction, _forceManualReviewScreen, cancelInvestment, moveToStepByIdentifier, navigate]);
+    }, [_actions, _bannedAction, _forceManualReviewScreen, cancelInvestment, moveToStepByIdentifier, navigate]);
 
     return (
       <>

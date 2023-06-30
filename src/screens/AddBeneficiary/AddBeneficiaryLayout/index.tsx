@@ -19,13 +19,25 @@ interface Props {
 export const AddBeneficiaryLayout = ({ shouldShowFooter = true }: Props) => {
   const {
     CurrentStepView,
-    meta: { isLastStep },
+    meta: { isLastStep, isFirstStep },
+    moveToPreviousValidStep,
   } = useBeneficiaryCreationFlow();
   const navigation = useLogInNavigation();
   useStepBackOverride<BeneficiaryCreationFormFields, LogInStackParamList>(useBeneficiaryCreationFlow, navigation, true, isLastStep);
   useKeyboardAware();
 
   useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Icon
+          onPress={isFirstStep ? navigation.goBack : moveToPreviousValidStep}
+          icon="down"
+          style={{ transform: [{ rotate: '90deg' }] }}
+          color={palette.pureBlack}
+        />
+      ),
+    });
+
     if (!isLastStep) {
       return;
     }
@@ -39,7 +51,7 @@ export const AddBeneficiaryLayout = ({ shouldShowFooter = true }: Props) => {
         />
       ),
     });
-  }, [isLastStep, navigation]);
+  }, [isFirstStep, isLastStep, moveToPreviousValidStep, navigation]);
 
   return (
     <DialogProvider>
