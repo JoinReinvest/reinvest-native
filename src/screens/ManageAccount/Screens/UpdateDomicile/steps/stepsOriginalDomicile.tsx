@@ -27,6 +27,13 @@ export const StepOriginalDomicile: StepParams<UpdateDomicileFormFields> = {
   identifier: Identifiers.ORIGINAL_DOMICILE,
 
   Component: ({ storeFields, moveToNextStep }: StepComponentProps<UpdateDomicileFormFields>) => {
+    const originalDomicile: Domicile = {
+      type: storeFields.originalType,
+      citizenshipCountry: storeFields.originalCitizenshipCountry,
+      birthCountry: storeFields.originalBirthCountry,
+      visaType: storeFields.visaType,
+    };
+
     return (
       <Box
         fw
@@ -35,7 +42,7 @@ export const StepOriginalDomicile: StepParams<UpdateDomicileFormFields> = {
       >
         <PaddedScrollView>
           <Box flexDirection="column">
-            {Object.entries(storeFields).map(([key, value]) =>
+            {Object.entries(originalDomicile).map(([key, value]) =>
               value ? (
                 <Box
                   key={key}

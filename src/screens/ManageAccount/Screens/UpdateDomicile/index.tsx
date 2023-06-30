@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { DomicileType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../../api/getApiClient';
 import { UpdateDomicileFlowProvider } from './steps';
@@ -13,7 +14,15 @@ export const UpdateDomicile = () => {
   }
 
   return (
-    <UpdateDomicileFlowProvider initialStoreFields={userProfile.details.domicile}>
+    <UpdateDomicileFlowProvider
+      initialStoreFields={{
+        originalType: userProfile.details.domicile.type as DomicileType,
+        originalBirthCountry: userProfile.details.domicile.birthCountry as string,
+        originalCitizenshipCountry: userProfile.details.domicile.citizenshipCountry as string,
+        originalVisaType: userProfile.details.domicile.visaType as string,
+        ...userProfile.details.domicile,
+      }}
+    >
       <UpdateDomicileLayout />
     </UpdateDomicileFlowProvider>
   );

@@ -1,3 +1,8 @@
-import { Domicile } from 'reinvest-app-common/src/types/graphql';
+import { Domicile, DomicileType } from 'reinvest-app-common/src/types/graphql';
 
-export type UpdateDomicileFormFields = Omit<Domicile, '__typename'>;
+export interface UpdateDomicileFormFields extends Omit<Domicile, '__typename'> {
+  originalType: DomicileType;
+  originalBirthCountry?: string;
+  originalCitizenshipCountry?: string;
+  originalVisaType?: string;
+}
