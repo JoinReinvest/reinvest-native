@@ -6,7 +6,7 @@ import { palette } from '../../../constants/theme';
 import { Icon } from '../../Icon';
 import styles from './styles';
 
-const DefaultLeftHeaderColumn = ({ dark }: { dark?: boolean }) => {
+const DefaultLeftHeaderColumn = ({ dark = false }: { dark?: boolean }) => {
   const { canGoBack, goBack } = useNavigation();
 
   return (
