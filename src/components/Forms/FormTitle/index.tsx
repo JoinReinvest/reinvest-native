@@ -66,11 +66,11 @@ export const FormTitle = ({ headline, description, dark, link, informationMessag
         >
           <Icon
             icon="circleAlert"
-            color={palette.frostGreen}
+            color={dark ? palette.frostGreen : palette.dark2}
           />
           <StyledText
             variant="paragraphSmall"
-            color="frostGreen"
+            color={dark ? 'frostGreen' : 'dark2'}
           >
             {informationMessage}
           </StyledText>
