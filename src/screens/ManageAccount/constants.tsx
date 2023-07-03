@@ -10,6 +10,7 @@ import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
 import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
+import { UpdateDomicile } from './Screens/UpdateDomicile';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateExperience } from './Screens/UpdateExperience';
 import { UpdateIncomeAndNetWorth } from './Screens/UpdateIncomeAndNetWorth';
@@ -37,4 +38,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   NET_INCOME_AND_WORTH: <UpdateIncomeAndNetWorth />,
   EXPERIENCE_LEVEL: <UpdateExperience />,
   PROFILE_PICTURE: <UpdateProfilePicture />,
+  DOMICILE: <UpdateDomicile />,
 };

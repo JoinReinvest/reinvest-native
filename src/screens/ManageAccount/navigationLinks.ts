@@ -104,7 +104,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
     identifier: NavigationIdentifiers.COMPANY_DOCUMENTS,
     label: 'Documents',
   },
-  DOMICILE: { identifier: NavigationIdentifiers.DOMICILE, label: 'Domicile' },
+  DOMICILE: { identifier: NavigationIdentifiers.DOMICILE, label: 'Domicile', headerShown: false },
   EXPERIENCE_LEVEL: { identifier: NavigationIdentifiers.EXPERIENCE_LEVEL, label: 'Investor Experience Level', headerShown: false },
   COMPLIANCES: {
     identifier: NavigationIdentifiers.COMPLIANCES,
