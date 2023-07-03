@@ -45,6 +45,7 @@ const stepsWithoutBack: Identifiers[] = [Identifiers.BANK_ACCOUNT_CONFIRMED];
 const overrideBackSteps: Identifiers[] = [Identifiers.ONE_TIME_INVESTMENT];
 export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, isSingleAccount }: Props) => {
   const {
+    getStoreFields,
     resetStoreFields,
     CurrentStepView,
     meta: { currentStepIdentifier },
@@ -62,7 +63,8 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
     useInvestFlow,
     navigation,
     false,
-    overrideBackSteps.includes(currentStepIdentifier as Identifiers),
+    overrideBackSteps.includes(currentStepIdentifier as Identifiers) ||
+      (getStoreFields()?.skipOneTimeInvestment && currentStepIdentifier === Identifiers.RECURRING_INVESTMENT),
   );
   useKeyboardAware();
 
@@ -72,6 +74,10 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
   }, [isSingleAccount, navigation, resetStoreFields]);
 
   const getLeftHeader = useCallback(() => {
+    if (getStoreFields()?.skipOneTimeInvestment && currentStepIdentifier === Identifiers.RECURRING_INVESTMENT) {
+      return () => <BackIcon onPress={() => navigation.pop(2)} />;
+    }
+
     if (initialInvestment) {
       return () => (
         <Icon
@@ -109,7 +115,7 @@ export const InvestmentLayout = ({ shouldShowFooter = true, initialInvestment, i
         }}
       />
     );
-  }, [initialInvestment, currentStepIdentifier, navigation, refetchRecurringInvestmentDraft, moveToPreviousValidStep, abortInvestment]);
+  }, [initialInvestment, getStoreFields, currentStepIdentifier, navigation, refetchRecurringInvestmentDraft, moveToPreviousValidStep, abortInvestment]);
 
   const getRightHeader = useCallback(() => {
     if (stepsWithCancelOption.includes(currentStepIdentifier as Identifiers)) {
