@@ -9,6 +9,7 @@ import { RecurringInvestments } from './Screens/RecurringInvestments';
 import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
 import { Address } from './Screens/UpdateAddress';
 import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
+import { UpdateCompanyAddress } from './Screens/UpdateCompanyAddress';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateDomicile } from './Screens/UpdateDomicile';
 import { UpdateEmail } from './Screens/UpdateEmail';
@@ -39,4 +40,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   EXPERIENCE_LEVEL: <UpdateExperience />,
   PROFILE_PICTURE: <UpdateProfilePicture />,
   DOMICILE: <UpdateDomicile />,
+  COMPANY_ADDRESS: <UpdateCompanyAddress />,
 };
