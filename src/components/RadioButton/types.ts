@@ -1,6 +1,6 @@
 import { StyleProp, ViewStyle } from 'react-native';
 
-export interface RadioButtonProps<T = string> {
+export interface RadioButtonProps<T = unknown> {
   checked: boolean;
   value: T;
   dark?: boolean;

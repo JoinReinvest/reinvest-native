@@ -12,6 +12,7 @@ import { Address } from './Screens/UpdateAddress';
 import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
 import { UpdateCompanyAddress } from './Screens/UpdateCompanyAddress';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
+import { UpdateCompliances } from './Screens/UpdateCompliances';
 import { UpdateDomicile } from './Screens/UpdateDomicile';
 import { UpdateEmail } from './Screens/UpdateEmail';
 import { UpdateEmploymentDetails } from './Screens/UpdateEmploymentDetails';
@@ -45,4 +46,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   COMPANY_ADDRESS: <UpdateCompanyAddress />,
   EMPLOYMENT_DETAILS: <UpdateEmploymentDetails />,
   REMOVE_PROFILE: <RemoveProfile />,
+  COMPLIANCES: <UpdateCompliances />,
 };
