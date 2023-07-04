@@ -34,7 +34,7 @@ export const StepOriginalPhoneNumber: StepParams<UpdatePhoneNumberFormFields> = 
           <Box mb="16">
             <StyledText>Your phone number</StyledText>
           </Box>
-          {phoneNumber ? <StyledText variant="paragraphEmp">{phoneNumber}</StyledText> : <Loader />}
+          {phoneNumber ? <StyledText variant="h6">{phoneNumber}</StyledText> : <Loader />}
         </Box>
         <Box fw>
           <Button
