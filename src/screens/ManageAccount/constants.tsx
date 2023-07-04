@@ -13,6 +13,7 @@ import { UpdateCompanyAddress } from './Screens/UpdateCompanyAddress';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
 import { UpdateDomicile } from './Screens/UpdateDomicile';
 import { UpdateEmail } from './Screens/UpdateEmail';
+import { UpdateEmploymentDetails } from './Screens/UpdateEmploymentDetails';
 import { UpdateExperience } from './Screens/UpdateExperience';
 import { UpdateIncomeAndNetWorth } from './Screens/UpdateIncomeAndNetWorth';
 import { UpdateName } from './Screens/UpdateName';
@@ -41,4 +42,5 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   PROFILE_PICTURE: <UpdateProfilePicture />,
   DOMICILE: <UpdateDomicile />,
   COMPANY_ADDRESS: <UpdateCompanyAddress />,
+  EMPLOYMENT_DETAILS: <UpdateEmploymentDetails />,
 };
