@@ -15,11 +15,11 @@ export const RadioButtonGroup = ({ dark = true, options, style, onSelect, select
 
   return (
     <View style={[styles.wrapper, style]}>
-      {options.map(({ title, value }) => (
-        <RadioButton
+      {options.map(({ title, value }, index) => (
+        <RadioButton<string>
           dark={dark}
-          key={value}
-          value={value}
+          key={index}
+          value={value as string}
           onPress={handleSelect}
           checked={selectedRadioButtonId === value}
           {...rest}

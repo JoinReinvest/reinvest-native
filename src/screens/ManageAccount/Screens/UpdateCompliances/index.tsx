@@ -15,7 +15,6 @@ interface CompliancesReducer {
   };
   companyTickerSymbols?: { symbol: string }[];
   finraInstitution?: string;
-  isAccreditedInvestor?: boolean;
   seniorPoliticalFigure?: string;
 }
 
@@ -37,7 +36,6 @@ const complianceMapper = {
   FINRAMember: 'isAssociatedWithFinra',
   TradingCompanyStakeholder: 'isAssociatedWithPubliclyTradedCompany',
   Politician: 'isSeniorPoliticalFigure',
-  AccreditedInvestor: 'isAccreditedInvestor',
 } as const;
 
 type ComplianceType = keyof typeof complianceMapper;
