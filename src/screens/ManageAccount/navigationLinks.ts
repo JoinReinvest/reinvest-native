@@ -96,7 +96,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
   COMPANY_ADDRESS: {
     identifier: NavigationIdentifiers.COMPANY_ADDRESS,
     label: 'Company Address',
-    headerShown: true,
+    headerShown: false,
     cancellable: true,
   },
   REMOVE_BENEFICIARY: { identifier: NavigationIdentifiers.REMOVE_BENEFICIARY, cancellable: true, label: 'Remove Account' },

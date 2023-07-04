@@ -8,7 +8,7 @@ import { styles } from './styles';
 import { RadioButtonProps } from './types';
 
 export const RadioButton = <T extends string>({
-  dark = false,
+  dark = true,
   value,
   checked,
   onPress,

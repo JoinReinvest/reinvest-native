@@ -4,9 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
-import { useUpdateProfile } from 'reinvest-app-common/src/services/queries/updateProfile';
-import { Address, AddressInput } from 'reinvest-app-common/src/types/graphql';
+import { useGetCorporateAccount } from 'reinvest-app-common/src/services/queries/getCorporateAccount';
+import { useGetTrustAccount } from 'reinvest-app-common/src/services/queries/getTrustAccount';
+import { useUpdateCorporateAccount } from 'reinvest-app-common/src/services/queries/updateCorporateAccount';
+import { useUpdateTrustAccount } from 'reinvest-app-common/src/services/queries/updateTrustAccount';
+import { AccountType, Address, AddressInput } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../../../api/getApiClient';
 import { Button } from '../../../../../components/Button';
@@ -21,6 +23,7 @@ import { PaddedScrollView } from '../../../../../components/PaddedScrollView';
 import { Controller } from '../../../../../components/typography/Controller';
 import { StyledText } from '../../../../../components/typography/StyledText';
 import { palette } from '../../../../../constants/theme';
+import { useCurrentAccount } from '../../../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { useDialog } from '../../../../../providers/DialogProvider';
 import { formValidationRules } from '../../../../../utils/formValidationRules';
@@ -42,8 +45,21 @@ export const UpdateAddress: StepParams<AddressFields> = {
 
   Component: ({ updateStoreFields }: StepComponentProps<AddressFields>) => {
     const { openDialog } = useDialog();
-    const { mutateAsync } = useUpdateProfile(getApiClient);
-    const { refetch } = useGetUserProfile(getApiClient);
+    const { activeAccount } = useCurrentAccount();
+    const { refetch: refetchCorporate } = useGetCorporateAccount(getApiClient, {
+      accountId: activeAccount.id ?? '',
+      config: {
+        enabled: !!activeAccount?.id && activeAccount.type === AccountType.Corporate,
+      },
+    });
+    const { refetch: refetchTrust } = useGetTrustAccount(getApiClient, {
+      accountId: activeAccount.id ?? '',
+      config: {
+        enabled: !!activeAccount?.id && activeAccount.type === AccountType.Trust,
+      },
+    });
+    const { mutateAsync: updateCorporate, isLoading: isUpdatingCorporate } = useUpdateCorporateAccount(getApiClient);
+    const { mutateAsync: updateTrust, isLoading: isUpdatingTrust } = useUpdateTrustAccount(getApiClient);
     const { handleSubmit, setValue, control, formState, watch, reset } = useForm<AddressFields>({
       mode: 'all',
       resolver: zodResolver(schema),
@@ -51,7 +67,7 @@ export const UpdateAddress: StepParams<AddressFields> = {
     });
     const shouldButtonBeDisabled = !formState.isValid || formState.isSubmitting;
     const navigation = useLogInNavigation();
-    const isLoading = false;
+    const isLoading = isUpdatingCorporate || isUpdatingTrust;
 
     const addressWatched = watch('addressLine1');
     const stateWatched = watch('state');
@@ -77,7 +93,7 @@ export const UpdateAddress: StepParams<AddressFields> = {
 
     const showSuccessDialog = useCallback(() => {
       const header = <HeaderWithLogo onClose={() => navigation.goBack()} />;
-      openDialog(<UpdateSuccess info="Adress Updated Succesfully" />, {
+      openDialog(<UpdateSuccess info="Address Updated Successfully" />, {
         showLogo: true,
         header,
         closeIcon: false,
@@ -103,8 +119,22 @@ export const UpdateAddress: StepParams<AddressFields> = {
       await updateStoreFields({ ...address });
 
       if (addressLine1 && city && state && zip) {
-        await mutateAsync({ input: { address: { addressLine1, addressLine2, zip, state, city, country: 'USA' } as AddressInput } });
-        await refetch();
+        switch (activeAccount.type) {
+          case AccountType.Corporate:
+            await updateCorporate({
+              accountId: activeAccount.id ?? '',
+              input: { address: { addressLine1, addressLine2, state, city, zip, country: 'USA' } as AddressInput },
+            });
+            await refetchCorporate();
+            break;
+          case AccountType.Trust:
+            await updateTrust({
+              accountId: activeAccount.id ?? '',
+              input: { address: { addressLine1, addressLine2, state, city, zip, country: 'USA' } as AddressInput },
+            });
+            await refetchTrust();
+            break;
+        }
         showSuccessDialog();
       }
     };

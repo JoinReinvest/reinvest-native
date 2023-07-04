@@ -5,7 +5,7 @@ import { RadioButton } from '../RadioButton';
 import { styles } from './styles';
 import { RadioButtonGroupProps } from './types';
 
-export const RadioButtonGroup = ({ dark = false, options, style, onSelect, selectedValue, ...rest }: RadioButtonGroupProps) => {
+export const RadioButtonGroup = ({ dark = true, options, style, onSelect, selectedValue, ...rest }: RadioButtonGroupProps) => {
   const [selectedRadioButtonId, setSelectedRadioButtonId] = useState<string | null>(selectedValue || null);
 
   const handleSelect = (selectedId: string) => {
