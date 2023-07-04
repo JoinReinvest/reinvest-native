@@ -41,6 +41,7 @@ export const Notifications = () => {
     }
 
     markRead({ notificationId: notification.id });
+    await refetch();
 
     switch (notification.notificationType) {
       case NotificationType.RecurringInvestmentFailed:

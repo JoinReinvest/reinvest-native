@@ -18,7 +18,13 @@ import Screens from '../screens';
 export type LogInStackParamList = {
   [Screens.Dashboard]: undefined;
   [Screens.Onboarding]: undefined;
-  [Screens.Investing]: { accountId?: string; bankAccount?: BankAccount; initialInvestment?: boolean; validationSuccess?: boolean };
+  [Screens.Investing]: {
+    accountId?: string;
+    bankAccount?: BankAccount;
+    initialInvestment?: boolean;
+    skipOneTimeInvestment?: boolean;
+    validationSuccess?: boolean;
+  };
   [Screens.AddBeneficiary]: undefined;
   [Screens.BottomNavigator]: NavigatorScreenParams<BottomTabsParamsBase>;
   [Screens.Settings]: undefined;

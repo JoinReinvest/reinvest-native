@@ -15,6 +15,7 @@ export interface InvestFormFields {
   oneTimeInvestmentId?: string;
   recurringInvestment?: Partial<RecurringInvestmentDetails>;
   recurringInvestmentId?: string;
+  skipOneTimeInvestment?: boolean;
   subscriptionAgreementId?: Maybe<string>;
 }
 

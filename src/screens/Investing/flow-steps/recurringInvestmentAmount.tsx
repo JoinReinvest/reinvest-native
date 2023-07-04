@@ -14,6 +14,7 @@ import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
 import { investingHeadlines } from '../../../constants/strings';
 import { useLogInNavigation } from '../../../navigation/hooks';
+import Screens from '../../../navigation/screens';
 import { InvestingAmountTable } from '../components/InvestingAmountTable';
 import { Identifiers } from '../identifiers';
 import { InvestFormFields } from '../types';
@@ -29,14 +30,14 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
 
   Component: ({
     moveToNextStep,
-    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, accountId },
+    storeFields: { recurringInvestment, accountType, oneTimeInvestmentId, accountId, skipOneTimeInvestment },
     updateStoreFields,
   }: StepComponentProps<InvestFormFields>) => {
     const presets = RECURRING_INVESTMENT_PRESET_AMOUNTS[accountType ?? AccountType.Individual];
     const [error, setError] = useState<string | undefined>();
     const [amount, setAmount] = useState<number | undefined>(recurringInvestment?.recurringAmount ?? +(presets[0]?.value ?? 0));
     const { data: bankData } = useReadBankAccount(getApiClient, { accountId: accountId || '' });
-    const { goBack } = useLogInNavigation();
+    const { navigate, goBack } = useLogInNavigation();
     const { resetStoreFields } = useInvestFlow();
     const schema = useMemo(() => generateRecurringInvestmentSchema({ accountType: accountType || undefined }), [accountType]);
 
@@ -62,6 +63,12 @@ export const RecurringAmount: StepParams<InvestFormFields> = {
       /*
        * in case no option is selected for either onetime and recurring we should dismiss investment screen
        */
+
+      if (skipOneTimeInvestment) {
+        navigate(Screens.ManageAccountMainScreen);
+
+        return;
+      }
 
       if (!oneTimeInvestmentId) {
         await resetStoreFields();

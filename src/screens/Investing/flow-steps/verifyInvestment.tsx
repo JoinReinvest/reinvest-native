@@ -146,9 +146,9 @@ export const VerifyInvestment: StepParams<InvestFormFields> = {
       const feesValue = investmentSummary?.investmentFees?.value ?? 0;
 
       if (oneTimeInvestmentId || recurringInvestmentId) {
-        if (response?.canUserContinueTheInvestment && !feesValue) {
+        if ((response?.canUserContinueTheInvestment || !response?.requiredActions?.length) && !feesValue) {
           await startInvestmentHandler();
-        } else if (response?.requiredActions || feesValue > 0) {
+        } else if (response?.requiredActions?.length || feesValue > 0) {
           navigate(Screens.KYCFail, {
             actions: (response?.requiredActions ?? []) as VerificationAction[],
             oneTimeInvestmentId,

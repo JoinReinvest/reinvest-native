@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { RECURRING_INVESTMENT_INTERVAL_LABELS } from 'reinvest-app-common/src/constants/recurring-investment-intervals';
 import { useDeactivateRecurringInvestment } from 'reinvest-app-common/src/services/queries/deactivateRecurringInvestment';
 import { useGetActiveRecurringInvestment } from 'reinvest-app-common/src/services/queries/getActiveRecurringInvestment';
@@ -94,6 +94,12 @@ export const RecurringInvestments = () => {
 
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
   const formattedBankAccount = `${bankData?.bankName?.toUpperCase()} ${bankData?.accountNumber?.slice(9).replace(' ', '')}`;
+
+  useEffect(() => {
+    if (!isLoadingRecurringInvestment && !recurringInvestment) {
+      navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' });
+    }
+  }, [activeAccount.id, isLoadingRecurringInvestment, navigate, recurringInvestment]);
 
   return (
     <>

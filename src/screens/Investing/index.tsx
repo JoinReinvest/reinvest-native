@@ -10,7 +10,7 @@ import { InvestFormFlowProvider, investingFormFieldsInitialState } from './flow-
 import { InvestmentLayout } from './InvestmentLayout';
 
 export const Investing = ({ route }: NativeStackScreenProps<LogInStackParamList, Screens.Investing>) => {
-  const { initialInvestment, bankAccount, accountId: idFromNavParams } = route.params || {};
+  const { initialInvestment, bankAccount, accountId: idFromNavParams, skipOneTimeInvestment = false } = route.params || {};
 
   const { activeAccount } = useCurrentAccount();
   const { data: accounts } = useGetAccountsOverview(getApiClient);
@@ -25,6 +25,7 @@ export const Investing = ({ route }: NativeStackScreenProps<LogInStackParamList,
         accountId: account.id || '',
         accountType: account.type,
         accountSelectable: !!(accounts && accounts?.length > 1),
+        skipOneTimeInvestment,
         bankAccount,
       }}
     >
