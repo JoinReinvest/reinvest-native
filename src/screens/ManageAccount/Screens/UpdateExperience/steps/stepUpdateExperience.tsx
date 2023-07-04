@@ -42,7 +42,7 @@ export const StepUpdateExperience: StepParams<UpdateExperienceFormFields> = {
         <UpdateSuccess
           buttonLabel="Dashboard"
           onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
-          info="Experience updated successfully!"
+          info="Experience Updated Successfully!"
         />,
         {
           showLogo: true,

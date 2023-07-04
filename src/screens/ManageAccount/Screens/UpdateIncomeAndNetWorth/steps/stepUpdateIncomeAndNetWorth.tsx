@@ -72,7 +72,7 @@ export const StepUpdateNetWorthAndNetIncome: StepParams<UpdateIncomeAndNetWorthF
       await refetchIndividualAccount();
       openDialog(
         <UpdateSuccess
-          info="Net worth and net income updated successfully"
+          info="Net worth and Net income Updated Successfully!"
           buttonLabel="Dashboard"
           onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
         />,

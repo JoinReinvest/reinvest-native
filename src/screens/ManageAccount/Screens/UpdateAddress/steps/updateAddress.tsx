@@ -77,7 +77,7 @@ export const UpdateAddress: StepParams<AddressFields> = {
 
     const showSuccessDialog = useCallback(() => {
       const header = <HeaderWithLogo onClose={() => navigation.goBack()} />;
-      openDialog(<UpdateSuccess info="Adress Updated Succesfully" />, {
+      openDialog(<UpdateSuccess info="Address Updated Successfully" />, {
         showLogo: true,
         header,
         closeIcon: false,

@@ -91,7 +91,7 @@ export const StepUpdateDomicileDetails: StepParams<UpdateDomicileFormFields> = {
       await refetch();
       openDialog(
         <UpdateSuccess
-          info="Updated Residency Successfully!"
+          info="Updated Residency Status Successfully!"
           buttonLabel="Dashboard"
           onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
         />,
@@ -173,7 +173,7 @@ export const StepUpdateDomicileDetails: StepParams<UpdateDomicileFormFields> = {
             disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
           >
-            Update Residency
+            Update Domicile
           </Button>
         </Box>
       </Box>
