@@ -30,7 +30,7 @@ export const InvestmentItem = (props: InvestmentOverview) => {
         alignItems="center"
         style={{ columnGap: 13 }}
       >
-        <StyledText variant="h6">-{amount.formatted}</StyledText>
+        <StyledText variant="h6">{amount.formatted}</StyledText>
         <Icon
           icon="arrowRight"
           color={palette.pureBlack}
