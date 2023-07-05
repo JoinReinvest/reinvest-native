@@ -111,6 +111,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
   COMPLIANCES: {
     identifier: NavigationIdentifiers.COMPLIANCES,
     label: 'Compliances',
+    headerShown: false,
   },
   EMPLOYMENT_DETAILS: { identifier: NavigationIdentifiers.EMPLOYMENT_DETAILS, label: 'Employment Details', headerShown: false },
   NET_INCOME_AND_WORTH: {

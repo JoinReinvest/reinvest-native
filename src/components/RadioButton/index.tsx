@@ -7,7 +7,7 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { RadioButtonProps } from './types';
 
-export const RadioButton = <T extends string>({
+export const RadioButton = <TValue = unknown,>({
   dark = true,
   value,
   checked,
@@ -15,7 +15,7 @@ export const RadioButton = <T extends string>({
   radioStyles,
   labelStyles,
   children,
-}: PropsWithChildren<RadioButtonProps<T>>) => {
+}: PropsWithChildren<RadioButtonProps<TValue>>) => {
   const icon = checked ? 'checkbox' : 'checkboxUnchecked';
   const handlePress = () => onPress?.(value);
 
@@ -29,7 +29,7 @@ export const RadioButton = <T extends string>({
 
   return (
     <Pressable
-      id={value}
+      id={`${value}`}
       style={[styles.radio, radioStyles]}
       onPress={handlePress}
       pointerEvents={onPress ? 'auto' : 'none'}
