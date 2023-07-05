@@ -18,6 +18,7 @@ export enum NavigationIdentifiers {
   PROFILE_ADDRESS = 'PROFILE_ADDRESS',
   COMPANY_ADDRESS = 'COMPANY_ADDRESS',
   REMOVE_BENEFICIARY = 'REMOVE_BENEFICIARY',
+  REMOVE_PROFILE = 'REMOVE_PROFILE',
   COMPANY_DOCUMENTS = 'COMPANY_DOCUMENTS',
   DOMICILE = 'DOMICILE',
   EXPERIENCE_LEVEL = 'EXPERIENCE_LEVEL',
@@ -100,6 +101,7 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
     cancellable: true,
   },
   REMOVE_BENEFICIARY: { identifier: NavigationIdentifiers.REMOVE_BENEFICIARY, cancellable: true, label: 'Remove Account' },
+  REMOVE_PROFILE: { identifier: NavigationIdentifiers.REMOVE_PROFILE, cancellable: true, label: 'Remove Profile' },
   COMPANY_DOCUMENTS: {
     identifier: NavigationIdentifiers.COMPANY_DOCUMENTS,
     label: 'Documents',
@@ -136,6 +138,7 @@ const PROFILE_INFO_LINKS: Link[] = [
   LINKS.EXPERIENCE_LEVEL,
   LINKS.COMPLIANCES,
   LINKS.PROFILE_PICTURE,
+  LINKS.REMOVE_PROFILE,
 ];
 
 const INDIVIDUAL_INFO_LINKS: Link[] = [...PROFILE_INFO_LINKS, LINKS.EMPLOYMENT_DETAILS, LINKS.NET_INCOME_AND_WORTH];
