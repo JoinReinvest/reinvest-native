@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
 import { useMarkNotificationAsRead } from 'reinvest-app-common/src/services/queries/markNotificationAsRead';
-import { Notification as BaseNotification, NotificationType, Query } from 'reinvest-app-common/src/types/graphql';
+import { useVerifyAccount } from 'reinvest-app-common/src/services/queries/verifyAccount';
+import { Notification as BaseNotification, NotificationType, Query, VerificationAction } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Box } from '../../components/Containers/Box/Box';
@@ -29,6 +30,7 @@ export const Notifications = () => {
   const { data, isLoading, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id || '',
   });
+  const { mutateAsync: verifyAccount } = useVerifyAccount(getApiClient);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
   const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
@@ -48,6 +50,12 @@ export const Notifications = () => {
         return navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.RECURRING_INVESTMENT, label: 'Recurring Investment' } });
       case NotificationType.InvestmentFailed:
         return navigate(Screens.ManageAccount, { options: { identifier: NavigationIdentifiers.BANK_ACCOUNT, label: 'Bank Account' } });
+      case NotificationType.VerificationFailed: {
+        const verificationResponse = await verifyAccount({ accountId: activeAccount.id ?? '' });
+
+        return navigate(Screens.KYCFail, { actions: verificationResponse?.requiredActions as VerificationAction[] });
+      }
+
       case NotificationType.DividendReceived:
       case NotificationType.RewardDividendReceived:
         return navigate(Screens.NotificationDetails, { notification });
