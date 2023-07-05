@@ -78,7 +78,7 @@ export const StepUpdateEmploymentDetails: StepParams<UpdateEmploymentDetailsForm
 
       openDialog(
         <UpdateSuccess
-          info="Employment Details updated successfully"
+          info="Employment Details Updated Successfully!"
           buttonLabel="Dashboard"
           onProceed={() => navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })}
         />,
@@ -122,7 +122,7 @@ export const StepUpdateEmploymentDetails: StepParams<UpdateEmploymentDetailsForm
             disabled={isLoading}
             onPress={handleSubmit(onSubmit)}
           >
-            Confirm
+            Update Employment Details
           </Button>
         </Box>
       </>

@@ -61,7 +61,7 @@ export const AddressInfo: StepParams<AddressFields> = {
           {isLoading && <Loader />}
           {address && (
             <Box mt="16">
-              <StyledText variant="paragraphEmp">{`${address.addressLine1}\n${address.addressLine2}\n${address.city}, ${address.state}\n${address.zip}`}</StyledText>
+              <StyledText variant="h6">{`${address.addressLine1}\n${address.addressLine2}\n${address.city}, ${address.state}\n${address.zip}`}</StyledText>
             </Box>
           )}
         </Box>

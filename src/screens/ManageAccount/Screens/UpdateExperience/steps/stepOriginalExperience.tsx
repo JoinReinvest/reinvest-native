@@ -22,9 +22,9 @@ export const StepOriginalExperience: StepParams<UpdateExperienceFormFields> = {
       >
         <Box flex={1}>
           <Row mb="16">
-            <StyledText variant="paragraphLarge">Your Experience</StyledText>
+            <StyledText>Your Experience</StyledText>
           </Row>
-          {originalExperience && <StyledText variant="paragraphEmp">{EXPERIENCE_LABELS[originalExperience]}</StyledText>}
+          {originalExperience && <StyledText variant="h6">{EXPERIENCE_LABELS[originalExperience]}</StyledText>}
         </Box>
         <Box fw>
           <Button onPress={moveToNextStep}>Update Experience</Button>

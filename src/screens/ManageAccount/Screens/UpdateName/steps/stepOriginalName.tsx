@@ -23,7 +23,7 @@ export const StepOriginalName: StepParams<UpdateNameFormFields> = {
           <Row mb="16">
             <StyledText variant="paragraphLarge">Your name</StyledText>
           </Row>
-          <StyledText variant="paragraphEmp">
+          <StyledText variant="h6">
             {firstName} {lastName}
           </StyledText>
         </Box>

@@ -55,19 +55,19 @@ export const StepOriginalEmploymentDetails: StepParams<UpdateEmploymentDetailsFo
           {employmentStatus && (
             <Box mb="24">
               <Row mb="16">
-                <StyledText variant="paragraphLarge">Your Employment Status</StyledText>
+                <StyledText>Your Employment Status</StyledText>
               </Row>
-              <StyledText variant="paragraphEmp">{EMPLOYMENT_STATUS_LABELS[employmentStatus]}</StyledText>
+              <StyledText variant="h6">{EMPLOYMENT_STATUS_LABELS[employmentStatus]}</StyledText>
             </Box>
           )}
           {hasEmployer && isEmployed && (
             <Box>
               <Row mb="16">
-                <StyledText variant="paragraphLarge">Your Employment Details</StyledText>
+                <StyledText>Your Employment Details</StyledText>
               </Row>
               {employerDetails.map((detail, index) => (
                 <StyledText
-                  variant="paragraphEmp"
+                  variant="h6"
                   key={`${detail ?? ''}-${index}`}
                 >
                   {detail}
