@@ -598,7 +598,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.18.1):
     - React-Core
-  - RNDeviceInfo (10.6.0):
+  - RNDeviceInfo (10.7.0):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -992,7 +992,7 @@ SPEC CHECKSUMS:
   ReactNativeAvoidSoftinput: 33a9d92d54716d7b3133f48b93545f27a084a14a
   RNAWSCognito: 100c2a1e21010f4e201d8ac43deb400b8d5e7ba6
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
-  RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
+  RNDeviceInfo: 25d818c85db769cc0e7083d39efaa01a6f450df3
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBApp: fdbde65110240cd843e644270e974e9b455b0fc1
   RNFBMessaging: 3aca7a5b3b1f79a9ee75026662ea57693436a338
