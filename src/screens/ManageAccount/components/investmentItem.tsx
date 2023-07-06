@@ -23,7 +23,7 @@ export const InvestmentItem = (props: InvestmentOverview) => {
     >
       <Box>
         <StyledText variant="button">Trade ID {tradeId}</StyledText>
-        <StyledText variant="paragraph">{formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API' })}</StyledText>
+        <StyledText variant="paragraph">{formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API_TZ' })}</StyledText>
       </Box>
       <Row
         flexDirection="row"
