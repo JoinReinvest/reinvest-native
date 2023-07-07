@@ -1,5 +1,4 @@
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { useAtomValue } from 'jotai';
 import React from 'react';
 
 import { DarkScreenHeader } from '../../components/CustomHeader';
@@ -7,7 +6,6 @@ import { DialogProvider } from '../../providers/DialogProvider';
 import { ResetPassword } from '../../screens/ResetPassword';
 import { SignIn } from '../../screens/SignIn';
 import { SignUp } from '../../screens/SignUp';
-import { signedOut } from '../../store/atoms';
 import Screens from '../screens';
 import { LogOutStackParamList } from './types';
 
@@ -32,13 +30,11 @@ const stackOptions: Record<Extract<Screens, Screens.SignUp | Screens.SignIn | Sc
 };
 
 export const LogOutNavigator = () => {
-  const wasSignedOut = useAtomValue(signedOut);
-
   return (
     <DialogProvider dark>
       <LogOutStack.Navigator
         screenOptions={{ gestureEnabled: false, header: DarkScreenHeader }}
-        initialRouteName={wasSignedOut ? Screens.SignIn : Screens.SignUp}
+        initialRouteName={Screens.SignIn}
       >
         <LogOutStack.Screen
           options={stackOptions[Screens.SignUp]}
