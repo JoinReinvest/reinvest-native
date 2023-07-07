@@ -26,7 +26,7 @@ import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
 import { useAuth } from '../../providers/AuthProvider';
 import { useDialog } from '../../providers/DialogProvider';
-import { currentAccount, RESET, useAtom } from '../../store/atoms';
+import { currentAccount, RESET, signedOut, useAtom, useSetAtom } from '../../store/atoms';
 import { NAVBAR_HEIGHT, yScale } from '../../utils/scale';
 import { styles } from './styles';
 
@@ -42,6 +42,7 @@ export const Settings = () => {
   const { bottom } = useSafeAreaInsets();
   const [signOutLoading, setSignOutLoading] = useState(false);
   const [account, setAccountAtom] = useAtom(currentAccount);
+  const setSignedOut = useSetAtom(signedOut);
 
   const handleSelectAccount = async (value: string) => {
     const account = accounts?.find(account => account?.id === value) ?? accounts?.[0];
@@ -81,11 +82,12 @@ export const Settings = () => {
 
   const showAddAnotherAccount = ACCOUNT_TO_OPEN?.some(acc => listAccountTypesUserCanOpen?.includes(acc as AccountType));
 
-  const signOut = () => {
+  const signOut = async () => {
     setSignOutLoading(true);
-    actions.signOut(() => {
-      setAccountAtom(RESET);
-      setSignOutLoading(false);
+    setSignedOut(true);
+
+    await actions.signOut(async () => {
+      await setAccountAtom(RESET);
     });
   };
 

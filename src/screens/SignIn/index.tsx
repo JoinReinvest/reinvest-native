@@ -1,9 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
+import { useSetAtom } from 'jotai';
+import React, { useEffect } from 'react';
 
 import { DarkScreenHeader } from '../../components/CustomHeader';
 import { FirstStepLayout } from '../../components/Layouts/FirstStepLayout';
 import Screens from '../../navigation/screens';
+import { signedOut } from '../../store/atoms';
 import { BlackLayout as BlackLayoutSignIn } from './BlackLayout';
 import { initialSteps, LoginFormFlowProvider } from './flow-steps';
 import { StepOutsideFlow } from './flow-steps/stepLogin';
@@ -12,6 +14,12 @@ import type { SignInStackParamsList } from './types';
 const SignInStack = createNativeStackNavigator<SignInStackParamsList>();
 
 export const SignIn = () => {
+  const setWasSignedOut = useSetAtom(signedOut);
+
+  useEffect(() => {
+    setWasSignedOut(false);
+  }, [setWasSignedOut]);
+
   return (
     <LoginFormFlowProvider initialStoreFields={initialSteps}>
       <SignInStack.Navigator>

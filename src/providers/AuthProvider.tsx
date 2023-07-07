@@ -3,6 +3,7 @@ import { ChallengeName as CognitoChallengeName, ISignUpResult } from 'amazon-cog
 import React, { createContext, ReactNode, Suspense, useCallback, useContext, useEffect, useMemo, useState, useTransition } from 'react';
 
 import { queryClient } from '../App';
+import { Loader } from '../components/Loader';
 import AuthService from '../services/amplify.service';
 
 export enum ChallengeName {
@@ -18,7 +19,7 @@ interface AuthContextInterface {
     forgotPassword: (email: string) => Promise<Error | void> | null;
     forgotPasswordSubmit: (email: string, code: string, newPassword: string) => Promise<Error | void> | null;
     signIn: (email: string, password: string) => Promise<Error | CognitoUser | null>;
-    signOut: (...callbacks: Array<() => void>) => Promise<Error | void> | null;
+    signOut: (...callbacks: Array<() => Promise<void>>) => Promise<Error | void> | null;
     signUp: (params: SignUpParams) => Promise<ISignUpResult | Error | null> | null;
   };
   loading: boolean;
@@ -51,7 +52,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<CognitoUser | null>(null);
   const [, startTransition] = useTransition();
   const [error, setError] = useState<Error | string | undefined>();
-
   const checkTwoFactorAuthentication = (challengeName: CognitoChallengeName | undefined) => setLoggedIn(!challengeName);
 
   const signIn = async (email: string, password: string): Promise<CognitoUser | Error> => {
@@ -106,16 +106,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const confirmSignUp = async (email: string, authenticationCode: string) => Auth.confirmSignUp(email, authenticationCode);
 
-  const signOut = async (...callbacks: Array<() => void>) => {
+  const signOut = async (...callbacks: Array<() => Promise<void>>) => {
     try {
+      setLoading(true);
       await Auth.signOut();
       await queryClient.invalidateQueries();
-      await queryClient.clear();
+      queryClient.clear();
       setLoggedIn(false);
-      setUser(null);
-      callbacks.forEach(arg => typeof arg === 'function' && arg());
+      startTransition(() => setUser(null));
+      await Promise.all(
+        callbacks.map(async arg => {
+          if (typeof arg === 'function') {
+            await arg();
+          }
+        }),
+      );
     } catch (e: unknown) {
       setError('SignOut error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,9 +204,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [loading, user]);
 
   return (
-    <Suspense>
-      <AuthContext.Provider value={ctx}>{children}</AuthContext.Provider>
-    </Suspense>
+    <AuthContext.Provider value={ctx}>
+      <Suspense fallback={<Loader size="xl" />}>{children}</Suspense>
+    </AuthContext.Provider>
   );
 };
 
