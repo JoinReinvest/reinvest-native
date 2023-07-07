@@ -85,6 +85,7 @@ export const Settings = () => {
     setSignOutLoading(true);
     actions.signOut(() => {
       setAccountAtom(RESET);
+      setSignOutLoading(false);
     });
   };
 

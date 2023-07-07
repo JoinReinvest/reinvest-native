@@ -142,7 +142,7 @@ export const TradeSummary = ({
         >
           <Item
             title="Date"
-            value={formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API' })}
+            value={formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API_TZ' })}
           />
           <Item
             title="Amount"
