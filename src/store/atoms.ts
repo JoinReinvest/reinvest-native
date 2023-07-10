@@ -10,5 +10,3 @@ const storage = createJSONStorage<AccountOverview>(() => AsyncStorage);
 export const currentAccount = atomWithStorage<AccountOverview>('currentAccount', {}, storage);
 
 export const unreadNotificationsCount = atom(0);
-
-export const signedOut = atom(false);
