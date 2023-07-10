@@ -27,7 +27,6 @@ export const usePushNotifications = () => {
       const token = await checkPermissionsAndGetToken(async deviceToken => {
         await registerPushNotificationDevices({ deviceId: deviceToken });
       });
-      console.log('TOKEN: ', token);
       setFCMToken(token);
     })();
   }, [registerPushNotificationDevices]);

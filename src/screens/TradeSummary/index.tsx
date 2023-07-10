@@ -39,6 +39,9 @@ const Item = ({ title, value, showBorder = true }: { title: string; value: strin
 };
 
 const STATUS_LABEL: { [key in InvestmentStatus]: string } = {
+  [InvestmentStatus.Transferred]: 'Transferred',
+  [InvestmentStatus.Canceled]: 'Canceled',
+  [InvestmentStatus.Canceling]: 'Canceling',
   [InvestmentStatus.Failed]: 'Failed',
   [InvestmentStatus.Finished]: 'Finished',
   [InvestmentStatus.Funded]: 'Funded',
@@ -142,7 +145,7 @@ export const TradeSummary = ({
         >
           <Item
             title="Date"
-            value={formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API' })}
+            value={formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API_TZ' })}
           />
           <Item
             title="Amount"

@@ -33,7 +33,7 @@ export const StepOriginalEmail: StepParams<UpdateEmailFormFields> = {
           <Box mb="16">
             <StyledText>Your email address</StyledText>
           </Box>
-          {email ? <StyledText variant="paragraphEmp">{email}</StyledText> : <Loader />}
+          {email ? <StyledText variant="h6">{email}</StyledText> : <Loader />}
         </Box>
         <Box fw>
           <Button

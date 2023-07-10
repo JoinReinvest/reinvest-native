@@ -21,13 +21,13 @@ export const StepOriginalIncomeAndNetWorth: StepParams<UpdateIncomeAndNetWorthFo
       >
         <Box flex={1}>
           <Row mb="16">
-            <StyledText variant="paragraphLarge">Your net worth range</StyledText>
+            <StyledText>Your net worth range</StyledText>
           </Row>
-          <StyledText variant="paragraphEmp">{originalNetWorth}</StyledText>
+          <StyledText variant="h6">{originalNetWorth}</StyledText>
           <Row my="16">
-            <StyledText variant="paragraphLarge">Your net income range</StyledText>
+            <StyledText>Your net income range</StyledText>
           </Row>
-          <StyledText variant="paragraphEmp">{originalNetIncome}</StyledText>
+          <StyledText variant="h6">{originalNetIncome}</StyledText>
         </Box>
         <Box fw>
           <Button onPress={moveToNextStep}>Update Income and Net Worth</Button>

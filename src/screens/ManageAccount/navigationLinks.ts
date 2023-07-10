@@ -18,6 +18,7 @@ export enum NavigationIdentifiers {
   PROFILE_ADDRESS = 'PROFILE_ADDRESS',
   COMPANY_ADDRESS = 'COMPANY_ADDRESS',
   REMOVE_BENEFICIARY = 'REMOVE_BENEFICIARY',
+  REMOVE_PROFILE = 'REMOVE_PROFILE',
   COMPANY_DOCUMENTS = 'COMPANY_DOCUMENTS',
   DOMICILE = 'DOMICILE',
   EXPERIENCE_LEVEL = 'EXPERIENCE_LEVEL',
@@ -96,21 +97,23 @@ const LINKS: { [key in NavigationIdentifiers]: Link } = {
   COMPANY_ADDRESS: {
     identifier: NavigationIdentifiers.COMPANY_ADDRESS,
     label: 'Company Address',
-    headerShown: true,
+    headerShown: false,
     cancellable: true,
   },
   REMOVE_BENEFICIARY: { identifier: NavigationIdentifiers.REMOVE_BENEFICIARY, cancellable: true, label: 'Remove Account' },
+  REMOVE_PROFILE: { identifier: NavigationIdentifiers.REMOVE_PROFILE, cancellable: true, label: 'Remove Profile' },
   COMPANY_DOCUMENTS: {
     identifier: NavigationIdentifiers.COMPANY_DOCUMENTS,
     label: 'Documents',
   },
-  DOMICILE: { identifier: NavigationIdentifiers.DOMICILE, label: 'Domicile' },
+  DOMICILE: { identifier: NavigationIdentifiers.DOMICILE, label: 'Domicile', headerShown: false },
   EXPERIENCE_LEVEL: { identifier: NavigationIdentifiers.EXPERIENCE_LEVEL, label: 'Investor Experience Level', headerShown: false },
   COMPLIANCES: {
     identifier: NavigationIdentifiers.COMPLIANCES,
     label: 'Compliances',
+    headerShown: false,
   },
-  EMPLOYMENT_DETAILS: { identifier: NavigationIdentifiers.EMPLOYMENT_DETAILS, label: 'Employment Details' },
+  EMPLOYMENT_DETAILS: { identifier: NavigationIdentifiers.EMPLOYMENT_DETAILS, label: 'Employment Details', headerShown: false },
   NET_INCOME_AND_WORTH: {
     identifier: NavigationIdentifiers.NET_INCOME_AND_WORTH,
     label: 'Net Income And Worth',
@@ -136,6 +139,7 @@ const PROFILE_INFO_LINKS: Link[] = [
   LINKS.EXPERIENCE_LEVEL,
   LINKS.COMPLIANCES,
   LINKS.PROFILE_PICTURE,
+  LINKS.REMOVE_PROFILE,
 ];
 
 const INDIVIDUAL_INFO_LINKS: Link[] = [...PROFILE_INFO_LINKS, LINKS.EMPLOYMENT_DETAILS, LINKS.NET_INCOME_AND_WORTH];

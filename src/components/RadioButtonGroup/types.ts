@@ -10,6 +10,7 @@ export interface RadioButtonOption extends Pick<RadioButtonProps, 'value'> {
 export interface RadioButtonGroupProps extends Pick<RadioButtonProps, 'labelStyles' | 'radioStyles'> {
   onSelect: (selectedId: string) => void;
   options: RadioButtonOption[];
+  dark?: boolean;
   selectedValue?: string;
   style?: StyleProp<ViewStyle>;
 }

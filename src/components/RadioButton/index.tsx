@@ -7,24 +7,40 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { RadioButtonProps } from './types';
 
-export const RadioButton = <T extends string>({ value, checked, onPress, radioStyles, labelStyles, children }: PropsWithChildren<RadioButtonProps<T>>) => {
+export const RadioButton = <TValue = unknown,>({
+  dark = true,
+  value,
+  checked,
+  onPress,
+  radioStyles,
+  labelStyles,
+  children,
+}: PropsWithChildren<RadioButtonProps<TValue>>) => {
   const icon = checked ? 'checkbox' : 'checkboxUnchecked';
   const handlePress = () => onPress?.(value);
 
+  const getRadioColor = () => {
+    if (checked || dark) {
+      return palette.frostGreen;
+    }
+
+    return palette.dark3;
+  };
+
   return (
     <Pressable
-      id={value}
+      id={`${value}`}
       style={[styles.radio, radioStyles]}
       onPress={handlePress}
       pointerEvents={onPress ? 'auto' : 'none'}
     >
       <Icon
         icon={icon}
-        color={palette.frostGreen}
+        color={getRadioColor()}
       />
       <StyledText
         variant="bonusHeading"
-        style={[styles.label, labelStyles]}
+        style={[styles.label, labelStyles, { color: dark ? palette.pureWhite : palette.pureBlack }]}
       >
         {children}
       </StyledText>

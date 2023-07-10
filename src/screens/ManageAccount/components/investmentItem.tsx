@@ -23,14 +23,14 @@ export const InvestmentItem = (props: InvestmentOverview) => {
     >
       <Box>
         <StyledText variant="button">Trade ID {tradeId}</StyledText>
-        <StyledText variant="paragraph">{formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API' })}</StyledText>
+        <StyledText variant="paragraph">{formatDate(createdAt, 'INVESTMENT', { currentFormat: 'API_TZ' })}</StyledText>
       </Box>
       <Row
         flexDirection="row"
         alignItems="center"
         style={{ columnGap: 13 }}
       >
-        <StyledText variant="h6">-{amount.formatted}</StyledText>
+        <StyledText variant="h6">{amount.formatted}</StyledText>
         <Icon
           icon="arrowRight"
           color={palette.pureBlack}

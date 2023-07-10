@@ -16,7 +16,7 @@ export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
   identifier: Identifiers.RECURRING_INVESTMENT,
   willBePartOfTheFlow: fields => !!fields._shouldDisplayRecurringInvestment,
   doesMeetConditionFields: fields => {
-    return !!fields._shouldDisplayRecurringInvestment;
+    return !!fields._shouldDisplayRecurringInvestment || !!fields.skipOneTimeInvestment;
   },
 
   Component: ({ moveToNextStep, updateStoreFields, storeFields }: StepComponentProps<InvestFormFields>) => {
@@ -64,12 +64,14 @@ export const RecurringInvestmentInfo: StepParams<InvestFormFields> = {
           key="buttons_section"
           style={styles.buttonsSection}
         >
-          <Button
-            onPress={handleSkip}
-            variant={'outlined'}
-          >
-            {`I'll do this later`}
-          </Button>
+          {!storeFields.skipOneTimeInvestment && (
+            <Button
+              onPress={handleSkip}
+              variant={'outlined'}
+            >
+              {`I'll do this later`}
+            </Button>
+          )}
           <Button onPress={handleContinue}>Continue</Button>
         </View>
       </>

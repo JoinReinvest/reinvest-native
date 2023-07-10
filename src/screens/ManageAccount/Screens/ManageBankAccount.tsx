@@ -30,6 +30,30 @@ export const ManageBankAccount = () => {
       'sheet',
     );
 
+  if (isLoading) {
+    return (
+      <MainWrapper
+        bottomSafe
+        isLoading={isLoading}
+      />
+    );
+  }
+
+  if (!isLoading && !data?.accountNumber) {
+    return (
+      <MainWrapper bottomSafe>
+        <Box
+          fw
+          flex={1}
+          pt="24"
+        >
+          <StyledText variant="paragraphLarge">You have no bank account linked</StyledText>
+        </Box>
+        <Button onPress={() => navigate(Screens.BankAccount, { accountId: activeAccount.id || '', isUpdatingAccount: false })}>Connect</Button>
+      </MainWrapper>
+    );
+  }
+
   return (
     <MainWrapper bottomSafe>
       <Box

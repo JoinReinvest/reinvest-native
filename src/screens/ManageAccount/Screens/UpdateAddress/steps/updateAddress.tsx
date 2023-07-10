@@ -4,8 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { STATES_AS_SELECT_OPTION } from 'reinvest-app-common/src/constants/states';
 import { StepComponentProps, StepParams } from 'reinvest-app-common/src/services/form-flow';
-import { Address } from 'reinvest-app-common/src/types/graphql';
+import { useGetUserProfile } from 'reinvest-app-common/src/services/queries/getProfile';
+import { useUpdateProfile } from 'reinvest-app-common/src/services/queries/updateProfile';
+import { Address, AddressInput } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../../../../api/getApiClient';
 import { Button } from '../../../../../components/Button';
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { Icon } from '../../../../../components/Icon';
@@ -39,7 +42,8 @@ export const UpdateAddress: StepParams<AddressFields> = {
 
   Component: ({ updateStoreFields }: StepComponentProps<AddressFields>) => {
     const { openDialog } = useDialog();
-
+    const { mutateAsync } = useUpdateProfile(getApiClient);
+    const { refetch } = useGetUserProfile(getApiClient);
     const { handleSubmit, setValue, control, formState, watch, reset } = useForm<AddressFields>({
       mode: 'all',
       resolver: zodResolver(schema),
@@ -73,7 +77,7 @@ export const UpdateAddress: StepParams<AddressFields> = {
 
     const showSuccessDialog = useCallback(() => {
       const header = <HeaderWithLogo onClose={() => navigation.goBack()} />;
-      openDialog(<UpdateSuccess info="Adress Updated Succesfully" />, {
+      openDialog(<UpdateSuccess info="Address Updated Successfully" />, {
         showLogo: true,
         header,
         closeIcon: false,
@@ -94,11 +98,13 @@ export const UpdateAddress: StepParams<AddressFields> = {
     };
 
     const onSubmit: SubmitHandler<AddressFields> = async address => {
-      const { addressLine1, city, zip, state } = address;
+      const { addressLine1, addressLine2, city, zip, state } = address;
 
       await updateStoreFields({ ...address });
 
       if (addressLine1 && city && state && zip) {
+        await mutateAsync({ input: { address: { addressLine1, addressLine2, zip, state, city, country: 'USA' } as AddressInput } });
+        await refetch();
         showSuccessDialog();
       }
     };

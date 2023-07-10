@@ -7,10 +7,15 @@ import { InvestmentHistory } from './Screens/InvestmentHistory';
 import { ManageBankAccount } from './Screens/ManageBankAccount';
 import { RecurringInvestments } from './Screens/RecurringInvestments';
 import { RemoveBeneficiary } from './Screens/RemoveBeneficiary';
+import { RemoveProfile } from './Screens/RemoveProfile';
 import { Address } from './Screens/UpdateAddress';
 import UpdateBeneficiaryName from './Screens/UpdateBeneficiaryName';
+import { UpdateCompanyAddress } from './Screens/UpdateCompanyAddress';
 import { UpdateCompanyDocuments } from './Screens/UpdateCompanyDocuments';
+import { UpdateCompliances } from './Screens/UpdateCompliances';
+import { UpdateDomicile } from './Screens/UpdateDomicile';
 import { UpdateEmail } from './Screens/UpdateEmail';
+import { UpdateEmploymentDetails } from './Screens/UpdateEmploymentDetails';
 import { UpdateExperience } from './Screens/UpdateExperience';
 import { UpdateIncomeAndNetWorth } from './Screens/UpdateIncomeAndNetWorth';
 import { UpdateName } from './Screens/UpdateName';
@@ -37,4 +42,9 @@ export const SCREENS_CONTENT: Partial<{ [key in NavigationIdentifiers]: ReactNod
   NET_INCOME_AND_WORTH: <UpdateIncomeAndNetWorth />,
   EXPERIENCE_LEVEL: <UpdateExperience />,
   PROFILE_PICTURE: <UpdateProfilePicture />,
+  DOMICILE: <UpdateDomicile />,
+  COMPANY_ADDRESS: <UpdateCompanyAddress />,
+  EMPLOYMENT_DETAILS: <UpdateEmploymentDetails />,
+  REMOVE_PROFILE: <RemoveProfile />,
+  COMPLIANCES: <UpdateCompliances />,
 };

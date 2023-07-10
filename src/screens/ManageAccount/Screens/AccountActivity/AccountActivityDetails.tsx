@@ -12,7 +12,7 @@ export const AccountActivityDetails = ({
     params: { activity },
   },
 }: LogInProps<Screens.AccountActivityDetails>) => {
-  const [date, time] = formatDate(activity.date, 'ACCOUNT_ACTIVITY', { currentFormat: 'API' }).split(' | ');
+  const [date, time] = formatDate(activity.date, 'ACCOUNT_ACTIVITY', { currentFormat: 'API_TZ' }).split(' | ');
 
   const formattedActivity = { ...activity, date, time, origin: 'User' };
 

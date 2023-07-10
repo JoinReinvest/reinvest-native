@@ -81,10 +81,12 @@ export const Settings = () => {
 
   const showAddAnotherAccount = ACCOUNT_TO_OPEN?.some(acc => listAccountTypesUserCanOpen?.includes(acc as AccountType));
 
-  const signOut = () => {
+  const signOut = async () => {
     setSignOutLoading(true);
-    actions.signOut(() => {
-      setAccountAtom(RESET);
+
+    await actions.signOut(async () => {
+      await setAccountAtom(RESET);
+      setSignOutLoading(false);
     });
   };
 

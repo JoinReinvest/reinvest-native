@@ -27,7 +27,7 @@ import { styles } from './styles';
 export const OneTimeInvestment: StepParams<InvestFormFields> = {
   identifier: Identifiers.ONE_TIME_INVESTMENT,
   doesMeetConditionFields: fields => {
-    return !!(fields.accountId && fields.accountType);
+    return !!(fields.accountId && fields.accountType) && !fields.skipOneTimeInvestment;
   },
 
   Component: ({

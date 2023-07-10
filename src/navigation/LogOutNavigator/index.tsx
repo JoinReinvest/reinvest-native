@@ -32,7 +32,10 @@ const stackOptions: Record<Extract<Screens, Screens.SignUp | Screens.SignIn | Sc
 export const LogOutNavigator = () => {
   return (
     <DialogProvider dark>
-      <LogOutStack.Navigator screenOptions={{ gestureEnabled: false, header: DarkScreenHeader }}>
+      <LogOutStack.Navigator
+        screenOptions={{ gestureEnabled: false, header: DarkScreenHeader }}
+        initialRouteName={Screens.SignIn}
+      >
         <LogOutStack.Screen
           options={stackOptions[Screens.SignUp]}
           name={Screens.SignUp}
