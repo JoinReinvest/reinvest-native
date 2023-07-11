@@ -23,6 +23,7 @@ import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 
 const INVESTMENT_STATUS_LABELS: { [key in RecurringInvestmentStatus]: string } = {
   [RecurringInvestmentStatus.Active]: 'Active',
@@ -95,11 +96,35 @@ export const RecurringInvestments = () => {
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
   const formattedBankAccount = `${bankData?.bankName?.toUpperCase()} ${bankData?.accountNumber?.slice(9).replace(' ', '')}`;
 
-  useEffect(() => {
-    if (!isLoadingRecurringInvestment && !recurringInvestment) {
-      navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' });
-    }
-  }, [activeAccount.id, isLoadingRecurringInvestment, navigate, recurringInvestment]);
+  if (!isLoadingRecurringInvestment && !recurringInvestment) {
+    return (
+      <MainWrapper
+        bottomSafe
+        isLoading={isLoading}
+        noPadding
+      >
+        <PaddedScrollView>
+          <Row
+            mt="24"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Icon
+              icon="info"
+              size="s"
+            />
+            <StyledText>You don't have a scheduled investment</StyledText>
+          </Row>
+        </PaddedScrollView>
+        <Box
+          px="default"
+          fw
+        >
+          <Button onPress={() => navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' })}>Invest</Button>
+        </Box>
+      </MainWrapper>
+    );
+  }
 
   return (
     <>
