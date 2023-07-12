@@ -95,7 +95,7 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
       <>
         <PaddedScrollView>
           <FormTitle
-            dark
+            dark={false}
             headline="Check Your Email"
             description={subtitleMessage}
           />
@@ -116,7 +116,7 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
             control={control}
             onSubmit={handleSubmit(onSubmit)}
             inputProps={{
-              dark: true,
+              dark: false,
               placeholder: 'Authentication Code',
               maxLength: 6,
               keyboardType: 'number-pad',
@@ -130,14 +130,14 @@ export const StepAuthenticationCode: StepParams<UpdateEmailFormFields> = {
             <StyledText
               onPress={resendCodeOnClick}
               variant="link"
-              color="frostGreen"
+              color="deepGreen"
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={openMail}
               variant="link"
-              color="frostGreen"
+              color="deepGreen"
             >
               Get Help
             </StyledText>
