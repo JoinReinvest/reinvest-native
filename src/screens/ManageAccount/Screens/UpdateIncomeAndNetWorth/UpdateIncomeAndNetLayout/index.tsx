@@ -45,7 +45,7 @@ export const UpdateIncomeAndNetWorthLayout = () => {
         options={{
           headerLeft,
           headerRight,
-          title: 'Income And Worth',
+          title: 'Income And Net Worth',
         }}
       />
       <MainWrapper

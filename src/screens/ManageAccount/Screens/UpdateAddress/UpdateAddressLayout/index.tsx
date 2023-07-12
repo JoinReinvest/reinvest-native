@@ -15,7 +15,7 @@ import { useUpdateAddressFlow } from '../steps';
 export const UpdateAddressLayout = () => {
   const {
     CurrentStepView,
-    meta: { isFirstStep, isLastStep },
+    meta: { isFirstStep },
     moveToPreviousValidStep,
   } = useUpdateAddressFlow();
   const navigation = useLogInNavigation();
@@ -46,7 +46,7 @@ export const UpdateAddressLayout = () => {
             navigation={navigation}
             route={route}
             options={{
-              title: isLastStep ? 'Address' : 'Edit Address',
+              title: 'Residential Address',
               headerLeft,
             }}
             showGradient={true}

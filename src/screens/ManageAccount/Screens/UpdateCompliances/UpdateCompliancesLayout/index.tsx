@@ -45,7 +45,7 @@ export const UpdateCompliancesLayout = () => {
         options={{
           headerLeft,
           headerRight,
-          title: 'Edit Compliances',
+          title: 'Compliances',
         }}
       />
       <MainWrapper

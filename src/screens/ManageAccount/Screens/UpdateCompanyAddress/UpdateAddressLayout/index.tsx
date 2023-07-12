@@ -46,7 +46,7 @@ export const UpdateAddressLayout = () => {
             navigation={navigation}
             route={route}
             options={{
-              title: isLastStep ? 'Address' : 'Edit Address',
+              title: 'Company Address',
               headerLeft,
             }}
             showGradient={true}
