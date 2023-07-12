@@ -74,6 +74,7 @@ export const StepUpdatePhoneNumber: StepParams<UpdatePhoneNumberFormFields> = {
                 control={control}
                 fieldName="countryCode"
                 dropdownProps={{
+                  dark: false,
                   prefix: '+',
                   data: CALLING_CODE_OPTIONS,
                   predefined: true,
@@ -86,6 +87,7 @@ export const StepUpdatePhoneNumber: StepParams<UpdatePhoneNumberFormFields> = {
                 control={control}
                 fieldName="phoneNumber"
                 inputProps={{
+                  dark: false,
                   mask: PHONE_MASK,
                   maskedPlaceholder: '000-000-0000',
                   predefined: true,
