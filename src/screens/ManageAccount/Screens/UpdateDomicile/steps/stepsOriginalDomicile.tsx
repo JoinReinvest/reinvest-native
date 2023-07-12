@@ -46,9 +46,9 @@ export const StepOriginalDomicile: StepParams<UpdateDomicileFormFields> = {
               value ? (
                 <Box
                   key={key}
-                  mb="16"
+                  mb="24"
                 >
-                  <Row>
+                  <Row mb="8">
                     <StyledText variant="paragraphLarge">{DOMICILE_KEY_LABELS[key as keyof Domicile]}</StyledText>
                   </Row>
                   <Row>{value && <StyledText variant="h6">{key === 'type' ? DOMICILE_TYPE_LABELS[value as DomicileType] : value}</StyledText>}</Row>
