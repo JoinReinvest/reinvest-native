@@ -45,7 +45,7 @@ export const UpdateNameLayout = () => {
         options={{
           headerLeft,
           headerRight,
-          title: 'Edit Name',
+          title: 'Name',
         }}
       />
       <MainWrapper

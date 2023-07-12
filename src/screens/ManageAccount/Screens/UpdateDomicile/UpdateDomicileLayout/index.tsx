@@ -45,7 +45,7 @@ export const UpdateDomicileLayout = () => {
         options={{
           headerLeft,
           headerRight,
-          title: 'Edit Domicile',
+          title: 'Domicile',
         }}
       />
       <MainWrapper
