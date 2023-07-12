@@ -96,31 +96,30 @@ export const RecurringInvestments = () => {
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
   const formattedBankAccount = `${bankData?.bankName?.toUpperCase()} ${bankData?.accountNumber?.slice(9).replace(' ', '')}`;
 
-  if (!isLoadingRecurringInvestment && !recurringInvestment) {
+  if (isLoading) {
+    return <MainWrapper isLoading={isLoading} />;
+  }
+
+  if (!isLoading && (!bankData || !recurringInvestment)) {
     return (
       <MainWrapper
         bottomSafe
-        isLoading={isLoading}
         noPadding
       >
-        <PaddedScrollView>
-          <Row
-            mt="24"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Icon
-              icon="info"
-              size="s"
-            />
-            <StyledText>You don't have a scheduled investment</StyledText>
+        <PaddedScrollView style={{ marginTop: 24 }}>
+          <Row alignItems="center">
+            <Icon icon="info" />
+            {!bankData && <StyledText>You have no Bank Account linked</StyledText>}
+            {bankData && !recurringInvestment && <StyledText>You do not have a scheduled investment</StyledText>}
           </Row>
         </PaddedScrollView>
         <Box
-          px="default"
           fw
+          px="default"
         >
-          <Button onPress={() => navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' })}>Invest</Button>
+          <Button onPress={() => navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' })}>
+            {!bankData ? 'Connect' : 'Invest'}
+          </Button>
         </Box>
       </MainWrapper>
     );
@@ -128,10 +127,7 @@ export const RecurringInvestments = () => {
 
   return (
     <>
-      <MainWrapper
-        isLoading={isLoading}
-        bottomSafe
-      >
+      <MainWrapper bottomSafe>
         {recurringInvestment && (
           <Box
             fw
