@@ -121,6 +121,7 @@ export const UpdateProfilePicture = () => {
         <Box
           fw
           alignItems={'center'}
+          mt="48"
         >
           <Avatar
             uri={newAvatarUri ?? activeAccount.avatar?.url ?? ''}
@@ -138,6 +139,7 @@ export const UpdateProfilePicture = () => {
       >
         <Button
           isLoading={isLoading}
+          disabled={!newAvatarUri}
           onPress={onSubmit}
         >
           Continue
