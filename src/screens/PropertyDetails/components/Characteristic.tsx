@@ -18,16 +18,20 @@ export const Characteristic = ({ poi, underlined }: Props) => {
       py="16"
       style={[underlined && styles.separator]}
       alignItems="center"
+      pr="48"
     >
-      <Image
-        style={{ height: 52, width: 52 }}
-        source={{ uri: poi.image ?? '' }}
-      />
-      <Box pl="12">
+      <Box pr="12">
+        <Image
+          style={{ height: 52, width: 52 }}
+          source={{ uri: poi.image ?? '' }}
+        />
+      </Box>
+      <Box fw>
         <StyledText variant="button">{poi.name}</StyledText>
         <StyledText
+          textAlign="left"
           color="dark2"
-          variant="paragraphSmall"
+          variant="paragraph"
         >
           {poi.description}
         </StyledText>

@@ -68,7 +68,7 @@ export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) 
             </BorderedDescription>
           </Box>
           <Box
-            px="24"
+            px="default"
             style={{ borderColor: palette.lightGray, borderWidth: 1 }}
           >
             {property.POIs?.map((poi, idx) => {
