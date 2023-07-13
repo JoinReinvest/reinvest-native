@@ -192,7 +192,7 @@ export const Input = forwardRef<TextInput, InputProps>(
                   style,
                   (secureTextEntry || !!rightSection) && !predefined && styles.narrowInput,
                 ]}
-                placeholderTextColor={dark ? palette.dark3 : undefined}
+                placeholderTextColor={palette.dark3}
                 onFocus={() => {
                   stateHandler(true);
                 }}
