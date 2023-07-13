@@ -30,7 +30,10 @@ export const UpdateEmailLayout = () => {
   useStepBackOverride<UpdateEmailFormFields, LogInStackParamList>(useUpdateEmailFlow, navigation, false, isOnAuthCodeStep);
   useKeyboardAware();
 
-  const headerRight = useCallback(() => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} />, [isOnAuthCodeStep, navigation]);
+  const headerRight = useCallback(
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
+  );
 
   const headerLeft = useCallback(
     () => (
