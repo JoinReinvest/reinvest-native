@@ -16,6 +16,7 @@ import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
+import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { LogInProps } from '../../navigation/LogInNavigator/types';
 import Screens from '../../navigation/screens';
 import { useDialog } from '../../providers/DialogProvider';
@@ -36,6 +37,7 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
+  usePushNotifications();
 
   const getTableItemValue = (identifier: TableIdentifiers) => {
     if (!stats) return '';

@@ -11,7 +11,6 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { HeaderCancel } from '../../components/HeaderCancel';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
-import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
@@ -30,6 +29,7 @@ import { Settings } from '../../screens/Settings';
 import { TradeSummary } from '../../screens/TradeSummary';
 import { currentAccount, useAtom } from '../../store/atoms';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
+import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
@@ -91,9 +91,9 @@ const stackOptions: Record<
 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
-  const { data: accounts, isLoading: accountLoading, isRefetching } = useGetAccountsOverview(getApiClient);
+  const { data: accounts, isLoading: accountLoading, isRefetching, error } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
-  usePushNotifications();
+  const { navigate } = useLogInNavigation();
 
   useLayoutEffect(() => {
     refetch();
@@ -108,7 +108,25 @@ export const LogInNavigator: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountLoading, accounts, isRefetching]);
 
-  if (!data) {
+  useEffect(() => {
+    if (error instanceof Error && error.message.includes('banned')) {
+      navigate(Screens.Locked, { isBannedProfile: true });
+    }
+  }, [error, navigate]);
+
+  const getInitialRouteName = () => {
+    if (error instanceof Error && error.message.includes('banned')) {
+      return Screens.Locked;
+    }
+
+    if (data?.isCompleted) {
+      return Screens.BottomNavigator;
+    }
+
+    return Screens.Onboarding;
+  };
+
+  if (!data && !error) {
     return (
       <Box
         flex={1}
@@ -127,7 +145,7 @@ export const LogInNavigator: React.FC = () => {
         <DialogProvider dark={false}>
           <LogInStack.Navigator
             screenOptions={{ gestureEnabled: false }}
-            initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}
+            initialRouteName={getInitialRouteName()}
           >
             <LogInStack.Group screenOptions={{ headerShown: false }}>
               <LogInStack.Screen
@@ -204,6 +222,7 @@ export const LogInNavigator: React.FC = () => {
               <LogInStack.Screen
                 options={stackOptions[Screens.Locked]}
                 name={Screens.Locked}
+                initialParams={{ isBannedProfile: true }}
                 component={BannedScreen}
               />
               <LogInStack.Screen
