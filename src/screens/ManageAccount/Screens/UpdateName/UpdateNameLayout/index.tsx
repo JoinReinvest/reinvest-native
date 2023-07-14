@@ -9,6 +9,7 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { UpdateNameFormFields } from '../form-fields';
 import { useUpdateNameFlow } from '../steps';
 
@@ -35,7 +36,10 @@ export const UpdateNameLayout = () => {
     [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
-  const headerRight = useCallback(() => <HeaderCancel onPress={navigation.goBack} />, [navigation]);
+  const headerRight = useCallback(
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
+  );
 
   return (
     <>

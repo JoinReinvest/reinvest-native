@@ -14,7 +14,7 @@ export const ManageAccountScreen = ({ navigation, route }: NativeStackScreenProp
   } = route.params;
 
   const getRightHeader = useMemo(
-    () => (cancellable ? () => <HeaderCancel onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)} /> : undefined),
+    () => (cancellable ? () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} /> : undefined),
     [navigation, cancellable],
   );
 
