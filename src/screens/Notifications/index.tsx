@@ -55,7 +55,9 @@ export const Notifications = () => {
 
         return navigate(Screens.KYCFail, { actions: verificationResponse?.requiredActions as VerificationAction[] });
       }
-
+      case NotificationType.FeesApprovalRequired: {
+        return navigate(Screens.FeesApproval, { investmentId: notification.onObject?.id ?? '' });
+      }
       case NotificationType.DividendReceived:
       case NotificationType.RewardDividendReceived:
         return navigate(Screens.NotificationDetails, { notification });
