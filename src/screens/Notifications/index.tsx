@@ -71,6 +71,12 @@ export const Notifications = () => {
     }
   }, [data, setUnreadNotificationsCount]);
 
+  useEffect(() => {
+    (async () => {
+      await refetch();
+    })();
+  }, [refetch]);
+
   return (
     <MainWrapper
       isLoading={isLoading}
