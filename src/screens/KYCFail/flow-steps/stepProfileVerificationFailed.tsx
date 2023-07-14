@@ -22,7 +22,7 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
 
   Component: ({ storeFields, updateStoreFields, moveToNextStep, moveToStepByIdentifier }: StepComponentProps<KYCFailedFormFields>) => {
     const { _actions, _oneTimeInvestmentId, _recurringInvestmentId, _bannedAction, _forceManualReviewScreen } = storeFields;
-    const { data: userProfile } = useGetUserProfile(getApiClient);
+    const { data: userProfile, error } = useGetUserProfile(getApiClient);
     const { navigate } = useLogInNavigation();
     const { mutateAsync: abortInvestment } = useAbortInvestment(getApiClient);
 
@@ -63,9 +63,10 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
       (async () => {
         // if user got banned navigate immediately to locked screen;
         const isBannedAccount = !!_actions?.some(({ action }) => action === ActionName.BanAccount);
-        const isBannedProfile = !!_actions?.some(({ action }) => action === ActionName.BanProfile);
+        const isBannedProfile =
+          !!_actions?.some(({ action }) => action === ActionName.BanProfile) || (error instanceof Error && error.message.includes('banned'));
 
-        if (isBannedAccount) {
+        if (isBannedAccount || isBannedProfile) {
           navigate(Screens.Locked, { isBannedAccount, isBannedProfile });
           await cancelInvestment();
 
@@ -79,7 +80,7 @@ export const StepProfileVerificationFailed: StepParams<KYCFailedFormFields> = {
           return;
         }
       })();
-    }, [_actions, _bannedAction, _forceManualReviewScreen, cancelInvestment, moveToStepByIdentifier, navigate]);
+    }, [_actions, _bannedAction, _forceManualReviewScreen, cancelInvestment, error, moveToStepByIdentifier, navigate]);
 
     return (
       <>

@@ -75,7 +75,7 @@ export const BottomTabsNavigator: React.FC = () => {
     })();
   }, [account.id, account.isBanned, data?.isCompleted, navigate, reset]);
 
-  const isBannedProfile = error instanceof Error && (error.message === 'Profile is banned' || error.name === 'Profile is banned');
+  const isBannedProfile = error instanceof Error && error.message.includes('banned');
 
   if (isLoadingUserProfile)
     return (
