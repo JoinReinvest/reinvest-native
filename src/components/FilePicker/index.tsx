@@ -159,9 +159,7 @@ export const FilePicker = ({
   );
 
   const handleError = (err: unknown) => {
-    if (DocumentPicker.isCancel(err)) {
-      Alert.alert('cancelled');
-    } else if (isInProgress(err)) {
+    if (isInProgress(err)) {
       // eslint-disable-next-line no-console
       console.log('multiple pickers were opened, only the last will be considered');
     } else {
