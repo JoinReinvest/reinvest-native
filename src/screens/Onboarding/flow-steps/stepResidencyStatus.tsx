@@ -45,8 +45,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
     });
     const { isLoading, mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
 
-    const shouldButtonBeDisabled = watch('residency') || !isLoading;
-
+    const shouldButtonBeDisabled = !watch('residency') || isLoading;
     const onSubmit: SubmitHandler<Fields> = async fields => {
       await updateStoreFields(fields);
 
@@ -88,7 +87,7 @@ export const StepResidencyStatus: StepParams<OnboardingFormFields> = {
           style={styles.buttonsSection}
         >
           <Button
-            disabled={!shouldButtonBeDisabled}
+            disabled={shouldButtonBeDisabled}
             onPress={handleSubmit(onSubmit)}
           >
             Continue

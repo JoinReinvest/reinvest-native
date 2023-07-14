@@ -54,7 +54,7 @@ export const StepDateOfBirth: StepParams<OnboardingFormFields> = {
 
     const { mutateAsync: completeProfileMutate, isSuccess } = useCompleteProfileDetails(getApiClient);
     const { openDialog } = useDialog();
-    const shouldButtonBeDisabled = formState.isSubmitting;
+    const shouldButtonBeDisabled = formState.isSubmitting || !formState.isValid;
 
     const onSubmit: SubmitHandler<Fields> = async ({ dateOfBirth }) => {
       if (dateOfBirth) {
