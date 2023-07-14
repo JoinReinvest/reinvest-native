@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { UseInfiniteQueryResult } from '@tanstack/react-query';
-import { useAtom } from 'jotai';
-import React, { useEffect, useMemo } from 'react';
+import { useSetAtom } from 'jotai';
+import React, { useEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
@@ -27,22 +27,21 @@ export const Notifications = () => {
   const { top } = useSafeAreaInsets();
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
-  const { data, isLoading, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
+  const { data, isLoading, isRefetching, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id || '',
   });
   const { mutateAsync: verifyAccount } = useVerifyAccount(getApiClient);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
-  const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
+  const setUnreadNotificationsCount = useSetAtom(unreadNotificationsCount);
+  const { mutateAsync: markRead } = useMarkNotificationAsRead(getApiClient);
 
-  const list = useMemo(() => data?.pages.map(el => el.getNotifications).flat() || [], [data]);
+  const list = data?.pages.map(el => el.getNotifications).flat() ?? [];
 
   const onPressHandler = async (notification: BaseNotification) => {
     if (notification.isRead) {
       return;
     }
 
-    markRead({ notificationId: notification.id });
+    await markRead({ notificationId: notification.id });
     await refetch();
 
     switch (notification.notificationType) {
@@ -68,16 +67,14 @@ export const Notifications = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      setUnreadNotificationsCount(data.pages[0]?.unreadCount ?? 0);
-    }
-  }, [data, setUnreadNotificationsCount]);
-
-  useEffect(() => {
     (async () => {
-      await refetch();
+      const res = await refetch();
+
+      if (res.data?.pages.length) {
+        setUnreadNotificationsCount(res.data.pages[0]?.unreadCount ?? 0);
+      }
     })();
-  }, [refetch]);
+  }, [refetch, setUnreadNotificationsCount]);
 
   return (
     <MainWrapper
@@ -89,9 +86,9 @@ export const Notifications = () => {
         flex={1}
       >
         <FlashList<BaseNotification>
-          ListEmptyComponent={!isLoading ? <EmptyListComponent headline="No Notifications" /> : null}
+          ListEmptyComponent={!isLoading && !list.length ? <EmptyListComponent headline="No Notifications" /> : null}
           estimatedItemSize={132}
-          refreshing={isLoading}
+          refreshing={isLoading || isRefetching}
           onRefresh={refetch}
           onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.3}
