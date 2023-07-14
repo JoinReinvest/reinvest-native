@@ -17,6 +17,7 @@ import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
 import { BannedScreen } from '../../screens/BannedScreen';
 import { DividendsPayoutScreen } from '../../screens/DividendsPayout';
+import FeesApproval from '../../screens/FeesApproval';
 import { Investing } from '../../screens/Investing';
 import { InvestingAccountSelection } from '../../screens/InvestingAccountSelection';
 import { KYCFail } from '../../screens/KYCFail';
@@ -49,6 +50,7 @@ const stackOptions: Record<
     | Screens.TradeSummary
     | Screens.InvestingAccountSelection
     | Screens.AccountActivityDetails
+    | Screens.FeesApproval
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -86,6 +88,9 @@ const stackOptions: Record<
   }),
   [Screens.AccountActivityDetails]: {
     title: 'Account Activity',
+  },
+  [Screens.FeesApproval]: {
+    title: 'logo',
   },
 };
 
@@ -210,6 +215,11 @@ export const LogInNavigator: React.FC = () => {
                 name={Screens.Onboarding}
                 options={stackOptions[Screens.Onboarding]}
                 component={Onboarding}
+              />
+              <LogInStack.Screen
+                name={Screens.FeesApproval}
+                component={FeesApproval}
+                options={stackOptions[Screens.FeesApproval]}
               />
             </LogInStack.Group>
           </LogInStack.Navigator>
