@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { UseInfiniteQueryResult } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
@@ -27,7 +27,7 @@ export const Notifications = () => {
   const { top } = useSafeAreaInsets();
   const { activeAccount } = useCurrentAccount();
   const { navigate } = useLogInNavigation();
-  const { data, isLoading, isRefetching, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
+  const { data, isLoading, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id || '',
   });
   const { mutateAsync: verifyAccount } = useVerifyAccount(getApiClient);
@@ -66,7 +66,7 @@ export const Notifications = () => {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       const res = await refetch();
 
@@ -88,7 +88,7 @@ export const Notifications = () => {
         <FlashList<BaseNotification>
           ListEmptyComponent={!isLoading && !list.length ? <EmptyListComponent headline="No Notifications" /> : null}
           estimatedItemSize={132}
-          refreshing={isLoading || isRefetching}
+          refreshing={isLoading}
           onRefresh={refetch}
           onEndReached={() => fetchNextPage()}
           onEndReachedThreshold={0.3}
