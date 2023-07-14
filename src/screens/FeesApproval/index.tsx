@@ -3,6 +3,7 @@ import React from 'react';
 import { useApproveFees } from 'reinvest-app-common/src/services/queries/approveFees';
 import { useCancelInvestment } from 'reinvest-app-common/src/services/queries/cancel-investment';
 import { useGetInvestmentSummary } from 'reinvest-app-common/src/services/queries/getInvestmentSummary';
+import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { getApiClient } from '../../api/getApiClient';
 import { Button } from '../../components/Button';
@@ -94,8 +95,16 @@ const FeesApproval = ({
         </Box>
         <FormTitle
           dark
-          headline={`Notice: ${investmentSummary?.investmentFees?.formatted} fees required for the transaction`}
+          headline={`Notice: ${investmentSummary?.investmentFees?.formatted} fee for manual verification`}
+          description="As your verification has failed twice. REINVEST needs to run manual verification"
         />
+        <Box mt="12">
+          <StyledText>Trade ID: ${investmentSummary?.tradeId}</StyledText>
+          {investmentSummary?.createdAt && (
+            <StyledText>Date ID: {formatDate(investmentSummary.createdAt, 'INVESTMENT_SUMMARY', { currentFormat: 'API' })}</StyledText>
+          )}
+          <StyledText>Amount: ${investmentSummary?.amount.formatted}</StyledText>
+        </Box>
       </PaddedScrollView>
       <Box
         fw
