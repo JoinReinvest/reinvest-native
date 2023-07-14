@@ -53,8 +53,8 @@ export const StepPhoneAuthentication: StepParams<OnboardingFormFields> = {
       defaultValues,
       resolver: zodResolver(schema),
     });
-    const { isLoading: resendLoading, mutate: setPhoneNumberMutate } = useSetPhoneNumber(getApiClient);
-    const { isLoading: verificationLoading, mutate: verifyPhoneNumber, isSuccess: verificationSuccess } = useVerifyPhoneNumber(getApiClient);
+    const { isLoading: resendLoading, mutateAsync: setPhoneNumberMutate } = useSetPhoneNumber(getApiClient);
+    const { isLoading: verificationLoading, mutateAsync: verifyPhoneNumber, isSuccess: verificationSuccess } = useVerifyPhoneNumber(getApiClient);
 
     useEffect(() => {
       if (verificationSuccess) {
