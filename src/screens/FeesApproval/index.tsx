@@ -99,11 +99,11 @@ const FeesApproval = ({
           description="As your verification has failed twice. REINVEST needs to run manual verification"
         />
         <Box mt="12">
-          <StyledText>Trade ID: ${investmentSummary?.tradeId}</StyledText>
+          <StyledText color="pureWhite">Trade ID: ${investmentSummary?.tradeId}</StyledText>
           {investmentSummary?.createdAt && (
-            <StyledText>Date ID: {formatDate(investmentSummary.createdAt, 'INVESTMENT_SUMMARY', { currentFormat: 'API' })}</StyledText>
+            <StyledText color="pureWhite">Date ID: {formatDate(investmentSummary.createdAt, 'INVESTMENT_SUMMARY', { currentFormat: 'API' })}</StyledText>
           )}
-          <StyledText>Amount: ${investmentSummary?.amount.formatted}</StyledText>
+          <StyledText color="pureWhite">Amount: ${investmentSummary?.amount.formatted}</StyledText>
         </Box>
       </PaddedScrollView>
       <Box
