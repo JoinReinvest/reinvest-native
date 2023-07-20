@@ -13,6 +13,7 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { DialogProvider } from '../../../../../providers/DialogProvider';
 import { WithdrawalFundsFormFields } from '../form-fields';
 import { useWithdrawalFundsFlow } from '../steps';
@@ -32,7 +33,7 @@ export const WithdrawalFundsLayout = () => {
   useKeyboardAware();
 
   const cancelFlow = useCallback(async () => {
-    navigation.goBack();
+    navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard });
     await mutateAsync({ accountId: activeAccount.id ?? '' });
   }, [activeAccount.id, mutateAsync, navigation]);
 

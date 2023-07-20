@@ -10,6 +10,7 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { UpdatePasswordFormFields } from '../form-fields';
 import { useUpdateEmailFlow } from '../steps';
 
@@ -36,7 +37,10 @@ export const UpdatePasswordLayout = () => {
     [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
-  const headerRight = useCallback(() => <HeaderCancel onPress={navigation.goBack} />, [navigation]);
+  const headerRight = useCallback(
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
+  );
 
   return (
     <>

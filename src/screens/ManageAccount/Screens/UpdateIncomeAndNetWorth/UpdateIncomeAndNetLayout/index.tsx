@@ -9,6 +9,7 @@ import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { UpdateIncomeAndNetWorthFormFields } from '../form-fields';
 import { useUpdateIncomeAndNetWorthFlow } from '../steps';
 
@@ -35,7 +36,10 @@ export const UpdateIncomeAndNetWorthLayout = () => {
     [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
-  const headerRight = useCallback(() => <HeaderCancel onPress={navigation.goBack} />, [navigation]);
+  const headerRight = useCallback(
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
+  );
 
   return (
     <>
@@ -45,7 +49,7 @@ export const UpdateIncomeAndNetWorthLayout = () => {
         options={{
           headerLeft,
           headerRight,
-          title: 'Income And Worth',
+          title: 'Income And Net Worth',
         }}
       />
       <MainWrapper

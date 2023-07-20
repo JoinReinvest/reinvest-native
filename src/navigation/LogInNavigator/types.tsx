@@ -39,6 +39,7 @@ export type LogInStackParamList = {
   [Screens.DividendsPayout]: undefined;
   [Screens.InvestingAccountSelection]: undefined;
   [Screens.AccountActivityDetails]: { activity: AccountActivity };
+  [Screens.FeesApproval]: { investmentId: string };
 };
 
 export type LogInNavProps<T extends keyof LogInStackParamList> = NativeStackNavigationProp<LogInStackParamList, T>;

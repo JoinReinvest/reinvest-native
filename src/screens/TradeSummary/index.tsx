@@ -40,6 +40,8 @@ const Item = ({ title, value, showBorder = true }: { title: string; value: strin
 
 const STATUS_LABEL: { [key in InvestmentStatus]: string } = {
   [InvestmentStatus.Transferred]: 'Transferred',
+  [InvestmentStatus.Reverted]: 'Reverted',
+  [InvestmentStatus.Settling]: 'Settling',
   [InvestmentStatus.Canceled]: 'Canceled',
   [InvestmentStatus.Canceling]: 'Canceling',
   [InvestmentStatus.Failed]: 'Failed',

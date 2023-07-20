@@ -11,12 +11,12 @@ import { DarkScreenHeader, ScreenHeader } from '../../components/CustomHeader';
 import { HeaderCancel } from '../../components/HeaderCancel';
 import { Loader } from '../../components/Loader';
 import { palette } from '../../constants/theme';
-import { usePushNotifications } from '../../hooks/usePushNotifications';
 import { DialogProvider } from '../../providers/DialogProvider';
 import { AddBeneficiary } from '../../screens/AddBeneficiary';
 import { BankAccount } from '../../screens/BankAccount';
 import { BannedScreen } from '../../screens/BannedScreen';
 import { DividendsPayoutScreen } from '../../screens/DividendsPayout';
+import FeesApproval from '../../screens/FeesApproval';
 import { Investing } from '../../screens/Investing';
 import { InvestingAccountSelection } from '../../screens/InvestingAccountSelection';
 import { KYCFail } from '../../screens/KYCFail';
@@ -30,6 +30,7 @@ import { Settings } from '../../screens/Settings';
 import { TradeSummary } from '../../screens/TradeSummary';
 import { currentAccount, useAtom } from '../../store/atoms';
 import { BottomTabsNavigator } from '../BottomTabsNavigator';
+import { useLogInNavigation } from '../hooks';
 import Screens from '../screens';
 import { LogInStackParamList } from './types';
 
@@ -49,6 +50,7 @@ const stackOptions: Record<
     | Screens.TradeSummary
     | Screens.InvestingAccountSelection
     | Screens.AccountActivityDetails
+    | Screens.FeesApproval
   >,
   NativeStackNavigationOptions | StackOptionsParametrized
 > = {
@@ -87,13 +89,16 @@ const stackOptions: Record<
   [Screens.AccountActivityDetails]: {
     title: 'Account Activity',
   },
+  [Screens.FeesApproval]: {
+    title: 'logo',
+  },
 };
 
 export const LogInNavigator: React.FC = () => {
   const { data, refetch } = useGetUserProfile(getApiClient);
-  const { data: accounts, isLoading: accountLoading, isRefetching } = useGetAccountsOverview(getApiClient);
+  const { data: accounts, isLoading: accountLoading, isRefetching, error } = useGetAccountsOverview(getApiClient);
   const [account, setAccount] = useAtom(currentAccount);
-  usePushNotifications();
+  const { navigate } = useLogInNavigation();
 
   useLayoutEffect(() => {
     refetch();
@@ -108,7 +113,25 @@ export const LogInNavigator: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountLoading, accounts, isRefetching]);
 
-  if (!data) {
+  useEffect(() => {
+    if (error instanceof Error && error.message.includes('banned')) {
+      navigate(Screens.Locked, { isBannedProfile: true });
+    }
+  }, [error, navigate]);
+
+  const getInitialRouteName = () => {
+    if (error instanceof Error && error.message.includes('banned')) {
+      return Screens.Locked;
+    }
+
+    if (data?.isCompleted) {
+      return Screens.BottomNavigator;
+    }
+
+    return Screens.Onboarding;
+  };
+
+  if (!data && !error) {
     return (
       <Box
         flex={1}
@@ -127,7 +150,7 @@ export const LogInNavigator: React.FC = () => {
         <DialogProvider dark={false}>
           <LogInStack.Navigator
             screenOptions={{ gestureEnabled: false }}
-            initialRouteName={data.isCompleted ? Screens.BottomNavigator : Screens.Onboarding}
+            initialRouteName={getInitialRouteName()}
           >
             <LogInStack.Group screenOptions={{ headerShown: false }}>
               <LogInStack.Screen
@@ -204,12 +227,18 @@ export const LogInNavigator: React.FC = () => {
               <LogInStack.Screen
                 options={stackOptions[Screens.Locked]}
                 name={Screens.Locked}
+                initialParams={{ isBannedProfile: true }}
                 component={BannedScreen}
               />
               <LogInStack.Screen
                 name={Screens.Onboarding}
                 options={stackOptions[Screens.Onboarding]}
                 component={Onboarding}
+              />
+              <LogInStack.Screen
+                name={Screens.FeesApproval}
+                component={FeesApproval}
+                options={stackOptions[Screens.FeesApproval]}
               />
             </LogInStack.Group>
           </LogInStack.Navigator>

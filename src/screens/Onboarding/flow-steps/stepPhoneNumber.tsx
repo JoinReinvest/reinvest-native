@@ -43,6 +43,23 @@ export const CALLING_CODE_OPTIONS: SelectOptions = UNIQUE_COUNTRIES_CALLING_CODE
   value: callingCode,
 }));
 
+const formatPhone = (phoneNumber: string) => {
+  if (!phoneNumber) {
+    return '';
+  }
+
+  const formattedPhone = [];
+
+  for (let i = 0; i < phoneNumber.length; i++) {
+    if (i > 0 && i < 8 && i % 3 === 0) {
+      formattedPhone.push('-');
+    }
+
+    formattedPhone.push(phoneNumber[i]);
+  }
+
+  return formattedPhone.join('');
+};
 export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
   identifier: Identifiers.PHONE_NUMBER,
 
@@ -58,19 +75,20 @@ export const StepPhoneNumber: StepParams<OnboardingFormFields> = {
 
   Component: ({ storeFields: { phone }, updateStoreFields, moveToNextStep }: StepComponentProps<OnboardingFormFields>) => {
     const { progressPercentage } = useOnboardingFormFlow();
-    const { control, handleSubmit } = useForm<Fields>({
+    const { control, handleSubmit, formState } = useForm<Fields>({
       mode: 'onSubmit',
       resolver: zodResolver(schema),
       defaultValues: {
-        number: phone?.number || '',
+        number: formatPhone(phone?.number || ''),
         countryCode: phone?.countryCode || CALLING_CODES[0],
       },
     });
-    const { error: phoneNumberError, isLoading, mutate: setPhoneNumberMutate, isSuccess } = useSetPhoneNumber(getApiClient);
+
+    const { error: phoneNumberError, isLoading, mutateAsync: setPhoneNumberMutate, isSuccess } = useSetPhoneNumber(getApiClient);
 
     const { openDialog } = useDialog();
 
-    const shouldButtonBeDisabled = isLoading;
+    const shouldButtonBeDisabled = isLoading || !formState.isValid;
 
     const onSubmit: SubmitHandler<Fields> = async fields => {
       fields.number = fields.number.split('-').join('');

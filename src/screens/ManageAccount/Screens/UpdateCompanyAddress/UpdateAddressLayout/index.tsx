@@ -3,19 +3,21 @@ import React, { useCallback } from 'react';
 
 import { Box } from '../../../../../components/Containers/Box/Box';
 import { ScreenHeader } from '../../../../../components/CustomHeader';
+import { HeaderCancel } from '../../../../../components/HeaderCancel';
 import { Icon } from '../../../../../components/Icon';
 import { MainWrapper } from '../../../../../components/MainWrapper';
 import { useStepBackOverride } from '../../../../../hooks/useBackOverride';
 import { useKeyboardAware } from '../../../../../hooks/useKeyboardAware';
 import { useLogInNavigation } from '../../../../../navigation/hooks';
 import { LogInStackParamList } from '../../../../../navigation/LogInNavigator/types';
+import Screens from '../../../../../navigation/screens';
 import { AddressFields } from '../form-fields';
 import { useUpdateAddressFlow } from '../steps';
 
 export const UpdateAddressLayout = () => {
   const {
     CurrentStepView,
-    meta: { isFirstStep, isLastStep },
+    meta: { isFirstStep },
     moveToPreviousValidStep,
   } = useUpdateAddressFlow();
   const navigation = useLogInNavigation();
@@ -35,6 +37,11 @@ export const UpdateAddressLayout = () => {
     [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
+  const headerRight = useCallback(
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
+  );
+
   return (
     <>
       <MainWrapper
@@ -46,8 +53,9 @@ export const UpdateAddressLayout = () => {
             navigation={navigation}
             route={route}
             options={{
-              title: isLastStep ? 'Address' : 'Edit Address',
+              title: 'Company Address',
               headerLeft,
+              headerRight,
             }}
             showGradient={true}
           />

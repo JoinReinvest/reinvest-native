@@ -91,7 +91,7 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
       <>
         <PaddedScrollView>
           <FormTitle
-            dark
+            dark={false}
             headline="Check Your Phone"
             description={`Enter the SMS authentication code sent to your phone ${maskPhoneNumber(
               storeFields.countryCode ?? '',
@@ -109,7 +109,7 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
             control={control}
             onSubmit={handleSubmit(onSubmit)}
             inputProps={{
-              dark: true,
+              dark: false,
               placeholder: 'Authentication Code',
               maxLength: 6,
               keyboardType: 'number-pad',
@@ -123,14 +123,14 @@ export const StepAuthenticationCode: StepParams<UpdatePhoneNumberFormFields> = {
             <StyledText
               onPress={resendCodeOnClick}
               variant="link"
-              color="frostGreen"
+              color="deepGreen"
             >
               Resend Code
             </StyledText>
             <StyledText
               onPress={openMail}
               variant="link"
-              color="frostGreen"
+              color="deepGreen"
             >
               Get Help
             </StyledText>

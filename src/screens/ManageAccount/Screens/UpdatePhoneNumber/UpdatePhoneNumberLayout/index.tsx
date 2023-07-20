@@ -31,25 +31,20 @@ export const UpdatePhoneNumberLayout = () => {
   useKeyboardAware();
 
   const headerRight = useCallback(
-    () => (
-      <HeaderCancel
-        dark={isOnAuthCodeStep}
-        onPress={() => navigation.navigate(Screens.ManageAccountMainScreen)}
-      />
-    ),
-    [isOnAuthCodeStep, navigation],
+    () => <HeaderCancel onPress={() => navigation.navigate(Screens.BottomNavigator, { screen: Screens.Dashboard })} />,
+    [navigation],
   );
 
   const headerLeft = useCallback(
     () => (
       <Icon
-        color={isOnAuthCodeStep ? palette.pureWhite : palette.pureBlack}
+        color={palette.pureBlack}
         icon={'down'}
         style={{ transform: [{ rotate: '90deg' }] }}
         onPress={() => (isFirstStep ? navigation.goBack() : moveToPreviousValidStep())}
       />
     ),
-    [isFirstStep, isOnAuthCodeStep, moveToPreviousValidStep, navigation],
+    [isFirstStep, moveToPreviousValidStep, navigation],
   );
 
   return (
@@ -57,11 +52,9 @@ export const UpdatePhoneNumberLayout = () => {
       <MainWrapper
         noPadding
         bottomSafe
-        dark={isOnAuthCodeStep}
       >
         <Box fw>
           <ScreenHeader
-            dark={isOnAuthCodeStep}
             navigation={navigation}
             route={route}
             options={{

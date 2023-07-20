@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { UseInfiniteQueryResult } from '@tanstack/react-query';
-import { useAtom } from 'jotai';
-import React, { useEffect, useMemo } from 'react';
+import { useSetAtom } from 'jotai';
+import React, { useLayoutEffect } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetNotifications } from 'reinvest-app-common/src/services/queries/getNotifications';
 import { GetApiClient } from 'reinvest-app-common/src/services/queries/interfaces';
@@ -31,18 +31,17 @@ export const Notifications = () => {
     accountId: activeAccount.id || '',
   });
   const { mutateAsync: verifyAccount } = useVerifyAccount(getApiClient);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);
-  const { mutate: markRead } = useMarkNotificationAsRead(getApiClient);
+  const setUnreadNotificationsCount = useSetAtom(unreadNotificationsCount);
+  const { mutateAsync: markRead } = useMarkNotificationAsRead(getApiClient);
 
-  const list = useMemo(() => data?.pages.map(el => el.getNotifications).flat() || [], [data]);
+  const list = data?.pages.map(el => el.getNotifications).flat() ?? [];
 
   const onPressHandler = async (notification: BaseNotification) => {
     if (notification.isRead) {
       return;
     }
 
-    markRead({ notificationId: notification.id });
+    await markRead({ notificationId: notification.id });
     await refetch();
 
     switch (notification.notificationType) {
@@ -55,7 +54,9 @@ export const Notifications = () => {
 
         return navigate(Screens.KYCFail, { actions: verificationResponse?.requiredActions as VerificationAction[] });
       }
-
+      case NotificationType.FeesApprovalRequired: {
+        return navigate(Screens.FeesApproval, { investmentId: notification.onObject?.id ?? '' });
+      }
       case NotificationType.DividendReceived:
       case NotificationType.RewardDividendReceived:
         return navigate(Screens.NotificationDetails, { notification });
@@ -65,11 +66,15 @@ export const Notifications = () => {
     }
   };
 
-  useEffect(() => {
-    if (data) {
-      setUnreadNotificationsCount(data.pages[0]?.unreadCount ?? 0);
-    }
-  }, [data, setUnreadNotificationsCount]);
+  useLayoutEffect(() => {
+    (async () => {
+      const res = await refetch();
+
+      if (res.data?.pages.length) {
+        setUnreadNotificationsCount(res.data.pages[0]?.unreadCount ?? 0);
+      }
+    })();
+  }, [refetch, setUnreadNotificationsCount]);
 
   return (
     <MainWrapper
@@ -81,7 +86,7 @@ export const Notifications = () => {
         flex={1}
       >
         <FlashList<BaseNotification>
-          ListEmptyComponent={!isLoading ? <EmptyListComponent headline="No Notifications" /> : null}
+          ListEmptyComponent={!isLoading && !list.length ? <EmptyListComponent headline="No Notifications" /> : null}
           estimatedItemSize={132}
           refreshing={isLoading}
           onRefresh={refetch}

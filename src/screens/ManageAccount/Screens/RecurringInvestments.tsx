@@ -23,6 +23,7 @@ import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 
 const INVESTMENT_STATUS_LABELS: { [key in RecurringInvestmentStatus]: string } = {
   [RecurringInvestmentStatus.Active]: 'Active',
@@ -95,18 +96,38 @@ export const RecurringInvestments = () => {
   const isLoading = isLoadingBankAccount || isLoadingRecurringInvestment;
   const formattedBankAccount = `${bankData?.bankName?.toUpperCase()} ${bankData?.accountNumber?.slice(9).replace(' ', '')}`;
 
-  useEffect(() => {
-    if (!isLoadingRecurringInvestment && !recurringInvestment) {
-      navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' });
-    }
-  }, [activeAccount.id, isLoadingRecurringInvestment, navigate, recurringInvestment]);
+  if (isLoading) {
+    return <MainWrapper isLoading={isLoading} />;
+  }
+
+  if (!isLoading && (!bankData || !recurringInvestment)) {
+    return (
+      <MainWrapper
+        bottomSafe
+        noPadding
+      >
+        <PaddedScrollView style={{ marginTop: 24 }}>
+          <Row alignItems="center">
+            <Icon icon="info" />
+            {!bankData && <StyledText>You have no Bank Account linked</StyledText>}
+            {bankData && !recurringInvestment && <StyledText>You do not have a scheduled investment</StyledText>}
+          </Row>
+        </PaddedScrollView>
+        <Box
+          fw
+          px="default"
+        >
+          <Button onPress={() => navigate(Screens.Investing, { skipOneTimeInvestment: true, accountId: activeAccount.id ?? '' })}>
+            {!bankData ? 'Connect' : 'Invest'}
+          </Button>
+        </Box>
+      </MainWrapper>
+    );
+  }
 
   return (
     <>
-      <MainWrapper
-        isLoading={isLoading}
-        bottomSafe
-      >
+      <MainWrapper bottomSafe>
         {recurringInvestment && (
           <Box
             fw

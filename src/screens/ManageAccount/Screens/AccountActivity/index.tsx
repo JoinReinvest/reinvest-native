@@ -72,7 +72,7 @@ const AccountActivityItem = ({ activity }: { activity: AccountActivityT }) => {
         <Row mb="4">
           <StyledText variant="paragraphEmp">{activityName}</StyledText>
         </Row>
-        <StyledText variant="paragraph">{formatDate(date, 'ACCOUNT_ACTIVITY', { currentFormat: 'API' })}</StyledText>
+        <StyledText variant="paragraph">{formatDate(date, 'ACCOUNT_ACTIVITY', { currentFormat: 'API_TZ' })}</StyledText>
       </Box>
       <Icon icon="arrowRight" />
     </Pressable>
