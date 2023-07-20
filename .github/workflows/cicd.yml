@@ -3,9 +3,11 @@ name: Build and Publish Test Builds
 on:
   push:
     branches:
-      - development
-      - staging
-      - main
+      #- development
+      #- staging
+      #- main
+      - android-cicd
+
 
 concurrency:
   group: ${{ github.ref }}
@@ -16,23 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository.
         with:
           ssh-private-key: |
             ${{secrets.SSH_KEY}}
           repo-mappings: |
             github.com/JoinReinvest/reinvest-fe-common
-      - name: ===> Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: |
-          echo "::set-output name=dir::$(yarn cache dir)"
-      - name: ===> Cache JS dependencies
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - uses: actions/setup-node@v3
         with:
@@ -42,7 +34,7 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPMRCTOKEN }}" > ~/.npmrc
 
       - name: ===> 'Create integration env file'
-        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
+        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'development'
         run: |
           echo "INTEGRATION VARIABLES ${{github.ref}}"
           echo "${{ secrets.ENV_INTEGRATION }}" > .env
@@ -84,30 +76,15 @@ jobs:
           VERSION_CODE: ${{ github.run_number }}
         run: cd android && ./gradlew bundleRelease
 
-      - name: Create service_account.json FROM secrets.SERVICE_ACCOUNT_JSON
-        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
+      - name: Create service_account.json FROM secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON
+        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'development'
         run: echo '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}' > service_account.json
 
-      ## this step is placeholder for forthcoming JSON configuration
-      - name: Create service_account.json FROM secrets.SERVICE_ACCOUNT_JSON_APP
-        if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main' || 'refs/heads/staging' || github.event.pull_request.base.ref == 'staging'
-        run: echo '${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON_APP }}' > service_account.json
-
       - name: Deploy to Play Store internal testing
-        if: github.ref == 'refs/heads/development' || github.event.pull_request.base.ref == 'development'
+        if: github.ref == 'refs/heads/android-cicd' || github.event.pull_request.base.ref == 'development'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: service_account.json
           packageName: com.reinvestcommunity.dev
-          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
-          track: internal # Change to desired track (internal, alpha, beta, production)
-
-      # !!!!!!!!!!!!!  we need to add proper json file to upload to this app adn provide secret
-      - name: Deploy to Play Store internal testing
-        if: github.ref == 'refs/heads/staging' || github.event.pull_request.base.ref == 'staging'
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJson: service_account.json
-          packageName: com.reinvestcommunity.app
           releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
           track: internal # Change to desired track (internal, alpha, beta, production)
