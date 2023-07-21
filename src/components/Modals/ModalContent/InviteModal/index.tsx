@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Share, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetInvitationLink } from 'reinvest-app-common/src/services/queries/getInvitationLink';
@@ -16,23 +16,17 @@ import { StyledText } from '../../../typography/StyledText';
 import { styles } from './styles';
 
 export const InviteModal = () => {
-  const { data, isSuccess } = useGetInvitationLink(getApiClient);
+  const { data } = useGetInvitationLink(getApiClient);
   const { closeDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
-  const [url, setUrl] = useState<undefined | string>('');
+  const url = useMemo(() => data?.url ?? '', [data?.url])
 
   const share = async () => {
     await Share.share({
       message: `${url}`,
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setUrl(data?.url || '');
-    }
-  }, [data?.url, isSuccess]);
 
   const returnToDashboard = () => {
     navigation.navigate(Screens.Dashboard);
@@ -81,10 +75,11 @@ export const InviteModal = () => {
             <View style={styles.inputRow}>
               <Input
                 dataDetectorTypes={'link'}
-                value={`${url}`}
-                onChangeText={setUrl}
+                value={url}
                 wrapperStyle={{ maxWidth: DEVICE_WIDTH - 100, marginBottom: 0, alignSelf: 'center' }}
                 style={{ paddingBottom: 0, paddingTop: 0 }}
+                disabled
+                aria-disabled
               />
               <Button
                 style={styles.inputButton}
