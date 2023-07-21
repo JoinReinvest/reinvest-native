@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { Maybe, PortfolioUpdate } from 'reinvest-app-common/src/types/graphql';
 import { formatDate } from 'reinvest-app-common/src/utilities/dates';
 
 import { Avatar } from '../../../components/Avatar';
@@ -10,10 +11,12 @@ import { StyledText } from '../../../components/typography/StyledText';
 import { PADDED_SAFE_WIDTH } from '../../../constants/styles';
 import { palette } from '../../../constants/theme';
 import { xScale } from '../../../utils/scale';
-import { UpdateT } from '../types';
 
 const UPDATE_CONTENT_WIDTH = PADDED_SAFE_WIDTH - 44 - xScale(28);
-export const Update = ({ update: { author, date, content } }: { update: UpdateT }) => {
+
+export const Update = ({ update }: { update: Maybe<PortfolioUpdate> }) => {
+  const date = formatDate(update?.createdAt, 'PROPERTY_UPDATE', { currentFormat: 'API_TZ' });
+
   return (
     <Row
       pb="24"
@@ -22,8 +25,8 @@ export const Update = ({ update: { author, date, content } }: { update: UpdateT 
       <Box alignItems="center">
         <Box mb="16">
           <Avatar
-            initials={''}
-            uri={author.uri}
+            initials={update?.author?.avatar?.initials ?? ''}
+            uri={update?.author?.avatar?.url ?? ''}
           />
         </Box>
 
@@ -33,16 +36,17 @@ export const Update = ({ update: { author, date, content } }: { update: UpdateT 
         ></Box>
       </Box>
       <Box width={UPDATE_CONTENT_WIDTH}>
-        <StyledText>{content.info}</StyledText>
+        <StyledText>{update?.title}</StyledText>
+
         <Box pt="4">
           <StyledText
             variant="paragraphSmall"
             color="dark3"
           >
-            {formatDate(date, 'PROPERTY_UPDATE', { currentFormat: 'CHART' })}
+            {date}
           </StyledText>
         </Box>
-        {content.image && (
+        {update?.image?.url && (
           <Box pt="16">
             <FastImage
               resizeMode="cover"
@@ -50,7 +54,7 @@ export const Update = ({ update: { author, date, content } }: { update: UpdateT 
             avatar and separation + 12 for additional spacing (36) instead of default 24
              */
               style={styles.image}
-              source={{ uri: content.image }}
+              source={{ uri: update?.image?.url }}
             />
           </Box>
         )}

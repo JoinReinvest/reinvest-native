@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useGetAllPortfolioUpdatesQuery } from 'reinvest-app-common/src/services/queries/get-all-portfolio-updates';
 import { ImpactMetrics, KeyMetrics, Location, Poi } from 'reinvest-app-common/src/types/graphql';
 
+import { getApiClient } from '../../api/getApiClient';
 import { BorderedDescription } from '../../components/BorderedDescription';
 import { Button } from '../../components/Button';
 import { Carousel } from '../../components/Carousel';
@@ -17,18 +19,16 @@ import { Characteristic } from './components/Characteristic';
 import { Metrics } from './components/Metrics';
 import { Section } from './components/Section';
 import { Update } from './components/Update';
-import { propertyMock } from './types';
 
 export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) => {
   const { property } = route.params;
   const { bottom } = useSafeAreaInsets();
   const { navigate } = useLogInNavigation();
+  const { data: updates } = useGetAllPortfolioUpdatesQuery(getApiClient);
 
   const investNow = () => {
     navigate(Screens.Investing, { initialInvestment: false });
   };
-
-  const propertyDetails = propertyMock;
 
   return (
     <MainWrapper
@@ -88,14 +88,15 @@ export const PropertyDetails = ({ route }: LogInProps<Screens.PropertyDetails>) 
             })}
           </Box>
         </Section>
-        {propertyDetails.updates && (
+
+        {updates && (
           <Section headline="Updates">
             <Box py="16">
-              {propertyDetails.updates.length ? (
-                propertyDetails.updates.map(update => {
+              {updates.length ? (
+                updates.map(update => {
                   return (
                     <Update
-                      key={`${update.author.uri}${update.date}`}
+                      key={`${update?.title}${update?.createdAt}`}
                       update={update}
                     />
                   );
