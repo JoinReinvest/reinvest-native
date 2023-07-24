@@ -48,6 +48,10 @@ export const styles = StyleSheet.create({
   BENEFICIARY: {
     backgroundColor: palette.frostGreen,
   },
+  NEW_BENEFICIARY: {
+    backgroundColor: palette.warning,
+    color: palette.pureWhite,
+  },
   initials: {
     color: palette.pureBlack,
   },
