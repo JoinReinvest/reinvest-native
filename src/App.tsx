@@ -20,6 +20,7 @@ import { AuthProvider } from './providers/AuthProvider';
     tracesSampleRate: 1.0,
   });
 
+// TO-DO: Change once API domains are ready.
 export const apiEnvs = {
   'https://phkocyrquh.execute-api.us-east-1.amazonaws.com': 'Development',
   'https://s129aec8m7.execute-api.us-east-1.amazonaws.com': 'Integration',
