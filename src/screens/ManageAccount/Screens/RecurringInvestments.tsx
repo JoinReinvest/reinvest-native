@@ -16,6 +16,7 @@ import { MainWrapper } from '../../../components/MainWrapper';
 import { ConfirmDelete } from '../../../components/Modals/ModalContent/ConfirmDelete';
 import { UpdateSuccess } from '../../../components/Modals/ModalContent/UpdateSuccess';
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
+import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { SummaryDetail } from '../../../components/SummaryDetail';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
@@ -23,7 +24,6 @@ import { useCurrentAccount } from '../../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
-import { PaddedScrollView } from '../../../components/PaddedScrollView';
 
 const INVESTMENT_STATUS_LABELS: { [key in RecurringInvestmentStatus]: string } = {
   [RecurringInvestmentStatus.Active]: 'Active',
