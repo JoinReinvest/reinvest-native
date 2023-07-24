@@ -8,6 +8,7 @@ import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
 import { Icon } from '../../../components/Icon';
 import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ModalInformation } from '../../../components/Modals/ModalContent/Information';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';
 import { useDialog } from '../../../providers/DialogProvider';
@@ -45,7 +46,17 @@ export const Metrics = ({ keyMetrics, impactMetrics, name }: PropsWithChildren<{
   };
 
   const openDisclaimerDialog = (key: MetricT) => {
-    openDialog(<FormModalDisclaimer headline={` ${key} metric`} />);
+    openDialog(
+      <ModalInformation
+        heading={` ${key} metric`}
+        content="lorem ipsum text to be entered here to describe what each of these terms mean"
+      />,
+      {
+        closeIcon: false,
+        animationType: 'fade',
+      },
+      'sheet',
+    );
   };
 
   return (
