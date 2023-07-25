@@ -13,13 +13,14 @@ import Screens from '../../../navigation/screens';
 import { hexToRgbA } from '../../../utils/hexToRgb';
 import { BlogCard } from '../components/BlogCard';
 import { EducationCard } from '../components/EducationCard';
-import { educationCards } from '../constants';
+import { useEducationCards } from '../hooks/useEducationCards';
 import { EducationStackProps } from '../types';
 import { styles } from './styles';
 
 export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.EducationMainScreen>) => {
   const { bottom } = useSafeAreaInsets();
   const { data: posts, isLoading } = usePostsQuery();
+  const { cards, isLoading: isLoadingCards } = useEducationCards();
 
   return (
     <MainWrapper
@@ -48,20 +49,32 @@ export const EducationMainScreen = ({ navigation }: EducationStackProps<Screens.
           </StyledText>
         </Box>
       </ImageBackground>
+
       <Box
         px="24"
         fw
       >
-        {educationCards.map(card => (
+        {isLoadingCards && (
+          <Box
+            fw
+            alignItems="center"
+          >
+            <Loader />
+          </Box>
+        )}
+
+        {cards.map(card => (
           <EducationCard
             key={card.title}
             navigation={navigation}
             {...card}
           />
         ))}
+
         <Box my="16">
           <StyledText variant="h5">Learn the basics</StyledText>
         </Box>
+
         {isLoading && (
           <Box
             fw
