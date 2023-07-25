@@ -12,19 +12,18 @@ export const URL = {
   calculator: 'calculator-iframe',
 };
 
-export const educationCards: EducationCardProps[] = [
-  {
-    title: 'Commercial Real Estate Underwriting Calculator',
-    subtitle: 'Calculate your underwriting income in a few easy steps',
-    buttonLabel: 'View Calculator',
-    uri: URL.calculator,
-    icon: <HomeIcon />,
-  },
-  {
-    title: 'Real Estate 101 Glossary',
-    subtitle: 'Equip yourself with the language of the industry',
-    icon: <ChartIcon />,
-    buttonLabel: 'View Glossary',
-    uri: URL.glossary,
-  },
-];
+export const EDUCATION_CARD_CALCULATOR: EducationCardProps = {
+  title: 'Commercial Real Estate Underwriting Calculator',
+  subtitle: 'Calculate your underwriting income in a few easy steps',
+  buttonLabel: 'View Calculator',
+  uri: URL.calculator,
+  icon: <HomeIcon />,
+};
+
+export const EDUCATION_CARD_GLOSSARY: EducationCardProps = {
+  title: 'Real Estate 101 Glossary',
+  subtitle: 'Equip yourself with the language of the industry',
+  icon: <ChartIcon />,
+  buttonLabel: 'View Glossary',
+  uri: URL.glossary,
+};
