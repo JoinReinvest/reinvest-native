@@ -12,6 +12,7 @@ import { Chart } from '../../components/Chart';
 import { Box } from '../../components/Containers/Box/Box';
 import { MainWrapper } from '../../components/MainWrapper';
 import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormModalDisclaimer';
+import { ModalInformation } from '../../components/Modals/ModalContent/Information';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
@@ -60,11 +61,17 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
 
   const openInfoDialog = (identifier: TableIdentifiers) => {
     const { label, info } = TABLE_ITEMS[identifier];
+
     openDialog(
-      <FormModalDisclaimer
-        headline={label}
+      <ModalInformation
+        heading={label}
         content={info}
       />,
+      {
+        closeIcon: false,
+        animationType: 'fade',
+      },
+      'sheet',
     );
   };
 
