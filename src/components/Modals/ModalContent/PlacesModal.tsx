@@ -117,7 +117,7 @@ export const SearchDialog = ({ fillDetailsCallback, shouldDismissModal = true, d
                 >
                   <StyledText
                     color={dark ? 'pureWhite' : 'pureBlack'}
-                    onPress={() => parseDetails(el.placeId)}
+                    onPress={() => parseDetails(el?.placeId ?? '')}
                   >
                     {el.fullAddress}
                   </StyledText>

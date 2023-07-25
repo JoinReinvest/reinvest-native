@@ -18,7 +18,7 @@ interface NotificationProps extends BaseNotification {
 }
 
 export const Notification = ({ id, header, body, date, isRead, notificationType, showIcon, onPress }: NotificationProps) => {
-  const parsedBody = markdownBold(body);
+  const parsedBody = markdownBold(body ?? '');
 
   return (
     <Pressable

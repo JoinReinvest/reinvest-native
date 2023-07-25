@@ -7,7 +7,6 @@ import { BorderedDescription } from '../../../components/BorderedDescription';
 import { Box } from '../../../components/Containers/Box/Box';
 import { Row } from '../../../components/Containers/Row';
 import { Icon } from '../../../components/Icon';
-import { FormModalDisclaimer } from '../../../components/Modals/ModalContent/FormModalDisclaimer';
 import { ModalInformation } from '../../../components/Modals/ModalContent/Information';
 import { StyledText } from '../../../components/typography/StyledText';
 import { palette } from '../../../constants/theme';

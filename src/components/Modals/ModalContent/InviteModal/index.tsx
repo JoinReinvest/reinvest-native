@@ -20,7 +20,7 @@ export const InviteModal = () => {
   const { closeDialog } = useDialog();
   const { bottom } = useSafeAreaInsets();
   const navigation = useLogInNavigation();
-  const url = useMemo(() => data?.url ?? '', [data?.url])
+  const url = useMemo(() => data?.url ?? '', [data?.url]);
 
   const share = async () => {
     await Share.share({

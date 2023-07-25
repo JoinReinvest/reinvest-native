@@ -7,7 +7,8 @@ import { StyledText } from '../typography/StyledText';
 import { styles } from './styles';
 import { RadioButtonProps } from './types';
 
-export const RadioButton = <TValue = unknown,>({
+// eslint-disable-next-line prettier/prettier
+export const RadioButton = <TValue = unknown, >({
   dark = true,
   value,
   checked,
