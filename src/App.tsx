@@ -21,9 +21,10 @@ import { AuthProvider } from './providers/AuthProvider';
   });
 
 export const apiEnvs = {
-  'https://phkocyrquh.execute-api.us-east-1.amazonaws.com': 'Development',
-  'https://s129aec8m7.execute-api.us-east-1.amazonaws.com': 'Integration',
-  'https://cosw3jp4f3.execute-api.us-east-1.amazonaws.com': 'Staging',
+  'https://api.dev.reinvestcommunity.com': 'Development',
+  'https://api.integrations.reinvestcommunity.com': 'Integration',
+  'https://api.staging.reinvestcommunity.com': 'Staging',
+  'https://api.reinvestcommunity.com': 'Production',
 } as const;
 
 // eslint-disable-next-line no-console
