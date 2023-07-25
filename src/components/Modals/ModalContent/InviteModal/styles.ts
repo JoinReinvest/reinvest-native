@@ -40,5 +40,8 @@ export const styles = StyleSheet.create({
     height: 48,
     width: 48,
     marginTop: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
