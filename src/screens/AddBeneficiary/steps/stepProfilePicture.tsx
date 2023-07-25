@@ -4,7 +4,6 @@ import { allRequiredFieldsExists, StepComponentProps, StepParams } from 'reinves
 import { useCreateAvatarFileLink } from 'reinvest-app-common/src/services/queries/createAvatarFileLink';
 import { useGetAccountsOverview } from 'reinvest-app-common/src/services/queries/getAccountsOverview';
 import { useOpenBeneficiaryAccount } from 'reinvest-app-common/src/services/queries/openBeneficiaryAccount';
-import { AccountType } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../../api/getApiClient';
 import { sendFilesToS3Bucket } from '../../../api/sendFilesToS3Bucket';
@@ -121,7 +120,7 @@ export const StepProfilePicture: StepParams<BeneficiaryCreationFormFields> = {
               isEditable
               size={'2xl'}
               initials={beneficiaryInitials}
-              variant={AccountType.Beneficiary}
+              variant='NEW_BENEFICIARY'
             />
           </Box>
         </PaddedScrollView>

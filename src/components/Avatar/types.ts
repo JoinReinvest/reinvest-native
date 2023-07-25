@@ -10,5 +10,5 @@ export interface AvatarProps extends Pick<TouchableOpacityProps, 'onPress'> {
   onImageSelect?: (uri: string | undefined) => void;
   size?: AvatarSize;
   uri?: string;
-  variant?: AccountType | DraftAccountType;
+  variant?: AccountType | DraftAccountType | 'NEW_BENEFICIARY';
 }
