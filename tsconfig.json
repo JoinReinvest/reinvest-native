@@ -1,7 +1,8 @@
 {
   "extends": "@hookooekoo/configs-tsconfig/tsconfig-react-native.json",
   "compilerOptions": {
-    "lib": ["ES2021", "DOM"]
+    "lib": ["ES2021", "DOM"],
+    "types": ["react-native", "./node_modules/@types/google.maps/index.d.ts"]
   },
   "include": ["./src/**/*.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": ["./out/**/*", "./node_modules/**/*"]

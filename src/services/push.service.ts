@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import messaging, { type FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import { Permission, PermissionsAndroid, Platform } from 'react-native';
 

@@ -11,7 +11,6 @@ import { Button } from '../../components/Button';
 import { Chart } from '../../components/Chart';
 import { Box } from '../../components/Containers/Box/Box';
 import { MainWrapper } from '../../components/MainWrapper';
-import { FormModalDisclaimer } from '../../components/Modals/ModalContent/FormModalDisclaimer';
 import { ModalInformation } from '../../components/Modals/ModalContent/Information';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';

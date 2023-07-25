@@ -120,7 +120,7 @@ export const StepProfilePicture: StepParams<BeneficiaryCreationFormFields> = {
               isEditable
               size={'2xl'}
               initials={beneficiaryInitials}
-              variant='NEW_BENEFICIARY'
+              variant="NEW_BENEFICIARY"
             />
           </Box>
         </PaddedScrollView>
