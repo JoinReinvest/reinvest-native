@@ -14,6 +14,7 @@ import { MainWrapper } from '../../components/MainWrapper';
 import { ModalInformation } from '../../components/Modals/ModalContent/Information';
 import { PaddedScrollView } from '../../components/PaddedScrollView';
 import { Table } from '../../components/Table';
+import { QUERY_REFETCH_INTERVAL_MS } from '../../constants/queries';
 import { EQUITY_TABLE_ITEMS, NET_RETURNS_TABLE_ITEMS, TABLE_ITEMS, TableIdentifiers } from '../../constants/tables';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { usePushNotifications } from '../../hooks/usePushNotifications';
@@ -28,12 +29,12 @@ export const Dashboard = ({ navigation }: LogInProps<Screens.Dashboard>) => {
   const { activeAccount } = useCurrentAccount();
   const { data: stats } = useGetAccountStats(getApiClient, {
     accountId: activeAccount.id ?? '',
-    config: { enabled: !!activeAccount.id },
+    config: { enabled: !!activeAccount.id, refetchInterval: QUERY_REFETCH_INTERVAL_MS },
   });
   const { data: notifications } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id ?? '',
     filter: NotificationFilter.Unread,
-    config: { enabled: !!activeAccount.id },
+    config: { enabled: !!activeAccount.id, refetchInterval: QUERY_REFETCH_INTERVAL_MS },
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setUnreadNotificationsCount] = useAtom(unreadNotificationsCount);

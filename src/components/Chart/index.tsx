@@ -4,6 +4,7 @@ import { useGetEVSChart } from 'reinvest-app-common/src/services/queries/getEVSC
 import { EvsChartResolution } from 'reinvest-app-common/src/types/graphql';
 
 import { getApiClient } from '../../api/getApiClient';
+import { QUERY_REFETCH_INTERVAL_MS } from '../../constants/queries';
 import { PADDED_SAFE_WIDTH } from '../../constants/styles';
 import { palette } from '../../constants/theme';
 import { currentAccount, useAtom } from '../../store/atoms';
@@ -34,6 +35,7 @@ export const Chart = ({ compact }: ChartProps) => {
     resolution: selectedOption?.resolution ?? EvsChartResolution.Day,
     config: {
       enabled: !!account.id,
+      refetchInterval: QUERY_REFETCH_INTERVAL_MS,
     },
   });
 

@@ -14,6 +14,7 @@ import { AmountUpdate } from '../../../components/Modals/ModalContent/AmountUpda
 import { HeaderWithLogo } from '../../../components/Modals/ModalHeaders/HeaderWithLogo';
 import { PaddedScrollView } from '../../../components/PaddedScrollView';
 import { StyledText } from '../../../components/typography/StyledText';
+import { QUERY_REFETCH_INTERVAL_MS } from '../../../constants/queries';
 import { useLogInNavigation } from '../../../navigation/hooks';
 import Screens from '../../../navigation/screens';
 import { useDialog } from '../../../providers/DialogProvider';
@@ -29,6 +30,7 @@ export const RemoveBeneficiary = () => {
     accountId: activeAccount.id ?? '',
     config: {
       enabled: activeAccount.type === AccountType.Beneficiary,
+      refetchInterval: QUERY_REFETCH_INTERVAL_MS,
     },
   });
 
@@ -37,6 +39,7 @@ export const RemoveBeneficiary = () => {
     accountId: individualAccountId,
     config: {
       enabled: !!individualAccountId,
+      refetchInterval: QUERY_REFETCH_INTERVAL_MS,
     },
   });
 
