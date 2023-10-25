@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "705739093077",
+    "project_id": "reinvest-bb445",
+    "storage_bucket": "reinvest-bb445.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705739093077:android:8c87baa9513e4b876d90dc",
+        "android_client_info": {
+          "package_name": "com.reinvestcommunity.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705739093077-lib49v8koaqap5vn27lg9akup11kuoof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv6JlO_59YYew9Nz1UTgPrKt4AJ0yuIUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705739093077-lib49v8koaqap5vn27lg9akup11kuoof.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "705739093077-bn8jef0iifn7pvd7dos70fompnsc7se1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reinvestcommunity.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

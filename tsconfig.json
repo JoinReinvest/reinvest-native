@@ -1,30 +1,9 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@hookooekoo/configs-tsconfig/tsconfig-react-native.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "baseUrl": "./",
-    "paths" : {
-      "@src/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@constants/*": ["src/constants/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@navigation/*": ["src/navigation/*"],
-      "@screens/*": ["src/screens/*"],
-      "@utils/*": ["src/utils/*"],
-      "@typings/*": ["src/types/*"],
-    },
-    "types": [
-      "jest",
-      "node"
-    ]
+    "lib": ["ES2021", "DOM"],
+    "types": ["react-native", "./node_modules/@types/google.maps/index.d.ts"]
   },
-  "include": ["src", "__tests__"]
+  "include": ["./src/**/*.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["./out/**/*", "./node_modules/**/*"]
 }

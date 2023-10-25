@@ -1,23 +1,24 @@
-import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Button, View} from 'react-native';
-import LogOutNavigator from '@navigation/LogOutNavigator/LogOutNavigator';
-import LogInNavigator from '@navigation/LogInNavigator/LogInNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 
-const RootNavigator = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+import { useAuth } from '../providers/AuthProvider';
+import { LogInNavigator } from './LogInNavigator';
+import { LogOutNavigator } from './LogOutNavigator';
+import Screens from './screens';
 
-  return (
-    <NavigationContainer>
-      {isSignedIn ? <LogInNavigator /> : <LogOutNavigator />}
-      <View style={{position: 'absolute', bottom: 24, right: 24}}>
-        <Button
-          title={!isSignedIn ? 'SignIN' : 'SignOUT'}
-          onPress={() => setIsSignedIn(prev => !prev)}
-        />
-      </View>
-    </NavigationContainer>
-  );
+const config = {
+  screens: {
+    [Screens.SignUp]: 'referral/:referralCode',
+  },
 };
 
-export default RootNavigator;
+const linking = {
+  prefixes: ['https://reinvestcommunity.com', 'reinvest://', 'https://*.reinvestcommunity.com', 'http://*.reinvestcommunity.com'],
+  config,
+};
+
+export const RootNavigator = () => {
+  const { loggedIn } = useAuth();
+
+  return <NavigationContainer linking={linking}>{loggedIn ? <LogInNavigator /> : <LogOutNavigator />}</NavigationContainer>;
+};
