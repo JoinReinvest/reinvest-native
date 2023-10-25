@@ -14,6 +14,7 @@ import { Box } from '../../components/Containers/Box/Box';
 import { EmptyListComponent } from '../../components/EmptyList';
 import { MainWrapper } from '../../components/MainWrapper';
 import { Notification } from '../../components/Notification';
+import { QUERY_REFETCH_INTERVAL_MS } from '../../constants/queries';
 import { useCurrentAccount } from '../../hooks/useActiveAccount';
 import { useLogInNavigation } from '../../navigation/hooks';
 import Screens from '../../navigation/screens';
@@ -29,6 +30,9 @@ export const Notifications = () => {
   const { navigate } = useLogInNavigation();
   const { data, isLoading, refetch, fetchNextPage } = useGetNotifications(getApiClient, {
     accountId: activeAccount.id || '',
+    config: {
+      refetchInterval: QUERY_REFETCH_INTERVAL_MS,
+    },
   });
   const { mutateAsync: verifyAccount } = useVerifyAccount(getApiClient);
   const setUnreadNotificationsCount = useSetAtom(unreadNotificationsCount);
